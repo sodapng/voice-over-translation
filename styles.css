@@ -1,18 +1,37 @@
+.translation-btn,
+.btn-error::before {
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  box-shadow: 0px 0px 10px 2px rgba(34, 60, 80, 0.5);
+  border-radius: 0.5rem;
+}
+
 .translation-btn {
-	box-sizing: border-box;
-	width: 5rem;
-	padding: 1.5rem;
-	border-radius: 0.5rem;
-	background: no-repeat center black
-		url(https://icongr.am/entypo/language.svg?size=25&color=ffffff);
-	position: absolute;
-	top: 3rem;
-	left: 50%;
-	box-shadow: 0px 0px 10px 2px rgba(34, 60, 80, 0.5);
-	opacity: 0;
-	cursor: pointer;
+  width: 5rem;
+  padding: 1.5rem;
+  background: no-repeat center black
+    url(https://icongr.am/entypo/language.svg?size=25&color=ffffff);
+  top: 3rem;
+  opacity: 0;
 }
 
 .translation-btn:hover {
-	opacity: 1;
+  opacity: 1;
+}
+
+.btn-error::before {
+  content: attr(data-error);
+  font-size: 1.3rem;
+  top: 4rem;
+  transform: translate(-50%);
+  width: max-content;
+  padding: 0.5rem;
+  color: white;
+  background-color: black;
+}
+
+.btn-succes {
+  background: no-repeat center black
+    url(https://icongr.am/entypo/controller-paus.svg?size=20&color=ffffff);
 }

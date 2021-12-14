@@ -73,9 +73,15 @@ const deleteAudioSrc = () => {
   audio.removeAttribute("src");
 };
 
+const removeClassBtnErrorAndBtnSucces = () => {
+  $(span).removeClass("btn-error");
+  $(span).removeClass("btn-succes");
+};
+
 $("body").on("yt-page-data-updated", function () {
   var video = $("video")[0];
   $(".html5-video-container").append(fragment);
+  removeClassBtnErrorAndBtnSucces();
 
   const lipSync = (mode = false) => {
     audio.currentTime = video.currentTime;
@@ -98,6 +104,7 @@ $("body").on("yt-page-data-updated", function () {
     event.stopPropagation();
 
     if (audio.src) {
+      removeClassBtnErrorAndBtnSucces();
       deleteAudioSrc();
       event.stopImmediatePropagation();
     }
@@ -124,10 +131,15 @@ $("body").on("yt-page-data-updated", function () {
       audio.src = URL_AUDIO[0];
 
       $("body").one("yt-page-data-updated", function () {
+        removeClassBtnErrorAndBtnSucces();
         audio.pause();
         $("video").off(".translate");
         deleteAudioSrc();
       });
+
+      if ($(span).hasClass("btn-error")) {
+        $(span).removeClass("btn-error");
+      }
 
       if (!video.paused) {
         lipSync("play");
@@ -148,11 +160,15 @@ $("body").on("yt-page-data-updated", function () {
       $("video").on("pause.translate waiting.translate", function () {
         lipSync("pause");
       });
+
+      $(span).addClass("btn-succes");
     } catch (err) {
       if (!err) {
         console.error("something went wrong");
       }
 
+      $(span).attr("data-error", err);
+      $(span).addClass("btn-error");
       console.error(err);
     }
   });
