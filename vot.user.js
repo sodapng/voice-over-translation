@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name             voice-over-translation
 // @match            *://*.youtube.com/*
-// @version          1.2a
+// @version          1.3
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @resource         styles https://raw.githubusercontent.com/sodapng/voice-over-translation/master/styles.css
 // @grant            GM_getResourceText
