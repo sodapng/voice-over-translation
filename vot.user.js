@@ -11,7 +11,7 @@
 // @downloadURL      https://raw.githubusercontent.com/sodapng/voice-over-translation/master/vot.user.js
 // @supportURL       https://github.com/sodapng/voice-over-translation/issues
 // @homepageURL      https://github.com/sodapng/voice-over-translation
-// @connect          https://api.browser.yandex.ru
+// @connect          api.browser.yandex.ru
 // ==/UserScript==
 
 const styles = GM_getResourceText("styles");
