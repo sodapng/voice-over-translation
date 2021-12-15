@@ -85,6 +85,7 @@ $("body").on("yt-page-data-updated", function () {
 
   const lipSync = (mode = false) => {
     audio.currentTime = video.currentTime;
+    audio.playbackRate = video.playbackRate;
     // audio.volume = video.volume
 
     if (!mode) {
@@ -145,7 +146,7 @@ $("body").on("yt-page-data-updated", function () {
         lipSync("play");
       }
 
-      $("video").on("playing.translate", function () {
+      $("video").on("playing.translate ratechange.translate", function () {
         lipSync();
       });
 
