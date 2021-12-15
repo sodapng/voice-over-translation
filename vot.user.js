@@ -81,12 +81,36 @@ const removeClassBtnErrorAndBtnSucces = () => {
 $("body").on("yt-page-data-updated", function () {
   var video = $("video")[0];
   $(".html5-video-container").append(fragment);
+
+  let btnHover = function () {
+    let time;
+
+    $(".html5-video-container").on("mousemove", resetTimer);
+    $(".html5-video-container").on("mouseout", () => logout(0));
+    $(span).on("mousemove", function (event) {
+      clearTimeout(time);
+      logout(1);
+      event.stopPropagation();
+    });
+
+    function logout(n) {
+      $(span).css("opacity", n);
+    }
+
+    function resetTimer() {
+      clearTimeout(time);
+      logout(1);
+      time = setTimeout(() => logout(0), 2000);
+    }
+  };
+
+  btnHover();
+
   removeClassBtnErrorAndBtnSucces();
 
   const lipSync = (mode = false) => {
     audio.currentTime = video.currentTime;
     audio.playbackRate = video.playbackRate;
-    // audio.volume = video.volume
 
     if (!mode) {
       return;

@@ -12,12 +12,9 @@
   padding: 1.5rem;
   background: no-repeat center black
     url(https://icongr.am/entypo/language.svg?size=25&color=ffffff);
-  top: 3rem;
+  top: 6rem;
   opacity: 0;
-}
-
-.translation-btn:hover {
-  opacity: 1;
+  transition: opacity 2s;
 }
 
 .btn-error::before {
