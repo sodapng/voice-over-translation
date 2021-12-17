@@ -20,7 +20,7 @@ GM_addStyle(styles);
 const fragment = new DocumentFragment();
 const span = $("<span>");
 
-$(span).addClass("translation-btn");
+$(span).addClass("translation-btn").attr("role", "button").attr("aria-label", "Перевести видео").attr("tabindex","0");
 
 fragment.appendChild(span[0]);
 const audio = new Audio();
