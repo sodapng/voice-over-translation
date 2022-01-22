@@ -1,12 +1,17 @@
-# ПОКА ЧТО НЕ РАБОТАЕТ!!!
-# Voice-over translation
+# Закадровый перевод видео
 
-Voice-over translation not only in Yandex.Browser.\
-Much obliged, **[Yandex.Translate](https://translate.yandex.ru/)**. Thank you.
+Закадровый перевод видео не только в YandexBrowser
+Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng]**(https://github.com/sodapng). Спасиб <3
 
-## Как использовать:
+## Установка веб-сервера и расширения:
 
-1. Установить расширение **[violetmonkey](https://violentmonkey.github.io/get-it/)**
-2. **[«Установить Скрипт»](https://raw.githubusercontent.com/sodapng/voice-over-translation/master/vot.user.js)**
+1. Установить расширение **[Tampermonkey](https://violentmonkey.github.io/get-it/)**
+2. Установить YandexBrowser и NodeJS v16.x
+3. Заполните свои пути в config.json
+4. В настройках YandexBrowser **отключите работу в фоне**, а так же **автозапуск**
+5. Находясь в папке "voice-over-translation" прописать: ```npm i```
+6. **[«Установите Скрипт»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js)**
+7. Запустите веб-сервер с помощью ```npm run start```
 
-![example btn](https://github.com/sodapng/voice-over-translation/blob/master/example.png "btn")
+Примечание: Во время работы веб-сервера в консоли могут вылетать какие-то ошибки. Это нормально
+![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/example.png "btn")
