@@ -3,15 +3,15 @@
 // @match            *://*.youtube.com/*
 // @version          1.5
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
-// @resource         styles https://raw.githubusercontent.com/sodapng/voice-over-translation/master/styles.css
+// @resource         styles https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/styles.css
 // @grant            GM_getResourceText
 // @grant            GM_addStyle
 // @grant            GM_xmlhttpRequest
-// @updateURL        https://raw.githubusercontent.com/sodapng/voice-over-translation/master/vot.user.js
-// @downloadURL      https://raw.githubusercontent.com/sodapng/voice-over-translation/master/vot.user.js
-// @supportURL       https://github.com/sodapng/voice-over-translation/issues
-// @homepageURL      https://github.com/sodapng/voice-over-translation
-// @connect          api.browser.yandex.ru
+// @updateURL        https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js
+// @downloadURL      https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js
+// @supportURL       https://github.com/ilyhalight/voice-over-translation/issues
+// @homepageURL      https://github.com/ilyhalight/voice-over-translation
+// @connect          127.0.0.1
 // ==/UserScript==
 
 const styles = GM_getResourceText("styles");
@@ -20,7 +20,7 @@ GM_addStyle(styles);
 const fragment = new DocumentFragment();
 const span = $("<span>");
 
-$(span).addClass("translation-btn");
+$(span).addClass("translation-btn").attr("role", "button").attr("aria-label", "Перевести видео").attr("tabindex","0");
 
 fragment.appendChild(span[0]);
 const audio = new Audio();
@@ -42,16 +42,18 @@ const getVeideoId = () => {
 const getUrlAudio = (videoId) => {
   return new Promise((resolve, reject) => {
     GM_xmlhttpRequest({
-      url: "https://api.browser.yandex.ru/video-translation/translate",
+      url: "http://127.0.0.1:3000/video",
       method: "POST",
       headers: {
-        "Content-Type": "application/x-protobuf",
+        "Content-Type": "application/json",
         "User-Agent":
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.85 YaBrowser/21.11.2.773 Yowser/2.5 Safari/537.36",
       },
-      data: `\x1A\x1Chttps://youtu.be/${videoId}\x28\x01`,
+      data: JSON.stringify({
+          "video_id": videoId
+      }),
       onload: (res) => {
-        if (res.total === 40 || res.total === 42) {
+        if (res.status === 412) {
           return reject("VIDEO-TRANSLATION: can not translate");
         }
 
