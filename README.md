@@ -1,6 +1,6 @@
 # Закадровый перевод видео
 
-Закадровый перевод видео не только в YandexBrowser
+Закадровый перевод видео не только в YandexBrowser.
 Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)**. Спасиб <3
 
 ## Установка веб-сервера и расширения:
