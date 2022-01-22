@@ -9,7 +9,7 @@
 2. Установить YandexBrowser и NodeJS v16.x
 3. Заполните свои пути в config.json
 4. В настройках YandexBrowser **отключите работу в фоне**, а так же **автозапуск**
-5. Находясь в папке "voice-over-translation" прописать: ```npm i```
+5. Находясь в папке "voice-over-translation" пропишите: ```npm i```
 6. **[«Установите Скрипт»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js)**
 7. Запустите веб-сервер с помощью ```npm run start```
 
