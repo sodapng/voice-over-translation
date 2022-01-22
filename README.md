@@ -5,8 +5,8 @@
 
 ## Установка веб-сервера и расширения:
 
-1. Установить расширение **[Tampermonkey](https://violentmonkey.github.io/get-it/)**
-2. Установить YandexBrowser и NodeJS v16.x
+1. Установите расширение **[Tampermonkey](https://violentmonkey.github.io/get-it/)**
+2. Установите YandexBrowser и NodeJS v16.x
 3. Заполните свои пути в config.json
 4. В настройках YandexBrowser **отключите работу в фоне**, а так же **автозапуск**
 5. Находясь в папке "web-server" пропишите: ```npm i```
