@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name             voice-over-translation
 // @match            *://*.youtube.com/*
-// @version          1.5
+// @version          1.6
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @resource         styles https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/styles.css
 // @grant            GM_getResourceText
@@ -20,7 +20,7 @@ GM_addStyle(styles);
 const fragment = new DocumentFragment();
 const span = $("<span>");
 
-$(span).addClass("translation-btn").attr("role", "button").attr("aria-label", "Перевести видео").attr("tabindex","0");
+$(span).addClass("translation-btn").attr("role", "button").attr("aria-label", "Перевести видео").attr("tabindex","0").attr("tabindex","0").text("Перевести видео");
 
 fragment.appendChild(span[0]);
 const audio = new Audio();
@@ -47,24 +47,24 @@ const getUrlAudio = (videoId) => {
       headers: {
         "Content-Type": "application/json",
         "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.85 YaBrowser/21.11.2.773 Yowser/2.5 Safari/537.36",
+          "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.119 YaBrowser/22.3.0.2434 Yowser/2.5 Safari/537.36",
       },
       data: JSON.stringify({
           "video_id": videoId
       }),
       onload: (res) => {
         if (res.status === 412) {
-          return reject("VIDEO-TRANSLATION: can not translate");
+          return reject("YaTranslate: Перевод недоступен"); // can not translate
         }
 
         if (res.status === 200) {
           return resolve(res.response);
         }
 
-        return reject("VIDEO-TRANSLATION: bad request");
+        return reject("YaTranslate: Bad request");
       },
       onerror: (err) => {
-        return reject("VIDEO-TRANSLATION: connection error");
+        return reject("YaTranslate: Ошибка соединения"); // connection error
       },
     });
   });
@@ -75,9 +75,13 @@ const deleteAudioSrc = () => {
   audio.removeAttribute("src");
 };
 
-const removeClassBtnErrorAndBtnSucces = () => {
+const removeClassBtnErrorAndBtnSuccess = () => {
   $(span).removeClass("btn-error");
-  $(span).removeClass("btn-succes");
+  $(span).removeClass("btn-success");
+  $(span).css("color", "#ffffff");
+  $(span).css("width", "16.3rem");
+  $(span).css("background-image", "url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=ffffff)");
+  $(span).text("Перевести видео");
 };
 
 $("body").on("yt-page-data-updated", function () {
@@ -91,7 +95,7 @@ $("body").on("yt-page-data-updated", function () {
     $(".html5-video-container").on("mouseout", () => logout(0));
     $(span).on("mousemove", function (event) {
       clearTimeout(time);
-      logout(1);
+      logout(0.8);
       event.stopPropagation();
     });
 
@@ -106,9 +110,21 @@ $("body").on("yt-page-data-updated", function () {
     }
   };
 
+  function changeColor(n) {
+    $(span).css("color", n);
+  }
+
+  function changeBackgroundError() {
+    $(span).css("background-image", "url(http://localhost:1337/video/YAliceError.svg), url(https://icongr.am/entypo/language.svg?size=18&color=7A7A7D)");
+  }
+
+  function changeBackgroundSuccess() {
+    $(span).css("background-image", "url(http://localhost:1337/video/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=A36EFF)");
+  }
+
   btnHover();
 
-  removeClassBtnErrorAndBtnSucces();
+  removeClassBtnErrorAndBtnSuccess();
 
   const lipSync = (mode = false) => {
     audio.currentTime = video.currentTime;
@@ -131,7 +147,7 @@ $("body").on("yt-page-data-updated", function () {
     event.stopPropagation();
 
     if (audio.src) {
-      removeClassBtnErrorAndBtnSucces();
+      removeClassBtnErrorAndBtnSuccess();
       deleteAudioSrc();
       event.stopImmediatePropagation();
     }
@@ -144,7 +160,7 @@ $("body").on("yt-page-data-updated", function () {
       const VIDEO_ID = getVeideoId();
 
       if (!VIDEO_ID) {
-        throw "VIDEO-TRANSLATION: not found video id";
+        throw "YaTranslate: Не найдено ID видео"; // not found video id
       }
 
       const rawResponse = await getUrlAudio(VIDEO_ID);
@@ -152,13 +168,13 @@ $("body").on("yt-page-data-updated", function () {
       const URL_AUDIO = rawResponse.match(/https.*[a-z0-9]{64}|https.*mp3/);
 
       if (!URL_AUDIO) {
-        throw "VIDEO-TRANSLATION: raw string error";
+        throw "YaTranslate: Ошибка необработанной строки"; // raw string error
       }
 
       audio.src = URL_AUDIO[0];
 
       $("body").one("yt-page-data-updated", function () {
-        removeClassBtnErrorAndBtnSucces();
+        removeClassBtnErrorAndBtnSuccess();
         audio.pause();
         $("video").off(".translate");
         deleteAudioSrc();
@@ -188,14 +204,23 @@ $("body").on("yt-page-data-updated", function () {
         lipSync("pause");
       });
 
-      $(span).addClass("btn-succes");
+      $(span).addClass("btn-success");
+      $(span).text('Выключить');
+      $(span).css("width", "13rem");
+      changeColor("#A36EFF");
+      changeBackgroundSuccess();
     } catch (err) {
       if (!err) {
         console.error("something went wrong");
       }
 
       $(span).attr("data-error", err);
+      $(span).text(err.substring(13, err.lenght));
+      $(span).css("width", "max-content");
+      $(span).css("padding-left", "5.5rem");
       $(span).addClass("btn-error");
+      changeColor("#7A7A7D");
+      changeBackgroundError();
       console.error(err);
     }
   });
