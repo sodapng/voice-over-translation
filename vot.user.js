@@ -115,11 +115,11 @@ $("body").on("yt-page-data-updated", function () {
   }
 
   function changeBackgroundError() {
-    $(span).css("background-image", "url(http://localhost:1337/video/YAliceError.svg), url(https://icongr.am/entypo/language.svg?size=18&color=7A7A7D)");
+    $(span).css("background-image", "url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAliceError.svg), url(https://icongr.am/entypo/language.svg?size=18&color=7A7A7D)");
   }
 
   function changeBackgroundSuccess() {
-    $(span).css("background-image", "url(http://localhost:1337/video/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=A36EFF)");
+    $(span).css("background-image", "url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=A36EFF)");
   }
 
   btnHover();
