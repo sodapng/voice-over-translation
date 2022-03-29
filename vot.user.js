@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name             voice-over-translation
 // @match            *://*.youtube.com/*
-// @version          1.6
+// @version          1.6.1
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
+// @require          https://code.jquery.com/ui/1.13.0/jquery-ui.min.js
 // @resource         styles https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/styles.css
 // @grant            GM_getResourceText
 // @grant            GM_addStyle
@@ -82,6 +83,9 @@ const removeClassBtnErrorAndBtnSuccess = () => {
   $(span).css("width", "16.3rem");
   $(span).css("background-image", "url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=ffffff)");
   $(span).text("Перевести видео");
+  try {
+    $(".translation-volume-box").remove();
+  } catch (e) {}
 };
 
 $("body").on("yt-page-data-updated", function () {
@@ -99,8 +103,19 @@ $("body").on("yt-page-data-updated", function () {
       event.stopPropagation();
     });
 
+    try {
+      $(".translation-volume-box").on("mousemove", function (event) {
+          clearTimeout(time);
+          logout(0.8);
+          event.stopPropagation();
+      });
+    } catch (e) {}
+
     function logout(n) {
       $(span).css("opacity", n);
+      try {
+        $(".translation-volume-box").css("opacity", n);
+      } catch (e) {}
     }
 
     function resetTimer() {
@@ -209,6 +224,36 @@ $("body").on("yt-page-data-updated", function () {
       $(span).css("width", "13rem");
       changeColor("#A36EFF");
       changeBackgroundSuccess();
+      try {
+        const sliderFragment = new DocumentFragment();
+        const sliderBoxFragment = new DocumentFragment();
+        const slider = $("<div>");
+        const sliderBox = $("<div>")
+
+        $(sliderBox).addClass("translation-volume-box").attr("tabindex","0");
+
+        $(slider).attr("id", "translation-volume").attr("role", "slider").attr("aria-label", "Громкость видео").attr("tabindex","0");
+
+        sliderBoxFragment.appendChild(sliderBox[0]);
+        sliderFragment.appendChild(slider[0]);
+
+        $(".html5-video-container").append(sliderBoxFragment);
+        $(sliderBox).append(sliderFragment);
+        $(slider).slider({
+            value : 100,
+            step  : 1,
+            range : 'min',
+            min   : 0,
+            max   : 100,
+            slide : function(){
+                var value = $(slider).slider("value");
+                audio.volume = (value / 100);
+            }
+        });
+      } catch (err) {
+          console.error("YaTranslate: Не удалось добавить ползунок громкости");
+          console.error(err);
+      }
     } catch (err) {
       if (!err) {
         console.error("something went wrong");
