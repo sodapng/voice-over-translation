@@ -10,7 +10,7 @@
   width: 16.3rem;
   padding: 1.0rem;
   background: #2E2F34;
-  background-image: url(http://localhost:1337/video/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=ffffff);
+  background-image: url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=ffffff);
   background-repeat: no-repeat, no-repeat;
   background-position-y: center, center;
   background-position-x: 8px, 34px;
@@ -34,9 +34,51 @@
 
 .btn-success {
   background: #2E2F34;
-  background-image: url(http://localhost:1337/video/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=A36EFF);
+  background-image: url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=A36EFF);
   background-repeat: no-repeat, no-repeat;
   background-position-y: center, center;
   background-position-x: 8px, 34px;
   color: #A36EFF;
+}
+
+.translation-volume-box {
+  width: 13rem;
+  height: 2.5rem;
+  padding: 1rem;
+  background: #2E2F34;
+  background-image: url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/volume.svg);
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: 8px;
+  top: 2rem;
+}
+
+#translation-volume {
+  position: absolute;
+  width: 7.5rem;
+  margin: 0 auto;
+  margin-left: 30px;
+  left: 0%;
+}
+
+.ui-slider-range-min {
+  position: absolute;
+  height: 5px;
+  width: 7.5rem;
+  left: 0%;
+  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%);
+  border: none;
+  border-radius: 12px;
+  outline: none;
+}
+
+.ui-slider-handle {
+  width: 12px;
+  height: 12px;
+  border-radius: 20px;
+  background: #FFF;
+  position: absolute;
+  margin-top: -4px;
+  cursor: pointer;
+  outline: none;
 }
