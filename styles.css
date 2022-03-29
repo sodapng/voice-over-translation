@@ -1,4 +1,5 @@
 .translation-btn,
+.translation-volume-box,
 .btn-error::before {
   box-sizing: border-box;
   position: absolute;
