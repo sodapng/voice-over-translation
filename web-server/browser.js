@@ -34,8 +34,8 @@ const options = {
 
 async function createBrowser () {
     const browser = await puppeteer.launch(options)
-    const wsEndpoint = await browser.wsEndpoint()
-    console.log(wsEndpoint)
+    const wsEndpoint = browser.wsEndpoint()
+    logger.info(`Новая копия браузера успешно запущена. Ссылка на WebSocket - ${wsEndpoint}`)
 }
 
 export default createBrowser
