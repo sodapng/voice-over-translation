@@ -52,6 +52,8 @@
   background-position-y: center;
   background-position-x: 8px;
   top: 2rem;
+
+  transition: opacity 2s;
 }
 
 #translation-volume {
