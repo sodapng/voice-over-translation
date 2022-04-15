@@ -1,19 +1,20 @@
 {
   "name": "voice-over-translate",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "",
   "main": "server.js",
   "type": "module",
   "scripts": {
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Toil",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.25.0",
     "config": "^3.3.7",
     "connect-timeout": "^1.9.0",
     "express": "^4.17.2",
-    "puppeteer-core": "^5.3.1"
+    "puppeteer-core": "^5.3.1",
+    "winston": "^3.7.2"
   }
 }
