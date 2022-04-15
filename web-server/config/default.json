@@ -1,4 +1,7 @@
 {
-    "executablePath": "C:\\Users\\ilyat\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe",
-    "userDataDir": "C:\\Users\\ilyat\\AppData\\Local\\Yandex\\YandexBrowser\\User Data"
+    "executablePath": "C:\\Users\\<Пользователь>\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe",
+    "userDataDir": "C:\\Users\\<Пользователь>\\AppData\\Local\\Yandex\\YandexBrowser\\User Data",
+    "Port": 3000,
+    "saveLogs": false,
+    "debugLogs": false
 }
