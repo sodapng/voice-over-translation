@@ -1,8 +1,11 @@
-import puppeteer from 'puppeteer-core' 
+import puppeteer from 'puppeteer-core'
 import config from 'config'
+import logger from './logger.js'
+
 
 const args = [
  '--no-zygote',
+ '--no-sandbox',
  '--no-first-run',
  '--ignore-certificate-errors',
  '--ignore-certificate-errors-skip-list',
@@ -22,7 +25,7 @@ const args = [
 
 // Не работает с headless: true
 const options = {
- headless: false, 
+ headless: false,
  ignoreHTTPSErrors: true,
  executablePath: config.get('executablePath'),
  userDataDir: config.get('userDataDir'),
