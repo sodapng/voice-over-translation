@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name             voice-over-translation
 // @match            *://*.youtube.com/*
-// @version          1.6.1
+// @version          1.0.5
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://code.jquery.com/ui/1.13.0/jquery-ui.min.js
 // @resource         styles https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/styles.css
@@ -21,7 +21,7 @@ GM_addStyle(styles);
 const fragment = new DocumentFragment();
 const span = $("<span>");
 
-$(span).addClass("translation-btn").attr("role", "button").attr("aria-label", "Перевести видео").attr("tabindex","0").attr("tabindex","0").text("Перевести видео");
+$(span).addClass("translation-btn").attr("role", "button").attr("aria-label", "Перевести видео").attr("tabindex", "0").text("Перевести видео");
 
 fragment.appendChild(span[0]);
 const audio = new Audio();
@@ -59,6 +59,7 @@ const getUrlAudio = (videoId) => {
         }
 
         if (res.status === 200) {
+          console.log('YaTranslate: Перевод видео получен')
           return resolve(res.response);
         }
 
@@ -137,6 +138,16 @@ $("body").on("yt-page-data-updated", function () {
     $(span).css("background-image", "url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=A36EFF)");
   }
 
+  function transformBtnError(err) {
+    $(span).attr("data-error", `YaTranslate: ${err}`);
+    $(span).text(err);
+    $(span).css("width", "max-content");
+    $(span).css("padding-left", "5.5rem");
+    $(span).addClass("btn-error");
+    changeColor("#7A7A7D");
+    changeBackgroundError();
+  }
+
   btnHover();
 
   removeClassBtnErrorAndBtnSuccess();
@@ -150,7 +161,22 @@ $("body").on("yt-page-data-updated", function () {
     }
 
     if (mode === "play") {
-      audio.play();
+      var audioPromise = audio.play();
+      if (audioPromise !== undefined) {
+        audioPromise.catch(e => {
+          console.error(e)
+          if (e.name === "NotAllowedError") {
+            transformBtnError('Предоставьте разрешение на автовоспроизведение')
+            throw "YaTranslate: Предоставьте разрешение на автовоспроизведение"
+          } else if (e.name === "NotSupportedError") {
+            transformBtnError('Формат аудио не поддерживается')
+            throw "YaTranslate: Формат аудио не поддерживается"
+          } else {
+            transformBtnError('Ошибка загрузки или воспроизведения аудио')
+            throw "YaTranslate: Ошибка загрузки или воспроизведения аудио"
+          }
+        })
+      }
     }
 
     if (mode === "pause") {
@@ -259,13 +285,7 @@ $("body").on("yt-page-data-updated", function () {
         console.error("something went wrong");
       }
 
-      $(span).attr("data-error", err);
-      $(span).text(err.substring(13, err.lenght));
-      $(span).css("width", "max-content");
-      $(span).css("padding-left", "5.5rem");
-      $(span).addClass("btn-error");
-      changeColor("#7A7A7D");
-      changeBackgroundError();
+      transformBtnError(err.substring(13, err.lenght))
       console.error(err);
     }
   });
