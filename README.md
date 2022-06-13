@@ -22,6 +22,6 @@
 ## Помощь с заполнением конфига:
 
 Если вы не знаете, где находится ваш **executablePath** или **userDataDir** используйте эту команду в поисковой строке Яндекс Браузера: `browser://version/`
-![faq screenshot](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.jpg "btn")
+![faq screenshot](https://github.com/ilyhalight/voice-over-translation/blob/master/img/faq_screenshot.jpg "btn")
 
 ![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.jpg "btn")
