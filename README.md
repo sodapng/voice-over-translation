@@ -18,4 +18,10 @@
 **Примечание**: Рекомендую разрешить автовоспроизведение "аудио и видео" на ютубе, чтобы избежать ошибок в работе расширения
 
 **Примечание 2**: Во время работы веб-сервера в консоли могут вылетать какие-то ошибки. Это нормально
+
+## Помощь с заполнением конфига:
+
+Если вы не знаете, где находится ваш **executablePath** или **userDataDir** используйте эту команду в поисковой строке Яндекс Браузера: `browser://version/`
+![faq screenshot](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.jpg "btn")
+
 ![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.jpg "btn")
