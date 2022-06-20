@@ -82,7 +82,6 @@ function translateVideo(videoId, callback) {
 		const translateResponse = decodeResponse(response);
 		switch (translateResponse.status) {
 			case 0:
-				displayMessage("Couldn't translate video. Come back later, the neural network will learn how to soon.");
 				callback(false, "Couldn't translate video. Come back later, the neural network will learn how to soon.");
 				return;
 			case 1:
@@ -90,7 +89,6 @@ function translateVideo(videoId, callback) {
 				callback(hasUrl, hasUrl ? translateResponse.url : "Didn't recieved audio url");
 				return;
 			case 2:
-				displayMessage("The translation will take about a munute.");
 				callback(false, "The translation will take about a munute.");
 				return;
 		}
