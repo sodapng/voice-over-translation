@@ -4,6 +4,7 @@
 // @version          1.0.5
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://code.jquery.com/ui/1.13.0/jquery-ui.min.js
+// @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
 // @resource         styles https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/styles.css
 // @grant            GM_getResourceText
 // @grant            GM_addStyle
@@ -12,8 +13,11 @@
 // @downloadURL      https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js
 // @supportURL       https://github.com/ilyhalight/voice-over-translation/issues
 // @homepageURL      https://github.com/ilyhalight/voice-over-translation
-// @connect          127.0.0.1
+// @connect          api.browser.yandex.ru
 // ==/UserScript==
+
+const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
+const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/100.0.4896.160 YaBrowser/22.5.7.49.10 SA/3 Mobile/15E148 Safari/604.1";
 
 const styles = GM_getResourceText("styles");
 GM_addStyle(styles);
@@ -40,37 +44,58 @@ const getVeideoId = () => {
   return false;
 };
 
-const getUrlAudio = (videoId) => {
-  return new Promise((resolve, reject) => {
-    GM_xmlhttpRequest({
-      url: "http://127.0.0.1:3000/video",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.119 YaBrowser/22.3.0.2434 Yowser/2.5 Safari/537.36",
-      },
-      data: JSON.stringify({
-          "video_id": videoId
-      }),
-      onload: (res) => {
-        if (res.status === 412) {
-          return reject("YaTranslate: Перевод недоступен"); // can not translate
-        }
+const decodeResponse = (function () {
+	var proto = new protobuf.Type("VideoTranslationResponse").add(new protobuf.Field("url", 1, "string")).add(new protobuf.Field("status", 4, "int32"));
+	new protobuf.Root().define("yandex").add(proto);
+	return function(response) {
+		return proto.decode(new Uint8Array(response));
+	};
+})();
 
-        if (res.status === 200) {
-          console.log('YaTranslate: Перевод видео получен')
-          return resolve(res.response);
-        }
+function requestVideoTranslation (videoId, callback) {
+	var deviceId = ([1e7]+1e3+4e3+8e3+1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+	var body = `\x1A\x1Chttps://youtu.be/${videoId}" ${deviceId}\x28\x01\x31\x00\x00\x00\x00\x00\x00\x1C\x40\x38\x01\x42\x02\x65\x6E\x48\x00\x50\x00`;
 
-        return reject("YaTranslate: Bad request");
-      },
-      onerror: (err) => {
-        return reject("YaTranslate: Ошибка соединения"); // connection error
-      },
-    });
-  });
-};
+	var utf8Encoder = new TextEncoder("utf-8");
+	window.crypto.subtle.importKey('raw', utf8Encoder.encode(yandexHmacKey), { name: 'HMAC', hash: {name: 'SHA-256'}}, false, ['sign', 'verify']).then(key => {
+		window.crypto.subtle.sign('HMAC', key, utf8Encoder.encode(body)).then(signature => {
+			GM_xmlhttpRequest({url: "https://api.browser.yandex.ru/video-translation/translate", method: "POST", headers: {
+				"Content-Type": "application/x-protobuf",
+				"User-Agent": yandexUserAgent,
+				"Vtrans-Signature": Array.prototype.map.call(new Uint8Array(signature), x => x.toString(16).padStart(2, '0')).join('')
+			}, data: body, responseType: "arraybuffer", onload: (http) => {
+				callback((http.status === 200), http.response);
+			}, onerror: (error) => {
+				callback(false);
+			}});
+		});
+	});
+}
+
+function translateVideo(videoId, callback) {
+	requestVideoTranslation(videoId, function (success, response) {
+		if (!success) {
+			callback(false, "Failed to request video translation");
+			return;
+		}
+
+		const translateResponse = decodeResponse(response);
+		switch (translateResponse.status) {
+			case 0:
+				displayMessage("Couldn't translate video. Come back later, the neural network will learn how to soon.");
+				callback(false, "Couldn't translate video. Come back later, the neural network will learn how to soon.");
+				return;
+			case 1:
+				var hasUrl = void 0 !== translateResponse.url && null !== translateResponse.url;
+				callback(hasUrl, hasUrl ? translateResponse.url : "Didn't recieved audio url");
+				return;
+			case 2:
+				displayMessage("The translation will take about a munute.");
+				callback(false, "The translation will take about a munute.");
+				return;
+		}
+	});
+}
 
 const deleteAudioSrc = () => {
   audio.src = "";
@@ -171,7 +196,7 @@ $("body").on("yt-page-data-updated", function () {
           } else if (e.name === "NotSupportedError") {
             transformBtnError('Формат аудио не поддерживается')
             throw "YaTranslate: Формат аудио не поддерживается"
-          } else {
+          } else if (e.name !== "AbortError" || !e.toString().includes("pause()")) {
             transformBtnError('Ошибка загрузки или воспроизведения аудио')
             throw "YaTranslate: Ошибка загрузки или воспроизведения аудио"
           }
@@ -204,15 +229,14 @@ $("body").on("yt-page-data-updated", function () {
         throw "YaTranslate: Не найдено ID видео"; // not found video id
       }
 
-      const rawResponse = await getUrlAudio(VIDEO_ID);
+	  translateVideo(VIDEO_ID, function (success, urlOrError) {
 
-      const URL_AUDIO = rawResponse.match(/https.*[a-z0-9]{64}|https.*mp3/);
-
-      if (!URL_AUDIO) {
-        throw "YaTranslate: Ошибка необработанной строки"; // raw string error
+      if (!success) {
+        transformBtnError(urlOrError);
+        throw urlOrError;
       }
 
-      audio.src = URL_AUDIO[0];
+      audio.src = urlOrError;
 
       $("body").one("yt-page-data-updated", function () {
         removeClassBtnErrorAndBtnSuccess();
@@ -280,6 +304,7 @@ $("body").on("yt-page-data-updated", function () {
           console.error("YaTranslate: Не удалось добавить ползунок громкости");
           console.error(err);
       }
+	  });
     } catch (err) {
       if (!err) {
         console.error("something went wrong");
