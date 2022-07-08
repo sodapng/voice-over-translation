@@ -89,7 +89,7 @@ function translateVideo(videoId, callback) {
 				callback(hasUrl, hasUrl ? translateResponse.url : "Didn't recieved audio url");
 				return;
 			case 2:
-				callback(false, "The translation will take about a munute.");
+				callback(false, "The translation will take about a minute.");
 				return;
 		}
 	});
