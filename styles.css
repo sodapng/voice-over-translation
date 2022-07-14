@@ -1,89 +1,153 @@
-.translation-btn,
-.translation-volume-box,
-.btn-error::before {
-  box-sizing: border-box;
+.translationBlock {
+  padding: 0.25rem 0.45rem;
+  width: max-content;
   position: absolute;
+  background: #2e2f34;
+  border-radius: 0.5rem;
   left: 50%;
-  border-radius: 0.8rem;
+  top: 3rem;
   transform: translate(-50%);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1s;
 }
 
-.translation-btn {
-  width: 16.3rem;
-  padding: 1.0rem;
-  background: #2E2F34;
-  background-image: url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=ffffff);
-  background-repeat: no-repeat, no-repeat;
-  background-position-y: center, center;
-  background-position-x: 8px, 34px;
-  text-align: right;
+.translationBtn {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  color: #fff;
+  padding-right: 0.25rem;
+  cursor: default;
   font: 600 12px / 14px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif;
-  top: 6rem;
+}
+
+.translationBlock:hover {
+  opacity: 1;
+}
+
+.translationMenu {
+  display: inline-block;
+  vertical-align: middle;
+  border-left: 1px solid #424348;
+  max-height: 16px;
+  max-width: 16px;
+  padding-right: 0.7rem;
+}
+
+.translationMenuIcon {
+  padding-left: 0.7rem;
+}
+
+.translationIAlice {
+  display: inline-block;
+  vertical-align: middle;
+  max-height: 26px;
+  max-width: 50px;
+}
+
+.translationITranslate {
+  display: inline-block;
+  vertical-align: middle;
+  max-height: 20px;
+  max-width: 20px;
+}
+
+.translationMenuContent {
+  position: absolute;
+  background: #2e2f34;
+  display: hide;
+  border-radius: 1rem;
+  left: 50%;
+  top: 9rem;
+  transform: translate(-50%);
+  text-align:left;
+  font: 600 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif;
+
+  width: 300px;
+  height: 300px;
   opacity: 0;
   transition: opacity 2s;
 }
 
-.btn-error::before {
-  content: attr(data-error);
-  font: 600 12px / 14px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif;
-  top: 4rem;
-  transform: translate(-50%);
-  width: max-content;
-  max-width: 100vw;
-  padding: 0.9rem;
-  color: white;
-  background-color: #2E2F34;
-}
-
-.btn-success {
-  background: #2E2F34;
-  background-image: url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=A36EFF);
-  background-repeat: no-repeat, no-repeat;
-  background-position-y: center, center;
-  background-position-x: 8px, 34px;
-  color: #A36EFF;
-}
-
-.translation-volume-box {
-  width: 13rem;
-  height: 2.5rem;
-  padding: 1rem;
-  background: #2E2F34;
-  background-image: url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/volume.svg);
-  background-repeat: no-repeat;
-  background-position-y: center;
-  background-position-x: 8px;
-  top: 2rem;
-
-  transition: opacity 2s;
-}
-
-#translation-volume {
-  position: absolute;
-  width: 7.5rem;
-  margin: 0 auto;
-  margin-left: 30px;
-  left: 0%;
-}
-
-.ui-slider-range-min {
-  position: absolute;
-  height: 5px;
-  width: 7.5rem;
-  left: 0%;
-  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%);
+.translationVolumeSlider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80%;
+  height: 8px;
+  outline: none;
+  opacity: 0.7;
+  background: #3C3F4D;
   border: none;
-  border-radius: 12px;
-  outline: none;
+  border-radius: 2rem;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
 }
 
-.ui-slider-handle {
-  width: 12px;
-  height: 12px;
-  border-radius: 20px;
-  background: #FFF;
-  position: absolute;
-  margin-top: -4px;
+.translationVolumeSlider:hover {
+  opacity: 1;
+}
+
+.translationVolumeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
   cursor: pointer;
-  outline: none;
+}
+
+.translationVolumeSlider::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  cursor: pointer;
+}
+
+.translationVolumeSlider::-ms-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  cursor: pointer;
+}
+
+.translationVolumeSlider::-ms-fill-lower {
+  height: 8px;
+  border-radius: 2rem;
+  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%);
+}
+
+.translationVolumeSlider::-moz-range-progress {
+  height: 8px;
+  border-radius: 2rem;
+  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%);
+}
+
+.translationHeader {
+  padding-bottom: 0.5rem;
+}
+
+.translationMainHeader {
+  padding: 2rem 2rem 1rem 2rem;
+  font: 900 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif;
+}
+
+.translationMenuContainer {
+  width: 100%;
+  padding-left: 15px;
+  padding-top: 5px;
+}
+
+.translationMenuText {
+  width: 80%;
+}
+
+.translationVolumeBox {
+  padding-top: 0.5rem;
 }
