@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name             voice-over-translation
 // @match            *://*.youtube.com/*
-// @version          1.0.5
+// @version          1.0.6
+// @icon             https://translate.yandex.ru/icons/favicon.ico
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
-// @require          https://code.jquery.com/ui/1.13.0/jquery-ui.min.js
 // @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
-// @resource         styles https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/styles.css
+// @resource         styles http://localhost:3000/css/styles.css
 // @grant            GM_getResourceText
 // @grant            GM_addStyle
 // @grant            GM_xmlhttpRequest
@@ -22,15 +22,39 @@ const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) 
 const styles = GM_getResourceText("styles");
 GM_addStyle(styles);
 
-const fragment = new DocumentFragment();
-const span = $("<span>");
+const $translationBlock = $(`
+<div class = "translationBlock">
+    <span class = "translationArea" role = "button">
+        <span class = "translationIAlice" tabindex = "-1">
+            <img class = "translationImageAlice" src = "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg">
+        </span>
+        <span class = "translationITranslate"  tabindex = "-1">
+            <img class = "translationImageTranslate" src = "https://icongr.am/entypo/language.svg?size=18&color=ffffff">
+        </span>
+        <span class = "translationBtn" tabindex = "0">Перевести видео</span>
+    </span>
+    <span class = "translationMenu" tabindex = "0" role = "button"><img class = "translationMenuIcon" src = "https://icongr.am/entypo/dots-three-vertical.svg?size=14&color=ffffff"></span>
+</div>`);
+const $translationBtn = $translationBlock.find('.translationArea > .translationBtn')
+const $translationImageAlice = $translationBlock.find('.translationArea > .translationIAlice > img')
+const $translationImageTranslate = $translationBlock.find('.translationArea > .translationITranslate > img')
 
-$(span).addClass("translation-btn").attr("role", "button").attr("aria-label", "Перевести видео").attr("tabindex", "0").text("Перевести видео");
+const $translationMenuContent = $('<div class = "translationMenuContent"><p class = "translationMainHeader">Перевод видео</p></div>')
 
-fragment.appendChild(span[0]);
+function addTranslationBtn(elem, addElem = undefined) {
+  if (addElem !== undefined) {
+      $translationBlock.append(addElem);
+  }
+  $(elem).append($translationBlock);
+}
+
+function addTranslationMenu(elem) {
+  $(elem).append($translationMenuContent);
+}
+
 const audio = new Audio();
 
-const getVeideoId = () => {
+const getVideoId = () => {
   const url = new URL(window.location.href);
 
   if (url.pathname.includes("watch")) {
@@ -75,21 +99,21 @@ function requestVideoTranslation (videoId, callback) {
 function translateVideo(videoId, callback) {
 	requestVideoTranslation(videoId, function (success, response) {
 		if (!success) {
-			callback(false, "Failed to request video translation");
+			callback(false, "Не удалось запросить перевод видео");
 			return;
 		}
 
 		const translateResponse = decodeResponse(response);
 		switch (translateResponse.status) {
 			case 0:
-				callback(false, "Couldn't translate video. Come back later, the neural network will learn how to soon.");
+				callback(false, "Невозможно перевести видео. Зайдите позже, нейронная сеть скоро научится");
 				return;
 			case 1:
 				var hasUrl = void 0 !== translateResponse.url && null !== translateResponse.url;
-				callback(hasUrl, hasUrl ? translateResponse.url : "Didn't recieved audio url");
+				callback(hasUrl, hasUrl ? translateResponse.url : "Не получена ссылка на аудио");
 				return;
 			case 2:
-				callback(false, "The translation will take about a minute.");
+				callback(false, "Перевод займет около минуты");
 				return;
 		}
 	});
@@ -100,80 +124,361 @@ const deleteAudioSrc = () => {
   audio.removeAttribute("src");
 };
 
-const removeClassBtnErrorAndBtnSuccess = () => {
-  $(span).removeClass("btn-error");
-  $(span).removeClass("btn-success");
-  $(span).css("color", "#ffffff");
-  $(span).css("width", "16.3rem");
-  $(span).css("background-image", "url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=ffffff)");
-  $(span).text("Перевести видео");
-  try {
-    $(".translation-volume-box").remove();
-  } catch (e) {}
-};
+// --- IndexedDB functions start:
+function openDB (name) {
+  var openRequest = indexedDB.open(name, 1);
+  return openRequest
+}
 
-$("body").on("yt-page-data-updated", function () {
+async function initDB () {
+  return new Promise((resolve, reject) => {
+    var openRequest = openDB("VOT")
+
+    openRequest.onerror = () => {
+      alert('VOT: Произошла ошибка')
+      console.error("VOT: Ошибка Базы Данных: " + openRequest.errorCode);
+      reject(false);
+    }
+
+    openRequest.onupgradeneeded = event => {
+      var db = openRequest.result;
+
+      db.onerror = () => {
+        alert('VOT: Не удалось загрузить базу данных')
+        console.error("VOT: Не удалось загрузить базу данных: " + openRequest.error);
+        reject(false);
+      }
+
+      var objectStore = db.createObjectStore('settings', {keyPath: 'key'});
+
+      objectStore.createIndex('autoTranslate', 'autoTranslate', { unique: false })
+      console.log('VOT: База Данных создана')
+
+      objectStore.transaction.oncomplete = event => {
+        var objectStore = db.transaction('settings', 'readwrite').objectStore('settings');
+        var contestsDefault = {
+          key: 'settings',
+          autoTranslate: 0,
+        }
+        var request = objectStore.add(contestsDefault);
+
+        request.onsuccess = () => {
+          console.log("VOT: Стандартные настройки добавлены в Базу Данных: ", request.result);
+          resolve(true);
+        };
+        request.onerror = () => {
+          console.log("VOT: Ошибка при добавление стандартных настроек в Базу Данных: ", request.error);
+          reject(false);
+        };
+      }
+    }
+
+    openRequest.onsuccess = () => {
+      var db = openRequest.result;
+      db.onversionchange = () => {
+        db.close();
+        alert("Базе данных нужно обновление, пожалуста, перезагрузите страницу.");
+        console.log("VOT: Базе данных нужно обновление, пожалуста, перезагрузите страницу");
+        reject(false);
+      }
+      resolve(true);
+    }
+
+    openRequest.onblocked = () => {
+      var db = openRequest.result;
+      console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db)
+      alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
+      reject(false);
+    }
+  });
+}
+
+async function updateDB(autoTranslate = undefined) {
+  return new Promise((resolve, reject) => {
+    if (autoTranslate !== undefined) {
+      var openRequest = openDB("VOT");
+
+      openRequest.onerror = () => {
+        alert('VOT: Произошла ошибка');
+        console.error("VOT: Ошибка Базы Данных: " + openRequest.errorCode);
+        reject(false);
+      }
+
+      openRequest.onupgradeneeded = () => {
+        var db = openRequest.result;
+        db.close();
+        initDB();
+        resolve(true);
+      }
+
+      openRequest.onsuccess = () => {
+        var db = openRequest.result;
+        db.onversionchange = () => {
+          db.close();
+          alert("VOT: База данных устарела, пожалуста, перезагрузите страницу.");
+          reject(false);
+        }
+
+        var objectStore = db.transaction('settings', 'readwrite').objectStore('settings');
+        var request = objectStore.get('settings');
+
+        request.onerror = (event) => {
+          console.error("VOT: Не удалось получить данные из Базы Данных: ", event.error);
+          reject(false);
+        }
+
+        request.onsuccess = () => {
+          console.log('VOT: Получены данные из Базы Данных: ', request.result);
+          var data = request.result;
+
+          if (typeof(autoTranslate) === 'number') {
+            data.autoTranslate = autoTranslate;
+          }
+
+          var requestUpdate = objectStore.put(data);
+
+          requestUpdate.onerror = (event) =>{
+            console.error("VOT: Не удалось обновить данные в Базе Данных: ", event.error);
+            reject(false);
+          }
+
+          requestUpdate.onsuccess = () => {
+            console.log('VOT: Данные в Базе Данных обновлены, вы великолепны!');
+            resolve(true);
+          }
+        }
+      }
+
+      openRequest.onblocked = () => {
+        var db = openRequest.result;
+        console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
+        alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
+        reject(false);
+      }
+    }
+  });
+}
+
+async function readDB() {
+  return new Promise((resolve, reject) => {
+    var openRequest = openDB("VOT");
+
+    openRequest.onerror = () => {
+      alert('VOT: Произошла ошибка');
+      console.error("VOT: Ошибка Базы Данных: " + openRequest.errorCode);
+      reject(false);
+    }
+
+    openRequest.onupgradeneeded = () => {
+      var db = openRequest.result;
+      db.close();
+      initDB();
+      resolve(true);
+    }
+
+    openRequest.onsuccess = () => {
+      var db = openRequest.result;
+      db.onversionchange = () => {
+        db.close();
+        alert("VOT: База данных устарела, пожалуста, перезагрузите страницу.");
+        reject(false);
+      }
+
+      var objectStore = db.transaction('settings').objectStore('settings');
+      var request = objectStore.get('settings');
+
+      request.onerror = (event) => {
+        console.error("VOT: Не удалось получить данные из Базы Данных: ", event.error);
+        reject(false);
+      }
+
+      request.onsuccess = () => {
+        console.log('VOT: Получены данные из Базы Данных: ', request.result);
+        var data = request.result;
+        resolve(data);
+      }
+    }
+
+    openRequest.onblocked = () => {
+      var db = openRequest.result;
+      console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
+      alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
+      reject(false);
+    }
+  });
+}
+
+function deleteDB() {
+  indexedDB.deleteDatabase('VOT');
+}
+
+$("body").on("yt-page-data-updated", async function () {
   var video = $("video")[0];
-  $(".html5-video-container").append(fragment);
+  var firstPlay = true;
+  var isDBInited = await initDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
+  addTranslationBtn(".html5-video-container");
+  addTranslationMenu(".html5-video-container");
+  if (isDBInited) {
+    var dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});;
+    var dbAT = dbData.autoTranslate;
+    if (!$('.translationAT').length) {
+      var $translationATCont = $(
+        `<div class = "translationMenuContainer">
+          <input type="checkbox" name="auto_translate" value=${dbAT} class = "translationAT" ${dbAT === 1 ? "checked" : ''}>
+          <label class = "translationMenuText" for = "auto_translate">Автоматический перевод видео</label>
+        </div>
+        `
+      );
+      var $translationAT = $($translationATCont).find('.translationAT');
+      $translationAT.on('click', async (event) => {
+        event.stopPropagation();
+        let atValue = event.target.checked ? 1 : 0;
+        await updateDB(atValue);
+        dbAT = atValue;
+      });
+      $translationMenuContent.append($translationATCont)
+    }
+  }
 
   let btnHover = function () {
     let time;
+    var isOpened = false;
+    var $translationMenu = $(".translationMenu");
 
-    $(".html5-video-container").on("mousemove", resetTimer);
+    $translationMenu.on('click', (event) => {
+      event.stopPropagation();
+      isOpened ? $translationMenuContent.hide() : ($translationMenuContent.show(), $translationMenuContent.css('opacity', 0.9));
+      isOpened = !isOpened;
+    })
+
+    $(".html5-video-container").on("mousemove", () => resetTimer());
     $(".html5-video-container").on("mouseout", () => logout(0));
-    $(span).on("mousemove", function (event) {
+
+    $(document).on("click", (event) => {
+      let isBlock = event.target == $($translationBlock)[0] || $($translationBlock)[0].contains(event.target);
+      let isContent = event.target == $($translationMenuContent)[0] || $($translationMenuContent)[0].contains(event.target);
+      let isVideo = event.target == $(".html5-video-container")[0]|| $(".html5-video-container")[0].contains(event.target);
+      if (!isBlock && !isContent) {
+        $translationMenuContent.hide();
+        isOpened = false
+        if (!isVideo)
+        {
+          logout(0);
+        }
+      }
+    })
+
+    $translationBlock.on("mousemove", (event) => {
       clearTimeout(time);
       logout(0.8);
       event.stopPropagation();
     });
 
-    try {
-      $(".translation-volume-box").on("mousemove", function (event) {
-          clearTimeout(time);
-          logout(0.8);
-          event.stopPropagation();
-      });
-    } catch (e) {}
+    $translationMenuContent.on("mousemove", (event) => {
+      clearTimeout(time);
+      logout(0.8);
+      event.stopPropagation();
+    });
 
     function logout(n) {
-      $(span).css("opacity", n);
-      try {
-        $(".translation-volume-box").css("opacity", n);
-      } catch (e) {}
+      if (!isOpened) {
+        $translationBlock.css("opacity", n);
+      }
     }
 
     function resetTimer() {
       clearTimeout(time);
       logout(1);
-      time = setTimeout(() => logout(0), 2000);
+      time = setTimeout(() => {
+        logout(0);
+      }, 2000);
     }
   };
 
+  const translateYTFunc = (VIDEO_ID) => translateVideo(VIDEO_ID, function (success, urlOrError) {
+
+    if (!success) {
+      transformBtnError(urlOrError);
+      throw urlOrError;
+    }
+
+    audio.src = urlOrError;
+
+    $("body").on("yt-page-data-updated", function () {
+      audio.pause();
+      $("video").off(".translate");
+      deleteAudioSrc();
+    });
+
+    if (!video.paused) {
+      lipSync("play");
+    }
+
+    $("video").on("playing.translate ratechange.translate", function () {
+      lipSync();
+    });
+
+    $("video").on("play.translate canplaythrough.translate", function () {
+      lipSync();
+
+      if (!video.paused) {
+        lipSync("play");
+      }
+    });
+
+    $("video").on("pause.translate waiting.translate", function () {
+      lipSync("pause");
+    });
+
+    $translationBtn.text('Выключить');
+    changeColor("#A36EFF");
+    changeBackgroundSuccess();
+    const volumeBox = $('<div class = "translationMenuContainer"><span class = "translationHeader">Громкость перевода: <b class = "volumePercent">100%</b></span><div class = "translationVolumeBox" tabindex = "0"><input type="range" min="0" max="100" value="100" class="translationVolumeSlider"></div></div>');
+    const volumeSlider = volumeBox.find('.translationVolumeSlider');
+
+    if (!$translationMenuContent.has('.translationVolumeBox').length) {
+      $translationMenuContent.append(volumeBox);
+      $volumePercent = volumeBox.find('.volumePercent');
+      volumeSlider.on('input', () => {
+        var value = volumeSlider.val();
+        audio.volume = (value / 100);
+        $volumePercent.text(`${value}%`);
+      });
+    }
+  });
+
   function changeColor(n) {
-    $(span).css("color", n);
+    $translationBtn.css("color", n);
   }
 
   function changeBackgroundError() {
-    $(span).css("background-image", "url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAliceError.svg), url(https://icongr.am/entypo/language.svg?size=18&color=7A7A7D)");
+    $translationImageAlice.attr('src', 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAliceError.svg')
+    $translationImageTranslate.attr('src', 'https://icongr.am/entypo/language.svg?size=18&color=7A7A7D')
   }
 
   function changeBackgroundSuccess() {
-    $(span).css("background-image", "url(https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg), url(https://icongr.am/entypo/language.svg?size=18&color=A36EFF)");
+    $translationImageAlice.attr('src', 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg')
+    $translationImageTranslate.attr('src', 'https://icongr.am/entypo/language.svg?size=18&color=A36EFF')
+  }
+
+  function changeBackgroundDefault() {
+    $translationImageAlice.attr('src', 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg')
+    $translationImageTranslate.attr('src', 'https://icongr.am/entypo/language.svg?size=18&color=FFFFFF')
   }
 
   function transformBtnError(err) {
-    $(span).attr("data-error", `YaTranslate: ${err}`);
-    $(span).text(err);
-    $(span).css("width", "max-content");
-    $(span).css("padding-left", "5.5rem");
-    $(span).addClass("btn-error");
-    changeColor("#7A7A7D");
+    $translationBtn.text(err);
     changeBackgroundError();
+    changeColor('#7A7A7D')
+  }
+
+  function transformBtnDefault(err) {
+    $translationBtn.text(err);
+    changeBackgroundDefault();
+    changeColor('#FFFF')
   }
 
   btnHover();
-
-  removeClassBtnErrorAndBtnSuccess();
 
   const lipSync = (mode = false) => {
     audio.currentTime = video.currentTime;
@@ -202,113 +507,49 @@ $("body").on("yt-page-data-updated", function () {
       }
     }
 
-    if (mode === "pause") {
+    else if (mode === "pause") {
       audio.pause();
     }
   };
 
-  $(span).click(function (event) {
+  $(video).on('progress', event => {
+    event.stopPropagation();
+
+    const VIDEO_ID = getVideoId();
+
+    if (!VIDEO_ID) {
+      throw "YaTranslate: Не найдено ID видео";
+    }
+
+    if (firstPlay && dbAT === 1) {
+      translateYTFunc(VIDEO_ID);
+      firstPlay = false;
+    }
+  });
+
+  $translationBtn.click(function (event) {
     event.stopPropagation();
 
     if (audio.src) {
-      removeClassBtnErrorAndBtnSuccess();
       deleteAudioSrc();
+      transformBtnDefault('Перевести видео')
       event.stopImmediatePropagation();
     }
   });
 
-  $(span).click(async function (event) {
+  $translationBtn.click(async function (event) {
     try {
       event.stopPropagation();
 
-      const VIDEO_ID = getVeideoId();
+      const VIDEO_ID = getVideoId();
 
       if (!VIDEO_ID) {
         throw "YaTranslate: Не найдено ID видео"; // not found video id
       }
 
-	  translateVideo(VIDEO_ID, function (success, urlOrError) {
-
-      if (!success) {
-        transformBtnError(urlOrError);
-        throw urlOrError;
-      }
-
-      audio.src = urlOrError;
-
-      $("body").one("yt-page-data-updated", function () {
-        removeClassBtnErrorAndBtnSuccess();
-        audio.pause();
-        $("video").off(".translate");
-        deleteAudioSrc();
-      });
-
-      if ($(span).hasClass("btn-error")) {
-        $(span).removeClass("btn-error");
-      }
-
-      if (!video.paused) {
-        lipSync("play");
-      }
-
-      $("video").on("playing.translate ratechange.translate", function () {
-        lipSync();
-      });
-
-      $("video").on("play.translate canplaythrough.translate", function () {
-        lipSync();
-
-        if (!video.paused) {
-          lipSync("play");
-        }
-      });
-
-      $("video").on("pause.translate waiting.translate", function () {
-        lipSync("pause");
-      });
-
-      $(span).addClass("btn-success");
-      $(span).text('Выключить');
-      $(span).css("width", "13rem");
-      changeColor("#A36EFF");
-      changeBackgroundSuccess();
-      try {
-        const sliderFragment = new DocumentFragment();
-        const sliderBoxFragment = new DocumentFragment();
-        const slider = $("<div>");
-        const sliderBox = $("<div>")
-
-        $(sliderBox).addClass("translation-volume-box").attr("tabindex","0");
-
-        $(slider).attr("id", "translation-volume").attr("role", "slider").attr("aria-label", "Громкость видео").attr("tabindex","0");
-
-        sliderBoxFragment.appendChild(sliderBox[0]);
-        sliderFragment.appendChild(slider[0]);
-
-        $(".html5-video-container").append(sliderBoxFragment);
-        $(sliderBox).append(sliderFragment);
-        $(slider).slider({
-            value : 100,
-            step  : 1,
-            range : 'min',
-            min   : 0,
-            max   : 100,
-            slide : function(){
-                var value = $(slider).slider("value");
-                audio.volume = (value / 100);
-            }
-        });
-      } catch (err) {
-          console.error("YaTranslate: Не удалось добавить ползунок громкости");
-          console.error(err);
-      }
-	  });
+      translateYTFunc(VIDEO_ID)
     } catch (err) {
-      if (!err) {
-        console.error("something went wrong");
-      }
-
-      transformBtnError(err.substring(13, err.lenght))
+      transformBtnError(err.substring(13, err.length))
       console.error(err);
     }
   });
