@@ -1,4 +1,4 @@
-# ПОКА ЧТО НЕ РАБОТАЕТ!!!
+# Рабочая версия: https://github.com/ilyhalight/voice-over-translation
 # Voice-over translation
 
 Voice-over translation not only in Yandex.Browser.\
