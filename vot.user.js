@@ -5,7 +5,7 @@
 // @icon             https://translate.yandex.ru/icons/favicon.ico
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
-// @resource         styles http://localhost:3000/css/styles.css
+// @resource         styles https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/styles.css
 // @grant            GM_getResourceText
 // @grant            GM_addStyle
 // @grant            GM_xmlhttpRequest
