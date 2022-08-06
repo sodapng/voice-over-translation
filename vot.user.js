@@ -1,7 +1,11 @@
 // ==UserScript==
 // @name             voice-over-translation
+// @name:ru          [VOT] - Закадровый перевод видео
+// @description      A small extension that adds a Yandex Browser video translation to other browsers
+// @description:ru   Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
+// @version          1.0.7
+// @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
-// @version          1.0.6
 // @icon             https://translate.yandex.ru/icons/favicon.ico
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
@@ -9,6 +13,7 @@
 // @grant            GM_getResourceText
 // @grant            GM_addStyle
 // @grant            GM_xmlhttpRequest
+// @grant            GM_info
 // @updateURL        https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js
 // @downloadURL      https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js
 // @supportURL       https://github.com/ilyhalight/voice-over-translation/issues
@@ -18,9 +23,33 @@
 
 const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
 const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/100.0.4896.160 YaBrowser/22.5.7.49.10 SA/3 Mobile/15E148 Safari/604.1";
+const USOV4 = [ // Список расширений, последние версии которых не поддерживает Greasemonkey API V3
+  "Greasemonkey",
+  "Userscripts",
+]
 
-const styles = GM_getResourceText("styles");
-GM_addStyle(styles);
+if (typeof GM_addStyle == 'undefined') {
+  GM_addStyle = (aCss) => {
+    'use strict';
+    let head = document.getElementsByTagName('head')[0];
+    if (head) {
+      let style = document.createElement('style');
+      style.setAttribute('type', 'text/css');
+      style.textContent = aCss;
+      head.appendChild(style);
+      return style;
+    }
+    return null;
+  };
+}
+
+if (!USOV4.includes(GM_info.scriptHandler)) {
+  const styles = GM_getResourceText("styles");
+  GM_addStyle(styles);
+} else {
+  fetch('https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/styles.css')
+  .then((response) => response.text().then(styles => GM_addStyle(styles)));
+}
 
 const $translationBlock = $(`
   <div class = "translationBlock">
