@@ -23,7 +23,7 @@
 
 const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
 const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/100.0.4896.160 YaBrowser/22.5.7.49.10 SA/3 Mobile/15E148 Safari/604.1";
-const USOV4 = [ // Список расширений, последние версии которых не поддерживает Greasemonkey API V3
+const USOV4 = [ // Список расширений, последние версии которых не поддерживают Greasemonkey API V3
   "Greasemonkey",
   "Userscripts",
 ]
@@ -528,9 +528,6 @@ $("body").on("yt-page-data-updated", async function () {
           } else if (e.name === "NotSupportedError") {
             transformBtnError('Формат аудио не поддерживается')
             throw "YaTranslate: Формат аудио не поддерживается"
-          } else if (e.name !== "AbortError" || !e.toString().includes("pause()")) {
-            transformBtnError('Ошибка загрузки или воспроизведения аудио')
-            throw "YaTranslate: Ошибка загрузки или воспроизведения аудио"
           }
         })
       }

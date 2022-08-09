@@ -26,6 +26,7 @@
 
    5. Другие браузеры, основанные на хромиуме
 3. [✔99%] Safari (v14.0.2 (16610.3.7.1.9))
+
 В **Safari** и **Хромоподобных браузерах** не сделано отображение градиента на слайдере громкости, но, как мне кажется, это не критично
 
 ![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.png "btn")
