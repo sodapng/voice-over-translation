@@ -71,15 +71,16 @@ const $translationImageTranslate = $translationBlock.find('.translationArea > .t
 
 const $translationMenuContent = $('<div class = "translationMenuContent"><p class = "translationMainHeader">Перевод видео</p></div>');
 
-function addTranslationBtn(elem, addElem = undefined) {
-  if (addElem !== undefined) {
-      $translationBlock.append(addElem);
+function addTranslationBtn(elem) {
+  if (!$(elem).has($translationBlock).length) {
+    $(elem).append($translationBlock);
   }
-  $(elem).append($translationBlock);
 };
 
 function addTranslationMenu(elem) {
-  $(elem).append($translationMenuContent);
+  if (!$(elem).has($translationMenuContent).length) {
+    $(elem).append($translationMenuContent);
+  }
 };
 
 const audio = new Audio();
