@@ -3,7 +3,7 @@
 // @name:ru          [VOT] - Закадровый перевод видео
 // @description      A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru   Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version          1.0.7.1
+// @version          1.0.8
 // @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
 // @icon             https://translate.yandex.ru/icons/favicon.ico
@@ -356,6 +356,7 @@ $("body").on("yt-page-data-updated", async function () {
   var isDBInited = await initDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
   addTranslationBtn(".html5-video-container");
   addTranslationMenu(".html5-video-container");
+  transformBtnDefault('Перевести видео')
   if (isDBInited) {
     var dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
     var dbAT = dbData !== undefined ? dbData.autoTranslate : undefined;
@@ -438,6 +439,11 @@ $("body").on("yt-page-data-updated", async function () {
 
     if (!success) {
       transformBtnError(urlOrError);
+      if (urlOrError === 'Перевод займет около минуты') {
+        setTimeout(() => {
+          translateYTFunc(VIDEO_ID);
+        }, 70000)
+      }
       throw urlOrError;
     }
 
