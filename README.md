@@ -1,4 +1,4 @@
-# Закадровый перевод видео
+# Закадровый перевод видео (НЕ РАБОТАЕТ !!!)
 
 Закадровый перевод видео не только в YandexBrowser.
 Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)**. Спасиб <3
