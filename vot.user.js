@@ -22,7 +22,7 @@
 // ==/UserScript==
 
 const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
-const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/100.0.4896.160 YaBrowser/22.5.7.49.10 SA/3 Mobile/15E148 Safari/604.1";
+const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/104.0.5112.114 YaBrowser/22.9.4.633.10 SA/3 Mobile/15E148 Safari/604.1";
 const USOV4 = [ // Список расширений, последние версии которых не поддерживают Greasemonkey API V3
   "Greasemonkey",
   "Userscripts",
@@ -107,17 +107,28 @@ const decodeResponse = (function () {
 	};
 })();
 
+function getUUID(isLower) {
+    var uuid = ([1e7]+1e3+4e3+8e3+1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+    return isLower ? uuid : uuid.toUpperCase();
+}
+
 function requestVideoTranslation (videoId, callback) {
-	var deviceId = ([1e7]+1e3+4e3+8e3+1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
-	var body = `\x1A\x1Chttps://youtu.be/${videoId}" ${deviceId}\x28\x01\x31\x00\x00\x00\x00\x00\x00\x1C\x40\x38\x01\x42\x02\x65\x6E\x48\x00\x50\x00`;
+	var deviceId = getUUID(true);
+	var body = `\x1A\x1Chttps://youtu.be/${videoId}" ${deviceId}\x28\x01\x31\x00\x00\x00\x00\x00\x50\x75\x40\x38\x01\x42\x02\x65\x6E\x48\x00\x50\x00`;
 
 	var utf8Encoder = new TextEncoder("utf-8");
 	window.crypto.subtle.importKey('raw', utf8Encoder.encode(yandexHmacKey), { name: 'HMAC', hash: {name: 'SHA-256'}}, false, ['sign', 'verify']).then(key => {
 		window.crypto.subtle.sign('HMAC', key, utf8Encoder.encode(body)).then(signature => {
 			GM_xmlhttpRequest({url: "https://api.browser.yandex.ru/video-translation/translate", method: "POST", headers: {
+				"Accept": "application/x-protobuf",
+				"Accept-Language": "en",
 				"Content-Type": "application/x-protobuf",
 				"User-Agent": yandexUserAgent,
-				"Vtrans-Signature": Array.prototype.map.call(new Uint8Array(signature), x => x.toString(16).padStart(2, '0')).join('')
+				"Pragma": "no-cache",
+				"Cache-Control": "no-cache",
+				"Sec-Fetch-Mode": "no-cors",
+				"Vtrans-Signature": Array.prototype.map.call(new Uint8Array(signature), x => x.toString(16).padStart(2, '0')).join(''),
+				"Sec-Vtrans-Token": getUUID(false)
 			}, data: body, responseType: "arraybuffer", onload: (http) => {
 				callback((http.status === 200), http.response);
 			}, onerror: (error) => {
