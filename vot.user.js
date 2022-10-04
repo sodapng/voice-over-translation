@@ -99,12 +99,18 @@ const getVideoId = () => {
   return false;
 };
 
-const decodeResponse = (function () {
-	var proto = new protobuf.Type("VideoTranslationResponse").add(new protobuf.Field("url", 1, "string")).add(new protobuf.Field("status", 4, "int32"));
-	new protobuf.Root().define("yandex").add(proto);
-	return function(response) {
-		return proto.decode(new Uint8Array(response));
-	};
+const yandexRequests = (function() {
+    var protoRequest = new protobuf.Type("VideoTranslationRequest").add(new protobuf.Field("url", 3, "string")).add(new protobuf.Field("deviceId", 4, "string")).add(new protobuf.Field("unknown0", 5, "int32")).add(new protobuf.Field("unknown1", 6, "fixed64")).add(new protobuf.Field("unknown2", 7, "int32")).add(new protobuf.Field("language", 8, "string")).add(new protobuf.Field("unknown3", 9, "int32")).add(new protobuf.Field("unknown4", 10, "int32"));
+    var protoResponse = new protobuf.Type("VideoTranslationResponse").add(new protobuf.Field("url", 1, "string")).add(new protobuf.Field("status", 4, "int32"));
+    new protobuf.Root().define("yandex").add(protoRequest).add(protoResponse);
+    return {
+        encodeRequest: function(url, deviceId, unknown1) {
+            return protoRequest.encode({url: url, deviceId: deviceId, unknown0: 1, unknown1: unknown1, unknown2: 1, language: "en", unknown3: 0, unknown4: 0}).finish();
+        },
+        decodeResponse: function(response) {
+            return protoResponse.decode(new Uint8Array(response));
+        }
+    };
 })();
 
 function getUUID(isLower) {
@@ -112,13 +118,13 @@ function getUUID(isLower) {
     return isLower ? uuid : uuid.toUpperCase();
 }
 
-function requestVideoTranslation (videoId, callback) {
+function requestVideoTranslation (url, unknown1, callback) {
 	var deviceId = getUUID(true);
-	var body = `\x1A\x1Chttps://youtu.be/${videoId}" ${deviceId}\x28\x01\x31\x00\x00\x00\x00\x00\x50\x75\x40\x38\x01\x42\x02\x65\x6E\x48\x00\x50\x00`;
+    var body = yandexRequests.encodeRequest(url, deviceId, unknown1);
 
 	var utf8Encoder = new TextEncoder("utf-8");
 	window.crypto.subtle.importKey('raw', utf8Encoder.encode(yandexHmacKey), { name: 'HMAC', hash: {name: 'SHA-256'}}, false, ['sign', 'verify']).then(key => {
-		window.crypto.subtle.sign('HMAC', key, utf8Encoder.encode(body)).then(signature => {
+		window.crypto.subtle.sign('HMAC', key, body).then(signature => {
 			GM_xmlhttpRequest({url: "https://api.browser.yandex.ru/video-translation/translate", method: "POST", headers: {
 				"Accept": "application/x-protobuf",
 				"Accept-Language": "en",
@@ -129,7 +135,7 @@ function requestVideoTranslation (videoId, callback) {
 				"Sec-Fetch-Mode": "no-cors",
 				"Vtrans-Signature": Array.prototype.map.call(new Uint8Array(signature), x => x.toString(16).padStart(2, '0')).join(''),
 				"Sec-Vtrans-Token": getUUID(false)
-			}, data: body, responseType: "arraybuffer", onload: (http) => {
+			}, data: String.fromCharCode.apply(null, body), responseType: "arraybuffer", onload: (http) => {
 				callback((http.status === 200), http.response);
 			}, onerror: (error) => {
 				callback(false);
@@ -138,14 +144,14 @@ function requestVideoTranslation (videoId, callback) {
 	});
 }
 
-function translateVideo(videoId, callback) {
-	requestVideoTranslation(videoId, function (success, response) {
+function translateVideo(url, unknown1, callback) {
+	requestVideoTranslation(url, unknown1, function (success, response) {
 		if (!success) {
 			callback(false, "Не удалось запросить перевод видео");
 			return;
 		}
 
-		const translateResponse = decodeResponse(response);
+		const translateResponse = yandexRequests.decodeResponse(response);
 		switch (translateResponse.status) {
 			case 0:
 				callback(false, "Невозможно перевести видео. Зайдите позже, нейронная сеть скоро научится");
@@ -446,7 +452,7 @@ $("body").on("yt-page-data-updated", async function () {
     }
   };
 
-  const translateYTFunc = (VIDEO_ID) => translateVideo(VIDEO_ID, function (success, urlOrError) {
+  const translateYTFunc = (VIDEO_ID) => translateVideo(`https://youtu.be/${VIDEO_ID}`, 0x4075500000000000, function (success, urlOrError) {
 
     if (!success) {
       transformBtnError(urlOrError);
