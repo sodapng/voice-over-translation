@@ -22,7 +22,7 @@
 // ==/UserScript==
 
 const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
-const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/100.0.4896.160 YaBrowser/22.5.7.49.10 SA/3 Mobile/15E148 Safari/604.1";
+const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/104.0.5112.114 YaBrowser/22.9.4.633.10 SA/3 Mobile/15E148 Safari/604.1";
 const USOV4 = [ // Список расширений, последние версии которых не поддерживают Greasemonkey API V3
   "Greasemonkey",
   "Userscripts",
@@ -99,26 +99,43 @@ const getVideoId = () => {
   return false;
 };
 
-const decodeResponse = (function () {
-	var proto = new protobuf.Type("VideoTranslationResponse").add(new protobuf.Field("url", 1, "string")).add(new protobuf.Field("status", 4, "int32"));
-	new protobuf.Root().define("yandex").add(proto);
-	return function(response) {
-		return proto.decode(new Uint8Array(response));
-	};
+const yandexRequests = (function() {
+    var protoRequest = new protobuf.Type("VideoTranslationRequest").add(new protobuf.Field("url", 3, "string")).add(new protobuf.Field("deviceId", 4, "string")).add(new protobuf.Field("unknown0", 5, "int32")).add(new protobuf.Field("unknown1", 6, "fixed64")).add(new protobuf.Field("unknown2", 7, "int32")).add(new protobuf.Field("language", 8, "string")).add(new protobuf.Field("unknown3", 9, "int32")).add(new protobuf.Field("unknown4", 10, "int32"));
+    var protoResponse = new protobuf.Type("VideoTranslationResponse").add(new protobuf.Field("url", 1, "string")).add(new protobuf.Field("status", 4, "int32"));
+    new protobuf.Root().define("yandex").add(protoRequest).add(protoResponse);
+    return {
+        encodeRequest: function(url, deviceId, unknown1) {
+            return protoRequest.encode({url: url, deviceId: deviceId, unknown0: 1, unknown1: unknown1, unknown2: 1, language: "en", unknown3: 0, unknown4: 0}).finish();
+        },
+        decodeResponse: function(response) {
+            return protoResponse.decode(new Uint8Array(response));
+        }
+    };
 })();
 
-function requestVideoTranslation (videoId, callback) {
-	var deviceId = ([1e7]+1e3+4e3+8e3+1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
-	var body = `\x1A\x1Chttps://youtu.be/${videoId}" ${deviceId}\x28\x01\x31\x00\x00\x00\x00\x00\x00\x1C\x40\x38\x01\x42\x02\x65\x6E\x48\x00\x50\x00`;
+function getUUID(isLower) {
+    var uuid = ([1e7]+1e3+4e3+8e3+1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+    return isLower ? uuid : uuid.toUpperCase();
+}
+
+function requestVideoTranslation (url, unknown1, callback) {
+	var deviceId = getUUID(true);
+    var body = yandexRequests.encodeRequest(url, deviceId, unknown1);
 
 	var utf8Encoder = new TextEncoder("utf-8");
 	window.crypto.subtle.importKey('raw', utf8Encoder.encode(yandexHmacKey), { name: 'HMAC', hash: {name: 'SHA-256'}}, false, ['sign', 'verify']).then(key => {
-		window.crypto.subtle.sign('HMAC', key, utf8Encoder.encode(body)).then(signature => {
+		window.crypto.subtle.sign('HMAC', key, body).then(signature => {
 			GM_xmlhttpRequest({url: "https://api.browser.yandex.ru/video-translation/translate", method: "POST", headers: {
+				"Accept": "application/x-protobuf",
+				"Accept-Language": "en",
 				"Content-Type": "application/x-protobuf",
 				"User-Agent": yandexUserAgent,
-				"Vtrans-Signature": Array.prototype.map.call(new Uint8Array(signature), x => x.toString(16).padStart(2, '0')).join('')
-			}, data: body, responseType: "arraybuffer", onload: (http) => {
+				"Pragma": "no-cache",
+				"Cache-Control": "no-cache",
+				"Sec-Fetch-Mode": "no-cors",
+				"Vtrans-Signature": Array.prototype.map.call(new Uint8Array(signature), x => x.toString(16).padStart(2, '0')).join(''),
+				"Sec-Vtrans-Token": getUUID(false)
+			}, data: String.fromCharCode.apply(null, body), responseType: "arraybuffer", onload: (http) => {
 				callback((http.status === 200), http.response);
 			}, onerror: (error) => {
 				callback(false);
@@ -127,14 +144,14 @@ function requestVideoTranslation (videoId, callback) {
 	});
 }
 
-function translateVideo(videoId, callback) {
-	requestVideoTranslation(videoId, function (success, response) {
+function translateVideo(url, unknown1, callback) {
+	requestVideoTranslation(url, unknown1, function (success, response) {
 		if (!success) {
 			callback(false, "Не удалось запросить перевод видео");
 			return;
 		}
 
-		const translateResponse = decodeResponse(response);
+		const translateResponse = yandexRequests.decodeResponse(response);
 		switch (translateResponse.status) {
 			case 0:
 				callback(false, "Невозможно перевести видео. Зайдите позже, нейронная сеть скоро научится");
@@ -435,7 +452,7 @@ $("body").on("yt-page-data-updated", async function () {
     }
   };
 
-  const translateYTFunc = (VIDEO_ID) => translateVideo(VIDEO_ID, function (success, urlOrError) {
+  const translateYTFunc = (VIDEO_ID) => translateVideo(`https://youtu.be/${VIDEO_ID}`, 0x4075500000000000, function (success, urlOrError) {
 
     if (!success) {
       transformBtnError(urlOrError);
