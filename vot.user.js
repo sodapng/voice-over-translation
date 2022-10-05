@@ -133,6 +133,9 @@ function requestVideoTranslation (url, unknown1, callback) {
 				"Pragma": "no-cache",
 				"Cache-Control": "no-cache",
 				"Sec-Fetch-Mode": "no-cors",
+				"sec-ch-ua": null,
+				"sec-ch-ua-mobile": null,
+				"sec-ch-ua-platform": null,
 				"Vtrans-Signature": Array.prototype.map.call(new Uint8Array(signature), x => x.toString(16).padStart(2, '0')).join(''),
 				"Sec-Vtrans-Token": getUUID(false)
 			}, data: String.fromCharCode.apply(null, body), responseType: "arraybuffer", onload: (http) => {
