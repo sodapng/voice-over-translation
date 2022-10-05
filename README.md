@@ -16,10 +16,11 @@
 | Статус | Браузер | Версия браузера | Платформа | Расширение
 |---|---|---|---|---
 | ⠀✅ | Firefox Developer Edition | v106.0b4, 64 bit | Windows | Tampermonkey
+| ⠀✅ | Firefox | v105.0.1 | Linux | Tampermonkey
 | ⠀✅ | LibreWolf | v100.0.2-1 | Windows | Tampermonkey
 | ⠀✅ | Brave | v106.0.5249.91 | Windows | Tampermonkey
-| ⠀❌ | MS Edge | v100.0.2-1 | Windows | Tampermonkey
-| ⠀❌ | Google Chrome | v106.0.5249.91 | Windows, MacOS | Tampermonkey, Violetmonkey
+| ⠀❌ | MS Edge | v100.0.2-1 | Windows, Linux | Tampermonkey
+| ⠀❌ | Google Chrome | v106.0.5249.91 | Windows, MacOS, Linux | Tampermonkey, Violetmonkey
 | ⠀❌ | Opera GX | LVL4 (core: 91.0.4516.36) | Windows | Tampermonkey
 | ⠀❌ | Safari | v15.6.1 | MacOS | Userscrips
 
