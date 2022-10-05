@@ -19,7 +19,7 @@
 | ⠀✅ | Firefox | v105.0.1 | Linux | Tampermonkey
 | ⠀✅ | LibreWolf | v100.0.2-1 | Windows | Tampermonkey
 | ⠀✅ | Brave | v106.0.5249.91 | Windows | Tampermonkey
-| ⠀❌ | MS Edge | v100.0.2-1 | Windows, Linux | Tampermonkey
+| ⠀❌ | MS Edge | v106.0.1370.34 | Windows, Linux | Tampermonkey
 | ⠀❌ | Cent Browser | v4.3.9.248, 32 bit | Windows | Tampermonkey
 | ⠀❌ | Cent Browser Beta | v5.0.1002.182, 64 bit | Windows | Tampermonkey
 | ⠀❌ | Google Chrome | v106.0.5249.91 | Windows, MacOS, Linux | Tampermonkey, Violetmonkey
