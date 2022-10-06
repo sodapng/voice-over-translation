@@ -10,6 +10,10 @@
   text-align: center;
   opacity: 0;
   transition: opacity 1s;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .translationBtn {
@@ -18,7 +22,7 @@
   vertical-align: middle;
   color: #fff;
   padding-right: 0.25rem;
-  cursor: default;
+  cursor: pointer;
   font: 600 12px / 14px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif;
 }
 
