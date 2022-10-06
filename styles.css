@@ -37,6 +37,7 @@
   max-height: 16px;
   max-width: 16px;
   padding-right: 0.7rem;
+  cursor: pointer;
 }
 
 .translationMenuIcon {
