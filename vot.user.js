@@ -85,15 +85,25 @@ function addTranslationMenu(elem) {
 
 const audio = new Audio();
 
-const getVideoId = () => {
+const getVideoId = (service) => {
   const url = new URL(window.location.href);
 
-  if (url.pathname.includes("watch")) {
-    return url.searchParams.get("v");
-  }
-
-  if (url.pathname.includes("embed")) {
-    return url.pathname.substr(7, 11);
+  if (service === 'youtube') {
+    if (url.pathname.includes("watch")) {
+      return url.searchParams.get("v");
+    }
+  
+    if (url.pathname.includes("embed")) {
+      return url.pathname.substr(7, 11);
+    }
+  } else if (service === 'vk') {
+    if (url.pathname.includes("video")) {
+      return url.searchParams.get("z").split('/')[0]; // Убираем постоянное значение "/pl_cat_trends"
+    }
+  } else if (service === 'gag') {
+    if (url.pathname.includes("gag")) {
+      return url.pathname;
+    }
   }
 
   return false;
@@ -577,7 +587,7 @@ $("body").on("yt-page-data-updated", async function () {
   $(video).on('progress', event => {
     event.stopPropagation();
 
-    const VIDEO_ID = getVideoId();
+    const VIDEO_ID = getVideoId('youtube');
 
     if (!VIDEO_ID) {
       throw "YaTranslate: Не найдено ID видео";
@@ -603,7 +613,7 @@ $("body").on("yt-page-data-updated", async function () {
     try {
       event.stopPropagation();
 
-      const VIDEO_ID = getVideoId();
+      const VIDEO_ID = getVideoId('youtube');
 
       if (!VIDEO_ID) {
         throw "YaTranslate: Не найдено ID видео"; // not found video id
