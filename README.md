@@ -7,6 +7,8 @@
 1. Установите расширение **[Tampermonkey](https://www.tampermonkey.net/)** (Для Safari: **[UserScripts](https://apps.apple.com/app/userscripts/id1463298887 )**)
 2. **[«Установите Скрипт»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js)**
 
+# Версия для ADGuard: **[Ссылка](https://github.com/mynovelhost/voice-over-translation/)**
+
 ## Примечание:
 1. Рекомендую разрешить автовоспроизведение "аудио и видео" на ютубе, чтобы избежать ошибок при работе расширения
 2. Расширение не может переводить видео длиной более 4 часов
@@ -25,5 +27,15 @@
 | ⠀✅ | Google Chrome | v106.0.5249.91 | Windows, MacOS, Linux | Tampermonkey, Violetmonkey
 | ⠀✅ | Opera GX | LVL4 (core: 91.0.4516.36) | Windows | Tampermonkey
 | ⠀❔ | Safari | v15.6.1 | MacOS | Userscripts
+
+## Протестировано в следующих расширениях для юзерскриптов:
+| Статус | Браузер | Расширение
+|---|---|---
+| ⠀✅ | Любой | Tampermonkey
+| ⠀✅ | Google... | Violetmonkey 
+| ⠀✅ | Safari | Userscripts
+| ⠀**[Ссылка](https://github.com/mynovelhost/voice-over-translation/)** | Любой | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
+| ❌ | Firefox | Firemonkey
+| ❌ | Любой | Greasemonkey
 
 ![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.png "btn")
