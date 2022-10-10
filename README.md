@@ -34,7 +34,7 @@
 | ⠀✅ | Любой | Tampermonkey
 | ⠀✅ | Google... | Violetmonkey 
 | ⠀✅ | Safari | Userscripts
-| ⠀**[Ссылка](https://github.com/mynovelhost/voice-over-translation/)** | Любой | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
+| ⠀[Ссылка](https://github.com/mynovelhost/voice-over-translation/) | Любой | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
 | ❌ | Firefox | Firemonkey
 | ❌ | Любой | Greasemonkey
 
