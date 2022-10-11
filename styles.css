@@ -156,3 +156,10 @@
 .translationVolumeBox {
   padding-top: 0.5rem;
 }
+
+.translationIconAlice {
+  min-height: 24px;
+  min-width: 24px;
+  max-width: 24px;
+  max-height: 24px
+}
