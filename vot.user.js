@@ -54,7 +54,9 @@ const $translationBlock = $(`
               <img class = "translationIconAlice" src = "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg">
           </span>
           <span class = "translationITranslate"  tabindex = "-1">
-              <img class = "translationImageTranslate" src = "https://icongr.am/entypo/language.svg?size=18&color=ffffff">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="translateIcon" fill-rule="evenodd" clip-rule="evenodd" d="M17.605 19.703c.794-.13 1.647-.476 2.47-.983.695 1.013 1.255 1.546 1.306 1.593l1.166-1.207c-.011-.01-.504-.48-1.124-1.401.277-.25.547-.512.797-.798a12.1 12.1 0 0 0 2.268-3.826c.383.216.761.541.96 1.027.68 1.649-.301 3.557-1.215 4.385l1.152 1.22c1.52-1.378 2.571-3.959 1.638-6.227-.368-.892-1.077-1.59-2.064-2.037.162-.763.216-1.38.233-1.785h-1.698c-.017.307-.06.762-.173 1.323-1.325-.187-2.818-.006-4.248.508a25.994 25.994 0 0 1-.313-2.547c5.092-.287 8.098-1.488 8.237-1.546l-.654-1.533c-.03.013-2.875 1.14-7.65 1.418-.001-.405-.008-.666-.012-.85-.008-.339-.01-.423.03-.67L17.01 5.75c-.026.283-.024.573-.018 1.278l.002.318c-.026 0-.051 0-.077.002l-.08.001a39.286 39.286 0 0 1-3.27-.14L13.25 8.89c.5.043 2.023.122 3.397.122h.1a19.457 19.457 0 0 1 .208-.003l.106-.002c.067.948.196 2.034.421 3.22a8.05 8.05 0 0 0-2.267 1.963l.811 1.871c.327-.732.995-1.51 1.856-2.111a16.762 16.762 0 0 0 1.33 3.346c-.811.514-1.64.818-2.301.804l.694 1.603Zm2.953-3.488a8.18 8.18 0 0 0 .374-.389 10.465 10.465 0 0 0 1.927-3.224c-.198-.021-.4-.031-.606-.031-.907 0-1.885.199-2.834.574.31 1.209.718 2.23 1.14 3.07ZM9.769 11.688 4.25 24.438h2.259l1.357-3.407h5.582l1.357 3.407h2.258l-5.52-12.75H9.77Zm.887 2.624 2.056 5H8.6l2.056-5Z" fill="#fff"></path>
+            </svg>
           </span>
           <span class = "translationBtn" tabindex = "0">Перевести видео</span>
       </span>
@@ -62,7 +64,7 @@ const $translationBlock = $(`
   </div>`);
 const $translationBtn = $translationBlock.find('.translationArea > .translationBtn');
 const $translationImageAlice = $translationBlock.find('.translationArea > .translationIAlice > img');
-const $translationImageTranslate = $translationBlock.find('.translationArea > .translationITranslate > img');
+const $translationImageTranslate = $translationBlock.find('.translateIcon');
 
 const $translationMenuContent = $('<div class = "translationMenuContent"><p class = "translationMainHeader">Перевод видео</p></div>');
 
@@ -541,17 +543,17 @@ $("body").on("yt-page-data-updated", async function () {
 
   function changeBackgroundError() {
     $translationImageAlice.attr('src', 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAliceError.svg')
-    $translationImageTranslate.attr('src', 'https://icongr.am/entypo/language.svg?size=18&color=7A7A7D')
+    $translationImageTranslate.attr('fill', '#7A7A7D')
   }
 
   function changeBackgroundSuccess() {
     $translationImageAlice.attr('src', 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg')
-    $translationImageTranslate.attr('src', 'https://icongr.am/entypo/language.svg?size=18&color=A36EFF')
+    $translationImageTranslate.attr('fill', '#A36EFF')
   }
 
   function changeBackgroundDefault() {
     $translationImageAlice.attr('src', 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg')
-    $translationImageTranslate.attr('src', 'https://icongr.am/entypo/language.svg?size=18&color=FFFFFF')
+    $translationImageTranslate.attr('fill', '#FFFFFF')
   }
 
   function transformBtnError(err) {
