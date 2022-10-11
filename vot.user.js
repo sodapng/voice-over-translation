@@ -51,7 +51,7 @@ const $translationBlock = $(`
   <div class = "translationBlock">
       <span class = "translationArea" role = "button">
           <span class = "translationIAlice" tabindex = "-1">
-              <img class = "translationIconAlice" src = "http://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg">
+              <img class = "translationIconAlice" src = "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg">
           </span>
           <span class = "translationITranslate"  tabindex = "-1">
               <img class = "translationImageTranslate" src = "https://icongr.am/entypo/language.svg?size=18&color=ffffff">
