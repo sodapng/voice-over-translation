@@ -60,7 +60,11 @@ const $translationBlock = $(`
           </span>
           <span class = "translationBtn" tabindex = "0">Перевести видео</span>
       </span>
-      <span class = "translationMenu" tabindex = "0" role = "button"><img class = "translationMenuIcon" src = "https://icongr.am/entypo/dots-three-vertical.svg?size=14&color=ffffff"></span>
+      <span class = "translationMenu" tabindex = "0" role = "button">
+        <svg class = "translationMenuIcon" width="4" height="15" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 13.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" fill="#fff"></path>
+        </svg>
+      </span>
   </div>`);
 const $translationBtn = $translationBlock.find('.translationArea > .translationBtn');
 const $translationImageAlice = $translationBlock.find('.translationArea > .translationIAlice > img');
@@ -455,13 +459,13 @@ $("body").on("yt-page-data-updated", async function () {
 
     $translationBlock.on("mousemove", (event) => {
       clearTimeout(time);
-      logout(0.8);
+      logout(0.9);
       event.stopPropagation();
     });
 
     $translationMenuContent.on("mousemove", (event) => {
       clearTimeout(time);
-      logout(0.8);
+      logout(0.9);
       event.stopPropagation();
     });
 
