@@ -13,7 +13,6 @@
 // @grant            GM_getResourceText
 // @grant            GM_addStyle
 // @grant            GM_xmlhttpRequest
-// @grant            GM_info
 // @updateURL        https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js
 // @downloadURL      https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js
 // @supportURL       https://github.com/ilyhalight/voice-over-translation/issues
@@ -23,12 +22,8 @@
 
 const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
 const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/104.0.5112.114 YaBrowser/22.9.4.633.10 SA/3 Mobile/15E148 Safari/604.1";
-const USOV4 = [ // Список расширений, последние версии которых не поддерживают Greasemonkey API V3
-  "Greasemonkey",
-  "Userscripts",
-  "FireMonkey"
-];
 
+// https://github.com/greasemonkey/gm4-polyfill
 if (typeof GM_addStyle === 'undefined') {
   GM_addStyle = (aCss) => {
     'use strict';
@@ -44,13 +39,13 @@ if (typeof GM_addStyle === 'undefined') {
   };
 };
 
-if (!USOV4.includes(GM_info.scriptHandler)) {
-  const styles = GM_getResourceText("styles");
-  GM_addStyle(styles);
-} else {
+if (typeof GM_getResourceText === 'undefined') {
   fetch('https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/styles.css')
   .then((response) => response.text().then(styles => GM_addStyle(styles)));
-};
+} else {
+  const styles = GM_getResourceText("styles");
+  GM_addStyle(styles);
+}
 
 const $translationBlock = $(`
   <div class = "translationBlock">
@@ -88,25 +83,42 @@ const audio = new Audio();
 const getVideoId = (service) => {
   const url = new URL(window.location.href);
 
-  if (service === 'youtube') {
-    if (url.pathname.includes("watch")) {
-      return url.searchParams.get("v");
-    }
-  
-    if (url.pathname.includes("embed")) {
-      return url.pathname.substr(7, 11);
-    }
-  } else if (service === 'vk') {
-    if (url.pathname.includes("video")) {
-      return url.searchParams.get("z").split('/')[0]; // Убираем постоянное значение "/pl_cat_trends"
-    }
-  } else if (service === 'gag') {
-    if (url.pathname.includes("gag")) {
-      return url.pathname;
-    }
+  switch (service) {
+    case "youtube":
+      if (url.pathname.includes("watch")) {
+        return url.searchParams.get("v");
+      } else if (url.pathname.includes("embed/")) { // TODO: Добавить кнопку перевода на странице видео
+        let urlArray = url.pathname.split('/');
+        return urlArray[urlArray.length - 1];
+      }
+    case "vk":
+      if (url.pathname.includes("video")) {
+        return url.searchParams.get("z").split('/')[0]; // Убираем постоянное значение "/pl_cat_trends"
+      }
+    case "9gag" || "gag":
+      if (url.pathname.includes("gag/")) {
+        let urlArray = url.pathname.split('/');
+        return urlArray[urlArray.length - 1];
+      }
+    case "twitch":
+      if (/^m\.twitch\.tv$/.test(window.location.hostname())) { // Если используется мобильная версия сайта (m.twitch.tv)
+        let linkUrl = document.head.querySelector('link[rel="canonical"]');
+        return linkUrl && linkUrl.href.includes("/videos/") ? linkUrl.href : false;
+      } else if (url.pathname.includes("videos/")) {
+        let urlArray = url.pathname.split('/');
+        return urlArray[urlArray.length - 1];
+      }
+    case "tiktok":
+      if (url.pathname.includes("video/")) {
+        let urlArray = url.pathname.split('/');
+        return urlArray[urlArray.length - 1];
+      }
+    case "vimeo":
+      let urlArray = url.pathname.split('/');
+      return urlArray[urlArray.length - 1];
+    default:
+      return false;
   }
-
-  return false;
 };
 
 const yandexRequests = (function() {
@@ -165,6 +177,7 @@ function translateVideo(url, unknown1, callback) {
 		}
 
 		const translateResponse = yandexRequests.decodeResponse(response);
+    console.log(translateResponse)
 		switch (translateResponse.status) {
 			case 0:
 				callback(false, "Невозможно перевести видео. Зайдите позже, нейронная сеть скоро научится");
