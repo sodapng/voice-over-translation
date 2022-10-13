@@ -489,9 +489,9 @@ $("body").on("yt-page-data-updated", async function () {
     if (!success) {
       transformBtnError(urlOrError);
       if (urlOrError === 'Перевод займет несколько минут') {
+        clearTimeout(autoRetry);
         autoRetry = setTimeout(() => {
           translateYTFunc(VIDEO_ID);
-          clearTimeout(autoRetry);
         }, 70000)
       }
       throw urlOrError;
