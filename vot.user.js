@@ -183,7 +183,6 @@ function translateVideo(url, unknown1, callback) {
 		}
 
 		const translateResponse = yandexRequests.decodeResponse(response);
-    console.log(translateResponse)
 		switch (translateResponse.status) {
 			case 0:
 				callback(false, "Невозможно перевести видео. Зайдите позже, нейронная сеть скоро научится");
@@ -193,7 +192,7 @@ function translateVideo(url, unknown1, callback) {
 				callback(hasUrl, hasUrl ? translateResponse.url : "Не получена ссылка на аудио");
 				return;
 			case 2:
-				callback(false, "Перевод займет около минуты");
+				callback(false, "Перевод займет несколько минут");
 				return;
 		}
 	});
@@ -400,6 +399,7 @@ function deleteDB() {
 }
 
 $("body").on("yt-page-data-updated", async function () {
+  var autoRetry;
   var video = $("video")[0];
   var firstPlay = true;
   var isDBInited = await initDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
@@ -488,9 +488,10 @@ $("body").on("yt-page-data-updated", async function () {
 
     if (!success) {
       transformBtnError(urlOrError);
-      if (urlOrError === 'Перевод займет около минуты') {
-        setTimeout(() => {
+      if (urlOrError === 'Перевод займет несколько минут') {
+        autoRetry = setTimeout(() => {
           translateYTFunc(VIDEO_ID);
+          clearTimeout(autoRetry);
         }, 70000)
       }
       throw urlOrError;
@@ -532,7 +533,7 @@ $("body").on("yt-page-data-updated", async function () {
 
     if (!$translationMenuContent.has('.translationVolumeBox').length) {
       $translationMenuContent.append(volumeBox);
-      $volumePercent = volumeBox.find('.volumePercent');
+      var $volumePercent = volumeBox.find('.volumePercent');
       volumeSlider.on('input', () => {
         var value = volumeSlider.val();
         audio.volume = (value / 100);
@@ -637,8 +638,8 @@ $("body").on("yt-page-data-updated", async function () {
       if (!VIDEO_ID) {
         throw "YaTranslate: Не найдено ID видео"; // not found video id
       }
-
       translateYTFunc(VIDEO_ID)
+      event.stopImmediatePropagation();
     } catch (err) {
       transformBtnError(err.substring(13, err.length))
       console.error(err);
