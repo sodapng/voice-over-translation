@@ -231,6 +231,7 @@ async function initDB () {
 
       objectStore.createIndex('autoTranslate', 'autoTranslate', { unique: false });
       objectStore.createIndex('defaultVolume', 'defaultVolume', { unique: false });
+      objectStore.createIndex('showVideoSlider', 'showVideoSlider', { unique: false });
       console.log('VOT: База Данных создана')
 
       objectStore.transaction.oncomplete = event => {
@@ -239,6 +240,7 @@ async function initDB () {
           key: 'settings',
           autoTranslate: 0,
           defaultVolume: 100,
+          showVideoSlider: 0,
         }
         var request = objectStore.add(settingsDefault);
 
@@ -274,9 +276,9 @@ async function initDB () {
   });
 }
 
-async function updateDB({autoTranslate, defaultVolume}) {
+async function updateDB({autoTranslate, defaultVolume, showVideoSlider}) {
   return new Promise((resolve, reject) => {
-    if (typeof(autoTranslate) === 'number' || typeof(defaultVolume) === 'number') {
+    if (typeof(autoTranslate) === 'number' || typeof(defaultVolume) === 'number' || typeof(showVideoSlider) === 'number') {
       var openRequest = openDB("VOT");
 
       openRequest.onerror = () => {
@@ -310,7 +312,7 @@ async function updateDB({autoTranslate, defaultVolume}) {
         };
 
         request.onsuccess = () => {
-          console.log('VOT: Получены данные из Базы Данных: ', request.result);
+          // console.log('VOT: Получены данные из Базы Данных: ', request.result);
           var data = request.result;
 
           if (typeof(autoTranslate) === 'number') {
@@ -321,6 +323,10 @@ async function updateDB({autoTranslate, defaultVolume}) {
             data.defaultVolume = defaultVolume;
           };
 
+          if (typeof(showVideoSlider) === 'number') {
+            data.showVideoSlider = showVideoSlider;
+          };
+
           var requestUpdate = objectStore.put(data);
 
           requestUpdate.onerror = (event) =>{
@@ -329,7 +335,7 @@ async function updateDB({autoTranslate, defaultVolume}) {
           };
 
           requestUpdate.onsuccess = () => {
-            console.log('VOT: Данные в Базе Данных обновлены, вы великолепны!');
+            // console.log('VOT: Данные в Базе Данных обновлены, вы великолепны!');
             resolve(true);
           };
         };
@@ -380,7 +386,7 @@ async function readDB() {
       }
 
       request.onsuccess = () => {
-        console.log('VOT: Получены данные из Базы Данных: ', request.result);
+        // console.log('VOT: Получены данные из Базы Данных: ', request.result);
         if (request.result === undefined) {
           db.close()
           deleteDB();
@@ -414,12 +420,16 @@ $("body").on("yt-page-data-updated", async function () {
   transformBtnDefault('Перевести видео')
   if (isDBInited) {
     var dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
-    var dbAT = dbData !== undefined ? dbData.autoTranslate : undefined;
-    var dbDV = dbData !== undefined ? dbData.defaultVolume : undefined;
-    if (!$('.translationAT').length && dbAT !== undefined) {
+    var dbAutoTranslate = dbData !== undefined ? dbData.autoTranslate : undefined;
+    var dbDefaultVolume = dbData !== undefined ? dbData.defaultVolume : undefined;
+    var dbShowVideoSlider = dbData !== undefined ? dbData.showVideoSlider : undefined;
+    console.log(`VOT: Значение autoTranslate: ${dbAutoTranslate}`)
+    console.log(`VOT: Значение dbDefaultVolume: ${dbDefaultVolume}`)
+    console.log(`VOT: Значение dbShowVideoSlider: ${dbShowVideoSlider}`)
+    if (!$('.translationAT').length && dbAutoTranslate !== undefined) {
       var $translationATCont = $(
         `<div class = "translationMenuContainer">
-          <input type="checkbox" name="auto_translate" value=${dbAT} class = "translationAT" ${dbAT === 1 ? "checked" : ''}>
+          <input type="checkbox" name="auto_translate" value=${dbAutoTranslate} class = "translationAT" ${dbAutoTranslate === 1 ? "checked" : ''}>
           <label class = "translationMenuText" for = "auto_translate">Автоматический перевод видео</label>
         </div>
         `
@@ -429,7 +439,7 @@ $("body").on("yt-page-data-updated", async function () {
         event.stopPropagation();
         let atValue = event.target.checked ? 1 : 0;
         await updateDB({autoTranslate: atValue});
-        dbAT = atValue;
+        dbAutoTranslate = atValue;
       });
       $translationMenuContent.append($translationATCont);
     }
@@ -447,6 +457,24 @@ $("body").on("yt-page-data-updated", async function () {
         location.reload();
       });
       $translationMenuContent.append($translationDropDBCont);
+    }
+
+    if (!$('.translationShowVideoSlider').length && dbData !== undefined) {
+      var $translationSVSCont = $(
+        `<div class = "translationMenuContainer">
+          <input type="checkbox" name="show_video_slider" value=${typeof(dbShowVideoSlider) === 'number' ? dbShowVideoSlider : '0'} class = "translationSVS" ${dbShowVideoSlider === 1 ? "checked" : ''}>
+          <label class = "translationMenuText" for = "show_video_slider">Слайдер громкости оригинала</label>
+        </div>
+        `
+      );
+      var $translationSVS = $($translationSVSCont).find('.translationSVS');
+      $translationSVS.on('click', async (event) => {
+        event.stopPropagation();
+        let svsValue = event.target.checked ? 1 : 0;
+        await updateDB({showVideoSlider: svsValue});
+        dbShowVideoSlider = svsValue;
+      });
+      $translationMenuContent.append($translationSVSCont);
     }
   }
 
@@ -519,8 +547,8 @@ $("body").on("yt-page-data-updated", async function () {
     }
 
     audio.src = urlOrError;
-    if (typeof(dbDV) === 'number') {
-      audio.volume = dbDV / 100;
+    if (typeof(dbDefaultVolume) === 'number') {
+      audio.volume = dbDefaultVolume / 100;
     }
 
     $("body").on("yt-page-data-updated", function () {
@@ -552,11 +580,12 @@ $("body").on("yt-page-data-updated", async function () {
     $translationBtn.text('Выключить');
     changeColor("#A36EFF");
     changeBackgroundSuccess();
-    if (typeof(dbDV) === 'number') {
-      var defaultTranslateVolume = dbDV; 
+    if (typeof(dbDefaultVolume) === 'number') {
+      var defaultTranslateVolume = dbDefaultVolume; 
     } else {
       var defaultTranslateVolume = 100;
     }
+
     const volumeBox = $(`
       <div class = "translationMenuContainer">
         <span class = "translationHeader">Громкость перевода: <b class = "volumePercent">${defaultTranslateVolume}%</b></span>
@@ -569,13 +598,35 @@ $("body").on("yt-page-data-updated", async function () {
 
     if (!$translationMenuContent.has('.translationVolumeBox').length) {
       $translationMenuContent.append(volumeBox);
-      var $volumePercent = volumeBox.find('.volumePercent');
+      let $volumePercent = volumeBox.find('.volumePercent');
       volumeSlider.on('input', async () => {
-        var value = volumeSlider.val();
+        let value = volumeSlider.val();
         audio.volume = (value / 100);
         $volumePercent.text(`${value}%`);
         await updateDB({defaultVolume: Number(value)});
       });
+    }
+
+    if (dbShowVideoSlider === 1) {
+      const videoVolumeBox = $(`
+        <div class = "translationMenuContainer">
+          <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${video.volume * 100}%</b></span>
+          <div class = "translationVideoVolumeBox" tabindex = "0">
+            <input type="range" min="0" max="100" value=${video.volume * 100} class="translationVolumeSlider">
+          </div>
+        </div>`
+      );
+      const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
+
+      if (!$translationMenuContent.has('.translationVideoVolumeBox').length) {
+        $translationMenuContent.append(videoVolumeBox);
+        let $volumePercent = videoVolumeBox.find('.volumePercent');
+        videoVolumeSlider.on('input', async () => {
+          let value = videoVolumeSlider.val();
+          video.volume = (value / 100);
+          $volumePercent.text(`${value}%`);
+        });
+      }
     }
   });
 
@@ -650,7 +701,7 @@ $("body").on("yt-page-data-updated", async function () {
       throw "YaTranslate: Не найдено ID видео";
     }
 
-    if (firstPlay && dbAT === 1) {
+    if (firstPlay && dbAutoTranslate === 1) {
       translateYTFunc(VIDEO_ID);
       firstPlay = false;
     }
