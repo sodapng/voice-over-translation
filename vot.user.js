@@ -3,7 +3,7 @@
 // @name:ru          [VOT] - Закадровый перевод видео
 // @description      A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru   Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version          1.0.8
+// @version          1.0.9
 // @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
 // @icon             https://translate.yandex.ru/icons/favicon.ico
@@ -229,16 +229,18 @@ async function initDB () {
 
       var objectStore = db.createObjectStore('settings', {keyPath: 'key'});
 
-      objectStore.createIndex('autoTranslate', 'autoTranslate', { unique: false })
+      objectStore.createIndex('autoTranslate', 'autoTranslate', { unique: false });
+      objectStore.createIndex('defaultVolume', 'defaultVolume', { unique: false });
       console.log('VOT: База Данных создана')
 
       objectStore.transaction.oncomplete = event => {
         var objectStore = db.transaction('settings', 'readwrite').objectStore('settings');
-        var contestsDefault = {
+        var settingsDefault = {
           key: 'settings',
           autoTranslate: 0,
+          defaultVolume: 100,
         }
-        var request = objectStore.add(contestsDefault);
+        var request = objectStore.add(settingsDefault);
 
         request.onsuccess = () => {
           console.log("VOT: Стандартные настройки добавлены в Базу Данных: ", request.result);
@@ -272,9 +274,9 @@ async function initDB () {
   });
 }
 
-async function updateDB(autoTranslate = undefined) {
+async function updateDB({autoTranslate, defaultVolume}) {
   return new Promise((resolve, reject) => {
-    if (autoTranslate !== undefined) {
+    if (typeof(autoTranslate) === 'number' || typeof(defaultVolume) === 'number') {
       var openRequest = openDB("VOT");
 
       openRequest.onerror = () => {
@@ -283,10 +285,10 @@ async function updateDB(autoTranslate = undefined) {
         reject(false);
       };
 
-      openRequest.onupgradeneeded = () => {
+      openRequest.onupgradeneeded = async () => {
         var db = openRequest.result;
         db.close();
-        initDB();
+        await initDB();
         resolve(true);
       };
 
@@ -313,6 +315,10 @@ async function updateDB(autoTranslate = undefined) {
 
           if (typeof(autoTranslate) === 'number') {
             data.autoTranslate = autoTranslate;
+          };
+
+          if (typeof(defaultVolume) === 'number') {
+            data.defaultVolume = defaultVolume;
           };
 
           var requestUpdate = objectStore.put(data);
@@ -349,10 +355,10 @@ async function readDB() {
       reject(false);
     }
 
-    openRequest.onupgradeneeded = () => {
+    openRequest.onupgradeneeded = async () => {
       var db = openRequest.result;
       db.close();
-      initDB();
+      await initDB();
       resolve(true);
     }
 
@@ -409,7 +415,7 @@ $("body").on("yt-page-data-updated", async function () {
   if (isDBInited) {
     var dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
     var dbAT = dbData !== undefined ? dbData.autoTranslate : undefined;
-    console.log('VOT: DB autotranslate value: ', dbAT)
+    var dbDV = dbData !== undefined ? dbData.defaultVolume : undefined;
     if (!$('.translationAT').length && dbAT !== undefined) {
       var $translationATCont = $(
         `<div class = "translationMenuContainer">
@@ -422,10 +428,25 @@ $("body").on("yt-page-data-updated", async function () {
       $translationAT.on('click', async (event) => {
         event.stopPropagation();
         let atValue = event.target.checked ? 1 : 0;
-        await updateDB(atValue);
+        await updateDB({autoTranslate: atValue});
         dbAT = atValue;
       });
-      $translationMenuContent.append($translationATCont)
+      $translationMenuContent.append($translationATCont);
+    }
+    if (!$('.translationDropDB').length && dbData !== undefined) {
+      var $translationDropDBCont = $(
+        `<div class = "translationMenuContainer" id="translationDropDBContainer">
+          <button class = "translationDropDB">Сбросить настройки</button>
+        </div>
+        `
+      );
+      var $translationDropDB = $($translationDropDBCont).find('.translationDropDB');
+      $translationDropDB.on('click', async (event) => {
+        event.stopPropagation();
+        deleteDB();
+        location.reload();
+      });
+      $translationMenuContent.append($translationDropDBCont);
     }
   }
 
@@ -498,6 +519,9 @@ $("body").on("yt-page-data-updated", async function () {
     }
 
     audio.src = urlOrError;
+    if (typeof(dbDV) === 'number') {
+      audio.volume = dbDV / 100;
+    }
 
     $("body").on("yt-page-data-updated", function () {
       audio.pause();
@@ -528,16 +552,29 @@ $("body").on("yt-page-data-updated", async function () {
     $translationBtn.text('Выключить');
     changeColor("#A36EFF");
     changeBackgroundSuccess();
-    const volumeBox = $('<div class = "translationMenuContainer"><span class = "translationHeader">Громкость перевода: <b class = "volumePercent">100%</b></span><div class = "translationVolumeBox" tabindex = "0"><input type="range" min="0" max="100" value="100" class="translationVolumeSlider"></div></div>');
+    if (typeof(dbDV) === 'number') {
+      var defaultTranslateVolume = dbDV; 
+    } else {
+      var defaultTranslateVolume = 100;
+    }
+    const volumeBox = $(`
+      <div class = "translationMenuContainer">
+        <span class = "translationHeader">Громкость перевода: <b class = "volumePercent">${defaultTranslateVolume}%</b></span>
+        <div class = "translationVolumeBox" tabindex = "0">
+          <input type="range" min="0" max="100" value=${defaultTranslateVolume} class="translationVolumeSlider">
+        </div>
+      </div>`
+    );
     const volumeSlider = volumeBox.find('.translationVolumeSlider');
 
     if (!$translationMenuContent.has('.translationVolumeBox').length) {
       $translationMenuContent.append(volumeBox);
       var $volumePercent = volumeBox.find('.volumePercent');
-      volumeSlider.on('input', () => {
+      volumeSlider.on('input', async () => {
         var value = volumeSlider.val();
         audio.volume = (value / 100);
         $volumePercent.text(`${value}%`);
+        await updateDB({defaultVolume: Number(value)});
       });
     }
   });
