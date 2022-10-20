@@ -53,7 +53,7 @@ const $translationBlock = $(`
           <span class = "translationIAlice" tabindex = "-1">
               <img class = "translationIconAlice" src = "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg">
           </span>
-          <span class = "translationITranslate"  tabindex = "-1">
+          <span class = "translationITranslate" tabindex = "-1">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="translateIcon" fill-rule="evenodd" clip-rule="evenodd" d="M17.605 19.703c.794-.13 1.647-.476 2.47-.983.695 1.013 1.255 1.546 1.306 1.593l1.166-1.207c-.011-.01-.504-.48-1.124-1.401.277-.25.547-.512.797-.798a12.1 12.1 0 0 0 2.268-3.826c.383.216.761.541.96 1.027.68 1.649-.301 3.557-1.215 4.385l1.152 1.22c1.52-1.378 2.571-3.959 1.638-6.227-.368-.892-1.077-1.59-2.064-2.037.162-.763.216-1.38.233-1.785h-1.698c-.017.307-.06.762-.173 1.323-1.325-.187-2.818-.006-4.248.508a25.994 25.994 0 0 1-.313-2.547c5.092-.287 8.098-1.488 8.237-1.546l-.654-1.533c-.03.013-2.875 1.14-7.65 1.418-.001-.405-.008-.666-.012-.85-.008-.339-.01-.423.03-.67L17.01 5.75c-.026.283-.024.573-.018 1.278l.002.318c-.026 0-.051 0-.077.002l-.08.001a39.286 39.286 0 0 1-3.27-.14L13.25 8.89c.5.043 2.023.122 3.397.122h.1a19.457 19.457 0 0 1 .208-.003l.106-.002c.067.948.196 2.034.421 3.22a8.05 8.05 0 0 0-2.267 1.963l.811 1.871c.327-.732.995-1.51 1.856-2.111a16.762 16.762 0 0 0 1.33 3.346c-.811.514-1.64.818-2.301.804l.694 1.603Zm2.953-3.488a8.18 8.18 0 0 0 .374-.389 10.465 10.465 0 0 0 1.927-3.224c-.198-.021-.4-.031-.606-.031-.907 0-1.885.199-2.834.574.31 1.209.718 2.23 1.14 3.07ZM9.769 11.688 4.25 24.438h2.259l1.357-3.407h5.582l1.357 3.407h2.258l-5.52-12.75H9.77Zm.887 2.624 2.056 5H8.6l2.056-5Z" fill="#fff"></path>
             </svg>
@@ -410,14 +410,38 @@ function deleteDB() {
   indexedDB.deleteDatabase('VOT');
 }
 
-$("body").on("yt-page-data-updated", async function () {
+const siteTranslates = {
+  'youtube': {
+    'url': 'https://youtu.be/',
+    'func_param': 0x4075500000000000
+  },
+  'twitch': {
+    'url': 'https://twitch.tv/videos/',
+    'func_param': 0x40c7b10000000000
+  },
+  'vimeo': {
+    'url': 'https://vimeo.com/',
+    'func_param': 0x402e000000000000
+  },
+  '9gag': {
+    'url': 'https://9gag.com/gag/',
+    'func_param': 0x4048800000000000
+  },
+  'vk': {
+    'url': 'https://vk.com/video/',
+    'func_param': 0x4072400000000000
+  },
+}
+
+
+async function translateProccessor($videoContainer, siteHostname) {
   var autoRetry;
-  var video = $("video")[0];
+  var video = $($videoContainer).find('video')[0];
   var firstPlay = true;
   var isDBInited = await initDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
-  addTranslationBtn(".html5-video-container");
-  addTranslationMenu(".html5-video-container");
-  transformBtnDefault('Перевести видео')
+  addTranslationBtn($videoContainer);
+  addTranslationMenu($videoContainer);
+  transformBtn('none', 'Перевести видео');
   if (isDBInited) {
     var dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
     var dbAutoTranslate = dbData !== undefined ? dbData.autoTranslate : undefined;
@@ -458,7 +482,6 @@ $("body").on("yt-page-data-updated", async function () {
       });
       $translationMenuContent.append($translationDropDBCont);
     }
-
     if (!$('.translationSVS').length && dbData !== undefined) {
       var $translationSVSCont = $(
         `<div class = "translationMenuContainer">
@@ -489,13 +512,13 @@ $("body").on("yt-page-data-updated", async function () {
       isOpened = !isOpened;
     })
 
-    $(".html5-video-container").on("mousemove", () => resetTimer());
-    $(".html5-video-container").on("mouseout", () => logout(0));
+    $($videoContainer).on("mousemove", () => resetTimer());
+    $($videoContainer).on("mouseout", () => logout(0));
 
     $(document).on("click", (event) => {
       let isBlock = event.target == $($translationBlock)[0] || $($translationBlock)[0].contains(event.target);
       let isContent = event.target == $($translationMenuContent)[0] || $($translationMenuContent)[0].contains(event.target);
-      let isVideo = event.target == $(".html5-video-container")[0]|| $(".html5-video-container")[0].contains(event.target);
+      let isVideo = event.target == $($videoContainer)[0]|| $($videoContainer)[0].contains(event.target);
       if (!isBlock && !isContent) {
         $translationMenuContent.hide();
         isOpened = false
@@ -533,15 +556,15 @@ $("body").on("yt-page-data-updated", async function () {
     }
   };
 
-  const translateYTFunc = (VIDEO_ID) => translateVideo(`https://youtu.be/${VIDEO_ID}`, 0x4075500000000000, function (success, urlOrError) {
+  const translateFunc = (VIDEO_ID) => translateVideo(`${siteTranslates[siteHostname]['url']}${VIDEO_ID}`, siteTranslates[siteHostname]['func_param'], function (success, urlOrError) {
 
-    if (getVideoId('youtube') === VIDEO_ID) {
+    if (getVideoId(siteHostname) === VIDEO_ID) {
       if (!success) {
-        transformBtnError(urlOrError);
+        transformBtn('error', urlOrError);
         if (urlOrError === 'Перевод займет несколько минут') {
           clearTimeout(autoRetry);
           autoRetry = setTimeout(() => {
-            translateYTFunc(VIDEO_ID);
+            translateFunc(VIDEO_ID);
           }, 70000)
         }
         throw urlOrError;
@@ -552,11 +575,13 @@ $("body").on("yt-page-data-updated", async function () {
         audio.volume = dbDefaultVolume / 100;
       }
 
-      $("body").on("yt-page-data-updated", function () {
-        audio.pause();
-        $("video").off(".translate");
-        deleteAudioSrc();
-      });
+      if (siteHostname === 'youtube') {
+        $("body").on("yt-page-data-updated", function () {
+          audio.pause();
+          $("video").off(".translate");
+          deleteAudioSrc();
+        });
+      }
 
       if (!video.paused) {
         lipSync("play");
@@ -580,7 +605,7 @@ $("body").on("yt-page-data-updated", async function () {
 
       $translationBtn.text('Выключить');
       changeColor("#A36EFF");
-      changeBackgroundSuccess();
+      changeBackground('success');
       if (typeof(dbDefaultVolume) === 'number') {
         var defaultTranslateVolume = dbDefaultVolume; 
       } else {
@@ -636,31 +661,44 @@ $("body").on("yt-page-data-updated", async function () {
     $translationBtn.css("color", n);
   }
 
-  function changeBackgroundError() {
-    $translationImageAlice.attr('src', 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAliceError.svg')
-    $translationImageTranslate.attr('fill', '#7A7A7D')
+  function changeBackground(type = 'none') {
+    let imgBackground;
+    let imgBackgroundColor;
+    console.log(type)
+    switch (type) {
+      case 'error':
+        imgBackground = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAliceError.svg';
+        imgBackgroundColor = '#7A7A7D';
+        break;
+      case 'success':
+        imgBackground = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg';
+        imgBackgroundColor = '#A36EFF';
+        break;
+      default:
+        imgBackground = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg';
+        imgBackgroundColor = '#FFFFFF';
+        break;
+    }
+    $translationImageAlice.attr('src', imgBackground)
+    $translationImageTranslate.attr('fill', imgBackgroundColor)
+    console.log(imgBackground)
+    console.log(imgBackgroundColor)
   }
 
-  function changeBackgroundSuccess() {
-    $translationImageAlice.attr('src', 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg')
-    $translationImageTranslate.attr('fill', '#A36EFF')
-  }
-
-  function changeBackgroundDefault() {
-    $translationImageAlice.attr('src', 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg')
-    $translationImageTranslate.attr('fill', '#FFFFFF')
-  }
-
-  function transformBtnError(err) {
-    $translationBtn.text(err);
-    changeBackgroundError();
-    changeColor('#7A7A7D')
-  }
-
-  function transformBtnDefault(err) {
-    $translationBtn.text(err);
-    changeBackgroundDefault();
-    changeColor('#FFFF')
+  function transformBtn(type = 'none', text) {
+    switch (type) {
+      case 'error':
+        $translationBtn.text(text);
+        changeBackground('error');
+        changeColor('#7A7A7D');
+        break;
+      default:
+        $translationBtn.text(text);
+        changeBackground('none');
+        changeColor('#FFFFFF');
+        break;
+    }
+    $translationBtn.text(text);
   }
 
   btnHover();
@@ -679,11 +717,11 @@ $("body").on("yt-page-data-updated", async function () {
         audioPromise.catch(e => {
           console.error(e)
           if (e.name === "NotAllowedError") {
-            transformBtnError('Предоставьте разрешение на автовоспроизведение')
-            throw "YaTranslate: Предоставьте разрешение на автовоспроизведение"
+            transformBtn('error', 'Предоставьте разрешение на автовоспроизведение')
+            throw "VOT: Предоставьте разрешение на автовоспроизведение"
           } else if (e.name === "NotSupportedError") {
-            transformBtnError('Формат аудио не поддерживается')
-            throw "YaTranslate: Формат аудио не поддерживается"
+            transformBtn('error', 'Формат аудио не поддерживается')
+            throw "VOT: Формат аудио не поддерживается"
           }
         })
       }
@@ -700,11 +738,11 @@ $("body").on("yt-page-data-updated", async function () {
     const VIDEO_ID = getVideoId('youtube');
 
     if (!VIDEO_ID) {
-      throw "YaTranslate: Не найдено ID видео";
+      throw "VOT: Не найдено ID видео";
     }
 
     if (firstPlay && dbAutoTranslate === 1) {
-      translateYTFunc(VIDEO_ID);
+      translateFunc(VIDEO_ID);
       firstPlay = false;
     }
   });
@@ -714,7 +752,7 @@ $("body").on("yt-page-data-updated", async function () {
 
     if (audio.src) {
       deleteAudioSrc();
-      transformBtnDefault('Перевести видео')
+      transformBtn('none', 'Перевести видео')
       event.stopImmediatePropagation();
     }
   });
@@ -726,13 +764,17 @@ $("body").on("yt-page-data-updated", async function () {
       const VIDEO_ID = getVideoId('youtube');
 
       if (!VIDEO_ID) {
-        throw "YaTranslate: Не найдено ID видео"; // not found video id
+        throw "VOT: Не найдено ID видео"; // not found video id
       }
-      translateYTFunc(VIDEO_ID)
+      translateFunc(VIDEO_ID)
       event.stopImmediatePropagation();
     } catch (err) {
-      transformBtnError(err.substring(13, err.length))
+      transformBtn('error', err.substring(13, err.length))
       console.error(err);
     }
   });
+}
+
+$("body").on("yt-page-data-updated", async function () {
+  await translateProccessor($('.html5-video-container'), 'youtube')
 });
