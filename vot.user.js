@@ -459,7 +459,7 @@ $("body").on("yt-page-data-updated", async function () {
       $translationMenuContent.append($translationDropDBCont);
     }
 
-    if (!$('.translationShowVideoSlider').length && dbData !== undefined) {
+    if (!$('.translationSVS').length && dbData !== undefined) {
       var $translationSVSCont = $(
         `<div class = "translationMenuContainer">
           <input type="checkbox" name="show_video_slider" value=${typeof(dbShowVideoSlider) === 'number' ? dbShowVideoSlider : '0'} class = "translationSVS" ${dbShowVideoSlider === 1 ? "checked" : ''}>
