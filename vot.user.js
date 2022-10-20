@@ -535,97 +535,99 @@ $("body").on("yt-page-data-updated", async function () {
 
   const translateYTFunc = (VIDEO_ID) => translateVideo(`https://youtu.be/${VIDEO_ID}`, 0x4075500000000000, function (success, urlOrError) {
 
-    if (!success) {
-      transformBtnError(urlOrError);
-      if (urlOrError === 'Перевод займет несколько минут') {
-        clearTimeout(autoRetry);
-        autoRetry = setTimeout(() => {
-          translateYTFunc(VIDEO_ID);
-        }, 70000)
+    if (getVideoId('youtube') === VIDEO_ID) {
+      if (!success) {
+        transformBtnError(urlOrError);
+        if (urlOrError === 'Перевод займет несколько минут') {
+          clearTimeout(autoRetry);
+          autoRetry = setTimeout(() => {
+            translateYTFunc(VIDEO_ID);
+          }, 70000)
+        }
+        throw urlOrError;
       }
-      throw urlOrError;
-    }
 
-    audio.src = urlOrError;
-    if (typeof(dbDefaultVolume) === 'number') {
-      audio.volume = dbDefaultVolume / 100;
-    }
+      audio.src = urlOrError;
+      if (typeof(dbDefaultVolume) === 'number') {
+        audio.volume = dbDefaultVolume / 100;
+      }
 
-    $("body").on("yt-page-data-updated", function () {
-      audio.pause();
-      $("video").off(".translate");
-      deleteAudioSrc();
-    });
-
-    if (!video.paused) {
-      lipSync("play");
-    }
-
-    $("video").on("playing.translate ratechange.translate", function () {
-      lipSync();
-    });
-
-    $("video").on("play.translate canplaythrough.translate", function () {
-      lipSync();
+      $("body").on("yt-page-data-updated", function () {
+        audio.pause();
+        $("video").off(".translate");
+        deleteAudioSrc();
+      });
 
       if (!video.paused) {
         lipSync("play");
       }
-    });
 
-    $("video").on("pause.translate waiting.translate", function () {
-      lipSync("pause");
-    });
-
-    $translationBtn.text('Выключить');
-    changeColor("#A36EFF");
-    changeBackgroundSuccess();
-    if (typeof(dbDefaultVolume) === 'number') {
-      var defaultTranslateVolume = dbDefaultVolume; 
-    } else {
-      var defaultTranslateVolume = 100;
-    }
-
-    const volumeBox = $(`
-      <div class = "translationMenuContainer">
-        <span class = "translationHeader">Громкость перевода: <b class = "volumePercent">${defaultTranslateVolume}%</b></span>
-        <div class = "translationVolumeBox" tabindex = "0">
-          <input type="range" min="0" max="100" value=${defaultTranslateVolume} class="translationVolumeSlider">
-        </div>
-      </div>`
-    );
-    const volumeSlider = volumeBox.find('.translationVolumeSlider');
-
-    if (!$translationMenuContent.has('.translationVolumeBox').length) {
-      $translationMenuContent.append(volumeBox);
-      let $volumePercent = volumeBox.find('.volumePercent');
-      volumeSlider.on('input', async () => {
-        let value = volumeSlider.val();
-        audio.volume = (value / 100);
-        $volumePercent.text(`${value}%`);
-        await updateDB({defaultVolume: Number(value)});
+      $("video").on("playing.translate ratechange.translate", function () {
+        lipSync();
       });
-    }
 
-    if (dbShowVideoSlider === 1) {
-      const videoVolumeBox = $(`
+      $("video").on("play.translate canplaythrough.translate", function () {
+        lipSync();
+
+        if (!video.paused) {
+          lipSync("play");
+        }
+      });
+
+      $("video").on("pause.translate waiting.translate", function () {
+        lipSync("pause");
+      });
+
+      $translationBtn.text('Выключить');
+      changeColor("#A36EFF");
+      changeBackgroundSuccess();
+      if (typeof(dbDefaultVolume) === 'number') {
+        var defaultTranslateVolume = dbDefaultVolume; 
+      } else {
+        var defaultTranslateVolume = 100;
+      }
+
+      const volumeBox = $(`
         <div class = "translationMenuContainer">
-          <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${video.volume * 100}%</b></span>
-          <div class = "translationVideoVolumeBox" tabindex = "0">
-            <input type="range" min="0" max="100" value=${video.volume * 100} class="translationVolumeSlider">
+          <span class = "translationHeader">Громкость перевода: <b class = "volumePercent">${defaultTranslateVolume}%</b></span>
+          <div class = "translationVolumeBox" tabindex = "0">
+            <input type="range" min="0" max="100" value=${defaultTranslateVolume} class="translationVolumeSlider">
           </div>
         </div>`
       );
-      const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
+      const volumeSlider = volumeBox.find('.translationVolumeSlider');
 
-      if (!$translationMenuContent.has('.translationVideoVolumeBox').length) {
-        $translationMenuContent.append(videoVolumeBox);
-        let $volumePercent = videoVolumeBox.find('.volumePercent');
-        videoVolumeSlider.on('input', async () => {
-          let value = videoVolumeSlider.val();
-          video.volume = (value / 100);
+      if (!$translationMenuContent.has('.translationVolumeBox').length) {
+        $translationMenuContent.append(volumeBox);
+        let $volumePercent = volumeBox.find('.volumePercent');
+        volumeSlider.on('input', async () => {
+          let value = volumeSlider.val();
+          audio.volume = (value / 100);
           $volumePercent.text(`${value}%`);
+          await updateDB({defaultVolume: Number(value)});
         });
+      }
+
+      if (dbShowVideoSlider === 1) {
+        const videoVolumeBox = $(`
+          <div class = "translationMenuContainer">
+            <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${video.volume * 100}%</b></span>
+            <div class = "translationVideoVolumeBox" tabindex = "0">
+              <input type="range" min="0" max="100" value=${video.volume * 100} class="translationVolumeSlider">
+            </div>
+          </div>`
+        );
+        const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
+
+        if (!$translationMenuContent.has('.translationVideoVolumeBox').length) {
+          $translationMenuContent.append(videoVolumeBox);
+          let $volumePercent = videoVolumeBox.find('.volumePercent');
+          videoVolumeSlider.on('input', async () => {
+            let value = videoVolumeSlider.val();
+            video.volume = (value / 100);
+            $volumePercent.text(`${value}%`);
+          });
+        }
       }
     }
   });
