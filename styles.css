@@ -156,3 +156,19 @@
 .translationVolumeBox {
   padding-top: 0.5rem;
 }
+
+.translationDropDB {
+  border: none;
+  border-radius: 4px;
+  background: #5426FF;
+  color: #fff;
+  padding: 6px 16px;
+  cursor: pointer;
+}
+
+#translationDropDBContainer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin-bottom: 2rem;
+}
