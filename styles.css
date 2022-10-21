@@ -145,6 +145,7 @@
 
 .translationMainHeader {
   margin: 16px;
+  color: #FFF;
   font: 900 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif;
 }
 
@@ -155,6 +156,7 @@
 }
 
 .translationMenuText {
+  color: #FFF;
   width: 80%;
 }
 
