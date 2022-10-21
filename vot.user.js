@@ -434,7 +434,7 @@ const siteTranslates = {
 }
 
 
-async function translateProccessor($videoContainer, siteHostname) {
+async function translateProccessor($videoContainer, siteHostname, siteEvent) {
   var autoRetry;
   var video = $($videoContainer).find('video')[0];
   var firstPlay = true;
@@ -575,8 +575,8 @@ async function translateProccessor($videoContainer, siteHostname) {
         audio.volume = dbDefaultVolume / 100;
       }
 
-      if (siteHostname === 'youtube') {
-        $("body").on("yt-page-data-updated", function () {
+      if (siteEvent !== null) {
+        $("body").on(siteEvent, function () {
           audio.pause();
           $("video").off(".translate");
           deleteAudioSrc();
@@ -664,7 +664,6 @@ async function translateProccessor($videoContainer, siteHostname) {
   function changeBackground(type = 'none') {
     let imgBackground;
     let imgBackgroundColor;
-    console.log(type)
     switch (type) {
       case 'error':
         imgBackground = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAliceError.svg';
@@ -681,8 +680,6 @@ async function translateProccessor($videoContainer, siteHostname) {
     }
     $translationImageAlice.attr('src', imgBackground)
     $translationImageTranslate.attr('fill', imgBackgroundColor)
-    console.log(imgBackground)
-    console.log(imgBackgroundColor)
   }
 
   function transformBtn(type = 'none', text) {
@@ -735,7 +732,7 @@ async function translateProccessor($videoContainer, siteHostname) {
   $(video).on('progress', event => {
     event.stopPropagation();
 
-    const VIDEO_ID = getVideoId('youtube');
+    const VIDEO_ID = getVideoId(siteHostname);
 
     if (!VIDEO_ID) {
       throw "VOT: Не найдено ID видео";
@@ -761,7 +758,7 @@ async function translateProccessor($videoContainer, siteHostname) {
     try {
       event.stopPropagation();
 
-      const VIDEO_ID = getVideoId('youtube');
+      const VIDEO_ID = getVideoId(siteHostname);
 
       if (!VIDEO_ID) {
         throw "VOT: Не найдено ID видео"; // not found video id
@@ -775,6 +772,12 @@ async function translateProccessor($videoContainer, siteHostname) {
   });
 }
 
-$("body").on("yt-page-data-updated", async function () {
-  await translateProccessor($('.html5-video-container'), 'youtube')
-});
+if (window.location.hostname.includes("youtube")) {
+  if (window.location.pathname.includes('embed')) {
+    await translateProccessor($('.html5-video-container'), 'youtube', null)
+  } else {
+    $("body").on("yt-page-data-updated", async function () {
+      await translateProccessor($('.html5-video-container'), 'youtube', 'yt-page-data-updated')
+    });
+  }
+}
