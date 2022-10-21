@@ -51,6 +51,11 @@
   max-width: 50px;
 }
 
+.translationIconAlice {
+  height: 24px !important;
+  width: 24px !important;
+}
+
 .translationITranslate {
   display: inline-block;
   vertical-align: middle;
