@@ -815,7 +815,7 @@ if (window.location.hostname.includes("youtube")) {
   }
 } else if (window.location.hostname.includes('twitch') && window.location.pathname.includes('videos')) {
   if (window.location.hostname.includes('m.twitch') && window.location.pathname.includes('videos')) {
-    await translateProccessor($('.sc-2035e8b3-0.lfUPeS'), 'twitch', null);
+    await translateProccessor($('.sc-2035e8b3-0.lfUPeS'), 'twitch', null); // TODO: Пофиксить пропажу кнопки при переходе на другое видео
   } else {
     await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null);
   }
