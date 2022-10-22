@@ -134,7 +134,12 @@ const getVideoId = (service) => {
     case "twitch":
       if (/^m\.twitch\.tv$/.test(window.location.hostname)) { // Если используется мобильная версия сайта (m.twitch.tv)
         let linkUrl = document.head.querySelector('link[rel="canonical"]');
-        return linkUrl && linkUrl.href.includes("/videos/") ? linkUrl.href : false;
+        if (linkUrl && linkUrl.href.includes("/videos/")) {
+          let urlArray = linkUrl.href.split('/');
+          return urlArray[urlArray.length - 1];
+        } else {
+          return false
+        }
       } else if (url.pathname.includes("videos/")) {
         let urlArray = url.pathname.split('/');
         return urlArray[urlArray.length - 1];
@@ -594,12 +599,13 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
                 $("video").off(".translate");
                 deleteAudioSrc();
                 transformBtn('none', 'Перевести видео');
+                firstPlay = true;
               }
             }
           });
         });
       
-        mutationObserver.observe($('.Layout-sc-nxg1ff-0.video-ref')[0], {
+        mutationObserver.observe($videoContainer[0], {
           attributes: true,
           childList: false,
           subtree: true,
@@ -808,6 +814,9 @@ if (window.location.hostname.includes("youtube")) {
     });
   }
 } else if (window.location.hostname.includes('twitch') && window.location.pathname.includes('videos')) {
-  await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null);
-  // TODO: Доделать перевод для твича (проблема с сохранением озвучки после смены видео)
+  if (window.location.hostname.includes('m.twitch') && window.location.pathname.includes('videos')) {
+    await translateProccessor($('.sc-2035e8b3-0.lfUPeS'), 'twitch', null);
+  } else {
+    await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null);
+  }
 }
