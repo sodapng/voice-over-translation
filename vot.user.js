@@ -6,6 +6,7 @@
 // @version          1.0.9
 // @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
+// @match            *://*.twitch.tv/*
 // @icon             https://translate.yandex.ru/icons/favicon.ico
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
@@ -22,6 +23,30 @@
 
 const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
 const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/104.0.5112.114 YaBrowser/22.9.4.633.10 SA/3 Mobile/15E148 Safari/604.1";
+
+const siteTranslates = {
+  'youtube': {
+    'url': 'https://youtu.be/',
+    'func_param': 0x4075500000000000
+  },
+  'twitch': {
+    'url': 'https://twitch.tv/videos/',
+    'func_param': 0x4075500000000000
+  },
+  'vimeo': {
+    'url': 'https://vimeo.com/',
+    'func_param': 0x402e000000000000
+  },
+  '9gag': {
+    'url': 'https://9gag.com/gag/',
+    'func_param': 0x4048800000000000
+  },
+  'vk': {
+    'url': 'https://vk.com/video/',
+    'func_param': 0x4072400000000000
+  },
+}
+
 
 // https://github.com/greasemonkey/gm4-polyfill
 if (typeof GM_addStyle === 'undefined') {
@@ -107,7 +132,7 @@ const getVideoId = (service) => {
         return urlArray[urlArray.length - 1];
       }
     case "twitch":
-      if (/^m\.twitch\.tv$/.test(window.location.hostname())) { // Если используется мобильная версия сайта (m.twitch.tv)
+      if (/^m\.twitch\.tv$/.test(window.location.hostname)) { // Если используется мобильная версия сайта (m.twitch.tv)
         let linkUrl = document.head.querySelector('link[rel="canonical"]');
         return linkUrl && linkUrl.href.includes("/videos/") ? linkUrl.href : false;
       } else if (url.pathname.includes("videos/")) {
@@ -408,29 +433,6 @@ async function readDB() {
 
 function deleteDB() {
   indexedDB.deleteDatabase('VOT');
-}
-
-const siteTranslates = {
-  'youtube': {
-    'url': 'https://youtu.be/',
-    'func_param': 0x4075500000000000
-  },
-  'twitch': {
-    'url': 'https://twitch.tv/videos/',
-    'func_param': 0x40c7b10000000000
-  },
-  'vimeo': {
-    'url': 'https://vimeo.com/',
-    'func_param': 0x402e000000000000
-  },
-  '9gag': {
-    'url': 'https://9gag.com/gag/',
-    'func_param': 0x4048800000000000
-  },
-  'vk': {
-    'url': 'https://vk.com/video/',
-    'func_param': 0x4072400000000000
-  },
 }
 
 
@@ -780,4 +782,6 @@ if (window.location.hostname.includes("youtube")) {
       await translateProccessor($('.html5-video-container'), 'youtube', 'yt-page-data-updated')
     });
   }
+} else if (window.location.hostname.includes('twitch') && window.location.pathname.includes('videos')) {
+  await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null)
 }
