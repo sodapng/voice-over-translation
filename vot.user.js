@@ -86,7 +86,7 @@ const $translationBlock = $(`
           <span class = "translationBtn" tabindex = "0">Перевести видео</span>
       </span>
       <span class = "translationMenu" tabindex = "0" role = "button">
-        <svg class = "translationMenuIcon" width="4" height="15" xmlns="http://www.w3.org/2000/svg">
+        <svg class = "translationMenuIcon" height="15" xmlns="http://www.w3.org/2000/svg">
           <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 13.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" fill="#fff"></path>
         </svg>
       </span>
@@ -585,6 +585,28 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
         });
       }
 
+      if (siteHostname === 'twitch') {
+        var mutationObserver = new MutationObserver(async function(mutations) {
+          mutations.forEach(async function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video) {
+              if (mutation.target.src !== '') {
+                audio.pause();
+                $("video").off(".translate");
+                deleteAudioSrc();
+                transformBtn('none', 'Перевести видео');
+              }
+            }
+          });
+        });
+      
+        mutationObserver.observe($('.Layout-sc-nxg1ff-0.video-ref')[0], {
+          attributes: true,
+          childList: false,
+          subtree: true,
+          attributeOldValue: true,
+        });
+      }
+
       if (!video.paused) {
         lipSync("play");
       }
@@ -605,9 +627,7 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
         lipSync("pause");
       });
 
-      $translationBtn.text('Выключить');
-      changeColor("#A36EFF");
-      changeBackground('success');
+      transformBtn('success', 'Выключить');
       if (typeof(dbDefaultVolume) === 'number') {
         var defaultTranslateVolume = dbDefaultVolume; 
       } else {
@@ -690,6 +710,11 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
         $translationBtn.text(text);
         changeBackground('error');
         changeColor('#7A7A7D');
+        break;
+      case 'success':
+        $translationBtn.text(text);
+        changeBackground('success');
+        changeColor('#A36EFF');
         break;
       default:
         $translationBtn.text(text);
@@ -776,12 +801,13 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
 
 if (window.location.hostname.includes("youtube")) {
   if (window.location.pathname.includes('embed')) {
-    await translateProccessor($('.html5-video-container'), 'youtube', null)
+    await translateProccessor($('.html5-video-container'), 'youtube', null);
   } else {
     $("body").on("yt-page-data-updated", async function () {
-      await translateProccessor($('.html5-video-container'), 'youtube', 'yt-page-data-updated')
+      await translateProccessor($('.html5-video-container'), 'youtube', 'yt-page-data-updated');
     });
   }
 } else if (window.location.hostname.includes('twitch') && window.location.pathname.includes('videos')) {
-  await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null)
+  await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null);
+  // TODO: Доделать перевод для твича (проблема с сохранением озвучки после смены видео)
 }
