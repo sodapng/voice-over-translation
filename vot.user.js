@@ -97,6 +97,8 @@ const $translationImageTranslate = $translationBlock.find('.translateIcon');
 
 const $translationMenuContent = $('<div class = "translationMenuContent"><p class = "translationMainHeader">Перевод видео</p></div>');
 
+const sleep = m => new Promise(r => setTimeout(r, m))
+
 function addTranslationBtn(elem) {
   if (!$(elem).has($translationBlock).length) {
     $(elem).append($translationBlock);
@@ -523,9 +525,9 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     $($videoContainer).on("mouseout", () => logout(0));
 
     $(document).on("click", (event) => {
-      let isBlock = event.target == $($translationBlock)[0] || $($translationBlock)[0].contains(event.target);
-      let isContent = event.target == $($translationMenuContent)[0] || $($translationMenuContent)[0].contains(event.target);
-      let isVideo = event.target == $($videoContainer)[0]|| $($videoContainer)[0].contains(event.target);
+      let isBlock = event.target === $($translationBlock)[0] || $($translationBlock).length ? $($translationBlock)[0].contains(event.target) : false;
+      let isContent = event.target === $($translationMenuContent)[0] || $($translationMenuContent).length ? $($translationMenuContent)[0].contains(event.target) : false;
+      let isVideo = event.target === $($videoContainer)[0] || $($videoContainer).length ? $($videoContainer)[0].contains(event.target) : false;
       if (!isBlock && !isContent) {
         $translationMenuContent.hide();
         isOpened = false
@@ -817,6 +819,7 @@ if (window.location.hostname.includes("youtube")) {
   if (window.location.hostname.includes('m.twitch')) {
     await translateProccessor($('.sc-2035e8b3-0.lfUPeS'), 'twitch', null); // TODO: Пофиксить пропажу кнопки при переходе на другое видео
   } else {
+    await sleep(1000); // stupid fix for wait video load
     await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null);
   }
 }
