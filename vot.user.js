@@ -3,7 +3,7 @@
 // @name:ru          [VOT] - Закадровый перевод видео
 // @description      A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru   Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version          1.0.9.1
+// @version          1.0.9.2
 // @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
 // @match            *://*.twitch.tv/*
@@ -86,7 +86,7 @@ const $translationBlock = $(`
           <span class = "translationBtn" tabindex = "0">Перевести видео</span>
       </span>
       <span class = "translationMenu" tabindex = "0" role = "button">
-        <svg class = "translationMenuIcon" height="15" xmlns="http://www.w3.org/2000/svg">
+        <svg class = "translationMenuIcon" height="15" width="5" xmlns="http://www.w3.org/2000/svg">
           <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 13.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" fill="#fff"></path>
         </svg>
       </span>
@@ -99,14 +99,21 @@ const $translationMenuContent = $('<div class = "translationMenuContent"><p clas
 
 const sleep = m => new Promise(r => setTimeout(r, m))
 
-function addTranslationBtn(elem) {
+function addTranslationBtn(elem, device = 'desktop') {
   if (!$(elem).has($translationBlock).length) {
+    if (device === 'mobile') {
+      $translationBlock.css('top', '1rem');
+    }
     $(elem).append($translationBlock);
   }
 };
 
-function addTranslationMenu(elem) {
+function addTranslationMenu(elem, device = 'desktop') {
   if (!$(elem).has($translationMenuContent).length) {
+    if (device === 'mobile') {
+      $translationMenuContent.css('top', '5rem');
+      $translationMenuContent.css('height', '200px');
+    }
     $(elem).append($translationMenuContent);
   }
 };
@@ -264,6 +271,7 @@ async function initDB () {
       objectStore.createIndex('autoTranslate', 'autoTranslate', { unique: false });
       objectStore.createIndex('defaultVolume', 'defaultVolume', { unique: false });
       objectStore.createIndex('showVideoSlider', 'showVideoSlider', { unique: false });
+      objectStore.createIndex('newYoutubeDesign', 'newYoutubeDesign', { unique: false });
       console.log('VOT: База Данных создана')
 
       objectStore.transaction.oncomplete = event => {
@@ -273,6 +281,7 @@ async function initDB () {
           autoTranslate: 0,
           defaultVolume: 100,
           showVideoSlider: 0,
+          newYoutubeDesign: 0,
         }
         var request = objectStore.add(settingsDefault);
 
@@ -308,9 +317,9 @@ async function initDB () {
   });
 }
 
-async function updateDB({autoTranslate, defaultVolume, showVideoSlider}) {
+async function updateDB({autoTranslate, defaultVolume, showVideoSlider, newYoutubeDesign}) {
   return new Promise((resolve, reject) => {
-    if (typeof(autoTranslate) === 'number' || typeof(defaultVolume) === 'number' || typeof(showVideoSlider) === 'number') {
+    if (typeof(autoTranslate) === 'number' || typeof(defaultVolume) === 'number' || typeof(showVideoSlider) === 'number' || typeof(newYoutubeDesign) === 'number') {
       var openRequest = openDB("VOT");
 
       openRequest.onerror = () => {
@@ -357,6 +366,10 @@ async function updateDB({autoTranslate, defaultVolume, showVideoSlider}) {
 
           if (typeof(showVideoSlider) === 'number') {
             data.showVideoSlider = showVideoSlider;
+          };
+
+          if (typeof(newYoutubeDesign) === 'number') {
+            data.newYoutubeDesign = newYoutubeDesign;
           };
 
           var requestUpdate = objectStore.put(data);
@@ -445,20 +458,30 @@ function deleteDB() {
 
 async function translateProccessor($videoContainer, siteHostname, siteEvent) {
   var autoRetry;
+  let opacityRatio = 0.9; 
   var video = $($videoContainer).find('video')[0];
   var firstPlay = true;
   var isDBInited = await initDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
-  addTranslationBtn($videoContainer);
-  addTranslationMenu($videoContainer);
+  if (siteHostname === 'youtube' && window.location.hostname.includes('m.youtube.com')) {
+    await sleep(1000);
+    opacityRatio = 1;
+    addTranslationBtn($('.slim-video-information-title-and-badges'), 'mobile');
+    addTranslationMenu($('.slim-video-information-title-and-badges'), 'mobile');
+  } else {
+    addTranslationBtn($videoContainer);
+    addTranslationMenu($videoContainer);
+  }
   transformBtn('none', 'Перевести видео');
   if (isDBInited) {
     var dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
     var dbAutoTranslate = dbData !== undefined ? dbData.autoTranslate : undefined;
     var dbDefaultVolume = dbData !== undefined ? dbData.defaultVolume : undefined;
     var dbShowVideoSlider = dbData !== undefined ? dbData.showVideoSlider : undefined;
+    var dbNewYoutubeDesign = dbData !== undefined ? dbData.newYoutubeDesign : undefined;
     console.log(`VOT: Значение autoTranslate: ${dbAutoTranslate}`)
     console.log(`VOT: Значение dbDefaultVolume: ${dbDefaultVolume}`)
     console.log(`VOT: Значение dbShowVideoSlider: ${dbShowVideoSlider}`)
+    console.log(`VOT: Значение newYoutubeDesign: ${dbNewYoutubeDesign}`)
     if (!$('.translationAT').length && dbAutoTranslate !== undefined) {
       var $translationATCont = $(
         `<div class = "translationMenuContainer">
@@ -491,7 +514,7 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
       });
       $translationMenuContent.append($translationDropDBCont);
     }
-    if (!$('.translationSVS').length && dbData !== undefined) {
+    if (!$('.translationSVS').length && dbData !== undefined && (dbNewYoutubeDesign === 1 || !window.location.hostname.includes('m.youtube.com'))) {
       var $translationSVSCont = $(
         `<div class = "translationMenuContainer">
           <input type="checkbox" name="show_video_slider" value=${typeof(dbShowVideoSlider) === 'number' ? dbShowVideoSlider : '0'} class = "translationSVS" ${dbShowVideoSlider === 1 ? "checked" : ''}>
@@ -508,6 +531,26 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
       });
       $translationMenuContent.append($translationSVSCont);
     }
+    if (!$('.translationND').length && dbData !== undefined && window.location.hostname.includes('m.youtube.com')) {
+      var $translationNDCont = $(
+        `<div class = "translationMenuContainer">
+          <input type="checkbox" name="new_youtube_design" value=${typeof(dbNewYoutubeDesign) === 'number' ? dbNewYoutubeDesign : '0'} class = "translationND" ${dbNewYoutubeDesign === 1 ? "checked" : ''}>
+          <label class = "translationMenuText" for = "new_youtube_design">Новый дизайн YouTube</label>
+        </div>
+        `
+      );
+      var $translationND = $($translationNDCont).find('.translationND');
+      $translationND.on('click', async (event) => {
+        event.stopPropagation();
+        let ndValue = event.target.checked ? 1 : 0;
+        await updateDB({newYoutubeDesign: ndValue});
+        dbNewYoutubeDesign = ndValue;
+      });
+      $translationMenuContent.append($translationNDCont);
+    }
+    if (window.location.hostname.includes('m.youtube.com')) {
+      dbNewYoutubeDesign === 1 ? $translationMenuContent.css('height', '300px') : $translationMenuContent.css('height', '200px');
+    } 
   }
 
   let btnHover = function () {
@@ -517,7 +560,7 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
 
     $translationMenu.on('click', (event) => {
       event.stopPropagation();
-      isOpened ? $translationMenuContent.hide() : ($translationMenuContent.show(), $translationMenuContent.css('opacity', 0.9));
+      isOpened ? $translationMenuContent.hide() : ($translationMenuContent.show(), $translationMenuContent.css('opacity', opacityRatio));
       isOpened = !isOpened;
     })
 
@@ -538,17 +581,14 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
       }
     })
 
-    $translationBlock.on("mousemove", (event) => {
-      clearTimeout(time);
-      logout(0.9);
-      event.stopPropagation();
-    });
+    $translationBlock.on("mousemove", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
+    $translationMenuContent.on("mousemove", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
 
-    $translationMenuContent.on("mousemove", (event) => {
-      clearTimeout(time);
-      logout(0.9);
-      event.stopPropagation();
-    });
+    if (siteHostname === 'youtube' && window.location.hostname.includes('m.youtube.com')) {
+      $(document).on("touchstart", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
+      $(document).on("touchmove", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
+      $(document).on("touchend", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
+    }
 
     function logout(n) {
       if (!isOpened) {
@@ -663,7 +703,7 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
         });
       }
 
-      if (dbShowVideoSlider === 1) {
+      if (dbShowVideoSlider === 1 && (dbNewYoutubeDesign === 1 || !window.location.hostname.includes("m.youtube.com"))) {
         const videoVolumeBox = $(`
           <div class = "translationMenuContainer">
             <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${video.volume * 100}%</b></span>
@@ -809,6 +849,8 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
 
 if (window.location.hostname.includes("youtube")) {
   if (window.location.pathname.includes('embed')) {
+    await translateProccessor($('.html5-video-container'), 'youtube', null);
+  } else if (window.location.hostname.includes("m.youtube.com") && window.location.pathname.includes('watch')){
     await translateProccessor($('.html5-video-container'), 'youtube', null);
   } else {
     $("body").on("yt-page-data-updated", async function () {
