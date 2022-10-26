@@ -10,6 +10,9 @@
 // @match            *://*.twitch.tv/*
 // @match            *://*.xvideos.com/*
 // @match            *://*.pornhub.com/*
+// @match            *://*.yewtu.be/*
+// @match            *://inv.vern.cc/*
+// @match            *://piped.kavin.rocks/*
 // @icon             https://translate.yandex.ru/icons/favicon.ico
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
@@ -498,7 +501,6 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
       addTranslationBtn($('body'));
       addTranslationMenu($('body'));
     }
-
   } else {
     addTranslationBtn($videoContainer);
     addTranslationMenu($videoContainer);
@@ -585,6 +587,12 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     } 
   }
 
+  if (window.location.hostname.includes('piped.kavin.rocks')) {
+    $('.router-link-active.router-link-exact-active.btn.flex-col').on('click', () => {
+      window.location.reload(); // small crutch for piped.kavin.rocks
+    })
+  }
+
   let btnHover = function () {
     let time;
     var isOpened = false;
@@ -626,11 +634,9 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     $translationBlock.on("mousemove", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
     $translationMenuContent.on("mousemove", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
 
-    if (siteHostname === 'youtube' && window.location.hostname.includes('m.youtube.com')) {
-      $(document).on("touchstart", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
-      $(document).on("touchmove", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
-      $(document).on("touchend", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
-    }
+    $(document).on("touchstart", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
+    $(document).on("touchmove", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
+    $(document).on("touchend", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
 
     function logout(n) {
       if (!isOpened) {
@@ -666,7 +672,7 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
         audio.volume = dbDefaultVolume / 100;
       }
 
-      if (siteEvent !== null) {
+      if (siteEvent !== null & siteEvent !== 'invidious') {
         $("body").on(siteEvent, function () {
           audio.pause();
           $("video").off(".translate");
@@ -912,4 +918,9 @@ if (/^(www.|m.)?youtube(-nocookie)?.com$/.test(window.location.hostname)) {
 } else if (window.location.hostname.includes('pornhub')) {
   await sleep(1000);
   await translateProccessor($('.mgp_videoWrapper'), 'pornhub', null);
+} else if (window.location.hostname.includes('inv.vern.cc') || window.location.hostname.includes('yewtu.be')) {
+  await translateProccessor($('#player'), 'youtube', null);
+} else if (window.location.hostname.includes('piped.kavin.rocks')) {
+  await sleep(2000);
+  await translateProccessor($('.shaka-video-container'), 'youtube', null);
 }
