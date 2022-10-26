@@ -6,8 +6,10 @@
 // @version          1.0.9.2
 // @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
+// @match            *://*.youtube-nocookie.com/*
 // @match            *://*.twitch.tv/*
 // @match            *://*.xvideos.com/*
+// @match            *://*.pornhub.com/*
 // @icon             https://translate.yandex.ru/icons/favicon.ico
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
@@ -48,6 +50,10 @@ const siteTranslates = {
   },
   'xvideos': {
     'url': 'https://www.xvideos.com/',
+    'func_param': 0x4075500000000000
+  },
+  'pornhub': {
+    'url': 'https://rt.pornhub.com/view_video.php?viewkey=',
     'func_param': 0x4075500000000000
   },
 }
@@ -169,6 +175,10 @@ const getVideoId = (service) => {
     case "xvideos":
       let urlArrayXVideos = url.pathname.split('/');
       return `${urlArrayXVideos[urlArrayXVideos.length - 2]}/${urlArrayXVideos[urlArrayXVideos.length - 1]}`;
+    case "pornhub":
+      if (url.pathname.includes('view_video.php')) {
+        return url.searchParams.get("viewkey");
+      }
     default:
       return false;
   }
@@ -475,6 +485,9 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     opacityRatio = 1;
     addTranslationBtn($('.slim-video-information-title-and-badges'), 'mobile');
     addTranslationMenu($('.slim-video-information-title-and-badges'), 'mobile');
+  } else if (siteHostname === 'pornhub') {
+    addTranslationBtn($('.original.mainPlayerDiv'));
+    addTranslationMenu($('.original.mainPlayerDiv'));
   } else {
     addTranslationBtn($videoContainer);
     addTranslationMenu($videoContainer);
@@ -572,8 +585,13 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
       isOpened = !isOpened;
     })
 
-    $($videoContainer).on("mousemove", () => resetTimer());
-    $($videoContainer).on("mouseout", () => logout(0));
+    if (siteHostname === 'pornhub') {
+      $($('.original.mainPlayerDiv > video-element > div')).on("mousemove", () => resetTimer());
+      $($('.original.mainPlayerDiv > video-element > div')).on("mouseout", () => logout(0));
+    } else {
+      $($videoContainer).on("mousemove", () => resetTimer());
+      $($videoContainer).on("mouseout", () => logout(0));
+    }
 
     $(document).on("click", (event) => {
       let isBlock = event.target === $($translationBlock)[0] || $($translationBlock).length ? $($translationBlock)[0].contains(event.target) : false;
@@ -855,7 +873,7 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
   });
 }
 
-if (window.location.hostname.includes("youtube")) {
+if (/^(www.|m.)?youtube(-nocookie)?.com$/.test(window.location.hostname)) {
   if (window.location.pathname.includes('embed')) {
     await translateProccessor($('.html5-video-container'), 'youtube', null);
   } else if (window.location.hostname.includes("m.youtube.com") && window.location.pathname.includes('watch')){
@@ -874,4 +892,6 @@ if (window.location.hostname.includes("youtube")) {
   }
 } else if (window.location.hostname.includes('xvideos')) {
   await translateProccessor($('.video-bg-pic'), 'xvideos', null);
+} else if (window.location.hostname.includes('pornhub')) {
+  await translateProccessor($('.mgp_videoWrapper'), 'pornhub', null);
 }
