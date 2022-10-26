@@ -169,8 +169,8 @@
 .translationDropDB {
   border: none;
   border-radius: 4px;
-  background: #5426FF;
-  color: #fff;
+  background: #5426FF !important;
+  color: #fff !important;
   padding: 6px 16px;
   cursor: pointer;
 }
