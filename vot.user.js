@@ -90,7 +90,22 @@ const $translationBlock = $(`
   <div class = "translationBlock">
       <span class = "translationArea" role = "button">
           <span class = "translationIAlice" tabindex = "-1">
-              <img class = "translationIconAlice" src = "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg">
+            <svg class="translationIconAlice" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <mask id="mask-main" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                  <circle cx="12" cy="12" r="12" fill="#fff"></circle>
+              </mask>
+              <g mask="url(#mask-main)">
+                  <path transform="translate(0 .028)" fill="url(#gradient-main)" d="M0 0h24v24H0z"></path>
+                  <path fill="#7626FF" d="M0 .028h24v24H0z"></path>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M6.283 16.193c.9.888 3.297 1.42 5.74 1.43 2.444-.01 4.841-.542 5.74-1.43 2.236-2.204-3.199-10.653-5.737-10.665-2.544.012-7.979 8.461-5.743 10.665" fill="#fff"></path>
+              </g>
+              <defs>
+                  <linearGradient id="gradient-main" x1="19.778" y1="30.357" x2="30.132" y2="4.5" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#C826FF"></stop>
+                      <stop offset="1" stop-color="#5426FF"></stop>
+                  </linearGradient>
+              </defs>
+            </svg>
           </span>
           <span class = "translationITranslate" tabindex = "-1">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -106,7 +121,7 @@ const $translationBlock = $(`
       </span>
   </div>`);
 const $translationBtn = $translationBlock.find('.translationArea > .translationBtn');
-const $translationImageAlice = $translationBlock.find('.translationArea > .translationIAlice > img');
+const $translationImageAlice = $translationBlock.find('.translationIconAlice');
 const $translationImageTranslate = $translationBlock.find('.translateIcon');
 
 const $translationMenuContent = $('<div class = "translationMenuContent"><p class = "translationMainHeader">Перевод видео</p></div>');
@@ -780,23 +795,33 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
   }
 
   function changeBackground(type = 'none') {
-    let imgBackground;
+    let aliceMaskFill;
+    let aliceGradientStop1;
+    let aliceGradientStop2;
     let imgBackgroundColor;
     switch (type) {
       case 'error':
-        imgBackground = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAliceError.svg';
+        aliceMaskFill = '#7A7A7D';
+        aliceGradientStop1 = '#7A7A7D';
+        aliceGradientStop2 = '#7A7A7D';
         imgBackgroundColor = '#7A7A7D';
         break;
       case 'success':
-        imgBackground = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg';
+        aliceMaskFill = '#7626FF';
+        aliceGradientStop1 = '#C826FF';
+        aliceGradientStop2 = '#5426FF';
         imgBackgroundColor = '#A36EFF';
         break;
       default:
-        imgBackground = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/img/YAlice.svg';
+        aliceMaskFill = '#7626FF';
+        aliceGradientStop1 = '#C826FF';
+        aliceGradientStop2 = '#5426FF';
         imgBackgroundColor = '#FFFFFF';
         break;
     }
-    $translationImageAlice.attr('src', imgBackground)
+    $translationImageAlice.find('g > path:nth-child(2)').attr('fill', aliceMaskFill);
+    $translationImageAlice.find('defs > linearGradient > stop:nth-child(1)').attr('stop-color', aliceGradientStop1);
+    $translationImageAlice.find('defs > linearGradient > stop:nth-child(2)').attr('stop-color', aliceGradientStop2);
     $translationImageTranslate.attr('fill', imgBackgroundColor)
   }
 
