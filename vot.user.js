@@ -759,7 +759,7 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
           let $volumePercent = videoVolumeBox.find('.volumePercent');
           videoVolumeSlider.on('input', async () => {
             let value = videoVolumeSlider.val();
-            video.volume = Math.round(value / 100);
+            video.volume = (value / 100);
             $volumePercent.text(`${value}%`);
           });
         }
