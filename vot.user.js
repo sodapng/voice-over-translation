@@ -732,9 +732,9 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
       if (dbShowVideoSlider === 1 && (dbNewYoutubeDesign === 1 || !window.location.hostname.includes("m.youtube.com"))) {
         const videoVolumeBox = $(`
           <div class = "translationMenuContainer">
-            <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${video.volume * 100}%</b></span>
+            <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${Math.round(video.volume * 100)}%</b></span>
             <div class = "translationVideoVolumeBox" tabindex = "0">
-              <input type="range" min="0" max="100" value=${video.volume * 100} class="translationVolumeSlider">
+              <input type="range" min="0" max="100" value=${Math.round(video.volume * 100)} class="translationVolumeSlider">
             </div>
           </div>`
         );
@@ -745,7 +745,7 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
           let $volumePercent = videoVolumeBox.find('.volumePercent');
           videoVolumeSlider.on('input', async () => {
             let value = videoVolumeSlider.val();
-            video.volume = (value / 100);
+            video.volume = Math.round(value / 100);
             $volumePercent.text(`${value}%`);
           });
         }
