@@ -178,6 +178,9 @@ const getVideoId = (service) => {
     case "pornhub":
       if (url.pathname.includes('view_video.php')) {
         return url.searchParams.get("viewkey");
+      } else if (url.pathname.includes('embed/')) {
+        let urlArray = url.pathname.split('/');
+        return urlArray[urlArray.length - 1];
       }
     default:
       return false;
@@ -486,8 +489,14 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     addTranslationBtn($('.slim-video-information-title-and-badges'), 'mobile');
     addTranslationMenu($('.slim-video-information-title-and-badges'), 'mobile');
   } else if (siteHostname === 'pornhub') {
-    addTranslationBtn($('.original.mainPlayerDiv'));
-    addTranslationMenu($('.original.mainPlayerDiv'));
+    if (window.location.pathname.includes('view_video.php')) {
+      addTranslationBtn($('.original.mainPlayerDiv'));
+      addTranslationMenu($('.original.mainPlayerDiv'));
+    } else if (window.location.pathname.includes('embed/')) {
+      addTranslationBtn($('body'));
+      addTranslationMenu($('body'));
+    }
+
   } else {
     addTranslationBtn($videoContainer);
     addTranslationMenu($videoContainer);
@@ -586,8 +595,13 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     })
 
     if (siteHostname === 'pornhub') {
-      $($('.original.mainPlayerDiv > video-element > div')).on("mousemove", () => resetTimer());
-      $($('.original.mainPlayerDiv > video-element > div')).on("mouseout", () => logout(0));
+      if (window.location.pathname.includes('view_video.php')) {
+        $($('.original.mainPlayerDiv > video-element > div')).on("mousemove", () => resetTimer());
+        $($('.original.mainPlayerDiv > video-element > div')).on("mouseout", () => logout(0));
+      } else if (window.location.pathname.includes('embed/')) {
+        $($('#player')).on("mousemove", () => resetTimer());
+        $($('#player')).on("mouseout", () => logout(0));
+      }
     } else {
       $($videoContainer).on("mousemove", () => resetTimer());
       $($videoContainer).on("mouseout", () => logout(0));
