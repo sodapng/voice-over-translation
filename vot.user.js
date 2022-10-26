@@ -7,6 +7,7 @@
 // @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
 // @match            *://*.twitch.tv/*
+// @match            *://*.xvideos.com/*
 // @icon             https://translate.yandex.ru/icons/favicon.ico
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
@@ -35,15 +36,19 @@ const siteTranslates = {
   },
   'vimeo': {
     'url': 'https://vimeo.com/',
-    'func_param': 0x402e000000000000
+    'func_param': 0x4075500000000000
   },
   '9gag': {
     'url': 'https://9gag.com/gag/',
-    'func_param': 0x4048800000000000
+    'func_param': 0x4075500000000000
   },
   'vk': {
     'url': 'https://vk.com/video/',
-    'func_param': 0x4072400000000000
+    'func_param': 0x4075500000000000
+  },
+  'xvideos': {
+    'url': 'https://www.xvideos.com/',
+    'func_param': 0x4075500000000000
   },
 }
 
@@ -161,6 +166,9 @@ const getVideoId = (service) => {
     case "vimeo":
       let urlArray = url.pathname.split('/');
       return urlArray[urlArray.length - 1];
+    case "xvideos":
+      let urlArrayXVideos = url.pathname.split('/');
+      return `${urlArrayXVideos[urlArrayXVideos.length - 2]}/${urlArrayXVideos[urlArrayXVideos.length - 1]}`;
     default:
       return false;
   }
@@ -864,4 +872,6 @@ if (window.location.hostname.includes("youtube")) {
     await sleep(1000); // stupid fix for wait video load
     await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null);
   }
+} else if (window.location.hostname.includes('xvideos')) {
+  await translateProccessor($('.video-bg-pic'), 'xvideos', null);
 }
