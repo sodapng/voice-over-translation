@@ -160,6 +160,8 @@ const getVideoId = (service) => {
         } else {
           return false
         }
+      } else if (/^player\.twitch\.tv$/.test(window.location.hostname)) {
+        return url.searchParams.get("video")
       } else if (url.pathname.includes("videos/")) {
         let urlArray = url.pathname.split('/');
         return urlArray[urlArray.length - 1];
@@ -897,15 +899,17 @@ if (/^(www.|m.)?youtube(-nocookie)?.com$/.test(window.location.hostname)) {
       await translateProccessor($('.html5-video-container'), 'youtube', 'yt-page-data-updated');
     });
   }
-} else if (window.location.hostname.includes('twitch') && window.location.pathname.includes('videos')) {
-  if (window.location.hostname.includes('m.twitch')) {
+} else if (window.location.hostname.includes('twitch')) {
+  if (window.location.hostname.includes('m.twitch.tv') && window.location.pathname.includes('videos')) {
     await translateProccessor($('.sc-2035e8b3-0.lfUPeS'), 'twitch', null); // TODO: Пофиксить пропажу кнопки при переходе на другое видео
-  } else {
+  } else if (window.location.hostname.includes('player.twitch.tv') || window.location.pathname.includes('videos')) {
     await sleep(1000); // stupid fix for wait video load
     await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null);
   }
 } else if (window.location.hostname.includes('xvideos')) {
+  await sleep(1000);
   await translateProccessor($('.video-bg-pic'), 'xvideos', null);
 } else if (window.location.hostname.includes('pornhub')) {
+  await sleep(1000);
   await translateProccessor($('.mgp_videoWrapper'), 'pornhub', null);
 }
