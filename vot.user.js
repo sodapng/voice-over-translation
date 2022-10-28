@@ -163,10 +163,13 @@ const getVideoId = (service) => {
         return urlArray[urlArray.length - 1];
       }
     case "vk":
-      if (url.pathname.includes("video")) {
-        let videoId = url.searchParams.has('z') ? url.searchParams.get("z").split('/')[0] : null; // Убираем постоянное значение "/pl_cat_trends"
-        return videoId; 
+      let videoId;
+      if (/^video-[0-9]{9}_[0-9]{9}$/.test(url.pathname.split('/')[1])) {
+        videoId = url.pathname.split('/')[1]; // Убираем слэш в начале
+      } else {
+        videoId = url.searchParams.has('z') ? url.searchParams.get("z").split('/')[0] : null; // Убираем мусор в конце параметра
       }
+      return videoId;
     case "9gag" || "gag":
       if (url.pathname.includes("gag/")) {
         let urlArray = url.pathname.split('/');
@@ -953,20 +956,26 @@ async function initWebsite() {
     await sleep(2000);
     await translateProccessor($('.shaka-video-container'), 'youtube', null);
   } else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
-    await sleep(1500);
-    let videoIDVK;
-    let videoIDVKNew;
-    // Выглядит мега криво, зато работает :)
-    setInterval(async () => {
-      videoIDVKNew = getVideoId('vk');
-      if (videoIDVK !== videoIDVKNew) {
-        if (videoIDVKNew) {
-          // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео + при переходе на другое видео не воспроизводится звук idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
+    $(window).on('load', async () => {
+      await sleep(1500);
+      let videoIDVK;
+      let videoIDVKNew;
+      let videoFirst = true;
+      // Выглядит мега криво, зато работает :)
+      setInterval(async () => {
+        videoIDVKNew = getVideoId('vk');
+        if (/^video-[0-9]+_[0-9]+$/.test(videoIDVKNew) && typeof(videoIDVK) === 'undefined' && videoFirst === true) {
+          videoFirst = false;
           await translateProccessor($('.videoplayer_media'), 'vk', null);
-        }
-        videoIDVK = videoIDVKNew;
-      }
-    }, 3000)
+        } else if (videoIDVK !== videoIDVKNew) {
+          if (videoIDVKNew) {
+            // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео + при переходе на другое видео не воспроизводится звук idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
+            await translateProccessor($('.videoplayer_media'), 'vk', null);
+          }
+          videoIDVK = videoIDVKNew;
+        } 
+      }, 3000);
+    });
   }
 }
 
