@@ -13,6 +13,8 @@
 // @match            *://*.yewtu.be/*
 // @match            *://inv.vern.cc/*
 // @match            *://piped.kavin.rocks/*
+// @match            *://*.vk.com/*
+// @match            *://*.vk.ru/*
 // @icon             https://translate.yandex.ru/icons/favicon.ico
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
@@ -162,7 +164,8 @@ const getVideoId = (service) => {
       }
     case "vk":
       if (url.pathname.includes("video")) {
-        return url.searchParams.get("z").split('/')[0]; // Убираем постоянное значение "/pl_cat_trends"
+        let videoId = url.searchParams.has('z') ? url.searchParams.get("z").split('/')[0] : null; // Убираем постоянное значение "/pl_cat_trends"
+        return videoId; 
       }
     case "9gag" || "gag":
       if (url.pathname.includes("gag/")) {
@@ -497,6 +500,62 @@ function deleteDB() {
 }
 
 
+function changeColor(n) {
+  $translationBtn.css("color", n);
+}
+
+function changeBackground(type = 'none') {
+  let aliceMaskFill;
+  let aliceGradientStop1;
+  let aliceGradientStop2;
+  let imgBackgroundColor;
+  switch (type) {
+    case 'error':
+      aliceMaskFill = '#7A7A7D';
+      aliceGradientStop1 = '#7A7A7D';
+      aliceGradientStop2 = '#7A7A7D';
+      imgBackgroundColor = '#7A7A7D';
+      break;
+    case 'success':
+      aliceMaskFill = '#7626FF';
+      aliceGradientStop1 = '#C826FF';
+      aliceGradientStop2 = '#5426FF';
+      imgBackgroundColor = '#A36EFF';
+      break;
+    default:
+      aliceMaskFill = '#7626FF';
+      aliceGradientStop1 = '#C826FF';
+      aliceGradientStop2 = '#5426FF';
+      imgBackgroundColor = '#FFFFFF';
+      break;
+  }
+  $translationImageAlice.find('g > path:nth-child(2)').attr('fill', aliceMaskFill);
+  $translationImageAlice.find('defs > linearGradient > stop:nth-child(1)').attr('stop-color', aliceGradientStop1);
+  $translationImageAlice.find('defs > linearGradient > stop:nth-child(2)').attr('stop-color', aliceGradientStop2);
+  $translationImageTranslate.attr('fill', imgBackgroundColor)
+}
+
+function transformBtn(type = 'none', text) {
+  switch (type) {
+    case 'error':
+      $translationBtn.text(text);
+      changeBackground('error');
+      changeColor('#7A7A7D');
+      break;
+    case 'success':
+      $translationBtn.text(text);
+      changeBackground('success');
+      changeColor('#A36EFF');
+      break;
+    default:
+      $translationBtn.text(text);
+      changeBackground('none');
+      changeColor('#FFFFFF');
+      break;
+  }
+  $translationBtn.text(text);
+}
+
 async function translateProccessor($videoContainer, siteHostname, siteEvent) {
   var autoRetry;
   let opacityRatio = 0.9; 
@@ -531,15 +590,15 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     console.log(`VOT: Значение dbDefaultVolume: ${dbDefaultVolume}`)
     console.log(`VOT: Значение dbShowVideoSlider: ${dbShowVideoSlider}`)
     console.log(`VOT: Значение newYoutubeDesign: ${dbNewYoutubeDesign}`)
-    if (!$('.translationAT').length && dbAutoTranslate !== undefined) {
-      var $translationATCont = $(
+    if (!$translationMenuContent.has('.translationAT').length && dbAutoTranslate !== undefined) {
+      let $translationATCont = $(
         `<div class = "translationMenuContainer">
           <input type="checkbox" name="auto_translate" value=${dbAutoTranslate} class = "translationAT" ${dbAutoTranslate === 1 ? "checked" : ''}>
-          <label class = "translationMenuText" for = "auto_translate">Автоматический перевод видео</label>
+          <label class = "translationMenuText" for = "auto_translate">Автоматический перевод видео${siteHostname === 'vk' ? ' <strong>(рекомендуется)</strong>' : ''}</label>
         </div>
         `
       );
-      var $translationAT = $($translationATCont).find('.translationAT');
+      let $translationAT = $($translationATCont).find('.translationAT');
       $translationAT.on('click', async (event) => {
         event.stopPropagation();
         let atValue = event.target.checked ? 1 : 0;
@@ -548,14 +607,14 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
       });
       $translationMenuContent.append($translationATCont);
     }
-    if (!$('.translationDropDB').length && dbData !== undefined) {
-      var $translationDropDBCont = $(
+    if (!$translationMenuContent.has('.translationDropDB').length && dbData !== undefined) {
+      let $translationDropDBCont = $(
         `<div class = "translationMenuContainer" id="translationDropDBContainer">
           <button class = "translationDropDB">Сбросить настройки</button>
         </div>
         `
       );
-      var $translationDropDB = $($translationDropDBCont).find('.translationDropDB');
+      let $translationDropDB = $($translationDropDBCont).find('.translationDropDB');
       $translationDropDB.on('click', async (event) => {
         event.stopPropagation();
         deleteDB();
@@ -563,15 +622,15 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
       });
       $translationMenuContent.append($translationDropDBCont);
     }
-    if (!$('.translationSVS').length && dbData !== undefined && (dbNewYoutubeDesign === 1 || !window.location.hostname.includes('m.youtube.com'))) {
-      var $translationSVSCont = $(
+    if (!$translationMenuContent.has('.translationSVS').length && dbData !== undefined && (dbNewYoutubeDesign === 1 || !window.location.hostname.includes('m.youtube.com'))) {
+      let $translationSVSCont = $(
         `<div class = "translationMenuContainer">
           <input type="checkbox" name="show_video_slider" value=${typeof(dbShowVideoSlider) === 'number' ? dbShowVideoSlider : '0'} class = "translationSVS" ${dbShowVideoSlider === 1 ? "checked" : ''}>
           <label class = "translationMenuText" for = "show_video_slider">Слайдер громкости оригинала</label>
         </div>
         `
       );
-      var $translationSVS = $($translationSVSCont).find('.translationSVS');
+      let $translationSVS = $($translationSVSCont).find('.translationSVS');
       $translationSVS.on('click', async (event) => {
         event.stopPropagation();
         let svsValue = event.target.checked ? 1 : 0;
@@ -580,15 +639,15 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
       });
       $translationMenuContent.append($translationSVSCont);
     }
-    if (!$('.translationND').length && dbData !== undefined && window.location.hostname.includes('m.youtube.com')) {
-      var $translationNDCont = $(
+    if (!$translationMenuContent.has('.translationND').length && dbData !== undefined && window.location.hostname.includes('m.youtube.com')) {
+      let $translationNDCont = $(
         `<div class = "translationMenuContainer">
           <input type="checkbox" name="new_youtube_design" value=${typeof(dbNewYoutubeDesign) === 'number' ? dbNewYoutubeDesign : '0'} class = "translationND" ${dbNewYoutubeDesign === 1 ? "checked" : ''}>
           <label class = "translationMenuText" for = "new_youtube_design">Новый дизайн YouTube</label>
         </div>
         `
       );
-      var $translationND = $($translationNDCont).find('.translationND');
+      let $translationND = $($translationNDCont).find('.translationND');
       $translationND.on('click', async (event) => {
         event.stopPropagation();
         let ndValue = event.target.checked ? 1 : 0;
@@ -790,62 +849,6 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     }
   });
 
-  function changeColor(n) {
-    $translationBtn.css("color", n);
-  }
-
-  function changeBackground(type = 'none') {
-    let aliceMaskFill;
-    let aliceGradientStop1;
-    let aliceGradientStop2;
-    let imgBackgroundColor;
-    switch (type) {
-      case 'error':
-        aliceMaskFill = '#7A7A7D';
-        aliceGradientStop1 = '#7A7A7D';
-        aliceGradientStop2 = '#7A7A7D';
-        imgBackgroundColor = '#7A7A7D';
-        break;
-      case 'success':
-        aliceMaskFill = '#7626FF';
-        aliceGradientStop1 = '#C826FF';
-        aliceGradientStop2 = '#5426FF';
-        imgBackgroundColor = '#A36EFF';
-        break;
-      default:
-        aliceMaskFill = '#7626FF';
-        aliceGradientStop1 = '#C826FF';
-        aliceGradientStop2 = '#5426FF';
-        imgBackgroundColor = '#FFFFFF';
-        break;
-    }
-    $translationImageAlice.find('g > path:nth-child(2)').attr('fill', aliceMaskFill);
-    $translationImageAlice.find('defs > linearGradient > stop:nth-child(1)').attr('stop-color', aliceGradientStop1);
-    $translationImageAlice.find('defs > linearGradient > stop:nth-child(2)').attr('stop-color', aliceGradientStop2);
-    $translationImageTranslate.attr('fill', imgBackgroundColor)
-  }
-
-  function transformBtn(type = 'none', text) {
-    switch (type) {
-      case 'error':
-        $translationBtn.text(text);
-        changeBackground('error');
-        changeColor('#7A7A7D');
-        break;
-      case 'success':
-        $translationBtn.text(text);
-        changeBackground('success');
-        changeColor('#A36EFF');
-        break;
-      default:
-        $translationBtn.text(text);
-        changeBackground('none');
-        changeColor('#FFFFFF');
-        break;
-    }
-    $translationBtn.text(text);
-  }
-
   btnHover();
 
   const lipSync = (mode = false) => {
@@ -920,32 +923,51 @@ async function translateProccessor($videoContainer, siteHostname, siteEvent) {
   });
 }
 
-if (/^(www.|m.)?youtube(-nocookie)?.com$/.test(window.location.hostname)) {
-  if (window.location.pathname.includes('embed')) {
-    await translateProccessor($('.html5-video-container'), 'youtube', null);
-  } else if (window.location.hostname.includes("m.youtube.com") && window.location.pathname.includes('watch')){
-    await translateProccessor($('.html5-video-container'), 'youtube', null);
-  } else {
-    $("body").on("yt-page-data-updated", async function () {
-      await translateProccessor($('.html5-video-container'), 'youtube', 'yt-page-data-updated');
-    });
+async function initWebsite() {
+  if (/^(www.|m.)?youtube(-nocookie)?.com$/.test(window.location.hostname)) {
+    if (window.location.pathname.includes('embed')) {
+      await translateProccessor($('.html5-video-container'), 'youtube', null);
+    } else if (window.location.hostname.includes("m.youtube.com") && window.location.pathname.includes('watch')){
+      await translateProccessor($('.html5-video-container'), 'youtube', null);
+    } else {
+      $("body").on("yt-page-data-updated", async function () {
+        await translateProccessor($('.html5-video-container'), 'youtube', 'yt-page-data-updated');
+      });
+    }
+  } else if (window.location.hostname.includes('twitch')) {
+    if (window.location.hostname.includes('m.twitch.tv') && window.location.pathname.includes('videos')) {
+      await translateProccessor($('.sc-2035e8b3-0.lfUPeS'), 'twitch', null); // TODO: Пофиксить пропажу кнопки при переходе на другое видео
+    } else if (window.location.hostname.includes('player.twitch.tv') || window.location.pathname.includes('videos')) {
+      await sleep(1000); // stupid fix for wait video load
+      await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null);
+    }
+  } else if (window.location.hostname.includes('xvideos')) {
+    await sleep(1000);
+    await translateProccessor($('.video-bg-pic'), 'xvideos', null);
+  } else if (window.location.hostname.includes('pornhub')) {
+    await sleep(1000);
+    await translateProccessor($('.mgp_videoWrapper'), 'pornhub', null);
+  } else if (window.location.hostname.includes('inv.vern.cc') || window.location.hostname.includes('yewtu.be')) { // Нужно дополнительное расширение для работы в хромоподбных браузерах
+    await translateProccessor($('#player'), 'youtube', null);
+  } else if (window.location.hostname.includes('piped.kavin.rocks')) { // Нужно дополнительное расширение для работы в хромоподбных браузерах
+    await sleep(2000);
+    await translateProccessor($('.shaka-video-container'), 'youtube', null);
+  } else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
+    await sleep(1500);
+    let videoIDVK;
+    let videoIDVKNew;
+    // Выглядит мега криво, зато работает :)
+    setInterval(async () => {
+      videoIDVKNew = getVideoId('vk');
+      if (videoIDVK !== videoIDVKNew) {
+        if (videoIDVKNew) {
+          // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео + при переходе на другое видео не воспроизводится звук idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
+          await translateProccessor($('.videoplayer_media'), 'vk', null);
+        }
+        videoIDVK = videoIDVKNew;
+      }
+    }, 3000)
   }
-} else if (window.location.hostname.includes('twitch')) {
-  if (window.location.hostname.includes('m.twitch.tv') && window.location.pathname.includes('videos')) {
-    await translateProccessor($('.sc-2035e8b3-0.lfUPeS'), 'twitch', null); // TODO: Пофиксить пропажу кнопки при переходе на другое видео
-  } else if (window.location.hostname.includes('player.twitch.tv') || window.location.pathname.includes('videos')) {
-    await sleep(1000); // stupid fix for wait video load
-    await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null);
-  }
-} else if (window.location.hostname.includes('xvideos')) {
-  await sleep(1000);
-  await translateProccessor($('.video-bg-pic'), 'xvideos', null);
-} else if (window.location.hostname.includes('pornhub')) {
-  await sleep(1000);
-  await translateProccessor($('.mgp_videoWrapper'), 'pornhub', null);
-} else if (window.location.hostname.includes('inv.vern.cc') || window.location.hostname.includes('yewtu.be')) {
-  await translateProccessor($('#player'), 'youtube', null);
-} else if (window.location.hostname.includes('piped.kavin.rocks')) {
-  await sleep(2000);
-  await translateProccessor($('.shaka-video-container'), 'youtube', null);
 }
+
+await initWebsite();
