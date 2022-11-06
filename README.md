@@ -9,10 +9,18 @@
 
 # Версия для ADGuard: **[Ссылка](https://github.com/mynovelhost/voice-over-translation/)**
 
+# Список поддерживаемых сайтов:
+- **[YouTube](https://www.youtube.com)** (Полная поддержка **www.youtube.com/watch**, **www.youtube.com/embed**, **m.youtube.com**. Включая **[YouTube NoCookie](https://www.youtube-nocookie.com/)**)
+- **[Invidious (vern.cc)](https://inv.vern.cc)**, **[Invidious (yewtu.be)](https://yewtu.be)** и некоторые другие (Альтернативный фронтенд для YouTube, без привязки к Google Services. Для работы в хромоподобных браузерах необходимо дополнительное **[расширение](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden/related)**)
+- **[Twitch](https://www.twitch.tv)** (Поддерживается **www.twitch.tv/videos**, **m.twitch.tv/videos**, **player.twitch.tv**)
+- **[XVideos](https://xvideos.com/)**
+- **[PornHub](https://rt.pornhub.com/)**
+- **[VK](https://vk.com)** (Поддерживаются **vk.com|ru/video**, **vk.com|ru/video-xxxxxxxxx_xxxxxxxxx** и **vk.com|ru/im?z=video-xxxxxxxxx_xxxxxxxxx** (+ другие страницы, на которых видео открывается через z параметр ссылки). Рекомендую использовать только совместно с автопереводом, ибо без него кнопка перевода требует 2-ого нажатия, и звук перевода пропадает при переходе на другое видео. Не знаю как это исправить :с)
+
+
 ## Примечание:
-1. Рекомендую разрешить автовоспроизведение "аудио и видео" на ютубе, чтобы избежать ошибок при работе расширения
-2. Расширение не может переводить видео длиной более 4 часов
-3. Если расширение резко перестанет работать, то, вы, всё ещё сможете использовать старую версию с отдельным веб-сервером
+1. Рекомендую разрешить автовоспроизведение "аудио и видео", чтобы избежать ошибок при работе расширения
+2. Расширение не может переводить видео длиной более 4 часов (ограничение API переводчика)
 
 ## Расширение протестировано в следующих браузерах:
 | Статус | Браузер | Версия браузера | Платформа | Расширение
@@ -26,14 +34,15 @@
 | ⠀✅ | Cent Browser Beta | v5.0.1002.182, 64 bit | Windows | Tampermonkey
 | ⠀✅ | Google Chrome | v106.0.5249.91 | Windows, MacOS, Linux | Tampermonkey, Violetmonkey
 | ⠀✅ | Opera GX | LVL4 (core: 91.0.4516.36) | Windows | Tampermonkey
+| ⠀✅ | Opera | v92.0.4561.43 | Windows | Tampermonkey
 | ⠀❔ | Safari | v15.6.1 | MacOS | Userscripts
 
 ## Протестировано в следующих расширениях для юзерскриптов:
 | Статус | Браузер | Расширение
 |---|---|---
 | ⠀✅ | Любой | Tampermonkey
-| ⠀✅ | Google... | Violetmonkey 
 | ⠀✅ | Safari | Userscripts
+| ⠀[Ссылка](https://github.com/mynovelhost/voice-over-translation/) | Любой | Violetmonkey 
 | ⠀[Ссылка](https://github.com/mynovelhost/voice-over-translation/) | Любой | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
 | ❌ | Firefox | Firemonkey
 | ❌ | Любой | Greasemonkey
