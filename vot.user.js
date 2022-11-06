@@ -10,11 +10,22 @@
 // @match            *://*.twitch.tv/*
 // @match            *://*.xvideos.com/*
 // @match            *://*.pornhub.com/*
-// @match            *://*.yewtu.be/*
-// @match            *://inv.vern.cc/*
-// @match            *://piped.kavin.rocks/*
 // @match            *://*.vk.com/*
 // @match            *://*.vk.ru/*
+// @match            *://invidious.snopyta.org/*
+// @match            *://invidious.kavin.rocks/*
+// @match            *://vid.puffyan.us/*
+// @match            *://invidious.namazso.eu/*
+// @match            *://inv.riverside.rocks/*
+// @match            *://yt.artemislena.eu/*
+// @match            *://invidious.flokinet.to/*
+// @match            *://invidious.esmailelbob.xyz/*
+// @match            *://invidious.nerdvpn.de/*
+// @match            *://invidious.slipfox.xyz/*
+// @match            *://invidio.xamh.de/*
+// @match            *://invidious.dhusch.de/*
+// @match            *://*.yewtu.be/*
+// @match            *://inv.vern.cc/*
 // @icon             https://translate.yandex.ru/icons/favicon.ico
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
@@ -63,6 +74,27 @@
       'func_param': 0x4075500000000000
     },
   }
+
+  // Сайты хостящие Invidious. Мной была протестирована работоспособность только на invidious.kavin.rocks, yewtu.be и inv.vern.cc
+  const sitesInvidious = [
+    'invidious.snopyta.org',
+    'yewtu.be',
+    'invidious.kavin.rocks',
+    'vid.puffyan.us',
+    'invidious.namazso.eu',
+    'inv.riverside.rocks',
+    'yt.artemislena.eu',
+    'invidious.flokinet.to',
+    'invidious.esmailelbob.xyz',
+    'y.com.sb',
+    'invidious.nerdvpn.de',
+    'inv.vern.cc',
+    'invidious.slipfox.xyz',
+    'invidio.xamh.de',
+    'invidious.dhusch.de'
+  ];
+
+  const sitesChromiumBlocked = Object.assign([], sitesInvidious); // Вынес в отдельную переменную на будущее, если вдруг понадобится
 
 
   // https://github.com/greasemonkey/gm4-polyfill
@@ -665,12 +697,6 @@
       } 
     }
 
-    if (window.location.hostname.includes('piped.kavin.rocks')) {
-      $('.router-link-active.router-link-exact-active.btn.flex-col').on('click', () => {
-        window.location.reload(); // small crutch for piped.kavin.rocks
-      })
-    }
-
     let btnHover = function () {
       let time;
       var isOpened = false;
@@ -872,7 +898,7 @@
               transformBtn('error', 'Предоставьте разрешение на автовоспроизведение')
               throw "VOT: Предоставьте разрешение на автовоспроизведение"
             } else if (e.name === "NotSupportedError") {
-              if (window.location.hostname.includes('inv.vern.cc') || window.location.hostname.includes('yewtu.be') || window.location.hostname.includes('piped.kavin.rocks')) {
+              if (sitesChromiumBlocked.includes(window.location.hostname)) {
                 transformBtn('error', 'Для поддержки этого сайта необходимо дополнительное расширение')
                 throw "VOT: Для поддержки этого сайта необходимо дополнительное расширение"
               } else {
@@ -956,12 +982,9 @@
     } else if (window.location.hostname.includes('pornhub')) {
       await sleep(1000);
       await translateProccessor($('.mgp_videoWrapper'), 'pornhub', null);
-    } else if (window.location.hostname.includes('inv.vern.cc') || window.location.hostname.includes('yewtu.be')) { // Нужно дополнительное расширение для работы в хромоподбных браузерах
+    } else if (sitesInvidious.includes(window.location.hostname)) { // Нужно дополнительное расширение для работы в хромоподбных браузерах
       await translateProccessor($('#player'), 'youtube', null);
-    } else if (window.location.hostname.includes('piped.kavin.rocks')) { // Нужно дополнительное расширение для работы в хромоподбных браузерах
-      await sleep(2000);
-      await translateProccessor($('.shaka-video-container'), 'youtube', null);
-    } else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
+    }  else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
       $(window).on('load', async () => {
         await sleep(1500);
         let videoIDVK;
