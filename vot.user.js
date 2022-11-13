@@ -155,11 +155,20 @@
           </svg>
         </span>
     </div>`);
+  const $translationDownloadContainer = $(`
+    <div class = "translationAbsoluteContainer" id = "translationDownloadContainer">
+      <a class = "translationDownload">
+        <svg width="24px" height="24px" data-darkreader-inline-stroke="" fill="none" stroke="currentColor" style="--darkreader-inline-stroke: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+      </span>
+    </div>`);
   const $translationBtn = $translationBlock.find('.translationArea > .translationBtn');
   const $translationImageAlice = $translationBlock.find('.translationIconAlice');
   const $translationImageTranslate = $translationBlock.find('.translateIcon');
 
   const $translationMenuContent = $('<div class = "translationMenuContent"><p class = "translationMainHeader">Перевод видео</p></div>');
+  $translationMenuContent.on('click', (event) => {
+    event.stopPropagation();
+  });
 
   const sleep = m => new Promise(r => setTimeout(r, m))
 
@@ -616,6 +625,7 @@
       addTranslationMenu($videoContainer);
     }
     transformBtn('none', 'Перевести видео');
+    $('#translationDownloadContainer').remove();
     if (isDBInited) {
       var dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
       var dbAutoTranslate = dbData !== undefined ? dbData.autoTranslate : undefined;
@@ -630,7 +640,7 @@
         let $translationATCont = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="auto_translate" value=${dbAutoTranslate} class = "translationAT" ${dbAutoTranslate === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "auto_translate">Автоматический перевод видео${siteHostname === 'vk' ? ' <strong>(рекомендуется)</strong>' : ''}</label>
+            <label class = "translationMenuText" for = "auto_translate">Автоматический перевод видео${siteHostname === 'vk' || siteHostname === 'twitch' ? ' <strong>(рекомендуется)</strong>' : ''}</label>
           </div>
           `
         );
@@ -645,7 +655,7 @@
       }
       if (!$translationMenuContent.has('.translationDropDB').length && dbData !== undefined) {
         let $translationDropDBCont = $(
-          `<div class = "translationMenuContainer" id="translationDropDBContainer">
+          `<div class = "translationAbsoluteContainer">
             <button class = "translationDropDB">Сбросить настройки</button>
           </div>
           `
@@ -876,6 +886,11 @@
             });
           }
         }
+
+        if (!$translationMenuContent.has('.translationDownload').length) {
+          $translationMenuContent.append($translationDownloadContainer);
+          $translationDownloadContainer.find('a').attr('href', urlOrError);
+        }
       }
     });
 
@@ -971,7 +986,26 @@
       }
     } else if (window.location.hostname.includes('twitch')) {
       if (window.location.hostname.includes('m.twitch.tv') && window.location.pathname.includes('videos')) {
-        await translateProccessor($('.sc-2035e8b3-0.lfUPeS'), 'twitch', null); // TODO: Пофиксить пропажу кнопки при переходе на другое видео
+        await sleep(1000);
+        const $videoContainer = $('.sc-2035e8b3-0.lfUPeS');
+        await translateProccessor($videoContainer, 'twitch', null);
+        // Тоже самое, что и вариант снизу, но по идеи должен быть более производительным (так же требует дабл клика)
+        var mutationObserver = new MutationObserver(async function(mutations) {
+          mutations.forEach(async function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === $videoContainer.find('video')[0]) {
+              await sleep(1000);
+              // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
+              await translateProccessor($('.sc-2035e8b3-0.lfUPeS'), 'twitch', null);
+            }
+          });
+        });
+      
+        mutationObserver.observe($videoContainer[0], {
+          attributes: true,
+          childList: true,
+          subtree: true,
+          attributeOldValue: true,
+        });
       } else if (window.location.hostname.includes('player.twitch.tv') || window.location.pathname.includes('videos')) {
         await sleep(1000); // stupid fix for wait video load
         await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null);
@@ -984,7 +1018,7 @@
       await translateProccessor($('.mgp_videoWrapper'), 'pornhub', null);
     } else if (sitesInvidious.includes(window.location.hostname)) { // Нужно дополнительное расширение для работы в хромоподбных браузерах
       await translateProccessor($('#player'), 'youtube', null);
-    }  else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
+    } else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
       $(window).on('load', async () => {
         await sleep(1500);
         let videoIDVK;
@@ -998,7 +1032,7 @@
             await translateProccessor($('.videoplayer_media'), 'vk', null);
           } else if (videoIDVK !== videoIDVKNew) {
             if (videoIDVKNew) {
-              // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео + при переходе на другое видео не воспроизводится звук idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
+              // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
               await translateProccessor($('.videoplayer_media'), 'vk', null);
             }
             videoIDVK = videoIDVKNew;
