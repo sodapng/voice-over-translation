@@ -79,7 +79,7 @@
   height: 300px;
   opacity: 0;
   z-index: 10;
-  transition: opacity 2s;
+  transition: opacity 0.5s ease;
 }
 
 .translationVolumeSlider {
@@ -93,7 +93,7 @@
   border: none !important;
   border-radius: 2rem !important;
   -webkit-transition: 0.2s !important;
-  transition: opacity 0.2s !important;
+  transition: opacity 0.2s ease !important;
 }
 
 .translationVolumeSlider:hover {
@@ -175,9 +175,26 @@
   cursor: pointer;
 }
 
-#translationDropDBContainer {
+.translationAbsoluteContainer {
   position: absolute;
   left: 0;
   bottom: 0;
   margin-bottom: 2rem;
+  width: 100%;
+  padding-left: 15px;
+  padding-top: 5px;
+}
+
+.translationDownload {
+  background: #5426FF !important;
+  color: #fff !important;
+  padding: 15px 6px 2px;
+  border-radius: 1rem;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+#translationDownloadContainer {
+  text-align: right;
+  padding: 0;
 }
