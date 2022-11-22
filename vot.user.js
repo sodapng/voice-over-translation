@@ -1008,7 +1008,7 @@
         });
       } else if (window.location.hostname.includes('player.twitch.tv') || window.location.pathname.includes('videos')) {
         await sleep(1000); // stupid fix for wait video load
-        await translateProccessor($('.Layout-sc-nxg1ff-0.video-ref'), 'twitch', null);
+        await translateProccessor($('.video-ref'), 'twitch', null);
       }
     } else if (window.location.hostname.includes('xvideos')) {
       await sleep(1000);
