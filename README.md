@@ -7,7 +7,8 @@
 1. Установите расширение **[Tampermonkey](https://www.tampermonkey.net/)** (Для Safari: **[UserScripts](https://apps.apple.com/app/userscripts/id1463298887 )**)
 2. **[«Установите Скрипт»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js)**
 
-# Версия для ADGuard: **[Ссылка](https://github.com/mynovelhost/voice-over-translation/)**
+# Версия для ADGuard: **[Ссылка](https://github.com/ilyhalight/voice-over-translation/issues/27)**
+# Подробнее о создание воркера для ADGuard: **[Ссылка](https://github.com/mynovelhost/voice-over-translation/)**
 
 # Список поддерживаемых сайтов:
 - **[YouTube](https://www.youtube.com)** (Полная поддержка **www.youtube.com/watch**, **www.youtube.com/embed**, **m.youtube.com**. Включая **[YouTube NoCookie](https://www.youtube-nocookie.com/)**)
@@ -42,8 +43,8 @@
 |---|---|---
 | ⠀✅ | Любой | Tampermonkey
 | ⠀✅ | Safari | Userscripts
-| ⠀[Ссылка](https://github.com/mynovelhost/voice-over-translation/) | Любой | Violetmonkey 
-| ⠀[Ссылка](https://github.com/mynovelhost/voice-over-translation/) | Любой | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
+| ⠀[Ссылка](https://github.com/ilyhalight/voice-over-translation/issues/27) | Любой | Violetmonkey 
+| ⠀[Ссылка](https://github.com/ilyhalight/voice-over-translation/issues/27) | Любой | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
 | ❌ | Firefox | Firemonkey
 | ❌ | Любой | Greasemonkey
 
