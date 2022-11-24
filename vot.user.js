@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name             voice-over-translation
+// @name             Voice Over Translations
 // @name:ru          [VOT] - Закадровый перевод видео
 // @description      A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru   Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
@@ -42,7 +42,6 @@
 // ==/UserScript==
 
 (async function() {
-  console.log(GM_info.scriptHandler)
   if (GM_info?.scriptHandler && ['Violentmonkey', 'FireMonkey', 'Greasemonkey', 'AdGuard'].includes(GM_info.scriptHandler)) {
     let errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
     console.log(errorText);
