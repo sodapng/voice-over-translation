@@ -33,6 +33,7 @@
 // @grant            GM_getResourceText
 // @grant            GM_addStyle
 // @grant            GM_xmlhttpRequest
+// @grant            GM_info
 // @updateURL        https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js
 // @downloadURL      https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js
 // @supportURL       https://github.com/ilyhalight/voice-over-translation/issues
@@ -41,6 +42,13 @@
 // ==/UserScript==
 
 (async function() {
+  console.log(GM_info.scriptHandler)
+  if (GM_info?.scriptHandler && ['Violentmonkey', 'FireMonkey', 'Greasemonkey', 'AdGuard'].includes(GM_info.scriptHandler)) {
+    let errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
+    console.log(errorText);
+    return alert(errorText);
+  }
+
   const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
   const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/104.0.5112.114 YaBrowser/22.9.4.633.10 SA/3 Mobile/15E148 Safari/604.1";
 
