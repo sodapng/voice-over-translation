@@ -33,8 +33,8 @@
 // @grant            GM_getResourceText
 // @grant            GM_addStyle
 // @grant            GM_xmlhttpRequest
-// @updateURL        https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js
-// @downloadURL      https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot.user.js
+// @updateURL        https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot-cloudflare.user.js
+// @downloadURL      https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot-cloudflare.user.js
 // @supportURL       https://github.com/ilyhalight/voice-over-translation/issues
 // @homepageURL      https://github.com/ilyhalight/voice-over-translation
 // @connect          api.browser.yandex.ru
