@@ -13,6 +13,10 @@ function validate(site) {
     return 'vk';
   } else if (/^(https:\/\/|http:\/\/)?rt.pornhub.com\/view_video\.php\?viewkey=.*/.test(site)) {
     return 'pornhub';
+  } else if (/^(https:\/\/|http:\/\/)?9gag.com\/gag\/*/.test(site)) {
+    return '9gag';
+  } else if (/^(https:\/\/|http:\/\/)?vimeo.com\/*/.test(site)) {
+    return 'vimeo';
   }
   return 'unknown';
 }
