@@ -29,7 +29,7 @@ function getVideoId (service, url) {
         return false;
       case "tiktok":
         if (url.includes("/video/")) {
-         return url.split('/video/')[1];
+          return url.split('/video/')[1];
         }
         return false;
       case "vimeo":
