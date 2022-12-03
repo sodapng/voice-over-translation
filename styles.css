@@ -1,9 +1,9 @@
 .translationBlock {
-  padding: 0.25rem 0.45rem;
+  padding: 0.25rem 0.45rem !important;
   width: max-content;
   position: absolute;
   background: #2e2f34;
-  border-radius: 0.5rem;
+  border-radius: 0.5rem !important;
   left: 50%;
   top: 5rem;
   transform: translate(-50%);
@@ -22,7 +22,7 @@
   display: inline-block;
   vertical-align: middle;
   color: #fff;
-  padding-right: 0.25rem;
+  padding-right: 0.25rem !important;
   cursor: pointer;
   font: 600 12px / 14px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif;
 }
@@ -41,7 +41,7 @@
 }
 
 .translationMenuIcon {
-  padding: 0 10px;
+  padding: 0 10px !important;
   width: 24px;
 }
 
@@ -67,13 +67,14 @@
 .translationMenuContent {
   position: absolute;
   background: #2e2f34;
+  color: #fff;
   display: hide;
-  border-radius: 1rem;
+  border-radius: 1rem !important;
   left: 50%;
   top: 9rem;
   transform: translate(-50%);
   text-align:left;
-  font: 600 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif;
+  font: 600 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif !important;
 
   width: 300px;
   height: 300px;
@@ -142,19 +143,24 @@
 }
 
 .translationHeader {
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.5rem !important;
 }
 
 .translationMainHeader {
-  margin: 16px;
+  margin: 16px !important;
   color: #FFF;
-  font: 900 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif;
+  font: 900 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif !important;
 }
 
 .translationMenuContainer {
   width: 100%;
-  padding-left: 15px;
-  padding-top: 5px;
+  padding-left: 15px !important;
+  padding-top: 5px !important;
+  display: inline-block !important;
+}
+
+.translationMenuContainer > input {
+  appearance: auto !important;
 }
 
 .translationMenuText {
@@ -163,15 +169,15 @@
 }
 
 .translationVolumeBox, .translationVideoVolumeBox {
-  padding-top: 0.5rem;
+  padding-top: 0.5rem !important;
 }
 
 .translationDropDB {
   border: none;
-  border-radius: 4px;
+  border-radius: 4px !important;
   background: #5426FF !important;
   color: #fff !important;
-  padding: 6px 16px;
+  padding: 6px 16px !important;
   cursor: pointer;
 }
 
@@ -179,22 +185,18 @@
   position: absolute;
   left: 0;
   bottom: 0;
-  margin-bottom: 2rem;
-  width: 100%;
-  padding-left: 15px;
-  padding-top: 5px;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 2rem !important;
+  margin-left: 15px !important;
+  margin-top: 5px !important;
 }
 
 .translationDownload {
   background: #5426FF !important;
   color: #fff !important;
-  padding: 15px 6px 2px;
-  border-radius: 1rem;
-  margin-right: 15px;
+  padding: 2px 10px !important;
+  border-radius: 4px !important;
+  margin-left: 58px !important;
   cursor: pointer;
-}
-
-#translationDownloadContainer {
-  text-align: right;
-  padding: 0;
 }
