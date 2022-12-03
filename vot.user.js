@@ -3,7 +3,7 @@
 // @name:ru          [VOT] - Закадровый перевод видео
 // @description      A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru   Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version          1.0.9.3
+// @version          1.0.9.4
 // @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
 // @match            *://*.youtube-nocookie.com/*
@@ -26,6 +26,8 @@
 // @match            *://invidious.dhusch.de/*
 // @match            *://*.yewtu.be/*
 // @match            *://inv.vern.cc/*
+// @match            *://*.vimeo.com/*
+// @match            *://*.9gag.com/*
 // @icon             https://translate.yandex.ru/icons/favicon.ico
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
@@ -162,17 +164,15 @@
           </svg>
         </span>
     </div>`);
-  const $translationDownloadContainer = $(`
-    <div class = "translationAbsoluteContainer" id = "translationDownloadContainer">
+  const $translationDownload = $(`
       <a class = "translationDownload">
         <svg width="24px" height="24px" data-darkreader-inline-stroke="" fill="none" stroke="currentColor" style="--darkreader-inline-stroke: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-      </span>
-    </div>`);
+      </span>`);
   const $translationBtn = $translationBlock.find('.translationArea > .translationBtn');
   const $translationImageAlice = $translationBlock.find('.translationIconAlice');
   const $translationImageTranslate = $translationBlock.find('.translateIcon');
 
-  const $translationMenuContent = $('<div class = "translationMenuContent"><p class = "translationMainHeader">Перевод видео</p></div>');
+  const $translationMenuContent = $('<div class = "translationMenuContent"><p class = "translationMainHeader">Перевод видео</p><div class = "translationAbsoluteContainer"></div></div>');
   $translationMenuContent.on('click', (event) => {
     event.stopPropagation();
   });
@@ -611,7 +611,16 @@
   async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     var autoRetry;
     let opacityRatio = 0.9; 
-    var video = $($videoContainer).find('video')[0];
+    if (siteHostname === 'vimeo') {
+      var video = $($videoContainer).find('.vp-video-wrapper > .vp-video > .vp-telecine > video')[0];
+    } else {
+      var video = $($videoContainer).find('video')[0];
+    }
+
+    if (siteHostname === '9gag') {
+      $videoContainer.parent().removeAttr('href');
+    }
+    
     var firstPlay = true;
     var isDBInited = await initDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
     if (siteHostname === 'youtube' && window.location.hostname.includes('m.youtube.com')) {
@@ -632,7 +641,7 @@
       addTranslationMenu($videoContainer);
     }
     transformBtn('none', 'Перевести видео');
-    $('#translationDownloadContainer').remove();
+    $('.translationDownload').remove();
     if (isDBInited) {
       var dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
       var dbAutoTranslate = dbData !== undefined ? dbData.autoTranslate : undefined;
@@ -661,19 +670,15 @@
         $translationMenuContent.append($translationATCont);
       }
       if (!$translationMenuContent.has('.translationDropDB').length && dbData !== undefined) {
-        let $translationDropDBCont = $(
-          `<div class = "translationAbsoluteContainer">
-            <button class = "translationDropDB">Сбросить настройки</button>
-          </div>
-          `
+        let $translationDropDB = $(
+          `<button class = "translationDropDB">Сбросить настройки</button>`
         );
-        let $translationDropDB = $($translationDropDBCont).find('.translationDropDB');
         $translationDropDB.on('click', async (event) => {
           event.stopPropagation();
           deleteDB();
           location.reload();
         });
-        $translationMenuContent.append($translationDropDBCont);
+        $translationMenuContent.find('.translationAbsoluteContainer').append($translationDropDB);
       }
       if (!$translationMenuContent.has('.translationSVS').length && dbData !== undefined && (dbNewYoutubeDesign === 1 || !window.location.hostname.includes('m.youtube.com'))) {
         let $translationSVSCont = $(
@@ -801,14 +806,19 @@
           });
         }
 
-        if (siteHostname === 'twitch') {
+        // TODO: Fix audio for 9gag change video
+        // if (siteHostname === 'twitch' || siteHostname === 'vimeo' || siteHostname === '9gag') {
+        if (siteHostname === 'twitch' || siteHostname === 'vimeo') {
           var mutationObserver = new MutationObserver(async function(mutations) {
             mutations.forEach(async function(mutation) {
+              // if (mutation.type === 'attributes' && ((mutation.attributeName === 'src' && mutation.target === video) || (siteHostname === '9gag' && mutation.attributeName === 'class' && (mutation.oldValue === 'hide' || mutation.oldValue === 'presenting')))) {
+              //   if (siteHostname === '9gag' || mutation.target.src !== '') {
               if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video) {
                 if (mutation.target.src !== '') {
                   audio.pause();
                   $("video").off(".translate");
                   deleteAudioSrc();
+                  $('.translationDownload').remove();
                   transformBtn('none', 'Перевести видео');
                   firstPlay = true;
                 }
@@ -894,9 +904,9 @@
           }
         }
 
-        if (!$translationMenuContent.has('.translationDownload').length) {
-          $translationMenuContent.append($translationDownloadContainer);
-          $translationDownloadContainer.find('a').attr('href', urlOrError);
+        if (!$translationMenuContent.find('.translationAbsoluteContainer').has('.translationDownload').length) {
+          $translationMenuContent.find('.translationAbsoluteContainer').append($translationDownload);
+          $translationDownload.attr('href', urlOrError);
         }
       }
     });
@@ -1002,7 +1012,7 @@
             if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === $videoContainer.find('video')[0]) {
               await sleep(1000);
               // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
-              await translateProccessor($('.sc-2035e8b3-0.lfUPeS'), 'twitch', null);
+              await translateProccessor($videoContainer, 'twitch', null);
             }
           });
         });
@@ -1046,6 +1056,12 @@
           } 
         }, 3000);
       });
+    } else if (window.location.hostname.includes('vimeo')) {
+      await sleep(1000);
+      await translateProccessor($('.player'), 'vimeo', null);
+    } else if (window.location.hostname.includes('9gag')) {
+      await sleep(1000);
+      await translateProccessor($('.video-post'), '9gag', null);
     }
   }
 
