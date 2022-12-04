@@ -3,7 +3,7 @@
 // @name:ru          [VOT Cloudflare] - Закадровый перевод видео
 // @description      A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru   Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version          1.0.9.4
+// @version          1.0.9.5
 // @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
 // @match            *://*.youtube-nocookie.com/*
@@ -258,17 +258,39 @@
   };
 
   const yandexRequests = (function() {
-      var protoRequest = new protobuf.Type("VideoTranslationRequest").add(new protobuf.Field("url", 3, "string")).add(new protobuf.Field("deviceId", 4, "string")).add(new protobuf.Field("unknown0", 5, "int32")).add(new protobuf.Field("unknown1", 6, "fixed64")).add(new protobuf.Field("unknown2", 7, "int32")).add(new protobuf.Field("language", 8, "string")).add(new protobuf.Field("unknown3", 9, "int32")).add(new protobuf.Field("unknown4", 10, "int32"));
-      var protoResponse = new protobuf.Type("VideoTranslationResponse").add(new protobuf.Field("url", 1, "string")).add(new protobuf.Field("status", 4, "int32"));
-      new protobuf.Root().define("yandex").add(protoRequest).add(protoResponse);
-      return {
-          encodeRequest: function(url, deviceId, unknown1) {
-              return protoRequest.encode({url: url, deviceId: deviceId, unknown0: 1, unknown1: unknown1, unknown2: 1, language: "en", unknown3: 0, unknown4: 0}).finish();
-          },
-          decodeResponse: function(response) {
-              return protoResponse.decode(new Uint8Array(response));
-          }
-      };
+    var protoRequest = new protobuf.Type("VideoTranslationRequest")
+                          .add(new protobuf.Field("url", 3, "string"))
+                          .add(new protobuf.Field("deviceId", 4, "string"))
+                          .add(new protobuf.Field("unknown0", 5, "int32"))
+                          .add(new protobuf.Field("unknown1", 6, "fixed64"))
+                          .add(new protobuf.Field("unknown2", 7, "int32"))
+                          .add(new protobuf.Field("language", 8, "string"))
+                          .add(new protobuf.Field("unknown3", 9, "int32"))
+                          .add(new protobuf.Field("unknown4", 10, "int32"));
+    var protoResponse = new protobuf.Type("VideoTranslationResponse")
+                            .add(new protobuf.Field("url",		1,	"string"))
+                            .add(new protobuf.Field("duration",	2,	"double"))
+                            .add(new protobuf.Field("status",	4,	"int32"))
+                            .add(new protobuf.Field("code",	7,	"string"))
+                            .add(new protobuf.Field("message",	9,	"string"));
+    new protobuf.Root().define("yandex").add(protoRequest).add(protoResponse);
+    return {
+        encodeRequest: function(url, deviceId, unknown1) {
+            return protoRequest.encode({
+              url: url, 
+              deviceId: deviceId, 
+              unknown0: 1, 
+              unknown1: unknown1, 
+              unknown2: 1, 
+              language: "en", 
+              unknown3: 0, 
+              unknown4: 0
+            }).finish();
+        },
+        decodeResponse: function(response) {
+            return protoResponse.decode(new Uint8Array(response));
+        }
+    };
   })();
 
   function getUUID(isLower) {
@@ -334,9 +356,10 @@
         }
 
         const translateResponse = yandexRequests.decodeResponse(response);
+        console.log(`VOT Response: ${translateResponse}`)
         switch (translateResponse.status) {
             case 0:
-                callback(false, "Невозможно перевести видео. Зайдите позже, нейронная сеть скоро научится");
+                callback(false, translateResponse.message);
                 return;
             case 1:
                 var hasUrl = void 0 !== translateResponse.url && null !== translateResponse.url;
