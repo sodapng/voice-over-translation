@@ -340,7 +340,7 @@
       }
 
       const translateResponse = yandexRequests.decodeResponse(response);
-      console.log(`VOT Response: ${translateResponse}`)
+      console.log('VOT Response: ', translateResponse);
       switch (translateResponse.status) {
         case 0:
           callback(false, translateResponse.message);
