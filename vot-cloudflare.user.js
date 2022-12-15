@@ -869,7 +869,7 @@
           });
         }
 
-        if (!video.paused) {
+        if (video && !video.paused) {
           lipSync("play");
         }
 
@@ -880,7 +880,7 @@
         $("video").on("play.translate canplaythrough.translate", function () {
           lipSync();
 
-          if (!video.paused) {
+          if (video && !video.paused) {
             lipSync("play");
           }
         });
