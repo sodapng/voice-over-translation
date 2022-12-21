@@ -10,7 +10,7 @@
 - `vot-cli <link>` - получить перевод по ссылке
 - `vot-cli --help` - получить помощь по команде
 - `vot-cli --version` - получить версию приложения
-- `vot-cli --output=<path>` - указать путь для сохранения файла
+- `vot-cli --output=<path>` - для указания пути сохранения аудио файла перевода
 
 Пример: `vot-cli "https://www.youtube.com/watch?v=X98VPQCE_WI" "https://www.youtube.com/watch?v=djr8j-4fS3A&t=900s" --output="."`
 
