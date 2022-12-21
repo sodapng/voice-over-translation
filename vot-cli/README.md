@@ -21,7 +21,7 @@
 - **[XVideos](https://xvideos.com/)**
 - **[PornHub](https://rt.pornhub.com/)** 
 
-# Версия для скачивания видео с встроенным переводом: [fishy-voice-over](https://gitlab.com/musickiller/fishy-voice-over/-/blob/main/translate.fish)
+## Версия для скачивания видео с встроенным переводом: [fishy-voice-over](https://gitlab.com/musickiller/fishy-voice-over/-/blob/main/translate.fish)
 
 # Установка:
 1. Скачать и распаковать архив с релизом
