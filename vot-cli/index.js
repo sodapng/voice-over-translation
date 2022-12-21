@@ -107,24 +107,10 @@ argLinks.forEach((url) => {
 
 if (argLinks.length === 0) {
   if (argv.help) {
-    console.log("Usage: vot-cli <link> [options] [link2] [link3] ...\n\nOptions:\n  --help — Show help\n  --version — Show version\n  --output — Download video to directory");
+    console.log("Usage: vot-cli <link> [options] [link2] [link3] ...\n\nOptions:\n  --help — Show help\n  --version — Show version\n  --output — Set the directory to download");
   } else if (argv.version) {
     console.log(`vot-cli ${version}`);
   } else {
     console.error(chalk.red("No links provided"));
   }
 }
-
-// -v или --version вывести версию
-// -h или --help вывести справку
-
-// commander.version('1.0.0').description('Voice Over Translate CLI Downloader');
-
-// commander.command('download <url>')
-//     .alias('get')
-//     .description('Download a translation audio file')
-//     .action((language) => {
-//     console.log(chalk.red(`Downloading ${language}...`));
-// });
-
-// commander.parse(process.argv)
