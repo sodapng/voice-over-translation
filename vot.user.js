@@ -806,7 +806,7 @@
       if (window.location.hostname.includes('m.youtube.com')) {
         dbNewYoutubeDesign === 1 ? $translationMenuContent.css('height', '300px') : $translationMenuContent.css('height', '200px');
       } 
-      if (!$translationMenuContent.has('.syncVolume').length && dbSyncVolume !== undefined && window.location.hostname.includes('youtube.com')) {
+      if (!$translationMenuContent.has('.translationSyncVolume').length && dbSyncVolume !== undefined && window.location.hostname.includes('youtube.com')) {
         let $translationSyncVolumeContainter = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="sync_volume" value=${dbSyncVolume} class = "translationSyncVolume" ${dbSyncVolume === 1 ? "checked" : ''}>
