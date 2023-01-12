@@ -3,7 +3,7 @@
 // @name:ru          [VOT] - Закадровый перевод видео
 // @description      A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru   Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version          1.0.9.5
+// @version          1.0.9.6
 // @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
 // @match            *://*.youtube-nocookie.com/*
@@ -80,6 +80,10 @@
     },
     'pornhub': {
       'url': 'https://rt.pornhub.com/view_video.php?viewkey=',
+      'func_param': 0x4075500000000000
+    },
+    'udemy': {
+      'url': 'https://www.udemy.com/course/',
       'func_param': 0x4075500000000000
     },
   }
@@ -391,6 +395,7 @@
         objectStore.createIndex('defaultVolume', 'defaultVolume', { unique: false });
         objectStore.createIndex('showVideoSlider', 'showVideoSlider', { unique: false });
         objectStore.createIndex('newYoutubeDesign', 'newYoutubeDesign', { unique: false });
+        objectStore.createIndex('syncVolume', 'syncVolume', { unique: false });
         console.log('VOT: База Данных создана')
 
         objectStore.transaction.oncomplete = event => {
@@ -401,6 +406,7 @@
             defaultVolume: 100,
             showVideoSlider: 0,
             newYoutubeDesign: 0,
+            syncVolume: 0,
           }
           var request = objectStore.add(settingsDefault);
 
@@ -436,9 +442,9 @@
     });
   }
 
-  async function updateDB({autoTranslate, defaultVolume, showVideoSlider, newYoutubeDesign}) {
+  async function updateDB({autoTranslate, defaultVolume, showVideoSlider, newYoutubeDesign, syncVolume}) {
     return new Promise((resolve, reject) => {
-      if (typeof(autoTranslate) === 'number' || typeof(defaultVolume) === 'number' || typeof(showVideoSlider) === 'number' || typeof(newYoutubeDesign) === 'number') {
+      if (typeof(autoTranslate) === 'number' || typeof(defaultVolume) === 'number' || typeof(showVideoSlider) === 'number' || typeof(newYoutubeDesign) === 'number' || typeof(syncVolume) === 'number') {
         var openRequest = openDB("VOT");
 
         openRequest.onerror = () => {
@@ -489,6 +495,10 @@
 
             if (typeof(newYoutubeDesign) === 'number') {
               data.newYoutubeDesign = newYoutubeDesign;
+            };
+
+            if (typeof(syncVolume) === 'number') {
+              data.syncVolume = syncVolume;
             };
 
             var requestUpdate = objectStore.put(data);
@@ -631,6 +641,25 @@
     $translationBtn.text(text);
   }
 
+  function syncVolume(video) {
+    audio.volume = video.volume;
+    const translationVolumeBox = $('.translationVolumeBox');
+    if (translationVolumeBox.length) {
+      const translationVolumeSlider = translationVolumeBox.find('.translationVolumeSlider');
+      translationVolumeSlider.val(Math.round(video.volume * 100));
+      const translationVolumePercent = translationVolumeBox.parent().find('.volumePercent');
+      translationVolumePercent.text(`${Math.round(video.volume * 100)}%`);
+    }
+    const videoVolumeBox = $('.translationVideoVolumeBox');
+    if (videoVolumeBox.length) {
+      const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
+      videoVolumeSlider.val(Math.round(video.volume * 100));
+      const volumePercent = videoVolumeBox.parent().find('.volumePercent');
+      volumePercent.text(`${Math.round(video.volume * 100)}%`);
+    }
+    return true;
+  }
+
   async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     var autoRetry;
     let opacityRatio = 0.9; 
@@ -644,6 +673,29 @@
       $videoContainer.parent().removeAttr('href');
     }
     
+    const syncVolumeObserver = new MutationObserver(async function(mutations) {
+      mutations.forEach(async function(mutation) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow') {
+          syncVolume(video);
+        }
+      });
+    });
+  
+    function syncVolumeObserverControl(option) {
+      if (option === 1) {
+        syncVolumeObserver.observe($('.ytp-volume-panel')[0], {
+          attributes: true,
+          childList: false,
+          subtree: true,
+          attributeOldValue: true,
+        });
+        return true;
+      } else {
+        syncVolumeObserver.disconnect();
+        return false;
+      }
+    }
+
     var firstPlay = true;
     var isDBInited = await initDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
     if (siteHostname === 'youtube' && window.location.hostname.includes('m.youtube.com')) {
@@ -671,10 +723,15 @@
       var dbDefaultVolume = dbData !== undefined ? dbData.defaultVolume : undefined;
       var dbShowVideoSlider = dbData !== undefined ? dbData.showVideoSlider : undefined;
       var dbNewYoutubeDesign = dbData !== undefined ? dbData.newYoutubeDesign : undefined;
+
+      // Только для ютуба
+      var dbSyncVolume = dbData !== undefined ? dbData.syncVolume : undefined;
+
       console.log(`VOT: Значение autoTranslate: ${dbAutoTranslate}`)
       console.log(`VOT: Значение dbDefaultVolume: ${dbDefaultVolume}`)
       console.log(`VOT: Значение dbShowVideoSlider: ${dbShowVideoSlider}`)
       console.log(`VOT: Значение newYoutubeDesign: ${dbNewYoutubeDesign}`)
+      console.log(`VOT: Значение syncVolume (только для YouTube): ${dbSyncVolume}`)
       if (!$translationMenuContent.has('.translationAT').length && dbAutoTranslate !== undefined) {
         let $translationATCont = $(
           `<div class = "translationMenuContainer">
@@ -740,6 +797,33 @@
       if (window.location.hostname.includes('m.youtube.com')) {
         dbNewYoutubeDesign === 1 ? $translationMenuContent.css('height', '300px') : $translationMenuContent.css('height', '200px');
       } 
+      if (!$translationMenuContent.has('.syncVolume').length && dbSyncVolume !== undefined && window.location.hostname.includes('youtube.com')) {
+        let $translationSyncVolumeContainter = $(
+          `<div class = "translationMenuContainer">
+            <input type="checkbox" name="sync_volume" value=${dbSyncVolume} class = "translationSyncVolume" ${dbSyncVolume === 1 ? "checked" : ''}>
+            <label class = "translationMenuText" for = "sync_volume">Синхронизация громкости перевода с громкостью видео (только для YouTube)</label>
+          </div>
+          `
+        );
+        let $translationSyncVolume = $($translationSyncVolumeContainter).find('.translationSyncVolume');
+        syncVolumeObserverControl(dbSyncVolume)
+        $translationSyncVolume.on('click', async (event) => {
+          event.stopPropagation();
+          let syncVolumeValue = event.target.checked ? 1 : 0;
+          await updateDB({syncVolume: syncVolumeValue});
+          syncVolumeObserverControl(syncVolumeValue)
+          dbSyncVolume = syncVolumeValue;
+        });
+        $translationMenuContent.append($translationSyncVolumeContainter);
+      }
+      else if (dbSyncVolume === undefined) {
+        try {
+          await updateDB({syncVolume: 0});
+          console.log('VOT: Применено стандартное значение для "SyncVolume" (0). Пожалуйста, перезагрузите страницу.')
+        } catch (err) {
+          console.error('VOT: Не удалось применить стандартное значение для "SyncVolume". Причина: ', err)
+        }
+      }
     }
 
     let btnHover = function () {
@@ -927,6 +1011,10 @@
           }
         }
 
+        if (dbSyncVolume === 1) {
+          syncVolume(video);
+        }
+
         if (!$translationMenuContent.find('.translationAbsoluteContainer').has('.translationDownload').length) {
           $translationMenuContent.find('.translationAbsoluteContainer').append($translationDownload);
           $translationDownload.attr('href', urlOrError);
@@ -937,6 +1025,7 @@
     btnHover();
 
     const lipSync = (mode = false) => {
+      if (!video) return;
       audio.currentTime = video.currentTime;
       audio.playbackRate = video.playbackRate;
 
@@ -1007,6 +1096,7 @@
         translateFunc(VIDEO_ID)
         event.stopImmediatePropagation();
       } catch (err) {
+        console.error(err);
         transformBtn('error', err.substring(13, err.length))
         console.error(err);
       }
