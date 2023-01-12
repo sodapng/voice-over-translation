@@ -641,22 +641,27 @@
     $translationBtn.text(text);
   }
 
-  function syncVolume(video) {
-    audio.volume = video.volume;
-    const translationVolumeBox = $('.translationVolumeBox');
-    if (translationVolumeBox.length) {
-      const translationVolumeSlider = translationVolumeBox.find('.translationVolumeSlider');
-      translationVolumeSlider.val(Math.round(video.volume * 100));
-      const translationVolumePercent = translationVolumeBox.parent().find('.volumePercent');
-      translationVolumePercent.text(`${Math.round(video.volume * 100)}%`);
-    }
+  function syncOriginalVolumeSlider(newSlidersVolume) {
     const videoVolumeBox = $('.translationVideoVolumeBox');
     if (videoVolumeBox.length) {
       const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
-      videoVolumeSlider.val(Math.round(video.volume * 100));
+      videoVolumeSlider.val(newSlidersVolume);
       const volumePercent = videoVolumeBox.parent().find('.volumePercent');
-      volumePercent.text(`${Math.round(video.volume * 100)}%`);
+      volumePercent.text(`${newSlidersVolume}%`);
     }
+  }
+
+  function syncVolume(video) {
+    audio.volume = video.volume;
+    const translationVolumeBox = $('.translationVolumeBox');
+    newSlidersVolume = $('.ytp-volume-panel').attr('aria-valuenow');
+    if (translationVolumeBox.length) {
+      const translationVolumeSlider = translationVolumeBox.find('.translationVolumeSlider');
+      translationVolumeSlider.val(newSlidersVolume);
+      const translationVolumePercent = translationVolumeBox.parent().find('.volumePercent');
+      translationVolumePercent.text(`${newSlidersVolume}%`);
+    }
+    syncOriginalVolumeSlider(newSlidersVolume);
     return true;
   }
 
@@ -679,13 +684,7 @@
         if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow') {
           if (dbSyncVolume === 1) syncVolume(video);
           else if ($('.translationVideoVolumeBox').length) {
-            const videoVolumeBox = $('.translationVideoVolumeBox');
-            if (videoVolumeBox.length) {
-              const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
-              videoVolumeSlider.val(Math.round(video.volume * 100));
-              const volumePercent = videoVolumeBox.parent().find('.volumePercent');
-              volumePercent.text(`${Math.round(video.volume * 100)}%`);
-            }
+            syncOriginalVolumeSlider();
           }
         }
       });
@@ -835,11 +834,12 @@
 
     function addVideoSlider() {
       if (dbShowVideoSlider === 1 && (dbNewYoutubeDesign === 1 || !window.location.hostname.includes("m.youtube.com"))) {
+        newSlidersVolume = $('.ytp-volume-panel').attr('aria-valuenow');
         const videoVolumeBox = $(`
           <div class = "translationMenuContainer">
-            <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${Math.round(video.volume * 100)}%</b></span>
+            <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${newSlidersVolume}%</b></span>
             <div class = "translationVideoVolumeBox" tabindex = "0">
-              <input type="range" min="0" max="100" value=${Math.round(video.volume * 100)} class="translationVolumeSlider">
+              <input type="range" min="0" max="100" value=${newSlidersVolume} class="translationVolumeSlider">
             </div>
           </div>`
         );
