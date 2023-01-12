@@ -662,6 +662,7 @@
 
   async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     var autoRetry;
+    var dbSyncVolume;
     let opacityRatio = 0.9; 
     if (siteHostname === 'vimeo') {
       var video = $($videoContainer).find('.vp-video-wrapper > .vp-video > .vp-telecine > video')[0];
@@ -676,24 +677,27 @@
     const syncVolumeObserver = new MutationObserver(async function(mutations) {
       mutations.forEach(async function(mutation) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow') {
-          syncVolume(video);
+          if (dbSyncVolume === 1) syncVolume(video);
+          else if ($('.translationVideoVolumeBox').length) {
+            const videoVolumeBox = $('.translationVideoVolumeBox');
+            if (videoVolumeBox.length) {
+              const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
+              videoVolumeSlider.val(Math.round(video.volume * 100));
+              const volumePercent = videoVolumeBox.parent().find('.volumePercent');
+              volumePercent.text(`${Math.round(video.volume * 100)}%`);
+            }
+          }
         }
       });
     });
   
-    function syncVolumeObserverControl(option) {
-      if (option === 1) {
-        syncVolumeObserver.observe($('.ytp-volume-panel')[0], {
-          attributes: true,
-          childList: false,
-          subtree: true,
-          attributeOldValue: true,
-        });
-        return true;
-      } else {
-        syncVolumeObserver.disconnect();
-        return false;
-      }
+    if (window.location.hostname.includes('youtube.com')) {
+      syncVolumeObserver.observe($('.ytp-volume-panel')[0], {
+        attributes: true,
+        childList: false,
+        subtree: true,
+        attributeOldValue: true,
+      });
     }
 
     var firstPlay = true;
@@ -725,7 +729,7 @@
       var dbNewYoutubeDesign = dbData !== undefined ? dbData.newYoutubeDesign : undefined;
 
       // Только для ютуба
-      var dbSyncVolume = dbData !== undefined ? dbData.syncVolume : undefined;
+      dbSyncVolume = dbData !== undefined ? dbData.syncVolume : undefined;
 
       console.log(`VOT: Значение autoTranslate: ${dbAutoTranslate}`)
       console.log(`VOT: Значение dbDefaultVolume: ${dbDefaultVolume}`)
@@ -774,6 +778,11 @@
           let svsValue = event.target.checked ? 1 : 0;
           await updateDB({showVideoSlider: svsValue});
           dbShowVideoSlider = svsValue;
+          if (svsValue === 1) {
+            addVideoSlider();
+          } else {
+            $('.translationVideoVolumeBox').parent().remove();
+          }
         });
         $translationMenuContent.append($translationSVSCont);
       }
@@ -806,12 +815,10 @@
           `
         );
         let $translationSyncVolume = $($translationSyncVolumeContainter).find('.translationSyncVolume');
-        syncVolumeObserverControl(dbSyncVolume)
         $translationSyncVolume.on('click', async (event) => {
           event.stopPropagation();
           let syncVolumeValue = event.target.checked ? 1 : 0;
           await updateDB({syncVolume: syncVolumeValue});
-          syncVolumeObserverControl(syncVolumeValue)
           dbSyncVolume = syncVolumeValue;
         });
         $translationMenuContent.append($translationSyncVolumeContainter);
@@ -822,6 +829,30 @@
           console.log('VOT: Применено стандартное значение для "SyncVolume" (0). Пожалуйста, перезагрузите страницу.')
         } catch (err) {
           console.error('VOT: Не удалось применить стандартное значение для "SyncVolume". Причина: ', err)
+        }
+      }
+    }
+
+    function addVideoSlider() {
+      if (dbShowVideoSlider === 1 && (dbNewYoutubeDesign === 1 || !window.location.hostname.includes("m.youtube.com"))) {
+        const videoVolumeBox = $(`
+          <div class = "translationMenuContainer">
+            <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${Math.round(video.volume * 100)}%</b></span>
+            <div class = "translationVideoVolumeBox" tabindex = "0">
+              <input type="range" min="0" max="100" value=${Math.round(video.volume * 100)} class="translationVolumeSlider">
+            </div>
+          </div>`
+        );
+        const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
+
+        if (!$translationMenuContent.has('.translationVideoVolumeBox').length) {
+          $translationMenuContent.append(videoVolumeBox);
+          let $volumePercent = videoVolumeBox.find('.volumePercent');
+          videoVolumeSlider.on('input', async () => {
+            let value = videoVolumeSlider.val();
+            video.volume = (value / 100);
+            $volumePercent.text(`${value}%`);
+          });
         }
       }
     }
@@ -886,6 +917,8 @@
       }
     };
 
+    addVideoSlider()
+
     const translateFunc = (VIDEO_ID) => translateVideo(`${siteTranslates[siteHostname]['url']}${VIDEO_ID}`, siteTranslates[siteHostname]['func_param'], function (success, urlOrError) {
 
       if (getVideoId(siteHostname) === VIDEO_ID) {
@@ -910,6 +943,9 @@
             audio.pause();
             $("video").off(".translate");
             deleteAudioSrc();
+            $('.translationVolumeBox').parent().remove();
+            $('.translationDownload').remove();
+            transformBtn('none', 'Перевести видео');
           });
         }
 
@@ -925,6 +961,7 @@
                   audio.pause();
                   $("video").off(".translate");
                   deleteAudioSrc();
+                  $('.translationVolumeBox').parent().remove();
                   $('.translationDownload').remove();
                   transformBtn('none', 'Перевести видео');
                   firstPlay = true;
@@ -987,28 +1024,6 @@
             $volumePercent.text(`${value}%`);
             await updateDB({defaultVolume: Number(value)});
           });
-        }
-
-        if (dbShowVideoSlider === 1 && (dbNewYoutubeDesign === 1 || !window.location.hostname.includes("m.youtube.com"))) {
-          const videoVolumeBox = $(`
-            <div class = "translationMenuContainer">
-              <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${Math.round(video.volume * 100)}%</b></span>
-              <div class = "translationVideoVolumeBox" tabindex = "0">
-                <input type="range" min="0" max="100" value=${Math.round(video.volume * 100)} class="translationVolumeSlider">
-              </div>
-            </div>`
-          );
-          const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
-
-          if (!$translationMenuContent.has('.translationVideoVolumeBox').length) {
-            $translationMenuContent.append(videoVolumeBox);
-            let $volumePercent = videoVolumeBox.find('.volumePercent');
-            videoVolumeSlider.on('input', async () => {
-              let value = videoVolumeSlider.val();
-              video.volume = (value / 100);
-              $volumePercent.text(`${value}%`);
-            });
-          }
         }
 
         if (dbSyncVolume === 1) {
@@ -1079,7 +1094,9 @@
 
       if (audio.src) {
         deleteAudioSrc();
-        transformBtn('none', 'Перевести видео')
+        transformBtn('none', 'Перевести видео');
+        $('.translationVolumeBox').parent().remove();
+        $('.translationDownload').remove();
         event.stopImmediatePropagation();
       }
     });
