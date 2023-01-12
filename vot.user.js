@@ -641,7 +641,8 @@
     $translationBtn.text(text);
   }
 
-  function syncOriginalVolumeSlider(newSlidersVolume) {
+  function syncOriginalVolumeSlider() {
+    newSlidersVolume = $('.ytp-volume-panel').attr('aria-valuenow');
     const videoVolumeBox = $('.translationVideoVolumeBox');
     if (videoVolumeBox.length) {
       const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
@@ -661,7 +662,7 @@
       const translationVolumePercent = translationVolumeBox.parent().find('.volumePercent');
       translationVolumePercent.text(`${newSlidersVolume}%`);
     }
-    syncOriginalVolumeSlider(newSlidersVolume);
+    syncOriginalVolumeSlider();
     return true;
   }
 
@@ -834,7 +835,9 @@
 
     function addVideoSlider() {
       if (dbShowVideoSlider === 1 && (dbNewYoutubeDesign === 1 || !window.location.hostname.includes("m.youtube.com"))) {
-        newSlidersVolume = $('.ytp-volume-panel').attr('aria-valuenow');
+        if (window.location.hostname.includes('youtube.com')) newSlidersVolume = $('.ytp-volume-panel').attr('aria-valuenow');
+        else newSlidersVolume = Math.round(video.volume * 100);
+        
         const videoVolumeBox = $(`
           <div class = "translationMenuContainer">
             <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${newSlidersVolume}%</b></span>
@@ -945,6 +948,7 @@
             deleteAudioSrc();
             $('.translationVolumeBox').parent().remove();
             $('.translationDownload').remove();
+            syncOriginalVolumeSlider();
             transformBtn('none', 'Перевести видео');
           });
         }
