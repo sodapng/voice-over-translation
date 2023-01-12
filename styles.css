@@ -68,7 +68,7 @@
   position: absolute;
   background: #2e2f34;
   color: #fff;
-  display: hide;
+  display: none;
   border-radius: 1rem !important;
   left: 50%;
   top: 9rem;
