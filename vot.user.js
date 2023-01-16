@@ -217,7 +217,7 @@
         }
       case "vk":
         let videoId;
-        if (/^video-[0-9]{9}_[0-9]{9}$/.test(url.pathname.split('/')[1])) {
+        if (/^video-?[0-9]{8,9}_[0-9]{9}$/.test(url.pathname.split('/')[1])) {
           videoId = url.pathname.split('/')[1]; // Убираем слэш в начале
         } else {
           videoId = url.searchParams.has('z') ? url.searchParams.get("z").split('/')[0] : null; // Убираем мусор в конце параметра
