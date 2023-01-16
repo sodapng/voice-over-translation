@@ -9,9 +9,8 @@ function getVideoId (service, url) {
       case "vk":
         let videoId;
         if (/^(https:\/\/|http:\/\/)?(www.|m.)?vk.(com|ru)\/video-?[0-9]{8,9}_[0-9]{9}/.test(url)) {
-          videoId = url.split('/')[-1].split('/')[0];
+          videoId = url.split('/').pop().split('?')[0]
         } else {
-            console.log(123)
           videoId = url.includes('z=') ? url.split('z=')[1].split('%2')[0] : false; // Убираем мусор в конце параметра
         }
         return videoId;
