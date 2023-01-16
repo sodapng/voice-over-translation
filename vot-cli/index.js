@@ -24,30 +24,12 @@ const siteTranslates = {
 
 
 const translateAndDownload = (service, url) => {
-  let autoRetry;
-  let waiting;
   let videoId = getVideoId(service, url);
   if (!videoId) return console.error(chalk.red("Invalid link"));
   let finalURL = `${siteTranslates[service]}${videoId}`;
   if (!finalURL) return console.error(chalk.red("Unknown link"));
   translateVideo(finalURL, (success, urlOrError) => {
-    if (!success) {
-      if (urlOrError === "The translation will take a few minutes") {
-        waiting = loading({
-            'text': 'Waiting for translation...',
-            'color': 'yellow'
-        }).start();
-        waiting.start();
-        clearTimeout(autoRetry);
-        autoRetry = setTimeout(() => {
-            translateAndDownload(service, url);
-        }, 30000);
-      } else {
-        console.error(chalk.red(urlOrError));
-        if (waiting) waiting.stop();
-      }
-    } else {
-        if (waiting) waiting.stop();
+    if (success) {
         console.log('\n' +
             chalk.green("Video translated successfully!") +
               ' Your link: ' + chalk.blueBright(`${urlOrError}`)
@@ -56,7 +38,16 @@ const translateAndDownload = (service, url) => {
         if (argv.output && urlOrError) {
             download(urlOrError, argv.output, `(ID: ${videoId})`);
         }
-    }
+    } else {
+      if (urlOrError === "The translation will take a few minutes") {
+        console.log('Waiting for translation...');
+        setTimeout(() => {
+            translateAndDownload(service, url);
+        }, 30000)
+      } else {
+        console.error(chalk.red(urlOrError));
+      }
+    } 
   });
 };
 
