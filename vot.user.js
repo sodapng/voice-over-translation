@@ -3,7 +3,7 @@
 // @name:ru          [VOT] - Закадровый перевод видео
 // @description      A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru   Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version          1.0.9.7
+// @version          1.0.9.8
 // @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
 // @match            *://*.youtube-nocookie.com/*
@@ -198,7 +198,6 @@
     if (!$(elem).has($translationMenuContent).length) {
       if (device === 'mobile') {
         $translationMenuContent.css('top', '5rem');
-        $translationMenuContent.css('height', '200px');
       }
       $(elem).append($translationMenuContent);
     }
@@ -396,7 +395,6 @@
         objectStore.createIndex('autoTranslate', 'autoTranslate', { unique: false });
         objectStore.createIndex('defaultVolume', 'defaultVolume', { unique: false });
         objectStore.createIndex('showVideoSlider', 'showVideoSlider', { unique: false });
-        objectStore.createIndex('newYoutubeDesign', 'newYoutubeDesign', { unique: false });
         objectStore.createIndex('syncVolume', 'syncVolume', { unique: false });
         objectStore.createIndex('autoSetVolumeYandexStyle', 'autoSetVolumeYandexStyle', { unique: false });
         console.log('VOT: База Данных создана')
@@ -408,7 +406,6 @@
             autoTranslate: 0,
             defaultVolume: 100,
             showVideoSlider: 0,
-            newYoutubeDesign: 0,
             syncVolume: 0,
             autoSetVolumeYandexStyle: 1,
           }
@@ -450,7 +447,6 @@
     autoTranslate,
     defaultVolume,
     showVideoSlider,
-    newYoutubeDesign,
     syncVolume,
     autoSetVolumeYandexStyle
   }) {
@@ -459,7 +455,6 @@
         typeof(autoTranslate) === 'number' ||
         typeof(defaultVolume) === 'number' ||
         typeof(showVideoSlider) === 'number' ||
-        typeof(newYoutubeDesign) === 'number' ||
         typeof(syncVolume) === 'number' ||
         typeof(autoSetVolumeYandexStyle) === 'number') {
         var openRequest = openDB("VOT");
@@ -508,10 +503,6 @@
 
             if (typeof(showVideoSlider) === 'number') {
               data.showVideoSlider = showVideoSlider;
-            };
-
-            if (typeof(newYoutubeDesign) === 'number') {
-              data.newYoutubeDesign = newYoutubeDesign;
             };
 
             if (typeof(syncVolume) === 'number') {
@@ -689,7 +680,7 @@
       });
     });
   
-    if (window.location.hostname.includes('youtube.com')) {
+    if (siteHostname == 'youtube' && window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) {
       syncVolumeObserver.observe($('.ytp-volume-panel')[0], {
         attributes: true,
         childList: false,
@@ -751,7 +742,6 @@
       var dbAutoTranslate = dbData !== undefined ? dbData.autoTranslate : undefined;
       var dbDefaultVolume = dbData !== undefined ? dbData.defaultVolume : undefined;
       var dbShowVideoSlider = dbData !== undefined ? dbData.showVideoSlider : undefined;
-      var dbNewYoutubeDesign = dbData !== undefined ? dbData.newYoutubeDesign : undefined;
       var dbAutoSetVolumeYandexStyle = dbData !== undefined ? dbData.autoSetVolumeYandexStyle : undefined;
 
       // Только для ютуба
@@ -760,7 +750,6 @@
       console.log(`VOT: Значение autoTranslate: ${dbAutoTranslate}`)
       console.log(`VOT: Значение dbDefaultVolume: ${dbDefaultVolume}`)
       console.log(`VOT: Значение dbShowVideoSlider: ${dbShowVideoSlider}`)
-      console.log(`VOT: Значение newYoutubeDesign: ${dbNewYoutubeDesign}`)
       console.log(`VOT: Значение syncVolume (только для YouTube): ${dbSyncVolume}`)
       console.log(`VOT: Значение autoSetVolumeYandexStyle: ${dbAutoSetVolumeYandexStyle}`)
       if (!$translationMenuContent.has('.translationAT').length && dbAutoTranslate !== undefined) {
@@ -791,7 +780,7 @@
         });
         $translationMenuContent.find('.translationAbsoluteContainer').append($translationDropDB);
       }
-      if (!$translationMenuContent.has('.translationSVS').length && dbData !== undefined && (dbNewYoutubeDesign === 1 || !window.location.hostname.includes('m.youtube.com'))) {
+      if (!$translationMenuContent.has('.translationSVS').length && dbData !== undefined) {
         let $translationSVSCont = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="show_video_slider" value=${typeof(dbShowVideoSlider) === 'number' ? dbShowVideoSlider : '0'} class = "translationSVS" ${dbShowVideoSlider === 1 ? "checked" : ''}>
@@ -813,25 +802,8 @@
         });
         $translationMenuContent.append($translationSVSCont);
       }
-      if (!$translationMenuContent.has('.translationND').length && dbData !== undefined && window.location.hostname.includes('m.youtube.com')) {
-        let $translationNDCont = $(
-          `<div class = "translationMenuContainer">
-            <input type="checkbox" name="new_youtube_design" value=${typeof(dbNewYoutubeDesign) === 'number' ? dbNewYoutubeDesign : '0'} class = "translationND" ${dbNewYoutubeDesign === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "new_youtube_design">Новый дизайн YouTube</label>
-          </div>
-          `
-        );
-        let $translationND = $($translationNDCont).find('.translationND');
-        $translationND.on('click', async (event) => {
-          event.stopPropagation();
-          let ndValue = event.target.checked ? 1 : 0;
-          await updateDB({newYoutubeDesign: ndValue});
-          dbNewYoutubeDesign = ndValue;
-        });
-        $translationMenuContent.append($translationNDCont);
-      }
       if (window.location.hostname.includes('m.youtube.com')) {
-        dbNewYoutubeDesign === 1 ? $translationMenuContent.css('height', '350px') : $translationMenuContent.css('height', '200px');
+        $translationMenuContent.css('height', '350px');
       } 
       if (!$translationMenuContent.has('.translationSyncVolume').length && dbSyncVolume !== undefined && window.location.hostname.includes('youtube.com')) {
         let $translationSyncVolumeContainter = $(
@@ -881,7 +853,7 @@
     }
 
     function addVideoSlider() {
-      if (dbShowVideoSlider === 1 && (dbNewYoutubeDesign === 1 || !window.location.hostname.includes("m.youtube.com"))) {
+      if (dbShowVideoSlider === 1) {
         if (window.location.hostname.includes('youtube.com') && !dbAutoSetVolumeYandexStyle) newSlidersVolume = $('.ytp-volume-panel').attr('aria-valuenow');
         else newSlidersVolume = Math.round(video.volume * 100);
         
