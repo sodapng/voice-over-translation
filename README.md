@@ -18,7 +18,9 @@
 - **[XVideos](https://xvideos.com/)**
 - **[PornHub](https://rt.pornhub.com/)**
 - **[VK](https://vk.com)** (Поддерживаются **vk.com|ru/video**, **vk.com|ru/video-xxxxxxxxx_xxxxxxxxx** и **vk.com|ru/im?z=video-xxxxxxxxx_xxxxxxxxx** (+ другие страницы, на которых видео открывается через z параметр ссылки). Рекомендую использовать только совместно с автопереводом, ибо без него кнопка перевода требует 2-ого нажатия, и звук перевода пропадает при переходе на другое видео. Не знаю как это исправить :с)
-##### TODO: Vimeo, gag (возможно coursera, twitter, facebook, udemy)
+- **[Vimeo](https://vimeo.com/)**
+- **[9GAG](9gag.com/gag/)** (Работает только в открытых видео. В ленте не работает.)
+##### TODO: fix vk and add tiktok (возможно coursera, twitter, facebook, udemy)
 
 ## Примечание:
 1. Рекомендую разрешить автовоспроизведение "аудио и видео", чтобы избежать ошибок при работе расширения
@@ -51,7 +53,7 @@
 | Статус | Браузер | Расширение
 |---|---|---
 | ⠀✅ | Любой | Tampermonkey
-| ⠀❔ | Safari | Userscripts
+| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot-cloudflare.user.js) | Safari | Userscripts
 | ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot-cloudflare.user.js) | Любой | Violetmonkey 
 | ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot-cloudflare.user.js) | Любой | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
 | ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/vot-cloudflare.user.js) | Firefox | Firemonkey
