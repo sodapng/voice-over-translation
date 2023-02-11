@@ -73,7 +73,7 @@
       'func_param': 0x4075500000000000
     },
     'vk': {
-      'url': 'https://vk.com/video/',
+      'url': 'https://vk.com/video?z=',
       'func_param': 0x4075500000000000
     },
     'xvideos': {
