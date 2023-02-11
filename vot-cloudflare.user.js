@@ -266,7 +266,7 @@
     var protoRequest = new protobuf.Type("VideoTranslationRequest")
                           .add(new protobuf.Field("url", 3, "string"))
                           .add(new protobuf.Field("deviceId", 4, "string"))
-                          .add(new protobuf.Field("unknown0", 5, "int32"))
+                          .add(new protobuf.Field("unknown0", 5, "int32")) // первый запрос на перевод - 1, последующие - 0
                           .add(new protobuf.Field("unknown1", 6, "fixed64"))
                           .add(new protobuf.Field("unknown2", 7, "int32"))
                           .add(new protobuf.Field("language", 8, "string"))
@@ -373,6 +373,18 @@
             case 2:
                 callback(false, "Перевод займет несколько минут");
                 return;
+            case 3: /*
+              Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода. В конечном итоге, это занимает слишком много времени,
+              как-будто сервер не понимает, что данное видео уже недавно было переведено и заместо возвращения готовой ссылки на перевод начинает переводить видео заново.
+              Спустя время, возвращает статус код 2 и неизвестный массив в 7 поле протобафа:
+              7:
+                6=50:
+                  {}
+                7=57=53
+              После этого, этот массив начинает передаваться и во все следующие запросы к этому видео, пока не будет получен статус код 1 и ссылка на перевод.
+            */
+              callback(false, "Видео переводится");
+              return;
         }
     });
   }

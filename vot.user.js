@@ -271,7 +271,7 @@
       var protoRequest = new protobuf.Type("VideoTranslationRequest")
                             .add(new protobuf.Field("url", 3, "string"))
                             .add(new protobuf.Field("deviceId", 4, "string"))
-                            .add(new protobuf.Field("unknown0", 5, "int32"))
+                            .add(new protobuf.Field("unknown0", 5, "int32"))  // первый запрос на перевод - 1, последующие - 0
                             .add(new protobuf.Field("unknown1", 6, "fixed64"))
                             .add(new protobuf.Field("unknown2", 7, "int32"))
                             .add(new protobuf.Field("language", 8, "string"))
@@ -281,7 +281,6 @@
                               .add(new protobuf.Field("url",		1,	"string"))
                               .add(new protobuf.Field("duration",	2,	"double"))
                               .add(new protobuf.Field("status",	4,	"int32"))
-                              .add(new protobuf.Field("code",	7,	"string"))
                               .add(new protobuf.Field("message",	9,	"string"));
       new protobuf.Root().define("yandex").add(protoRequest).add(protoResponse);
       return {
@@ -356,6 +355,12 @@
           return;
         case 2:
           callback(false, "Перевод займет несколько минут");
+          return;
+        case 3: /*
+          Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода. В конечном итоге, это занимает слишком много времени,
+          как-будто сервер не понимает, что данное видео уже недавно было переведено и заместо возвращения готовой ссылки на перевод начинает переводить видео заново при чём у него это получается за очень длительное время
+        */
+          callback(false, "Видео переводится");
           return;
       }
     });
