@@ -3,7 +3,7 @@
 // @name:ru          [VOT Cloudflare] - Закадровый перевод видео
 // @description      A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru   Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version          1.0.9.8
+// @version          1.0.9.9
 // @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
 // @match            *://*.youtube-nocookie.com/*
@@ -994,6 +994,26 @@
       }
     };
 
+    const videoValidator = (video) => {
+      if (window.location.hostname.includes('youtube.com')) {
+        const data = document.querySelector("#movie_player").getVideoData();
+        if (data.isLive) {
+          throw "VOT: Не поддерживается перевод трансляций в прямом эфире";
+        }
+        if (data.isPremiere) {
+          throw "VOT: Дождитесь окончания премьеры перед переводом";
+        }
+      }
+      if (video.duration > 14400) {
+        throw "VOT: Видео слишком длинное";
+      }
+      return true;
+    }
+
+    const translateExecutor = (video, VIDEO_ID) => {
+      videoValidator(video);
+      translateFunc(VIDEO_ID);
+    }
 
     const translateFunc = (VIDEO_ID) => translateVideo(`${siteTranslates[siteHostname]['url']}${VIDEO_ID}`, siteTranslates[siteHostname]['func_param'], function (success, urlOrError) {
 
@@ -1193,7 +1213,7 @@
       }
 
       if (firstPlay && dbAutoTranslate === 1) {
-        translateFunc(VIDEO_ID);
+        translateExecutor(video, VIDEO_ID);
         firstPlay = false;
       }
     });
@@ -1216,10 +1236,11 @@
         if (!VIDEO_ID) {
           throw "VOT: Не найдено ID видео"; // not found video id
         }
-        translateFunc(VIDEO_ID)
+
+        translateExecutor(video, VIDEO_ID);
         event.stopImmediatePropagation();
       } catch (err) {
-        transformBtn('error', err.substring(13, err.length))
+        transformBtn('error', err.substring(4, err.length))
         console.error(err);
       }
     });
