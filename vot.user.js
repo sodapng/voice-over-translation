@@ -1248,9 +1248,26 @@
       } else if (window.location.hostname.includes("m.youtube.com") && window.location.pathname.includes('watch')){
         await translateProccessor($('.html5-video-container'), 'youtube', null);
       } else {
-        $("body").on("yt-page-data-updated", async function () {
-          await translateProccessor($('.html5-video-container'), 'youtube', 'yt-page-data-updated');
-        });
+        const ytPageEnter = function (event) {
+            var video = $('.html5-video-container');
+            if (video !== void 0 && video !== null && video.length > 0) {
+                translateProccessor(video, 'youtube', 'yt-translate-stop');
+            } else {
+                if (ytplayer === void 0 || ytplayer === null || ytplayer.config === void 0 || ytplayer.config === null) return;
+                ytplayer.config.args.jsapicallback = function(jsApi) {
+                    translateProccessor($('.html5-video-container'), 'youtube', 'yt-translate-stop');
+                }
+            }
+        };
+
+        document.addEventListener('spfdone', ytPageEnter);
+        document.addEventListener('yt-navigate-finish', ytPageEnter);
+
+        const ytPageLeave = function () { document.body.dispatchEvent(new Event('yt-translate-stop')); };
+        document.addEventListener('spfrequest', ytPageLeave);
+        document.addEventListener('yt-navigate-start', ytPageLeave);
+
+        ytPageEnter(null);
       }
     } else if (window.location.hostname.includes('twitch')) {
       if (window.location.hostname.includes('m.twitch.tv') && window.location.pathname.includes('videos')) {
