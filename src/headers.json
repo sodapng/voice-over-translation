@@ -1,0 +1,49 @@
+{
+    "name": "[VOT] - Закадровый перевод видео",
+    "description": "Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры",
+    "version": "1.1.0",
+    "author": "sodapng, mynovelhost, Toil",
+    "icon": "https://translate.yandex.ru/icons/favicon.ico",
+    "updateURL": "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js",
+    "downloadURL": "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js",
+    "supportURL": "https://github.com/ilyhalight/voice-over-translation/issues",
+    "homepageURL": "https://github.com/ilyhalight/voice-over-translation/issues",
+    "match": [
+        "*://*.youtube.com/*",
+        "*://*.youtube-nocookie.com/*",
+        "*://*.twitch.tv/*",
+        "*://*.xvideos.com/*",
+        "*://*.pornhub.com/*",
+        "*://*.vk.com/*",
+        "*://*.vk.ru/*",
+        "*://invidious.snopyta.org/*",
+        "*://invidious.kavin.rocks/*",
+        "*://vid.puffyan.us/*",
+        "*://invidious.namazso.eu/*",
+        "*://inv.riverside.rocks/*",
+        "*://yt.artemislena.eu/*",
+        "*://invidious.flokinet.to/*",
+        "*://invidious.esmailelbob.xyz/*",
+        "*://invidious.nerdvpn.de/*",
+        "*://invidious.slipfox.xyz/*",
+        "*://invidio.xamh.de/*",
+        "*://invidious.dhusch.de/*",
+        "*://*.yewtu.be/*",
+        "*://inv.vern.cc/*",
+        "*://*.vimeo.com/*",
+        "*://*.9gag.com/*",
+        "*://*.twitter.com/*"
+    ],
+    "require": [
+        "https://code.jquery.com/jquery-3.6.0.min.js",
+        "https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js"
+    ],
+    "grant": [
+        "GM_getResourceText",
+        "GM_xmlhttpRequest",
+        "GM_info"
+    ],
+    "connect": [
+        "api.browser.yandex.ru"
+    ]
+}
