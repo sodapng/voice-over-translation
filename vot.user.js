@@ -3,7 +3,7 @@
 // @name:ru          [VOT] - Закадровый перевод видео
 // @description      A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru   Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version          1.0.9.9
+// @version          1.1.0-pre
 // @author           sodapng, mynovelhost, Toil
 // @match            *://*.youtube.com/*
 // @match            *://*.youtube-nocookie.com/*
@@ -28,6 +28,7 @@
 // @match            *://inv.vern.cc/*
 // @match            *://*.vimeo.com/*
 // @match            *://*.9gag.com/*
+// @match            *://*.twitter.com/*
 // @icon             https://translate.yandex.ru/icons/favicon.ico
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
@@ -86,6 +87,10 @@
     },
     'udemy': {
       'url': 'https://www.udemy.com/course/',
+      'func_param': 0x4075500000000000
+    },
+    'twitter': {
+      'url': 'https://twitter.com/i/status/',
       'func_param': 0x4075500000000000
     },
   }
@@ -185,19 +190,21 @@
 
   const sleep = m => new Promise(r => setTimeout(r, m))
 
-  function addTranslationBtn(elem, device = 'desktop') {
+  function addTranslationBtn(elem, target = 'desktop') {
     if (!$(elem).has($translationBlock).length) {
-      if (device === 'mobile') {
+      if (target === 'yt-mobile') {
         $translationBlock.css('top', '1rem');
       }
       $(elem).append($translationBlock);
     }
   };
 
-  function addTranslationMenu(elem, device = 'desktop') {
+  function addTranslationMenu(elem, target = 'desktop') {
     if (!$(elem).has($translationMenuContent).length) {
-      if (device === 'mobile') {
+      if (target === 'yt-mobile') {
         $translationMenuContent.css('top', '5rem');
+      } else if (target === 'twitter') {
+        $translationMenuContent.css('top', '55%');
       }
       $(elem).append($translationMenuContent);
     }
@@ -260,6 +267,11 @@
           return url.searchParams.get("viewkey");
         } else if (url.pathname.includes('embed/')) {
           let urlArray = url.pathname.split('/');
+          return urlArray[urlArray.length - 1];
+        }
+      case "twitter":
+        if (url.pathname.includes("/status/")) {
+          const urlArray = url.pathname.split('/');
           return urlArray[urlArray.length - 1];
         }
       default:
@@ -655,6 +667,20 @@
     $translationBtn.text(text);
   }
 
+  async function waitForElement(selector, timeout = 15000) {
+    const start = Date.now();
+  
+    while (Date.now() - start < timeout) {
+      const el = $(selector);
+      if ((el && el.length) || Date.now() - start > timeout) {
+        return el;
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  
+    return null;
+  }
+
   async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     // --- Variables ---
     var autoRetry;
@@ -675,17 +701,17 @@
       $videoContainer.parent().removeAttr('href');
     }
     
-    const syncVolumeObserver = new MutationObserver(async function(mutations) {
-      mutations.forEach(async function(mutation) {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow') {
-          if ($('.translationVideoVolumeBox').length) {
-            syncOriginalVolumeSlider();
-          }
-        }
-      });
-    });
-  
     if (siteHostname == 'youtube' && window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) {
+      const syncVolumeObserver = new MutationObserver(async function(mutations) {
+        mutations.forEach(async function(mutation) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow') {
+            if ($('.translationVideoVolumeBox').length) {
+              syncOriginalVolumeSlider();
+            }
+          }
+        });
+      });
+
       syncVolumeObserver.observe($('.ytp-volume-panel')[0], {
         attributes: true,
         childList: false,
@@ -726,8 +752,8 @@
     if (siteHostname === 'youtube' && window.location.hostname.includes('m.youtube.com')) {
       await sleep(1000);
       opacityRatio = 1;
-      addTranslationBtn($('.slim-video-information-title-and-badges'), 'mobile');
-      addTranslationMenu($('.slim-video-information-title-and-badges'), 'mobile');
+      addTranslationBtn($('.slim-video-information-title-and-badges'), 'yt-mobile');
+      addTranslationMenu($('.slim-video-information-title-and-badges'), 'yt-mobile');
     } else if (siteHostname === 'pornhub') {
       if (window.location.pathname.includes('view_video.php')) {
         addTranslationBtn($('.original.mainPlayerDiv'));
@@ -735,6 +761,13 @@
       } else if (window.location.pathname.includes('embed/')) {
         addTranslationBtn($('body'));
         addTranslationMenu($('body'));
+      }
+    } else if (siteHostname === 'twitter') {
+      const elementContainer = $('article[data-testid="tweet"][tabindex="-1"] > div > div > div:nth-child(3)');
+      addTranslationBtn($videoContainer);
+      addTranslationMenu(elementContainer, 'twitter');
+      if (!$('.translationMenuContent').length) {
+        addTranslationMenu($videoContainer);
       }
     } else {
       addTranslationBtn($videoContainer);
@@ -936,12 +969,16 @@
 
       if (siteHostname === 'pornhub') {
         if (window.location.pathname.includes('view_video.php')) {
-          $($('.original.mainPlayerDiv > video-element > div')).on("mousemove", () => resetTimer());
-          $($('.original.mainPlayerDiv > video-element > div')).on("mouseout", () => logout(0));
+          $('.original.mainPlayerDiv > video-element > div').on("mousemove", () => resetTimer());
+          $('.original.mainPlayerDiv > video-element > div').on("mouseout", () => logout(0));
         } else if (window.location.pathname.includes('embed/')) {
-          $($('#player')).on("mousemove", () => resetTimer());
-          $($('#player')).on("mouseout", () => logout(0));
+          $('#player').on("mousemove", () => resetTimer());
+          $('#player').on("mouseout", () => logout(0));
         }
+      } else if (siteHostname === 'twitter') {
+        const twitterPlayer = $('div[data-testid="videoPlayer"');
+        twitterPlayer.on("mousemove", () => resetTimer());
+        twitterPlayer.on("mouseout", () => logout(0));
       } else {
         $($videoContainer).on("mousemove", () => resetTimer());
         $($videoContainer).on("mouseout", () => logout(0));
@@ -961,12 +998,18 @@
         }
       })
 
-      $translationBlock.on("mousemove", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
-      $translationMenuContent.on("mousemove", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
+      function changeOpacityByEvent(event, timer, opacityRatio) {
+        clearTimeout(timer)
+        logout(opacityRatio)
+        event.stopPropagation()
+      }
 
-      $(document).on("touchstart", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
-      $(document).on("touchmove", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
-      $(document).on("touchend", (event) => (clearTimeout(time), logout(opacityRatio), event.stopPropagation()));
+      $translationBlock.on("mousemove", (event) => changeOpacityByEvent(event, time, opacityRatio));
+      $translationMenuContent.on("mousemove", (event) => changeOpacityByEvent(event, time, opacityRatio));
+
+      $(document).on("touchstart", (event) => changeOpacityByEvent(event, time, opacityRatio));
+      $(document).on("touchmove", (event) => changeOpacityByEvent(event, time, opacityRatio));
+      $(document).on("touchend", (event) => changeOpacityByEvent(event, time, opacityRatio));
 
       function logout(n) {
         if (!isOpened) {
@@ -1330,6 +1373,12 @@
     } else if (window.location.hostname.includes('9gag')) {
       await sleep(1000);
       await translateProccessor($('.video-post'), '9gag', null);
+    } else if (window.location.hostname.includes('twitter')) {
+      const elementSelector = 'div[data-testid="videoPlayer"] > div > div > div > div > div';
+      const el = await waitForElement(elementSelector);
+      if (el) {
+        await translateProccessor($(el)[0], 'twitter', null);
+      }
     }
   }
 
