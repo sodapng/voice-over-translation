@@ -61,6 +61,9 @@ module.exports = (env) => {
           if (build_mode === 'cloudflare') {
             header['name'] = '[VOT Cloudflare] - Закадровый перевод видео';
             header['inject-into'] = 'page';
+            header['updateURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
+            header['downloadURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
+            header['inject-into'] = 'page';
           }
   
           return header;
