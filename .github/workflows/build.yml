@@ -1,13 +1,14 @@
 name: Build
+
 on:
-  [push, pull_request, release]:
+  [push, pull_request, release, workflow_dispatch]:
     paths-ignore:
       - README.md
       - LICENSE
       - img/*
       - web-server/*
       - vot-cli/*
-  workflow_dispatch:
+
 permissions:
   contents: write
 
