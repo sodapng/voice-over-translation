@@ -11,7 +11,7 @@ const argv = parseArgs(process.argv.slice(2));
 
 const argLinks = argv._;
 
-const version = '1.0.2'
+const version = '1.0.3'
 const siteTranslates = {
   "youtube": "https://youtu.be/",
   "twitch": "https://www.twitch.tv/videos/",
@@ -19,7 +19,8 @@ const siteTranslates = {
   "vk": "https://vk.com/video/",
   "pornhub": "https://www.pornhub.com/view_video.php?viewkey=",
   "vimeo": "https://vimeo.com/",
-  "9gag": "https://9gag.com/gag/"
+  "9gag": "https://9gag.com/gag/",
+  "twitter": "https://twitter.com/i/status/"
 };
 
 

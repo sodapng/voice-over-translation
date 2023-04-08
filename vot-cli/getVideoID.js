@@ -42,6 +42,11 @@ function getVideoId (service, url) {
           return url.split('embed/')[1];
         }
         return false;
+      case "twitter":
+        if (url.includes("/status/")) {
+          const urlArray = url.split('/');
+          return urlArray[urlArray.length - 1];
+        }
       default:
         return false;
     }

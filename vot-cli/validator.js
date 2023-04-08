@@ -17,6 +17,8 @@ function validate(site) {
     return '9gag';
   } else if (/^(https:\/\/|http:\/\/)?vimeo.com\/*/.test(site)) {
     return 'vimeo';
+  } else if (/^(https:\/\/|http:\/\/)?twitter.com\/*/.test(site)) {
+    return 'twitter';
   }
   return 'unknown';
 }
