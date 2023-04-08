@@ -32,7 +32,7 @@
 // @icon             https://translate.yandex.ru/icons/favicon.ico
 // @require          https://code.jquery.com/jquery-3.6.0.min.js
 // @require          https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
-// @resource         styles https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/styles.css
+// @resource         styles https://cdn.jsdelivr.net/gh/ilyhalight/voice-over-translation@2d02313dbf088a11b0ab66f8b1a7dac621e1a89a/styles.css
 // @grant            GM_getResourceText
 // @grant            GM_addStyle
 // @grant            GM_xmlhttpRequest
@@ -134,7 +134,7 @@
   };
 
   if (typeof GM_getResourceText === 'undefined') {
-    fetch('https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/styles.css')
+    fetch('https://cdn.jsdelivr.net/gh/ilyhalight/voice-over-translation@2d02313dbf088a11b0ab66f8b1a7dac621e1a89a/styles.css')
     .then((response) => response.text().then(styles => GM_addStyle(styles)));
   } else {
     const styles = GM_getResourceText("styles");
