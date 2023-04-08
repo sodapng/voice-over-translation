@@ -20,7 +20,8 @@
 - **[VK](https://vk.com)** (Поддерживаются **vk.com|ru/video**, **vk.com|ru/video-xxxxxxxxx_xxxxxxxxx** и **vk.com|ru/im?z=video-xxxxxxxxx_xxxxxxxxx** (+ другие страницы, на которых видео открывается через z параметр ссылки). Рекомендую использовать только совместно с автопереводом, ибо без него кнопка перевода требует 2-ого нажатия, и звук перевода пропадает при переходе на другое видео. Не знаю как это исправить :с)
 - **[Vimeo](https://vimeo.com/)**
 - **[9GAG](9gag.com/gag/)** (Работает только в открытых видео. В ленте не работает.)
-##### TODO: fix vk and add tiktok (возможно coursera, twitter, facebook, udemy)
+- **[Twitter](twitter.com/)** (Работает только в открытых видео. В ленте не работает.)
+##### TODO: coursera, facebook, udemy
 
 ## Примечание:
 1. Рекомендую разрешить автовоспроизведение "аудио и видео", чтобы избежать ошибок при работе расширения
@@ -47,6 +48,7 @@
 | ⠀✅ | Google Chrome | v106.0.5249.91 | Windows, MacOS, Linux | Tampermonkey, Violetmonkey
 | ⠀✅ | Opera GX | LVL4 (core: 91.0.4516.36) | Windows | Tampermonkey
 | ⠀✅ | Opera | v92.0.4561.43 | Windows | Tampermonkey
+| ⠀✅ | Vivaldi | 5.7.2921.63 | Windows, Linux | Tampermonkey
 | ⠀❔ | Safari | v15.6.1 | MacOS | Userscripts
 
 ## Протестировано в следующих расширениях для юзерскриптов:
