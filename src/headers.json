@@ -1,7 +1,7 @@
 {
     "name": "[VOT] - Закадровый перевод видео",
-    "description": "Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры",
-    "version": "1.1.0",
+    "description": "A small extension that adds a Yandex Browser video translation to other browsers",
+    "version": "1.1.1",
     "author": "sodapng, mynovelhost, Toil",
     "icon": "https://translate.yandex.ru/icons/favicon.ico",
     "updateURL": "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js",
@@ -32,14 +32,15 @@
         "*://inv.vern.cc/*",
         "*://*.vimeo.com/*",
         "*://*.9gag.com/*",
-        "*://*.twitter.com/*"
+        "*://*.twitter.com/*",
+        "*://*.facebook.com/*",
+        "*://*.rutube.ru/*"
     ],
     "require": [
         "https://code.jquery.com/jquery-3.6.0.min.js",
         "https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js"
     ],
     "grant": [
-        "GM_getResourceText",
         "GM_xmlhttpRequest",
         "GM_info"
     ],
