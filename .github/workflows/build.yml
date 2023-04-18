@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      
+
       - name: Check Version 🛎️
         shell: bash
         run: node --version && npm --version
@@ -32,9 +32,6 @@ jobs:
 
       - name: Build 🔧
         run: npm run build
-
-      - name: Build Cloudflare 🔧
-        run: npm run build:cloudflare
 
       - name: Upload Artifact 🚀
         uses: actions/upload-artifact@v3
