@@ -2,11 +2,17 @@ const path = require('path');
 const fs = require('fs');
 
 var webpack = require('webpack');
-// const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { UserscriptPlugin } = require('webpack-userscript');
 const dev = process.env.NODE_ENV === 'development';
 
 console.log('development mode: ', dev);
+
+function getHeaders(file) {
+  const headersPath = path.resolve(__dirname, 'src', file);
+  return JSON.parse(fs.readFileSync(headersPath).toString());
+}
+
+const ru_headers = getHeaders('locales/ru/headers.json');
 
 module.exports = (env) => {
   const build_mode = env.build_mode;
@@ -38,39 +44,42 @@ module.exports = (env) => {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*",
       },
-      original: true,
       client: {
-        webSocketURL: "ws://webpack.localhost:11944/ws",
+        webSocketURL: "ws://localhost:11944/ws",
       },
     },
     plugins: [
       new webpack.DefinePlugin({
         BUILD_MODE: JSON.stringify(build_mode)
       }),
-      // new CleanWebpackPlugin(),
       new UserscriptPlugin({
         headers: async () => {
-          const headerPath = path.resolve(__dirname, 'src', 'headers.json');
-          const header = JSON.parse(fs.readFileSync(headerPath).toString());
+          const headers = getHeaders('headers.json');
   
-          let version = header.version;
+          let version = headers.version;
           if (dev) {
-            header["version"] = `${version}-build.[buildNo]`;
+            headers["version"] = `${version}-build.[buildNo]`;
           }
   
           if (build_mode === 'cloudflare') {
-            header['name'] = '[VOT Cloudflare] - Закадровый перевод видео';
-            header['inject-into'] = 'page';
-            header['updateURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
-            header['downloadURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
-            header['inject-into'] = 'page';
+            headers['name'] = '[VOT Cloudflare] - Закадровый перевод видео';
+            headers['inject-into'] = 'page';
+            headers['updateURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
+            headers['downloadURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
           }
   
-          return header;
+          return headers;
         },
         proxyScript: {
           filename: "[basename].proxy.user.js",
-          baseURL: "http://webpack.localhost:11944/",
+          baseURL: "http://localhost:11944/",
+        },
+        i18n: {
+          'ru': (headers) => ({
+            ...headers,
+            // name: build_mode === 'cloudflare' ? '[VOT Cloudflare] - Закадровый перевод видео' : ru_headers['name'],
+            description: ru_headers['description']
+          }),
         },
         strict: true,
       }),
