@@ -7,9 +7,9 @@
 1. Установите расширение **[Tampermonkey](https://www.tampermonkey.net/)** (Для Safari: **[UserScripts](https://apps.apple.com/app/userscripts/id1463298887 )**)
 2. **[«Установите Скрипт»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js)**
 
-## Версия для VM, FM, GM, AdGuard, UserScripts: **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
-## Версия для терминала: **[Ссылка](https://github.com/ilyhalight/voice-over-translation/tree/master/vot-cli)**
-## Подробнее о создание воркера для VM, FM, GM, AdGuard, UserScripts: **[Ссылка](https://github.com/mynovelhost/voice-over-translation/)**
+#### Версия для VM, FM, GM, AdGuard, UserScripts: **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
+#### Версия для терминала: **[Ссылка](https://github.com/ilyhalight/voice-over-translation/tree/master/vot-cli)**
+#### Подробнее о создание воркера для VM, FM, GM, AdGuard, UserScripts: **[Ссылка](https://github.com/mynovelhost/voice-over-translation/)**
 
 # Список поддерживаемых сайтов:
 - **[YouTube](https://www.youtube.com)** (Полная поддержка **www.youtube.com/watch**, **www.youtube.com/embed**, **m.youtube.com**. Включая **[YouTube NoCookie](https://www.youtube-nocookie.com/)**)
@@ -19,9 +19,10 @@
 - **[PornHub](https://rt.pornhub.com/)**
 - **[VK](https://vk.com)** (Поддерживаются **vk.com|ru/video**, **vk.com|ru/video-xxxxxxxxx_xxxxxxxxx** и **vk.com|ru/im?z=video-xxxxxxxxx_xxxxxxxxx** (+ другие страницы, на которых видео открывается через z параметр ссылки). Рекомендую использовать только совместно с автопереводом, ибо без него кнопка перевода требует 2-ого нажатия, и звук перевода пропадает при переходе на другое видео. Не знаю как это исправить :с)
 - **[Vimeo](https://vimeo.com/)**
-- **[9GAG](9gag.com/gag/)** (Работает только в открытых видео. В ленте не работает.)
-- **[Twitter](twitter.com/)** (Работает только в открытых видео. В ленте не работает.)
-##### TODO: coursera, facebook, udemy
+- **[9GAG](https://9gag.com/gag/)** (Работает только в открытых видео. В ленте не работает.)
+- **[Twitter](https://twitter.com/)** (Работает только в открытых видео. В ленте не работает.)
+- **[Facebook*](https://facebook.com/)** (Работает только в открытых видео. В ленте не работает.)
+- **[Rutube](https://rutube.ru/)** (Полная поддержка **rutube.ru/video/** и **rutube.ru/play/embed/**)
 
 ## Как собрать расширение?
 1. Установите NodeJS 16+
@@ -37,15 +38,9 @@ npm i
    ```
 
    3.2. Cloudflare версии:
-
-   Данное действие необходимо выполнять, если версия "webpack-userscript" меньше или равна 3.1.0 (актуально на 09.04.2023):
-      1. Перейти по пути `node_modules/webpack-userscript/dist/`
-      2. В файле `plugins.js` закоментировать строку содержащую "new features_1.ValidateHeaders(this.options),"
-      3. Вернуться в корень репозитория
-      4. Запустить сборку с помощью команды:
-      ```bash
-      npm run build:cloudflare
-      ```
+   ```bash
+   npm run build:cloudflare
+   ```
 
 
 ## Примечание:
@@ -87,3 +82,5 @@ npm i
 | ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | Greasemonkey
 
 ![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.png "btn")
+
+*: Запрещена на территории РФ
