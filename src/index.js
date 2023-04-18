@@ -50,13 +50,21 @@ async function main() {
       'func_param': 0x4075500000000000
     },
     'udemy': {
-      'url': 'https://www.udemy.com/course/',
+      'url': 'https://www.udemy.com',
       'func_param': 0x4075500000000000
     },
     'twitter': {
       'url': 'https://twitter.com/i/status/',
       'func_param': 0x4075500000000000
     },
+    'facebook': {
+      'url': 'https://www.facebook.com/watch?v=',
+      'func_param': 0x4075500000000000
+    },
+    'rutube': {
+      'url': 'https://rutube.ru/video/',
+      'func_param': 0x4075500000000000
+    }
   }
 
   // Сайты хостящие Invidious. Мной была протестирована работоспособность только на invidious.kavin.rocks, yewtu.be и inv.vern.cc
@@ -212,6 +220,17 @@ async function main() {
         if (url.pathname.includes("/status/")) {
           const urlArray = url.pathname.split('/');
           return urlArray[urlArray.length - 1];
+        }
+      case "udemy":
+        return url.pathname;
+      case "facebook":
+        if (url.pathname.includes("watch")) {
+          return url.searchParams.get("v");
+        }
+      case "rutube":
+        if (url.pathname.includes("/video/")) {
+          const urlArray = url.pathname.split('/');
+          return urlArray[urlArray.length - 2];
         }
       default:
         return false;
@@ -568,12 +587,15 @@ async function main() {
     let opacityRatio = 0.9; 
     var tempOriginalVolume;
     var tempVolume;
+    let video
 
     // --- Get video element --- 
     if (siteHostname === 'vimeo') {
-      var video = $($videoContainer).find('.vp-video-wrapper > .vp-video > .vp-telecine > video')[0];
+      video = $($videoContainer).find('.vp-video-wrapper > .vp-video > .vp-telecine > video')[0];
+    } else if (siteHostname === 'facebook') {
+      video = $($videoContainer).find('div > div > div > div > div > div > div > div > div > div > video')[0];
     } else {
-      var video = $($videoContainer).find('video')[0];
+      video = $($videoContainer).find('video')[0];
     }
 
     if (siteHostname === '9gag') {
@@ -955,8 +977,8 @@ async function main() {
 
         // TODO: Fix audio for 9gag change video
         // if (siteHostname === 'twitch' || siteHostname === 'vimeo' || siteHostname === '9gag') {
-        if (siteHostname === 'twitch' || siteHostname === 'vimeo') {
-          var mutationObserver = new MutationObserver(async function(mutations) {
+        if (siteHostname === 'twitch' || siteHostname === 'vimeo' || siteHostname === 'facebook' || siteHostname === 'rutube') {
+          const mutationObserver = new MutationObserver(async function(mutations) {
             mutations.forEach(async function(mutation) {
               // if (mutation.type === 'attributes' && ((mutation.attributeName === 'src' && mutation.target === video) || (siteHostname === '9gag' && mutation.attributeName === 'class' && (mutation.oldValue === 'hide' || mutation.oldValue === 'presenting')))) {
               //   if (siteHostname === '9gag' || mutation.target.src !== '') {
@@ -968,7 +990,7 @@ async function main() {
               }
             });
           });
-        
+
           mutationObserver.observe($videoContainer[0], {
             attributes: true,
             childList: false,
@@ -1255,7 +1277,43 @@ async function main() {
       const elementSelector = 'div[data-testid="videoPlayer"] > div > div > div > div > div';
       const el = await waitForElement(elementSelector);
       if (el) {
-        await translateProccessor($(el)[0], 'twitter', null);
+        await translateProccessor($(el), 'twitter', null);
+      }
+    // } else if (window.location.hostname.includes('udemy')) {
+    //   const elementSelector = '.vjs-v7';
+    //   const el = await waitForElement(elementSelector);
+    //   if (el) {
+    //     await translateProccessor($(elementSelector), 'udemy', null);
+    //   }
+    } else if (window.location.hostname.includes('facebook')) {
+      const elementSelector = 'div[data-pagelet="WatchPermalinkVideo"]';
+      const el = await waitForElement(elementSelector);
+      if (el) {
+        let videoID;
+        let videoIDNew;
+        await translateProccessor($(elementSelector).last(), 'facebook', null);
+        setInterval(async () => {
+          videoIDNew = getVideoId('facebook');
+          if (videoID !== videoIDNew) {
+            if (videoIDNew) {
+              // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
+              await translateProccessor($(elementSelector).last(), 'facebook', null);
+            }
+            videoID = videoIDNew;
+          } 
+        }, 3000);
+      }
+    } else if (window.location.hostname.includes('rutube')) {
+      let elementSelector;
+      if (window.location.pathname.includes('/play/embed')) {
+        elementSelector = '#app > div > div';
+      } else {
+        elementSelector = '.video-player > div > div > div:nth-child(2)';
+      }
+
+      const el = await waitForElement(elementSelector);
+      if (el) {
+        await translateProccessor($(el), 'rutube', null);
       }
     }
   }
