@@ -21,12 +21,13 @@
     "webpack": "^5.78.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.13.2",
-    "webpack-userscript": "^3.1.0"
+    "webpack-userscript": "^3.2.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:cloudflare": "webpack build -c webpack.config.js --env build_mode=cloudflare",
-    "build": "webpack build -c webpack.config.js",
+    "build:default": "webpack build -c webpack.config.js",
+    "build": "npm run build:default && npm run build:cloudflare",
     "dev": "webpack serve --node-env development"
   }
 }
