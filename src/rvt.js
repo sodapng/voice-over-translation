@@ -2,9 +2,9 @@ const getUUID = require('./getUUID.js');
 const yandexRequests = require('./yandexRequests.js');
 const { workerHost, yandexHmacKey, yandexUserAgent } = require('./config/config.js');
 
-function requestVideoTranslation(url, unknown1, callback) {
+function requestVideoTranslation(url, unknown1, requestLang, responseLang, callback) {
     var deviceId = getUUID(true);
-      var body = yandexRequests.encodeRequest(url, deviceId, unknown1);
+      var body = yandexRequests.encodeRequest(url, deviceId, unknown1, requestLang, responseLang);
   
     var utf8Encoder = new TextEncoder("utf-8");
     window.crypto.subtle.importKey('raw', utf8Encoder.encode(yandexHmacKey), { name: 'HMAC', hash: {name: 'SHA-256'}}, false, ['sign', 'verify']).then(key => {

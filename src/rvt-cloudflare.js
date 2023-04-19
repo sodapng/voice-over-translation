@@ -2,12 +2,12 @@ const getUUID = require('./getUUID.js');
 const yandexRequests = require('./yandexRequests.js');
 const { workerHost, yandexHmacKey, yandexUserAgent } = require('./config/config-cloudflare.js');
 
-async function requestVideoTranslationCloudflare(url, unknown1, callback) {
+async function requestVideoTranslationCloudflare(url, unknown1, requestLang, responseLang, callback) {
     var response;
     var responseBody;
   
     var deviceId = getUUID(true);
-    var body = yandexRequests.encodeRequest(url, deviceId, unknown1);
+    var body = yandexRequests.encodeRequest(url, deviceId, unknown1, requestLang, responseLang);
   
     try {
       var utf8Encoder = new TextEncoder("utf-8");
