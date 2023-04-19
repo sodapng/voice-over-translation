@@ -24,7 +24,7 @@ function getLanguage(title, description, author) {
   return 'en';
 }
 
-function getYTVideoData(videoData) {
+function getYTVideoData() {
   let videoData = {};
   const data = document.querySelector("#movie_player").getVideoData();
   videoData.isLive = data.isLive;
