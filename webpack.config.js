@@ -62,7 +62,7 @@ module.exports = (env) => {
           }
   
           if (build_mode === 'cloudflare') {
-            headers['name'] = '[VOT Cloudflare] - Закадровый перевод видео';
+            headers['name'] = '[VOT Cloudflare] - Voice Over Translation';
             headers['inject-into'] = 'page';
             headers['updateURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
             headers['downloadURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
@@ -77,7 +77,7 @@ module.exports = (env) => {
         i18n: {
           'ru': (headers) => ({
             ...headers,
-            // name: build_mode === 'cloudflare' ? '[VOT Cloudflare] - Закадровый перевод видео' : ru_headers['name'],
+            name: build_mode === 'cloudflare' ? '[VOT Cloudflare] - Закадровый перевод видео' : ru_headers['name'],
             description: ru_headers['description']
           }),
         },
