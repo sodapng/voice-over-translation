@@ -25,6 +25,7 @@ function getLanguage(title, description, author) {
 }
 
 function getYTVideoData(videoData) {
+  let videoData = {};
   const data = document.querySelector("#movie_player").getVideoData();
   videoData.isLive = data.isLive;
   videoData.isPremiere = data.isPremiere;
