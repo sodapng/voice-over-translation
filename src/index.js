@@ -1,4 +1,5 @@
 import './styles/main.css';
+const getYoutubeData = require('./utils/getYTVideoData.js');
 const yandexRequests = require('./yandexRequests.js');
 
 let requestVideoTranslation;
@@ -19,6 +20,7 @@ async function main() {
   }
 
   const defaultVideoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video with the translation (uses with option "autoSetVolumeYandexStyle")
+  const availableLangs = ['ru', 'en', 'zh', 'fr', 'it', 'es']; // available languages for translation
 
   const siteTranslates = {
     'youtube': {
@@ -241,13 +243,13 @@ async function main() {
     var translationPanding = false;
   }
 
-  function translateVideo(url, unknown1, callback) {
+  function translateVideo(url, unknown1, requestLang, responseLang, callback) {
     if (BUILD_MODE === 'cloudflare') {
       if (translationPanding) return;
       translationPanding = true;
     }
 
-    requestVideoTranslation(url, unknown1, function (success, response) {
+    requestVideoTranslation(url, unknown1, requestLang, responseLang, function (success, response) {
       if (!success) {
         callback(false, "Не удалось запросить перевод видео");
         return;
@@ -264,6 +266,7 @@ async function main() {
           callback(hasUrl, hasUrl ? translateResponse.url : "Не получена ссылка на аудио");
           return;
         case 2:
+          // translateResponse.remainingTime
           callback(false, "Перевод займет несколько минут");
           return;
         case 3: /*
@@ -312,6 +315,7 @@ async function main() {
         objectStore.createIndex('showVideoSlider', 'showVideoSlider', { unique: false });
         objectStore.createIndex('syncVolume', 'syncVolume', { unique: false });
         objectStore.createIndex('autoSetVolumeYandexStyle', 'autoSetVolumeYandexStyle', { unique: false });
+        objectStore.createIndex('dontTranslateRuVideos', 'dontTranslateRuVideos', { unique: false });
         console.log('VOT: База Данных создана')
 
         objectStore.transaction.oncomplete = event => {
@@ -323,6 +327,7 @@ async function main() {
             showVideoSlider: 0,
             syncVolume: 0,
             autoSetVolumeYandexStyle: 1,
+            dontTranslateRuVideos: 0
           }
           var request = objectStore.add(settingsDefault);
 
@@ -363,7 +368,8 @@ async function main() {
     defaultVolume,
     showVideoSlider,
     syncVolume,
-    autoSetVolumeYandexStyle
+    autoSetVolumeYandexStyle,
+    dontTranslateRuVideos
   }) {
     return new Promise((resolve, reject) => {
       if (
@@ -371,7 +377,8 @@ async function main() {
         typeof(defaultVolume) === 'number' ||
         typeof(showVideoSlider) === 'number' ||
         typeof(syncVolume) === 'number' ||
-        typeof(autoSetVolumeYandexStyle) === 'number') {
+        typeof(autoSetVolumeYandexStyle) === 'number' ||
+        typeof(dontTranslateRuVideos) === 'number') {
         var openRequest = openDB("VOT");
 
         openRequest.onerror = () => {
@@ -426,6 +433,10 @@ async function main() {
 
             if (typeof(autoSetVolumeYandexStyle) === 'number') {
               data.autoSetVolumeYandexStyle = autoSetVolumeYandexStyle;
+            };
+
+            if (typeof(dontTranslateRuVideos) === 'number') {
+              data.dontTranslateRuVideos = dontTranslateRuVideos;
             };
 
             var requestUpdate = objectStore.put(data);
@@ -584,12 +595,13 @@ async function main() {
     var autoRetry;
     var dbSyncVolume;
     let volumeOnStart;
-    let opacityRatio = 0.9; 
+    let opacityRatio = 0.9;
     var tempOriginalVolume;
     var tempVolume;
-    let video
+    let video;
+    let videoData = getVideoData();
 
-    // --- Get video element --- 
+    // --- Get video element ---
     if (siteHostname === 'vimeo') {
       video = $($videoContainer).find('.vp-video-wrapper > .vp-video > .vp-telecine > video')[0];
     } else if (siteHostname === 'facebook') {
@@ -601,7 +613,7 @@ async function main() {
     if (siteHostname === '9gag') {
       $videoContainer.parent().removeAttr('href');
     }
-    
+
     if (siteHostname == 'youtube' && window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) {
       const syncVolumeObserver = new MutationObserver(async function(mutations) {
         mutations.forEach(async function(mutation) {
@@ -674,23 +686,28 @@ async function main() {
       addTranslationBtn($videoContainer);
       addTranslationMenu($videoContainer);
     }
+
     transformBtn('none', 'Перевести видео');
     $('.translationDownload').remove();
+
     if (isDBInited) {
       var dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
       var dbAutoTranslate = dbData !== undefined ? dbData.autoTranslate : undefined;
       var dbDefaultVolume = dbData !== undefined ? dbData.defaultVolume : undefined;
       var dbShowVideoSlider = dbData !== undefined ? dbData.showVideoSlider : undefined;
       var dbAutoSetVolumeYandexStyle = dbData !== undefined ? dbData.autoSetVolumeYandexStyle : undefined;
+      var dbDontTranslateRuVideos = dbData !== undefined ? dbData.dontTranslateRuVideos : undefined;
 
       // Только для ютуба
       dbSyncVolume = dbData !== undefined ? dbData.syncVolume : undefined;
 
-      console.log(`VOT: Значение autoTranslate: ${dbAutoTranslate}`)
-      console.log(`VOT: Значение dbDefaultVolume: ${dbDefaultVolume}`)
-      console.log(`VOT: Значение dbShowVideoSlider: ${dbShowVideoSlider}`)
-      console.log(`VOT: Значение syncVolume (только для YouTube): ${dbSyncVolume}`)
-      console.log(`VOT: Значение autoSetVolumeYandexStyle: ${dbAutoSetVolumeYandexStyle}`)
+      console.log(`VOT: Значение autoTranslate: ${dbAutoTranslate}`);
+      console.log(`VOT: Значение dbDefaultVolume: ${dbDefaultVolume}`);
+      console.log(`VOT: Значение dbShowVideoSlider: ${dbShowVideoSlider}`);
+      console.log(`VOT: Значение syncVolume (только для YouTube): ${dbSyncVolume}`);
+      console.log(`VOT: Значение autoSetVolumeYandexStyle: ${dbAutoSetVolumeYandexStyle}`);
+      console.log(`VOT: Значение dontTranslateRuVideos: ${dbDontTranslateRuVideos}`);
+
       if (!$translationMenuContent.has('.translationAT').length && dbAutoTranslate !== undefined) {
         let $translationATCont = $(
           `<div class = "translationMenuContainer">
@@ -708,6 +725,7 @@ async function main() {
         });
         $translationMenuContent.append($translationATCont);
       }
+
       if (!$translationMenuContent.has('.translationDropDB').length && dbData !== undefined) {
         let $translationDropDB = $(
           `<button class = "translationDropDB">Сбросить настройки</button>`
@@ -719,6 +737,7 @@ async function main() {
         });
         $translationMenuContent.find('.translationAbsoluteContainer').append($translationDropDB);
       }
+
       if (!$translationMenuContent.has('.translationSVS').length && dbData !== undefined) {
         let $translationSVSCont = $(
           `<div class = "translationMenuContainer">
@@ -741,14 +760,16 @@ async function main() {
         });
         $translationMenuContent.append($translationSVSCont);
       }
+
       if (window.location.hostname.includes('m.youtube.com')) {
         $translationMenuContent.css('height', '350px');
-      } 
+      }
+
       if (!$translationMenuContent.has('.translationSyncVolume').length && dbSyncVolume !== undefined && window.location.hostname.includes('youtube.com')) {
         let $translationSyncVolumeContainter = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="sync_volume" value=${dbSyncVolume} class = "translationSyncVolume" ${dbSyncVolume === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "sync_volume">Синхронизация громкости перевода с громкостью видео (только для YouTube)</label>
+            <label class = "translationMenuText" for = "sync_volume">[YT Only] Синхронизация громкости перевода с громкостью видео</label>
           </div>
           `
         );
@@ -760,8 +781,7 @@ async function main() {
           dbSyncVolume = syncVolumeValue;
         });
         $translationMenuContent.append($translationSyncVolumeContainter);
-      }
-      else if (dbSyncVolume === undefined) {
+      } else if (dbSyncVolume === undefined) {
         try {
           await updateDB({syncVolume: 0});
           console.log('VOT: Применено стандартное значение для "SyncVolume" (0). Пожалуйста, перезагрузите страницу.')
@@ -769,6 +789,7 @@ async function main() {
           console.error('VOT: Не удалось применить стандартное значение для "SyncVolume". Причина: ', err)
         }
       }
+
       if (!$translationMenuContent.has('.translationAutoSetVolume').length && dbData !== undefined) {
         let $translationAutoSetVolumeContainer = $(
           `<div class = "translationMenuContainer">
@@ -786,15 +807,56 @@ async function main() {
         });
         $translationMenuContent.append($translationAutoSetVolumeContainer);
       }
+
+      if (!$translationMenuContent.has('.translationDTRuV').length && dbDontTranslateRuVideos !== undefined && window.location.hostname.includes('youtube.com')) {
+        let $DTRuVContainter = $(
+          `<div class = "translationMenuContainer">
+            <input type="checkbox" name="dont_translate_ru_videos" value=${dbDontTranslateRuVideos} class = "translationDTRuV" ${dbDontTranslateRuVideos === 1 ? "checked" : ''}>
+            <label class = "translationMenuText" for = "dont_translate_ru_videos">[YT Only] Ограничить перевод русскоязычных видео</label>
+          </div>
+          `
+        );
+        let $translationDTRuV = $($DTRuVContainter).find('.translationDTRuV');
+        $translationDTRuV.on('click', async (event) => {
+          event.stopPropagation();
+          let DTRuVValue = event.target.checked ? 1 : 0;
+          await updateDB({dontTranslateRuVideos: DTRuVValue});
+          dbDontTranslateRuVideos = DTRuVValue;
+        });
+        $translationMenuContent.append($DTRuVContainter);
+      }
     } else {
       $translationMenuContent.remove();
       console.error('VOT: Не удалось создать меню. Причина: База данных не загружена.');
     }
 
+    function getVideoData() {
+      let videoData = {};
+      videoData.duration = video.duration;
+      videoData.videoId = getVideoId(siteHostname);
+      videoData.translationUrl = '';
+      videoData.detectedLanguage = 'en'; // default language of video
+      videoData.responseLanguage = 'ru'; // default language of audio response
+      if (window.location.hostname.includes('youtube.com')) {
+        const ytData = getYTVideoData();
+        if (!availableLangs.includes(ytData.detectedLanguage)) {
+          ytData.detectedLanguage = 'en';
+        }
+
+        if (ytData.detectedLanguage === 'ru') {
+          ytData.responseLanguage = 'en';
+        }
+
+        videoData = {...videoData,...ytData};
+      }
+
+      return videoData;
+    }
+
     function addVideoSlider() {
       if (dbShowVideoSlider === 1) {
         const newSlidersVolume = (window.location.hostname.includes('youtube.com') && !dbAutoSetVolumeYandexStyle) ? $('.ytp-volume-panel').attr('aria-valuenow') : Math.round(video.volume * 100);
-        
+
         const videoVolumeBox = $(`
           <div class = "translationMenuContainer">
             <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${newSlidersVolume}%</b></span>
@@ -926,29 +988,35 @@ async function main() {
       }
     };
 
-    const videoValidator = (video) => {
+    const videoValidator = () => {
       if (window.location.hostname.includes('youtube.com')) {
-        const data = document.querySelector("#movie_player").getVideoData();
-        if (data.isLive) {
+        if (dbDontTranslateRuVideos && videoData.detectedLanguage === 'ru') {
+          throw "VOT: Вы отключили перевод русскоязычных видео";
+        }
+
+        if (videoData.isLive) {
           throw "VOT: Не поддерживается перевод трансляций в прямом эфире";
         }
-        if (data.isPremiere) {
+
+        if (videoData.isPremiere) {
           throw "VOT: Дождитесь окончания премьеры перед переводом";
         }
       }
-      if (video.duration > 14400) {
+
+      if (videoData.duration > 14400) {
         throw "VOT: Видео слишком длинное";
       }
+
       return true;
     }
 
-    const translateExecutor = (video, VIDEO_ID) => {
-      videoValidator(video);
-      translateFunc(VIDEO_ID);
+    const translateExecutor = (VIDEO_ID) => {
+      videoValidator();
+      translateFunc(VIDEO_ID, videoData.detectedLanguage, videoData.responseLanguage);
     }
 
 
-    const translateFunc = (VIDEO_ID) => translateVideo(`${siteTranslates[siteHostname]['url']}${VIDEO_ID}`, siteTranslates[siteHostname]['func_param'], function (success, urlOrError) {
+    const translateFunc = (VIDEO_ID, requestLang, responseLang) => translateVideo(`${siteTranslates[siteHostname]['url']}${VIDEO_ID}`, siteTranslates[siteHostname]['func_param'], requestLang, responseLang, function (success, urlOrError) {
 
       if (getVideoId(siteHostname) === VIDEO_ID) {
         if (!success) {
@@ -956,9 +1024,10 @@ async function main() {
           if (urlOrError === 'Перевод займет несколько минут') {
             clearTimeout(autoRetry);
             autoRetry = setTimeout(() => {
-              translateFunc(VIDEO_ID);
+              translateFunc(VIDEO_ID, requestLang, responseLang);
             }, 70000)
           }
+
           throw urlOrError;
         }
 
@@ -975,13 +1044,9 @@ async function main() {
           });
         }
 
-        // TODO: Fix audio for 9gag change video
-        // if (siteHostname === 'twitch' || siteHostname === 'vimeo' || siteHostname === '9gag') {
         if (siteHostname === 'twitch' || siteHostname === 'vimeo' || siteHostname === 'facebook' || siteHostname === 'rutube') {
           const mutationObserver = new MutationObserver(async function(mutations) {
             mutations.forEach(async function(mutation) {
-              // if (mutation.type === 'attributes' && ((mutation.attributeName === 'src' && mutation.target === video) || (siteHostname === '9gag' && mutation.attributeName === 'class' && (mutation.oldValue === 'hide' || mutation.oldValue === 'presenting')))) {
-              //   if (siteHostname === '9gag' || mutation.target.src !== '') {
               if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video) {
                 if (mutation.target.src !== '') {
                   stopTraslate();
@@ -1020,10 +1085,9 @@ async function main() {
         });
 
         transformBtn('success', 'Выключить');
+        let defaultTranslateVolume = 100;
         if (typeof(dbDefaultVolume) === 'number') {
-          var defaultTranslateVolume = dbDefaultVolume; 
-        } else {
-          var defaultTranslateVolume = 100;
+          defaultTranslateVolume = dbDefaultVolume;
         }
 
         addVideoSlider();
@@ -1192,15 +1256,15 @@ async function main() {
         await translateProccessor($('.html5-video-container'), 'youtube', null);
       } else {
         const ytPageEnter = function (event) {
-            var video = $('.html5-video-container');
-            if (video !== void 0 && video !== null && video.length > 0) {
-                translateProccessor(video, 'youtube', 'yt-translate-stop');
-            } else {
-                if (ytplayer === void 0 || ytplayer === null || ytplayer.config === void 0 || ytplayer.config === null) return;
-                ytplayer.config.args.jsapicallback = function(jsApi) {
-                    translateProccessor($('.html5-video-container'), 'youtube', 'yt-translate-stop');
-                }
+          var video = $('.html5-video-container');
+          if (video !== void 0 && video !== null && video.length > 0) {
+            translateProccessor(video, 'youtube', 'yt-translate-stop');
+          } else {
+            if (ytplayer === void 0 || ytplayer === null || ytplayer.config === void 0 || ytplayer.config === null) return;
+            ytplayer.config.args.jsapicallback = function(jsApi) {
+                translateProccessor($('.html5-video-container'), 'youtube', 'yt-translate-stop');
             }
+          }
         };
 
         document.addEventListener('spfdone', ytPageEnter);
@@ -1218,7 +1282,7 @@ async function main() {
         const $videoContainer = $('.sc-2035e8b3-0.lfUPeS');
         await translateProccessor($videoContainer, 'twitch', null);
         // Тоже самое, что и вариант снизу, но по идеи должен быть более производительным (так же требует дабл клика)
-        var mutationObserver = new MutationObserver(async function(mutations) {
+        const mutationObserver = new MutationObserver(async function(mutations) {
           mutations.forEach(async function(mutation) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === $videoContainer.find('video')[0]) {
               await sleep(1000);
@@ -1227,7 +1291,7 @@ async function main() {
             }
           });
         });
-      
+
         mutationObserver.observe($videoContainer[0], {
           attributes: true,
           childList: true,
@@ -1264,7 +1328,7 @@ async function main() {
               await translateProccessor($('.videoplayer_media'), 'vk', null);
             }
             videoIDVK = videoIDVKNew;
-          } 
+          }
         }, 3000);
       });
     } else if (window.location.hostname.includes('vimeo')) {
@@ -1300,7 +1364,7 @@ async function main() {
               await translateProccessor($(elementSelector).last(), 'facebook', null);
             }
             videoID = videoIDNew;
-          } 
+          }
         }, 3000);
       }
     } else if (window.location.hostname.includes('rutube')) {
