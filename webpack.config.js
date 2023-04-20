@@ -64,6 +64,7 @@ module.exports = (env) => {
           if (build_mode === 'cloudflare') {
             headers['name'] = '[VOT Cloudflare] - Voice Over Translation';
             headers['inject-into'] = 'page';
+            headers['namespace'] = 'vot-cloudflare';
             headers['updateURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
             headers['downloadURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
           }
