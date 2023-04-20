@@ -600,7 +600,7 @@ async function main() {
     var tempVolume;
     let video;
     let videoData = getVideoData();
-    console.log('Video Data: ', videoData)
+    console.log('VOT Video Data: ', videoData)
 
     // --- Get video element ---
     if (siteHostname === 'vimeo') {
@@ -992,6 +992,7 @@ async function main() {
     const videoValidator = () => {
       if (window.location.hostname.includes('youtube.com')) {
         if (dbDontTranslateRuVideos && videoData.detectedLanguage === 'ru') {
+          firstPlay = false;
           throw "VOT: Вы отключили перевод русскоязычных видео";
         }
 
