@@ -1,5 +1,5 @@
 import './styles/main.css';
-const getYoutubeData = require('./utils/getYTVideoData.js');
+const getYTVideoData = require('./utils/getYTVideoData.js');
 const yandexRequests = require('./yandexRequests.js');
 
 let requestVideoTranslation;
@@ -600,6 +600,7 @@ async function main() {
     var tempVolume;
     let video;
     let videoData = getVideoData();
+    console.log('Video Data: ', videoData)
 
     // --- Get video element ---
     if (siteHostname === 'vimeo') {
@@ -832,7 +833,7 @@ async function main() {
 
     function getVideoData() {
       let videoData = {};
-      videoData.duration = video.duration;
+      videoData.duration = video?.duration ? video.duration : 0;
       videoData.videoId = getVideoId(siteHostname);
       videoData.translationUrl = '';
       videoData.detectedLanguage = 'en'; // default language of video
@@ -1215,7 +1216,7 @@ async function main() {
       }
 
       if (firstPlay && dbAutoTranslate === 1) {
-        translateExecutor(video, VIDEO_ID);
+        translateExecutor(video);
         firstPlay = false;
       }
     });
@@ -1239,7 +1240,7 @@ async function main() {
           throw "VOT: Не найдено ID видео"; // not found video id
         }
 
-        translateExecutor(video, VIDEO_ID);
+        translateExecutor(video);
         event.stopImmediatePropagation();
       } catch (err) {
         transformBtn('error', String(err).substring(4, err.length))
