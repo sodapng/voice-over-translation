@@ -3,12 +3,11 @@ import { getYTVideoData }  from './utils/getYTVideoData.js';
 import { yandexRequests } from './yandexRequests.js';
 
 async function main() {
-  let requestVideoTranslation;
-  if (BUILD_MODE === 'cloudflare') {
-    requestVideoTranslation = await import('./rvt-cloudflare.js');
-  } else {
-    requestVideoTranslation = await import('./rvt.js');
-  }
+  const rvt = await import(
+    `./rvt${BUILD_MODE === 'cloudflare' ? '-cloudflare' : ''}.js`
+  );
+
+  const requestVideoTranslation = rvt.default;
 
   if (BUILD_MODE !== 'cloudflare') {
     if (GM_info?.scriptHandler && ['Violentmonkey', 'FireMonkey', 'Greasemonkey', 'AdGuard'].includes(GM_info.scriptHandler)) {
