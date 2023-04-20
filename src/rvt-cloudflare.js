@@ -1,8 +1,9 @@
-const getUUID = require('./getUUID.js');
-const yandexRequests = require('./yandexRequests.js');
-const { workerHost, yandexHmacKey, yandexUserAgent } = require('./config/config-cloudflare.js');
+import { getUUID } from './getUUID.js';
+import { yandexRequests } from './yandexRequests.js';
+import { workerHost, yandexHmacKey, yandexUserAgent } from './config/config-cloudflare.js';
 
-async function requestVideoTranslationCloudflare(url, unknown1, requestLang, responseLang, callback) {
+
+async function requestVideoTranslation(url, unknown1, requestLang, responseLang, callback) {
     var response;
     var responseBody;
   
@@ -46,4 +47,4 @@ async function requestVideoTranslationCloudflare(url, unknown1, requestLang, res
     callback(response.status == 200, responseBody);
   }
 
-export default requestVideoTranslationCloudflare;
+export default requestVideoTranslation;
