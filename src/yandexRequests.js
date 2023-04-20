@@ -24,7 +24,7 @@ const yandexRequests = (function() {
               unknown0: 1, 
               unknown1: unknown1, 
               unknown2: 1, 
-              language: requestLang, // en - english, zh - china, fr - french, it - italian, es - spanish, mb: ru - russian
+              language: requestLang, // en - english, zh - china, fr - french, it - italian, es - spanish, ru - russian
               unknown3: 0, 
               unknown4: 0,
               responseLanguage: responseLang
