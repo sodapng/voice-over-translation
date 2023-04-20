@@ -1,6 +1,6 @@
-const getUUID = require('./getUUID.js');
-const yandexRequests = require('./yandexRequests.js');
-const { workerHost, yandexHmacKey, yandexUserAgent } = require('./config/config.js');
+import { getUUID } from './getUUID.js';
+import { yandexRequests } from './yandexRequests.js';
+import { workerHost, yandexHmacKey, yandexUserAgent } from './config/config.js';
 
 function requestVideoTranslation(url, unknown1, requestLang, responseLang, callback) {
     var deviceId = getUUID(true);
@@ -31,4 +31,4 @@ function requestVideoTranslation(url, unknown1, requestLang, responseLang, callb
     });
   }
 
-module.exports = requestVideoTranslation;
+export default requestVideoTranslation;

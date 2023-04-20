@@ -1,4 +1,4 @@
-const checkCyrillic = require('./regex.js');
+import { checkCyrillic } from './regex.js';
 
 function getLanguage(response, title, description, author) {
   if (response) {
@@ -38,4 +38,4 @@ function getYTVideoData() {
   return videoData;
 }
 
-module.exports = getYTVideoData;
+export { getYTVideoData };

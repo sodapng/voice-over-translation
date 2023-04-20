@@ -36,4 +36,4 @@ const yandexRequests = (function() {
     };
 })();
 
-module.exports = yandexRequests;
+export { yandexRequests };

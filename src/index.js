@@ -1,16 +1,15 @@
 import './styles/main.css';
-const getYTVideoData = require('./utils/getYTVideoData.js');
-const yandexRequests = require('./yandexRequests.js');
-
-let requestVideoTranslation;
-if (BUILD_MODE === 'cloudflare') {
-  requestVideoTranslation = require('./rvt-cloudflare.js');
-} else {
-  requestVideoTranslation = require('./rvt.js');
-}
-
+import { getYTVideoData }  from './utils/getYTVideoData.js';
+import { yandexRequests } from './yandexRequests.js';
 
 async function main() {
+  let requestVideoTranslation;
+  if (BUILD_MODE === 'cloudflare') {
+    requestVideoTranslation = await import('./rvt-cloudflare.js');
+  } else {
+    requestVideoTranslation = await import('./rvt.js');
+  }
+
   if (BUILD_MODE !== 'cloudflare') {
     if (GM_info?.scriptHandler && ['Violentmonkey', 'FireMonkey', 'Greasemonkey', 'AdGuard'].includes(GM_info.scriptHandler)) {
       let errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;

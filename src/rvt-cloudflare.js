@@ -46,4 +46,4 @@ async function requestVideoTranslationCloudflare(url, unknown1, requestLang, res
     callback(response.status == 200, responseBody);
   }
 
-module.exports = requestVideoTranslationCloudflare;
+export default requestVideoTranslationCloudflare;

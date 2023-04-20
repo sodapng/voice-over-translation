@@ -3,4 +3,4 @@ function getUUID(isLower) {
     return isLower ? uuid : uuid.toUpperCase();
 }
 
-module.exports = getUUID;
+export { getUUID };
