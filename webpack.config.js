@@ -1,9 +1,14 @@
-const path = require('path');
-const fs = require('fs');
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 
-var webpack = require('webpack');
-const { UserscriptPlugin } = require('webpack-userscript');
+import webpack from 'webpack';
+
+import { UserscriptPlugin } from 'webpack-userscript';
+
 const dev = process.env.NODE_ENV === 'development';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 console.log('development mode: ', dev);
 
@@ -14,7 +19,7 @@ function getHeaders(file) {
 
 const ru_headers = getHeaders('locales/ru/headers.json');
 
-module.exports = (env) => {
+export default (env) => {
   const build_mode = env.build_mode;
   console.log('build mode: ', build_mode);
   return {
@@ -49,6 +54,9 @@ module.exports = (env) => {
       },
     },
     plugins: [
+      new webpack.optimize.LimitChunkCountPlugin({
+        maxChunks: 1
+      }),
       new webpack.DefinePlugin({
         BUILD_MODE: JSON.stringify(build_mode)
       }),
