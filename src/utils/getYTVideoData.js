@@ -43,11 +43,11 @@ function getYTVideoData() {
   let videoData = {};
   const data = document.querySelector("#movie_player").getVideoData();
   const response = document.querySelector("#movie_player").getPlayerResponse();
-  videoData.isLive = data.isLive;
-  videoData.isPremiere = data.isPremiere;
-  videoData.title = data.title;
-  videoData.description = response.videoDetails.shortDescription;
-  videoData.author = data.author;
+  videoData.isLive = data?.isLive;
+  videoData.isPremiere = data?.isPremiere;
+  videoData.title = data?.title;
+  videoData.description = response?.videoDetails?.shortDescription;
+  videoData.author = data?.author;
   videoData.detectedLanguage = getLanguage(response, videoData.title, videoData.description, videoData.author);
   console.log("VOT Detected language: ", videoData.detectedLanguage);
   return videoData;
