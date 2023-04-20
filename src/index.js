@@ -1016,9 +1016,7 @@ async function main() {
       translateFunc(VIDEO_ID, videoData.detectedLanguage, videoData.responseLanguage);
     }
 
-
     const translateFunc = (VIDEO_ID, requestLang, responseLang) => translateVideo(`${siteTranslates[siteHostname]['url']}${VIDEO_ID}`, siteTranslates[siteHostname]['func_param'], requestLang, responseLang, function (success, urlOrError) {
-
       if (getVideoId(siteHostname) === VIDEO_ID) {
         if (!success) {
           transformBtn('error', urlOrError);
@@ -1216,7 +1214,7 @@ async function main() {
       }
 
       if (firstPlay && dbAutoTranslate === 1) {
-        translateExecutor(video);
+        translateExecutor(VIDEO_ID);
         firstPlay = false;
       }
     });
@@ -1240,7 +1238,7 @@ async function main() {
           throw "VOT: Не найдено ID видео"; // not found video id
         }
 
-        translateExecutor(video);
+        translateExecutor(VIDEO_ID);
         event.stopImmediatePropagation();
       } catch (err) {
         transformBtn('error', String(err).substring(4, err.length))
