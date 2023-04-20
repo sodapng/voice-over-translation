@@ -5,6 +5,7 @@
   "author": "Toil",
   "license": "MIT",
   "description": "A small extension that adds a Yandex Browser video translation to other browsers",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ilyhalight/voice-over-translation.git"
