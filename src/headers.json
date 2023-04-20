@@ -3,6 +3,7 @@
     "description": "A small extension that adds a Yandex Browser video translation to other browsers",
     "version": "1.1.1",
     "author": "sodapng, mynovelhost, Toil",
+    "namespace": "vot",
     "icon": "https://translate.yandex.ru/icons/favicon.ico",
     "updateURL": "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js",
     "downloadURL": "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js",
