@@ -1,4 +1,4 @@
-import { checkCyrillic } from './regex.js';
+import { checkCyrillic, getCyrillicCount } from './regex.js';
 
 function getLanguage(response, title, description, author) {
   if (response) {
@@ -14,9 +14,24 @@ function getLanguage(response, title, description, author) {
     }
 
     // alternative check if captions are not found or captions are created manually
-    const titleStatus = title?.length ? checkCyrillic(title) : false;
-    const descStatus = description?.length ? checkCyrillic(description) : false;
-    const authorStatus = author?.length ? checkCyrillic(author) : false;
+    let titleStatus = title?.length ? checkCyrillic(title) : false;
+    let descStatus = description?.length ? checkCyrillic(description) : false;
+    let authorStatus = author?.length ? checkCyrillic(author) : false;
+
+    // check if cyrillic length is less than 1/3 of the title
+    if (titleStatus && getCyrillicCount(title) < title?.length / 3) {
+      titleStatus = false;
+    }
+
+    // check if cyrillic length is less than 1/3 of the description
+    if (descStatus && getCyrillicCount(description) < description?.length / 3) {
+      descStatus = false;
+    }
+
+    // check if cyrillic length is less than 1/3 of the author name
+    if (authorStatus && getCyrillicCount(author) < author?.length / 3) {
+      authorStatus = false;
+    }
 
     if (descStatus || authorStatus || titleStatus) return 'ru';
   }
