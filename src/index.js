@@ -597,8 +597,6 @@ async function main() {
     var tempOriginalVolume;
     var tempVolume;
     let video;
-    let videoData = getVideoData();
-    console.log('VOT Video Data: ', videoData)
 
     // --- Get video element ---
     if (siteHostname === 'vimeo') {
@@ -608,6 +606,9 @@ async function main() {
     } else {
       video = $($videoContainer).find('video')[0];
     }
+
+    let videoData = getVideoData();
+    console.log('VOT Video Data: ', videoData)
 
     if (siteHostname === '9gag') {
       $videoContainer.parent().removeAttr('href');
@@ -833,7 +834,6 @@ async function main() {
       let videoData = {};
       videoData.duration = video?.duration ? video.duration : 0;
       videoData.videoId = getVideoId(siteHostname);
-      videoData.translationUrl = '';
       videoData.detectedLanguage = 'en'; // default language of video
       videoData.responseLanguage = 'ru'; // default language of audio response
       if (window.location.hostname.includes('youtube.com')) {
@@ -1213,8 +1213,13 @@ async function main() {
       }
 
       if (firstPlay && dbAutoTranslate === 1) {
-        translateExecutor(VIDEO_ID);
-        firstPlay = false;
+        try {
+          translateExecutor(VIDEO_ID);
+          firstPlay = false;
+        } catch (err) {
+          transformBtn('error', String(err).substring(4, err.length));
+          firstPlay = false;
+        }
       }
     });
 
