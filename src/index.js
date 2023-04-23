@@ -1285,29 +1285,35 @@ async function main() {
       }
     } else if (window.location.hostname.includes('twitch')) {
       if (window.location.hostname.includes('m.twitch.tv') && (window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/'))) {
-        await sleep(1000);
-        const $videoContainer = $('main > div > section > div > div > div').first();
-        await translateProccessor($videoContainer, 'twitch', null);
-        // Тоже самое, что и вариант снизу, но по идеи должен быть более производительным (так же требует дабл клика)
-        const mutationObserver = new MutationObserver(async function(mutations) {
-          mutations.forEach(async function(mutation) {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === $videoContainer.find('video')[0]) {
-              await sleep(1000);
-              // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
-              await translateProccessor($videoContainer, 'twitch', null);
-            }
+        const elementSelector = 'main > div > section > div > div > div';
+        const el = await waitForElement(elementSelector);
+        if (el) {
+          await sleep(200);
+          await translateProccessor($(elementSelector).first(), 'twitch', null);
+          // Тоже самое, что и вариант снизу, но по идеи должен быть более производительным (так же требует дабл клика)
+          const mutationObserver = new MutationObserver(async function(mutations) {
+            mutations.forEach(async function(mutation) {
+              if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === $(elementSelector).first().find('video')[0]) {
+                await sleep(1000);
+                // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
+                await translateProccessor($(elementSelector).first(), 'twitch', null);
+              }
+            });
           });
-        });
 
-        mutationObserver.observe($videoContainer[0], {
-          attributes: true,
-          childList: true,
-          subtree: true,
-          attributeOldValue: true,
-        });
+          mutationObserver.observe($(elementSelector).first()[0], {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            attributeOldValue: true,
+          });
+        }
       } else if (window.location.hostname.includes('player.twitch.tv') || window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/')) {
-        await sleep(1000); // stupid fix for wait video load
-        await translateProccessor($('.video-ref'), 'twitch', null);
+        const elementSelector = '.video-ref';
+        const el = await waitForElement(elementSelector);
+        if (el) {
+          await translateProccessor(el, 'twitch', null);
+        }
       }
     } else if (window.location.hostname.includes('xvideos')) {
       await sleep(1000);
