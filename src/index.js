@@ -26,7 +26,7 @@ async function main() {
       'func_param': 0x4075500000000000
     },
     'twitch': {
-      'url': 'https://twitch.tv/videos/',
+      'url': 'https://twitch.tv/',
       'func_param': 0x4075500000000000
     },
     'vimeo': {
@@ -188,15 +188,19 @@ async function main() {
           let linkUrl = document.head.querySelector('link[rel="canonical"]');
           if (linkUrl && linkUrl.href.includes("/videos/")) {
             let urlArray = linkUrl.href.split('/');
-            return urlArray[urlArray.length - 1];
-          } else {
+            return `videos/${urlArray[urlArray.length - 1]}`;
+          } else if (linkUrl && linkUrl.href.includes) {
+            return url.pathname.slice(1);
+          }else {
             return false
           }
         } else if (/^player\.twitch\.tv$/.test(window.location.hostname)) {
-          return url.searchParams.get("video")
-        } else if (url.pathname.includes("videos/")) {
+          return `videos/${url.searchParams.get("video")}`
+        } else if (url.pathname.includes("/videos/")) {
           let urlArray = url.pathname.split('/');
-          return urlArray[urlArray.length - 1];
+          return `videos/${urlArray[urlArray.length - 1]}`;
+        } else if (url.pathname.includes("/clip/")) {
+          return url.pathname.slice(1);
         }
       case "tiktok":
         if (url.pathname.includes("video/")) {
@@ -1280,9 +1284,9 @@ async function main() {
         ytPageEnter(null);
       }
     } else if (window.location.hostname.includes('twitch')) {
-      if (window.location.hostname.includes('m.twitch.tv') && window.location.pathname.includes('videos')) {
+      if (window.location.hostname.includes('m.twitch.tv') && (window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/'))) {
         await sleep(1000);
-        const $videoContainer = $('.sc-2035e8b3-0.lfUPeS');
+        const $videoContainer = $('main > div > section > div > div > div').first();
         await translateProccessor($videoContainer, 'twitch', null);
         // Тоже самое, что и вариант снизу, но по идеи должен быть более производительным (так же требует дабл клика)
         const mutationObserver = new MutationObserver(async function(mutations) {
@@ -1301,7 +1305,7 @@ async function main() {
           subtree: true,
           attributeOldValue: true,
         });
-      } else if (window.location.hostname.includes('player.twitch.tv') || window.location.pathname.includes('videos')) {
+      } else if (window.location.hostname.includes('player.twitch.tv') || window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/')) {
         await sleep(1000); // stupid fix for wait video load
         await translateProccessor($('.video-ref'), 'twitch', null);
       }
