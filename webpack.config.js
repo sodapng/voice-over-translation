@@ -43,22 +43,26 @@ export default (env) => {
       port: 11944,
       allowedHosts: "all",
       hot: true,
-      liveReload: true,
+      liveReload: false,
       magicHtml: false,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*",
       },
-      client: {
-        webSocketURL: "ws://localhost:11944/ws",
-      },
+      // client: {
+      //   webSocketURL: "ws://localhost:11944/ws",
+      //   progress: true,
+      //   reconnect: false
+      // },
+      client: false
     },
     plugins: [
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 1
       }),
       new webpack.DefinePlugin({
-        BUILD_MODE: JSON.stringify(build_mode)
+        BUILD_MODE: JSON.stringify(build_mode),
+        DEBUG_MODE: dev
       }),
       new UserscriptPlugin({
         headers: async () => {
