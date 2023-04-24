@@ -17,8 +17,22 @@ async function main() {
     }
   }
 
+  const debug = {}
+  debug.log = (...text) => {
+    if (!DEBUG_MODE) {
+      return;
+    }
+    return console.log("%c[VOT DEBUG]", "background: #F2452D; color: #fff; padding: 5px;", ...text);
+  }
+
   const defaultVideoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video with the translation (uses with option "autoSetVolumeYandexStyle")
   const availableLangs = ['ru', 'en', 'zh', 'fr', 'it', 'es']; // available languages for translation
+
+  const twitterSelector = 'article[data-testid="tweet"][tabindex="-1"]';
+  const twitchMobileSelector = 'main > div > section > div > div > div';
+  const twitchSelector = '.video-ref';
+  const vkSelector = '.videoplayer_media';
+  const facebookSelector = 'div[data-pagelet="WatchPermalinkVideo"]';
 
   const siteTranslates = {
     'youtube': {
@@ -58,7 +72,7 @@ async function main() {
       'func_param': 0x4075500000000000
     },
     'facebook': {
-      'url': 'https://www.facebook.com/watch?v=',
+      'url': 'https://www.facebook.com/',
       'func_param': 0x4075500000000000
     },
     'rutube': {
@@ -142,7 +156,11 @@ async function main() {
       if (target === 'yt-mobile') {
         $translationBlock.css('top', '1rem');
       }
+
+      debug.log(`VOT: Added translation button (target: ${target})`)
       $(elem).append($translationBlock);
+    } else {
+      debug.log(`VOT: Already added translation button (target: ${target})`, elem)
     }
   };
 
@@ -153,7 +171,11 @@ async function main() {
       } else if (target === 'twitter') {
         $translationMenuContent.css('top', '55%');
       }
+
+      debug.log(`VOT: Added translation menu (target: ${target})`)
       $(elem).append($translationMenuContent);
+    } else {
+      debug.log(`VOT: Already added translation menu (target: ${target})`, elem)
     }
   };
 
@@ -191,7 +213,7 @@ async function main() {
             return `videos/${urlArray[urlArray.length - 1]}`;
           } else if (linkUrl && linkUrl.href.includes) {
             return url.pathname.slice(1);
-          }else {
+          } else {
             return false
           }
         } else if (/^player\.twitch\.tv$/.test(window.location.hostname)) {
@@ -228,9 +250,7 @@ async function main() {
       case "udemy":
         return url.pathname;
       case "facebook":
-        if (url.pathname.includes("watch")) {
-          return url.searchParams.get("v");
-        }
+        return url.pathname;
       case "rutube":
         if (url.pathname.includes("/video/")) {
           const urlArray = url.pathname.split('/');
@@ -607,6 +627,10 @@ async function main() {
       video = $($videoContainer).find('.vp-video-wrapper > .vp-video > .vp-telecine > video')[0];
     } else if (siteHostname === 'facebook') {
       video = $($videoContainer).find('div > div > div > div > div > div > div > div > div > div > video')[0];
+    } else if (siteHostname === 'twitter') {
+      $videoContainer = $(twitterSelector)
+      video = $videoContainer.find('div[data-testid="videoComponent"] > div > div > video')[0];
+      stopTraslate();
     } else {
       video = $($videoContainer).find('video')[0];
     }
@@ -680,12 +704,10 @@ async function main() {
         addTranslationMenu($('body'));
       }
     } else if (siteHostname === 'twitter') {
-      const elementContainer = $('article[data-testid="tweet"][tabindex="-1"] > div > div > div:nth-child(3)');
-      addTranslationBtn($videoContainer);
-      addTranslationMenu(elementContainer, 'twitter');
-      if (!$('.translationMenuContent').length) {
-        addTranslationMenu($videoContainer);
-      }
+      const elementMenuContainer = $(`${twitterSelector} > div > div > div:nth-child(3)`);
+      const elementContainer = elementMenuContainer.find('div[data-testid="videoPlayer"]');
+      addTranslationBtn(elementContainer);
+      addTranslationMenu(elementMenuContainer, 'twitter');
     } else {
       addTranslationBtn($videoContainer);
       addTranslationMenu($videoContainer);
@@ -1035,18 +1057,23 @@ async function main() {
 
         volumeOnStart = video.volume;
         audio.src = urlOrError;
+
         if (typeof(dbDefaultVolume) === 'number') {
           audio.volume = dbDefaultVolume / 100;
         }
 
-        if (siteEvent !== null & siteEvent !== 'invidious') {
+        if (siteHostname === 'twitter') {
+          $('div[data-testid="app-bar-back"][role="button"]').on('click', function () {
+            stopTraslate();
+          })
+        } else if (siteEvent !== null && siteEvent !== 'invidious') {
           $("body").on(siteEvent, function () {
             stopTraslate();
             syncOriginalVolumeSlider();
           });
         }
 
-        if (siteHostname === 'twitch' || siteHostname === 'vimeo' || siteHostname === 'facebook' || siteHostname === 'rutube') {
+        if (siteHostname === 'twitch' || siteHostname === 'vimeo' || siteHostname === 'facebook' || siteHostname === 'rutube' || siteHostname === 'twitter') {
           const mutationObserver = new MutationObserver(async function(mutations) {
             mutations.forEach(async function(mutation) {
               if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video) {
@@ -1066,23 +1093,37 @@ async function main() {
           });
         }
 
+        // fix for video.paused stuck bug
+        if (video.paused) {
+          if (siteHostname === 'twitter') {
+            video = $('div[data-testid="videoComponent"] > div > div > video')[0]
+          } else if (siteHostname === 'vk') {
+            video = $('.videoplayer_media > video')[0]
+          }
+        }
+
         if (video && !video.paused) {
+          debug.log('video is playing lipsync 1')
           lipSync("play");
         }
 
         $("video").on("playing.translate ratechange.translate", function () {
+          debug.log('video ratechange')
           lipSync();
         });
 
         $("video").on("play.translate canplaythrough.translate", function () {
+          debug.log('video canplaythrough')
           lipSync();
 
           if (video && !video.paused) {
+            debug.log('video is playing lipsync 2')
             lipSync("play");
           }
         });
 
         $("video").on("pause.translate waiting.translate", function () {
+          debug.log('video is waiting')
           lipSync("pause");
         });
 
@@ -1173,15 +1214,18 @@ async function main() {
     btnHover();
 
     const lipSync = (mode = false) => {
+      debug.log('lipsync video', video)
       if (!video) return;
       audio.currentTime = video.currentTime;
       audio.playbackRate = video.playbackRate;
 
       if (!mode) {
+        debug.log('lipsync mode is not set')
         return;
       }
 
       if (mode === "play") {
+        debug.log('lipsync mode is play')
         var audioPromise = audio.play();
         if (audioPromise !== undefined) {
           audioPromise.catch(e => {
@@ -1203,6 +1247,7 @@ async function main() {
       }
 
       else if (mode === "pause") {
+        debug.log('lipsync mode is pause')
         audio.pause();
       }
     };
@@ -1285,23 +1330,21 @@ async function main() {
       }
     } else if (window.location.hostname.includes('twitch')) {
       if (window.location.hostname.includes('m.twitch.tv') && (window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/'))) {
-        const elementSelector = 'main > div > section > div > div > div';
-        const el = await waitForElement(elementSelector);
+        const el = await waitForElement(twitchMobileSelector);
         if (el) {
           await sleep(200);
-          await translateProccessor($(elementSelector).first(), 'twitch', null);
+          await translateProccessor($(twitchMobileSelector).first(), 'twitch', null);
           // Тоже самое, что и вариант снизу, но по идеи должен быть более производительным (так же требует дабл клика)
           const mutationObserver = new MutationObserver(async function(mutations) {
             mutations.forEach(async function(mutation) {
-              if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === $(elementSelector).first().find('video')[0]) {
+              if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === $(twitchMobileSelector).first().find('video')[0]) {
                 await sleep(1000);
-                // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
-                await translateProccessor($(elementSelector).first(), 'twitch', null);
+                await translateProccessor($(twitchMobileSelector).first(), 'twitch', null);
               }
             });
           });
 
-          mutationObserver.observe($(elementSelector).first()[0], {
+          mutationObserver.observe($(twitchMobileSelector).first()[0], {
             attributes: true,
             childList: true,
             subtree: true,
@@ -1309,8 +1352,7 @@ async function main() {
           });
         }
       } else if (window.location.hostname.includes('player.twitch.tv') || window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/')) {
-        const elementSelector = '.video-ref';
-        const el = await waitForElement(elementSelector);
+        const el = await waitForElement(twitchSelector);
         if (el) {
           await translateProccessor(el, 'twitch', null);
         }
@@ -1324,26 +1366,24 @@ async function main() {
     } else if (sitesInvidious.includes(window.location.hostname)) { // Нужно дополнительное расширение для работы в хромоподбных браузерах
       await translateProccessor($('#player'), 'youtube', null);
     } else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
-      $(window).on('load', async () => {
-        await sleep(1500);
-        let videoIDVK;
+      const el = await waitForElement(vkSelector);
+      if (el) {
+        await translateProccessor($(vkSelector).last(), 'vk', null);
         let videoIDVKNew;
-        let videoFirst = true;
-        // Выглядит мега криво, зато работает :)
+        let videoIDVK = getVideoId('vk');
         setInterval(async () => {
           videoIDVKNew = getVideoId('vk');
-          if (/^video-[0-9]+_[0-9]+$/.test(videoIDVKNew) && typeof(videoIDVK) === 'undefined' && videoFirst === true) {
-            videoFirst = false;
-            await translateProccessor($('.videoplayer_media'), 'vk', null);
-          } else if (videoIDVK !== videoIDVKNew) {
+          if (videoIDVK !== videoIDVKNew) {
             if (videoIDVKNew) {
-              // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
-              await translateProccessor($('.videoplayer_media'), 'vk', null);
+              const el = await waitForElement(vkSelector);
+              if (el) {
+                await translateProccessor(el, 'vk', null);
+              }
             }
             videoIDVK = videoIDVKNew;
           }
         }, 3000);
-      });
+      }
     } else if (window.location.hostname.includes('vimeo')) {
       await sleep(1000);
       await translateProccessor($('.player'), 'vimeo', null);
@@ -1351,10 +1391,21 @@ async function main() {
       await sleep(1000);
       await translateProccessor($('.video-post'), '9gag', null);
     } else if (window.location.hostname.includes('twitter')) {
-      const elementSelector = 'div[data-testid="videoPlayer"] > div > div > div > div > div';
-      const el = await waitForElement(elementSelector);
+      const el = await waitForElement(twitterSelector);
       if (el) {
-        await translateProccessor($(el), 'twitter', null);
+        let videoIDNew;
+        let videoID = getVideoId('twitter');
+        await translateProccessor(undefined, 'twitter', 'twitter');
+        setInterval(async () => {
+          videoIDNew = getVideoId('twitter');
+          if (videoID !== videoIDNew) {
+            if (videoIDNew) {
+              await translateProccessor(undefined, 'twitter', 'twitter');
+            }
+            videoID = videoIDNew;
+          }
+        }, 3000);
+
       }
     // } else if (window.location.hostname.includes('udemy')) {
     //   const elementSelector = '.vjs-v7';
@@ -1362,24 +1413,22 @@ async function main() {
     //   if (el) {
     //     await translateProccessor($(elementSelector), 'udemy', null);
     //   }
-    } else if (window.location.hostname.includes('facebook')) {
-      const elementSelector = 'div[data-pagelet="WatchPermalinkVideo"]';
-      const el = await waitForElement(elementSelector);
-      if (el) {
-        let videoID;
-        let videoIDNew;
-        await translateProccessor($(elementSelector).last(), 'facebook', null);
-        setInterval(async () => {
-          videoIDNew = getVideoId('facebook');
-          if (videoID !== videoIDNew) {
-            if (videoIDNew) {
-              // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
-              await translateProccessor($(elementSelector).last(), 'facebook', null);
-            }
-            videoID = videoIDNew;
-          }
-        }, 3000);
-      }
+    // } else if (window.location.hostname.includes('facebook')) {
+    //   const el = await waitForElement(facebookSelector);
+    //   if (el) {
+    //     let videoIDNew;
+    //     let videoID = getVideoId('facebook');
+    //     await translateProccessor($(facebookSelector).last(), 'facebook', null);
+    //     setInterval(async () => {
+    //       videoIDNew = getVideoId('facebook');
+    //       if (videoID !== videoIDNew) {
+    //         if (videoIDNew) {
+    //           await translateProccessor($(facebookSelector).last(), 'facebook', null);
+    //         }
+    //         videoID = videoIDNew;
+    //       }
+    //     }, 3000);
+    //   }
     } else if (window.location.hostname.includes('rutube')) {
       let elementSelector;
       if (window.location.pathname.includes('/play/embed')) {
