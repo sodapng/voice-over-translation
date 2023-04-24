@@ -4,14 +4,15 @@
 Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)**. Спасиб <3
 
 # Установка расширения:
-1. Установите расширение **[Tampermonkey](https://www.tampermonkey.net/)** (Для Safari: **[UserScripts](https://apps.apple.com/app/userscripts/id1463298887 )**)
+1. Установите расширение **[Tampermonkey](https://www.tampermonkey.net/)** (Альтернатива для Safari: **[UserScripts](https://apps.apple.com/app/userscripts/id1463298887 )**)
 2. **[«Установите Скрипт»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js)**
 
-#### Версия для VM, FM, GM, AdGuard, UserScripts: **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
-#### Версия для терминала: **[Ссылка](https://github.com/ilyhalight/voice-over-translation/tree/master/vot-cli)**
-#### Подробнее о создание воркера для VM, FM, GM, AdGuard, UserScripts: **[Ссылка](https://github.com/mynovelhost/voice-over-translation/)**
+## Полезные ссылки:
+1. Версия для VM, FM, GM, AdGuard, UserScripts: **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
+2. Версия для терминала: **[Ссылка](https://github.com/ilyhalight/voice-over-translation/tree/master/vot-cli)**
+3. Подробнее о создание воркера для VM, FM, GM, AdGuard, UserScripts: **[Ссылка](https://github.com/mynovelhost/voice-over-translation/)**
 
-# Список поддерживаемых сайтов:
+## Список поддерживаемых сайтов:
 - **[YouTube](https://www.youtube.com)** (Полная поддержка **www.youtube.com/watch**, **www.youtube.com/embed**, **m.youtube.com**. Включая **[YouTube NoCookie](https://www.youtube-nocookie.com/)**)
 - **[Invidious (vern.cc)](https://inv.vern.cc)**, **[Invidious (yewtu.be)](https://yewtu.be)** и некоторые другие (Альтернативный фронтенд для YouTube, без привязки к Google Services. Для работы в хромоподобных браузерах необходимо дополнительное **[расширение](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden/related)**)
 - **[Twitch](https://www.twitch.tv)** (Поддерживается **www.twitch.tv/videos**, **m.twitch.tv/videos**, **player.twitch.tv**)
@@ -21,8 +22,17 @@
 - **[Vimeo](https://vimeo.com/)**
 - **[9GAG](https://9gag.com/gag/)** (Работает только в открытых видео. В ленте не работает.)
 - **[Twitter](https://twitter.com/)** (Работает только в открытых видео. В ленте не работает.)
-- **[Facebook*](https://facebook.com/)** (Работает только в открытых видео. В ленте не работает.)
+- **[Facebook*](https://facebook.com/)** (❌ Не работает)
 - **[Rutube](https://rutube.ru/)** (Полная поддержка **rutube.ru/video/** и **rutube.ru/play/embed/**)
+
+## Список функционала:
+1. Перевод с одного из доступных языков на русский. Язык определяется автоматически, если языка нету в списке или не удалось его определить, то используется перевод с английского.
+2. Перевод с русского на английский язык
+3. Автоматический перевод видео
+4. Слайдер для изменения громкости оригинала
+5. Автоматически выставлять громкость оригинала (как в Яндекс браузере)
+6. [YouTube Only] Синхронизация громкости перевода с громкостью видео
+7. [YouTube Only] Ограничить перевод русскоязычных видео
 
 ## Как собрать расширение?
 1. Установите NodeJS 16+
@@ -30,14 +40,18 @@
 ```bash
 npm i
 ```
-1. Сборка расширения:
-
-   3.1. Обычная версии:
+3. Сборка расширения:
+   3.0. Все версии сразу:
    ```bash
    npm run build
    ```
 
-   3.2. Cloudflare версии:
+   3.1. Только обычная версии:
+   ```bash
+   npm run build:default
+   ```
+
+   3.2. Только Cloudflare версии:
    ```bash
    npm run build:cloudflare
    ```
