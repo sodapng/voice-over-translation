@@ -265,6 +265,20 @@ async function main() {
     var translationPanding = false;
   }
 
+  function secsToStrTime(secs) {
+    const minutes = Math.floor(secs / 60);
+    const seconds = Math.floor(secs % 60);
+    if (minutes >= 60) {
+      return "Перевод займёт больше часа"
+    } else if (minutes >= 10 && minutes % 10) {
+      return `Перевод займёт ${minutes} минут`
+    } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
+      return "Перевод займёт около минуты"
+    } else {
+      return `Перевод займёт ${minutes} минуты`
+    }
+  }
+
   function translateVideo(url, unknown1, requestLang, responseLang, callback) {
     if (BUILD_MODE === 'cloudflare') {
       if (translationPanding) return;
@@ -288,8 +302,11 @@ async function main() {
           callback(hasUrl, hasUrl ? translateResponse.url : "Не получена ссылка на аудио");
           return;
         case 2:
-          // translateResponse.remainingTime
-          callback(false, "Перевод займет несколько минут");
+          let remainingTime = 'Перевод займет несколько минут'
+          if (translateResponse.remainingTime) {
+            remainingTime = secsToStrTime(translateResponse.remainingTime);
+          }
+          callback(false, remainingTime);
           return;
         case 3: /*
           Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода. В конечном итоге, это занимает слишком много времени,
@@ -1015,7 +1032,7 @@ async function main() {
 
     const videoValidator = () => {
       if (window.location.hostname.includes('youtube.com')) {
-        if (dbDontTranslateRuVideos && videoData.detectedLanguage === 'ru') {
+        if (dbDontTranslateRuVideos === 1 && videoData.detectedLanguage === 'ru') {
           firstPlay = false;
           throw "VOT: Вы отключили перевод русскоязычных видео";
         }
@@ -1045,11 +1062,11 @@ async function main() {
       if (getVideoId(siteHostname) === VIDEO_ID) {
         if (!success) {
           transformBtn('error', urlOrError);
-          if (urlOrError === 'Перевод займет несколько минут') {
+          if (urlOrError.includes('Перевод займёт')) {
             clearTimeout(autoRetry);
             autoRetry = setTimeout(() => {
               translateFunc(VIDEO_ID, requestLang, responseLang);
-            }, 70000)
+            }, 60000)
           }
 
           throw urlOrError;
