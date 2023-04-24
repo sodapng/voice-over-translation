@@ -1,7 +1,9 @@
 // ==UserScript==
-// @name [VOT Cloudflare] - Закадровый перевод видео
-// @description Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version 1.1.0
+// @name [VOT Cloudflare] - Voice Over Translation
+// @name:ru [VOT Cloudflare] - Закадровый перевод видео
+// @description A small extension that adds a Yandex Browser video translation to other browsers
+// @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
+// @version 1.1.1
 // @author sodapng, mynovelhost, Toil
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -28,26 +30,28 @@
 // @match *://*.vimeo.com/*
 // @match *://*.9gag.com/*
 // @match *://*.twitter.com/*
+// @match *://*.facebook.com/*
+// @match *://*.rutube.ru/*
 // @connect api.browser.yandex.ru
-// @downloadURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js
-// @grant GM_getResourceText
+// @downloadURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js
 // @grant GM_xmlhttpRequest
 // @grant GM_info
 // @homepageURL https://github.com/ilyhalight/voice-over-translation/issues
 // @icon https://translate.yandex.ru/icons/favicon.ico
 // @inject-into page
+// @namespace vot-cloudflare
 // @require https://code.jquery.com/jquery-3.6.0.min.js
 // @require https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
-// @updateURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js
+// @updateURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js
 // ==/UserScript==
 
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./node_modules/css-loader/dist/cjs.js!./src/styles/main.css":
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
@@ -70,7 +74,6 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\r\n  padding: 0.25
 /***/ "./node_modules/css-loader/dist/runtime/api.js":
 /***/ ((module) => {
 
-"use strict";
 
 
 /*
@@ -162,7 +165,6 @@ module.exports = function (cssWithMappingToString) {
 /***/ "./node_modules/css-loader/dist/runtime/noSourceMaps.js":
 /***/ ((module) => {
 
-"use strict";
 
 
 module.exports = function (i) {
@@ -174,7 +176,6 @@ module.exports = function (i) {
 /***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
 /***/ ((module) => {
 
-"use strict";
 
 
 var stylesInDOM = [];
@@ -265,7 +266,6 @@ module.exports = function (list, options) {
 /***/ "./node_modules/style-loader/dist/runtime/insertBySelector.js":
 /***/ ((module) => {
 
-"use strict";
 
 
 var memo = {};
@@ -306,7 +306,6 @@ module.exports = insertBySelector;
 /***/ "./node_modules/style-loader/dist/runtime/insertStyleElement.js":
 /***/ ((module) => {
 
-"use strict";
 
 
 /* istanbul ignore next  */
@@ -323,7 +322,6 @@ module.exports = insertStyleElement;
 /***/ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js":
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
 
 /* istanbul ignore next  */
@@ -340,7 +338,6 @@ module.exports = setAttributesWithoutAttributes;
 /***/ "./node_modules/style-loader/dist/runtime/styleDomAPI.js":
 /***/ ((module) => {
 
-"use strict";
 
 
 /* istanbul ignore next  */
@@ -408,7 +405,6 @@ module.exports = domAPI;
 /***/ "./node_modules/style-loader/dist/runtime/styleTagTransform.js":
 /***/ ((module) => {
 
-"use strict";
 
 
 /* istanbul ignore next  */
@@ -426,42 +422,44 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
-/***/ "./src/config/config-cloudflare.js":
-/***/ ((module) => {
+/***/ "./src/rvt-cloudflare.js":
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-const workerHost = "cors.yandexproxy.workers.dev";
-const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
-const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/104.0.5112.114 YaBrowser/22.9.4.633.10 SA/3 Mobile/15E148 Safari/604.1";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
 
-module.exports = { workerHost, yandexHmacKey, yandexUserAgent };
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "default": () => (/* binding */ rvt_cloudflare)
+});
 
-/***/ }),
-
-/***/ "./src/getUUID.js":
-/***/ ((module) => {
-
+;// CONCATENATED MODULE: ./src/getUUID.js
 function getUUID(isLower) {
     var uuid = ([1e7]+1e3+4e3+8e3+1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
     return isLower ? uuid : uuid.toUpperCase();
 }
 
-module.exports = getUUID;
 
-/***/ }),
+// EXTERNAL MODULE: ./src/yandexRequests.js
+var yandexRequests = __webpack_require__("./src/yandexRequests.js");
+;// CONCATENATED MODULE: ./src/config/config-cloudflare.js
+const workerHost = "cors.yandexproxy.workers.dev";
+const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
+const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/104.0.5112.114 YaBrowser/22.9.4.633.10 SA/3 Mobile/15E148 Safari/604.1";
 
-/***/ "./src/rvt-cloudflare.js":
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const getUUID = __webpack_require__("./src/getUUID.js");
-const yandexRequests = __webpack_require__("./src/yandexRequests.js");
-const { workerHost, yandexHmacKey, yandexUserAgent } = __webpack_require__("./src/config/config-cloudflare.js");
+;// CONCATENATED MODULE: ./src/rvt-cloudflare.js
 
-async function requestVideoTranslationCloudflare(url, unknown1, callback) {
+
+
+
+
+async function requestVideoTranslation(url, unknown1, requestLang, responseLang, callback) {
     var response;
     var responseBody;
   
     var deviceId = getUUID(true);
-    var body = yandexRequests.encodeRequest(url, deviceId, unknown1);
+    var body = yandexRequests/* yandexRequests.encodeRequest */.G.encodeRequest(url, deviceId, unknown1, requestLang, responseLang);
   
     try {
       var utf8Encoder = new TextEncoder("utf-8");
@@ -500,14 +498,17 @@ async function requestVideoTranslationCloudflare(url, unknown1, callback) {
     callback(response.status == 200, responseBody);
   }
 
-module.exports = requestVideoTranslationCloudflare;
+/* harmony default export */ const rvt_cloudflare = (requestVideoTranslation);
 
 
 /***/ }),
 
 /***/ "./src/yandexRequests.js":
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "G": () => (/* binding */ yandexRequests)
+/* harmony export */ });
 const yandexRequests = (function() {
     var protoRequest = new protobuf.Type("VideoTranslationRequest")
                           .add(new protobuf.Field("url", 3, "string"))
@@ -517,24 +518,27 @@ const yandexRequests = (function() {
                           .add(new protobuf.Field("unknown2", 7, "int32"))
                           .add(new protobuf.Field("language", 8, "string"))
                           .add(new protobuf.Field("unknown3", 9, "int32"))
-                          .add(new protobuf.Field("unknown4", 10, "int32"));
+                          .add(new protobuf.Field("unknown4", 10, "int32"))
+                          .add(new protobuf.Field("responseLanguage", 14, "string"));
     var protoResponse = new protobuf.Type("VideoTranslationResponse")
-                            .add(new protobuf.Field("url",		1,	"string"))
-                            .add(new protobuf.Field("duration",	2,	"double"))
-                            .add(new protobuf.Field("status",	4,	"int32"))
-                            .add(new protobuf.Field("message",	9,	"string"));
+                            .add(new protobuf.Field("url", 1, "string"))
+                            .add(new protobuf.Field("duration",	2, "double"))
+                            .add(new protobuf.Field("status", 4, "int32"))
+                            .add(new protobuf.Field("remainingTime", 5,	"int32"))
+                            .add(new protobuf.Field("message", 9, "string"));
     new protobuf.Root().define("yandex").add(protoRequest).add(protoResponse);
     return {
-        encodeRequest: function(url, deviceId, unknown1) {
+        encodeRequest: function(url, deviceId, unknown1, requestLang, responseLang) {
             return protoRequest.encode({
               url: url, 
               deviceId: deviceId, 
               unknown0: 1, 
               unknown1: unknown1, 
               unknown2: 1, 
-              language: "en", 
+              language: requestLang, // en - english, zh - china, fr - french, it - italian, es - spanish, ru - russian
               unknown3: 0, 
-              unknown4: 0
+              unknown4: 0,
+              responseLanguage: responseLang
             }).finish();
         },
         decodeResponse: function(response) {
@@ -543,7 +547,7 @@ const yandexRequests = (function() {
     };
 })();
 
-module.exports = yandexRequests;
+
 
 /***/ })
 
@@ -603,6 +607,17 @@ module.exports = yandexRequests;
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/nonce */
 /******/ 	(() => {
 /******/ 		__webpack_require__.nc = undefined;
@@ -610,9 +625,8 @@ module.exports = yandexRequests;
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-"use strict";
 
 // EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js
 var injectStylesIntoStyleTag = __webpack_require__("./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
@@ -663,20 +677,105 @@ var update = injectStylesIntoStyleTag_default()(main/* default */.Z, options);
 
        /* harmony default export */ const styles_main = (main/* default */.Z && main/* default.locals */.Z.locals ? main/* default.locals */.Z.locals : undefined);
 
+;// CONCATENATED MODULE: ./src/utils/regex.js
+const cyrillicRegex = /[а-яА-ЯёЁ]/;
+
+function checkCyrillic(string) {
+  return cyrillicRegex.test(string);
+}
+
+function getCyrillicCount(string) {
+  return string.match(cyrillicRegex).length;
+}
+
+
+;// CONCATENATED MODULE: ./src/utils/getYTVideoData.js
+
+
+function getLanguage(response, title, description, author) {
+  if (response) {
+    // Check if there is a caption track in the player response
+    if (response?.captions?.playerCaptionsTracklistRenderer?.captionTracks?.length) {
+      for (const caption of response.captions.playerCaptionsTracklistRenderer.captionTracks) {
+        if (caption.hasOwnProperty('kind') && caption.kind === 'asr') {
+          // ru, uk
+          console.log(caption.languageCode);
+          return caption.languageCode;
+        }
+      }
+    }
+
+    // alternative check if captions are not found or captions are created manually
+    let titleStatus = title?.length ? checkCyrillic(title) : false;
+    let descStatus = description?.length ? checkCyrillic(description) : false;
+    let authorStatus = author?.length ? checkCyrillic(author) : false;
+
+    // check if cyrillic length is less than 1/3 of the title
+    if (titleStatus && getCyrillicCount(title) < title?.length / 3) {
+      titleStatus = false;
+    }
+
+    // check if cyrillic length is less than 1/3 of the description
+    if (descStatus && getCyrillicCount(description) < description?.length / 3) {
+      descStatus = false;
+    }
+
+    // check if cyrillic length is less than 1/3 of the author name
+    if (authorStatus && getCyrillicCount(author) < author?.length / 3) {
+      authorStatus = false;
+    }
+
+    if (descStatus || authorStatus || titleStatus) return 'ru';
+  }
+
+  return 'en';
+}
+
+function getYTVideoData() {
+  let videoData = {};
+  const data = document.querySelector("#movie_player").getVideoData();
+  const response = document.querySelector("#movie_player").getPlayerResponse();
+  videoData.isLive = data?.isLive;
+  videoData.isPremiere = data?.isPremiere;
+  videoData.title = data?.title;
+  videoData.description = response?.videoDetails?.shortDescription;
+  videoData.author = data?.author;
+  videoData.detectedLanguage = getLanguage(response, videoData.title, videoData.description, videoData.author);
+  console.log("VOT Detected language: ", videoData.detectedLanguage);
+  return videoData;
+}
+
+
+// EXTERNAL MODULE: ./src/yandexRequests.js
+var yandexRequests = __webpack_require__("./src/yandexRequests.js");
 ;// CONCATENATED MODULE: ./src/index.js
 
-const yandexRequests = __webpack_require__("./src/yandexRequests.js");
 
-let requestVideoTranslation;
-if (true) {
-  requestVideoTranslation = __webpack_require__("./src/rvt-cloudflare.js");
-} else {}
 
 
 async function src_main() {
+  const rvt = await Promise.resolve(/* import() */).then(__webpack_require__.bind(__webpack_require__, "./src/rvt-cloudflare.js"));
+
+  const requestVideoTranslation = rvt.default;
+
   if (false) {}
 
+  const debug = {}
+  debug.log = (...text) => {
+    if (true) {
+      return;
+    }
+    return console.log("%c[VOT DEBUG]", "background: #F2452D; color: #fff; padding: 5px;", ...text);
+  }
+
   const defaultVideoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video with the translation (uses with option "autoSetVolumeYandexStyle")
+  const availableLangs = ['ru', 'en', 'zh', 'fr', 'it', 'es']; // available languages for translation
+
+  const twitterSelector = 'article[data-testid="tweet"][tabindex="-1"]';
+  const twitchMobileSelector = 'main > div > section > div > div > div';
+  const twitchSelector = '.video-ref';
+  const vkSelector = '.videoplayer_media';
+  const facebookSelector = 'div[data-pagelet="WatchPermalinkVideo"]';
 
   const siteTranslates = {
     'youtube': {
@@ -684,7 +783,7 @@ async function src_main() {
       'func_param': 0x4075500000000000
     },
     'twitch': {
-      'url': 'https://twitch.tv/videos/',
+      'url': 'https://twitch.tv/',
       'func_param': 0x4075500000000000
     },
     'vimeo': {
@@ -708,13 +807,21 @@ async function src_main() {
       'func_param': 0x4075500000000000
     },
     'udemy': {
-      'url': 'https://www.udemy.com/course/',
+      'url': 'https://www.udemy.com',
       'func_param': 0x4075500000000000
     },
     'twitter': {
       'url': 'https://twitter.com/i/status/',
       'func_param': 0x4075500000000000
     },
+    'facebook': {
+      'url': 'https://www.facebook.com/',
+      'func_param': 0x4075500000000000
+    },
+    'rutube': {
+      'url': 'https://rutube.ru/video/',
+      'func_param': 0x4075500000000000
+    }
   }
 
   // Сайты хостящие Invidious. Мной была протестирована работоспособность только на invidious.kavin.rocks, yewtu.be и inv.vern.cc
@@ -792,7 +899,11 @@ async function src_main() {
       if (target === 'yt-mobile') {
         $translationBlock.css('top', '1rem');
       }
+
+      debug.log(`VOT: Added translation button (target: ${target})`)
       $(elem).append($translationBlock);
+    } else {
+      debug.log(`VOT: Already added translation button (target: ${target})`, elem)
     }
   };
 
@@ -803,7 +914,11 @@ async function src_main() {
       } else if (target === 'twitter') {
         $translationMenuContent.css('top', '55%');
       }
+
+      debug.log(`VOT: Added translation menu (target: ${target})`)
       $(elem).append($translationMenuContent);
+    } else {
+      debug.log(`VOT: Already added translation menu (target: ${target})`, elem)
     }
   };
 
@@ -838,15 +953,19 @@ async function src_main() {
           let linkUrl = document.head.querySelector('link[rel="canonical"]');
           if (linkUrl && linkUrl.href.includes("/videos/")) {
             let urlArray = linkUrl.href.split('/');
-            return urlArray[urlArray.length - 1];
+            return `videos/${urlArray[urlArray.length - 1]}`;
+          } else if (linkUrl && linkUrl.href.includes) {
+            return url.pathname.slice(1);
           } else {
             return false
           }
         } else if (/^player\.twitch\.tv$/.test(window.location.hostname)) {
-          return url.searchParams.get("video")
-        } else if (url.pathname.includes("videos/")) {
+          return `videos/${url.searchParams.get("video")}`
+        } else if (url.pathname.includes("/videos/")) {
           let urlArray = url.pathname.split('/');
-          return urlArray[urlArray.length - 1];
+          return `videos/${urlArray[urlArray.length - 1]}`;
+        } else if (url.pathname.includes("/clip/")) {
+          return url.pathname.slice(1);
         }
       case "tiktok":
         if (url.pathname.includes("video/")) {
@@ -871,6 +990,15 @@ async function src_main() {
           const urlArray = url.pathname.split('/');
           return urlArray[urlArray.length - 1];
         }
+      case "udemy":
+        return url.pathname;
+      case "facebook":
+        return url.pathname;
+      case "rutube":
+        if (url.pathname.includes("/video/")) {
+          const urlArray = url.pathname.split('/');
+          return urlArray[urlArray.length - 2];
+        }
       default:
         return false;
     }
@@ -880,19 +1008,33 @@ async function src_main() {
     var translationPanding = false;
   }
 
-  function translateVideo(url, unknown1, callback) {
+  function secsToStrTime(secs) {
+    const minutes = Math.floor(secs / 60);
+    const seconds = Math.floor(secs % 60);
+    if (minutes >= 60) {
+      return "Перевод займёт больше часа"
+    } else if (minutes >= 10 && minutes % 10) {
+      return `Перевод займёт ${minutes} минут`
+    } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
+      return "Перевод займёт около минуты"
+    } else {
+      return `Перевод займёт ${minutes} минуты`
+    }
+  }
+
+  function translateVideo(url, unknown1, requestLang, responseLang, callback) {
     if (true) {
       if (translationPanding) return;
       translationPanding = true;
     }
 
-    requestVideoTranslation(url, unknown1, function (success, response) {
+    requestVideoTranslation(url, unknown1, requestLang, responseLang, function (success, response) {
       if (!success) {
         callback(false, "Не удалось запросить перевод видео");
         return;
       }
 
-      const translateResponse = yandexRequests.decodeResponse(response);
+      const translateResponse = yandexRequests/* yandexRequests.decodeResponse */.G.decodeResponse(response);
       console.log('VOT Response: ', translateResponse);
       switch (translateResponse.status) {
         case 0:
@@ -903,7 +1045,11 @@ async function src_main() {
           callback(hasUrl, hasUrl ? translateResponse.url : "Не получена ссылка на аудио");
           return;
         case 2:
-          callback(false, "Перевод займет несколько минут");
+          let remainingTime = 'Перевод займет несколько минут'
+          if (translateResponse.remainingTime) {
+            remainingTime = secsToStrTime(translateResponse.remainingTime);
+          }
+          callback(false, remainingTime);
           return;
         case 3: /*
           Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода. В конечном итоге, это занимает слишком много времени,
@@ -951,6 +1097,7 @@ async function src_main() {
         objectStore.createIndex('showVideoSlider', 'showVideoSlider', { unique: false });
         objectStore.createIndex('syncVolume', 'syncVolume', { unique: false });
         objectStore.createIndex('autoSetVolumeYandexStyle', 'autoSetVolumeYandexStyle', { unique: false });
+        objectStore.createIndex('dontTranslateRuVideos', 'dontTranslateRuVideos', { unique: false });
         console.log('VOT: База Данных создана')
 
         objectStore.transaction.oncomplete = event => {
@@ -962,6 +1109,7 @@ async function src_main() {
             showVideoSlider: 0,
             syncVolume: 0,
             autoSetVolumeYandexStyle: 1,
+            dontTranslateRuVideos: 0
           }
           var request = objectStore.add(settingsDefault);
 
@@ -1002,7 +1150,8 @@ async function src_main() {
     defaultVolume,
     showVideoSlider,
     syncVolume,
-    autoSetVolumeYandexStyle
+    autoSetVolumeYandexStyle,
+    dontTranslateRuVideos
   }) {
     return new Promise((resolve, reject) => {
       if (
@@ -1010,7 +1159,8 @@ async function src_main() {
         typeof(defaultVolume) === 'number' ||
         typeof(showVideoSlider) === 'number' ||
         typeof(syncVolume) === 'number' ||
-        typeof(autoSetVolumeYandexStyle) === 'number') {
+        typeof(autoSetVolumeYandexStyle) === 'number' ||
+        typeof(dontTranslateRuVideos) === 'number') {
         var openRequest = openDB("VOT");
 
         openRequest.onerror = () => {
@@ -1065,6 +1215,10 @@ async function src_main() {
 
             if (typeof(autoSetVolumeYandexStyle) === 'number') {
               data.autoSetVolumeYandexStyle = autoSetVolumeYandexStyle;
+            };
+
+            if (typeof(dontTranslateRuVideos) === 'number') {
+              data.dontTranslateRuVideos = dontTranslateRuVideos;
             };
 
             var requestUpdate = objectStore.put(data);
@@ -1223,21 +1377,31 @@ async function src_main() {
     var autoRetry;
     var dbSyncVolume;
     let volumeOnStart;
-    let opacityRatio = 0.9; 
+    let opacityRatio = 0.9;
     var tempOriginalVolume;
     var tempVolume;
+    let video;
 
-    // --- Get video element --- 
+    // --- Get video element ---
     if (siteHostname === 'vimeo') {
-      var video = $($videoContainer).find('.vp-video-wrapper > .vp-video > .vp-telecine > video')[0];
+      video = $($videoContainer).find('.vp-video-wrapper > .vp-video > .vp-telecine > video')[0];
+    } else if (siteHostname === 'facebook') {
+      video = $($videoContainer).find('div > div > div > div > div > div > div > div > div > div > video')[0];
+    } else if (siteHostname === 'twitter') {
+      $videoContainer = $(twitterSelector)
+      video = $videoContainer.find('div[data-testid="videoComponent"] > div > div > video')[0];
+      stopTraslate();
     } else {
-      var video = $($videoContainer).find('video')[0];
+      video = $($videoContainer).find('video')[0];
     }
+
+    let videoData = getVideoData();
+    console.log('VOT Video Data: ', videoData)
 
     if (siteHostname === '9gag') {
       $videoContainer.parent().removeAttr('href');
     }
-    
+
     if (siteHostname == 'youtube' && window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) {
       const syncVolumeObserver = new MutationObserver(async function(mutations) {
         mutations.forEach(async function(mutation) {
@@ -1300,33 +1464,36 @@ async function src_main() {
         addTranslationMenu($('body'));
       }
     } else if (siteHostname === 'twitter') {
-      const elementContainer = $('article[data-testid="tweet"][tabindex="-1"] > div > div > div:nth-child(3)');
-      addTranslationBtn($videoContainer);
-      addTranslationMenu(elementContainer, 'twitter');
-      if (!$('.translationMenuContent').length) {
-        addTranslationMenu($videoContainer);
-      }
+      const elementMenuContainer = $(`${twitterSelector} > div > div > div:nth-child(3)`);
+      const elementContainer = elementMenuContainer.find('div[data-testid="videoPlayer"]');
+      addTranslationBtn(elementContainer);
+      addTranslationMenu(elementMenuContainer, 'twitter');
     } else {
       addTranslationBtn($videoContainer);
       addTranslationMenu($videoContainer);
     }
+
     transformBtn('none', 'Перевести видео');
     $('.translationDownload').remove();
+
     if (isDBInited) {
       var dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
       var dbAutoTranslate = dbData !== undefined ? dbData.autoTranslate : undefined;
       var dbDefaultVolume = dbData !== undefined ? dbData.defaultVolume : undefined;
       var dbShowVideoSlider = dbData !== undefined ? dbData.showVideoSlider : undefined;
       var dbAutoSetVolumeYandexStyle = dbData !== undefined ? dbData.autoSetVolumeYandexStyle : undefined;
+      var dbDontTranslateRuVideos = dbData !== undefined ? dbData.dontTranslateRuVideos : undefined;
 
       // Только для ютуба
       dbSyncVolume = dbData !== undefined ? dbData.syncVolume : undefined;
 
-      console.log(`VOT: Значение autoTranslate: ${dbAutoTranslate}`)
-      console.log(`VOT: Значение dbDefaultVolume: ${dbDefaultVolume}`)
-      console.log(`VOT: Значение dbShowVideoSlider: ${dbShowVideoSlider}`)
-      console.log(`VOT: Значение syncVolume (только для YouTube): ${dbSyncVolume}`)
-      console.log(`VOT: Значение autoSetVolumeYandexStyle: ${dbAutoSetVolumeYandexStyle}`)
+      console.log(`VOT: Значение autoTranslate: ${dbAutoTranslate}`);
+      console.log(`VOT: Значение dbDefaultVolume: ${dbDefaultVolume}`);
+      console.log(`VOT: Значение dbShowVideoSlider: ${dbShowVideoSlider}`);
+      console.log(`VOT: Значение syncVolume (только для YouTube): ${dbSyncVolume}`);
+      console.log(`VOT: Значение autoSetVolumeYandexStyle: ${dbAutoSetVolumeYandexStyle}`);
+      console.log(`VOT: Значение dontTranslateRuVideos: ${dbDontTranslateRuVideos}`);
+
       if (!$translationMenuContent.has('.translationAT').length && dbAutoTranslate !== undefined) {
         let $translationATCont = $(
           `<div class = "translationMenuContainer">
@@ -1344,6 +1511,7 @@ async function src_main() {
         });
         $translationMenuContent.append($translationATCont);
       }
+
       if (!$translationMenuContent.has('.translationDropDB').length && dbData !== undefined) {
         let $translationDropDB = $(
           `<button class = "translationDropDB">Сбросить настройки</button>`
@@ -1355,6 +1523,7 @@ async function src_main() {
         });
         $translationMenuContent.find('.translationAbsoluteContainer').append($translationDropDB);
       }
+
       if (!$translationMenuContent.has('.translationSVS').length && dbData !== undefined) {
         let $translationSVSCont = $(
           `<div class = "translationMenuContainer">
@@ -1377,14 +1546,16 @@ async function src_main() {
         });
         $translationMenuContent.append($translationSVSCont);
       }
+
       if (window.location.hostname.includes('m.youtube.com')) {
         $translationMenuContent.css('height', '350px');
-      } 
+      }
+
       if (!$translationMenuContent.has('.translationSyncVolume').length && dbSyncVolume !== undefined && window.location.hostname.includes('youtube.com')) {
         let $translationSyncVolumeContainter = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="sync_volume" value=${dbSyncVolume} class = "translationSyncVolume" ${dbSyncVolume === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "sync_volume">Синхронизация громкости перевода с громкостью видео (только для YouTube)</label>
+            <label class = "translationMenuText" for = "sync_volume">[YT Only] Синхронизация громкости перевода с громкостью видео</label>
           </div>
           `
         );
@@ -1396,8 +1567,7 @@ async function src_main() {
           dbSyncVolume = syncVolumeValue;
         });
         $translationMenuContent.append($translationSyncVolumeContainter);
-      }
-      else if (dbSyncVolume === undefined) {
+      } else if (dbSyncVolume === undefined) {
         try {
           await updateDB({syncVolume: 0});
           console.log('VOT: Применено стандартное значение для "SyncVolume" (0). Пожалуйста, перезагрузите страницу.')
@@ -1405,6 +1575,7 @@ async function src_main() {
           console.error('VOT: Не удалось применить стандартное значение для "SyncVolume". Причина: ', err)
         }
       }
+
       if (!$translationMenuContent.has('.translationAutoSetVolume').length && dbData !== undefined) {
         let $translationAutoSetVolumeContainer = $(
           `<div class = "translationMenuContainer">
@@ -1422,15 +1593,55 @@ async function src_main() {
         });
         $translationMenuContent.append($translationAutoSetVolumeContainer);
       }
+
+      if (!$translationMenuContent.has('.translationDTRuV').length && dbDontTranslateRuVideos !== undefined && window.location.hostname.includes('youtube.com')) {
+        let $DTRuVContainter = $(
+          `<div class = "translationMenuContainer">
+            <input type="checkbox" name="dont_translate_ru_videos" value=${dbDontTranslateRuVideos} class = "translationDTRuV" ${dbDontTranslateRuVideos === 1 ? "checked" : ''}>
+            <label class = "translationMenuText" for = "dont_translate_ru_videos">[YT Only] Ограничить перевод русскоязычных видео</label>
+          </div>
+          `
+        );
+        let $translationDTRuV = $($DTRuVContainter).find('.translationDTRuV');
+        $translationDTRuV.on('click', async (event) => {
+          event.stopPropagation();
+          let DTRuVValue = event.target.checked ? 1 : 0;
+          await updateDB({dontTranslateRuVideos: DTRuVValue});
+          dbDontTranslateRuVideos = DTRuVValue;
+        });
+        $translationMenuContent.append($DTRuVContainter);
+      }
     } else {
       $translationMenuContent.remove();
       console.error('VOT: Не удалось создать меню. Причина: База данных не загружена.');
     }
 
+    function getVideoData() {
+      let videoData = {};
+      videoData.duration = video?.duration ? video.duration : 0;
+      videoData.videoId = getVideoId(siteHostname);
+      videoData.detectedLanguage = 'en'; // default language of video
+      videoData.responseLanguage = 'ru'; // default language of audio response
+      if (window.location.hostname.includes('youtube.com')) {
+        const ytData = getYTVideoData();
+        if (!availableLangs.includes(ytData.detectedLanguage)) {
+          ytData.detectedLanguage = 'en';
+        }
+
+        if (ytData.detectedLanguage === 'ru') {
+          ytData.responseLanguage = 'en';
+        }
+
+        videoData = {...videoData,...ytData};
+      }
+
+      return videoData;
+    }
+
     function addVideoSlider() {
       if (dbShowVideoSlider === 1) {
         const newSlidersVolume = (window.location.hostname.includes('youtube.com') && !dbAutoSetVolumeYandexStyle) ? $('.ytp-volume-panel').attr('aria-valuenow') : Math.round(video.volume * 100);
-        
+
         const videoVolumeBox = $(`
           <div class = "translationMenuContainer">
             <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${newSlidersVolume}%</b></span>
@@ -1562,62 +1773,69 @@ async function src_main() {
       }
     };
 
-    const videoValidator = (video) => {
+    const videoValidator = () => {
       if (window.location.hostname.includes('youtube.com')) {
-        const data = document.querySelector("#movie_player").getVideoData();
-        if (data.isLive) {
+        if (dbDontTranslateRuVideos === 1 && videoData.detectedLanguage === 'ru') {
+          firstPlay = false;
+          throw "VOT: Вы отключили перевод русскоязычных видео";
+        }
+
+        if (videoData.isLive) {
           throw "VOT: Не поддерживается перевод трансляций в прямом эфире";
         }
-        if (data.isPremiere) {
+
+        if (videoData.isPremiere) {
           throw "VOT: Дождитесь окончания премьеры перед переводом";
         }
       }
-      if (video.duration > 14400) {
+
+      if (videoData.duration > 14400) {
         throw "VOT: Видео слишком длинное";
       }
+
       return true;
     }
 
-    const translateExecutor = (video, VIDEO_ID) => {
-      videoValidator(video);
-      translateFunc(VIDEO_ID);
+    const translateExecutor = (VIDEO_ID) => {
+      videoValidator();
+      translateFunc(VIDEO_ID, videoData.detectedLanguage, videoData.responseLanguage);
     }
 
-
-    const translateFunc = (VIDEO_ID) => translateVideo(`${siteTranslates[siteHostname]['url']}${VIDEO_ID}`, siteTranslates[siteHostname]['func_param'], function (success, urlOrError) {
-
+    const translateFunc = (VIDEO_ID, requestLang, responseLang) => translateVideo(`${siteTranslates[siteHostname]['url']}${VIDEO_ID}`, siteTranslates[siteHostname]['func_param'], requestLang, responseLang, function (success, urlOrError) {
       if (getVideoId(siteHostname) === VIDEO_ID) {
         if (!success) {
           transformBtn('error', urlOrError);
-          if (urlOrError === 'Перевод займет несколько минут') {
+          if (urlOrError.includes('Перевод займёт')) {
             clearTimeout(autoRetry);
             autoRetry = setTimeout(() => {
-              translateFunc(VIDEO_ID);
-            }, 70000)
+              translateFunc(VIDEO_ID, requestLang, responseLang);
+            }, 60000)
           }
+
           throw urlOrError;
         }
 
         volumeOnStart = video.volume;
         audio.src = urlOrError;
+
         if (typeof(dbDefaultVolume) === 'number') {
           audio.volume = dbDefaultVolume / 100;
         }
 
-        if (siteEvent !== null & siteEvent !== 'invidious') {
+        if (siteHostname === 'twitter') {
+          $('div[data-testid="app-bar-back"][role="button"]').on('click', function () {
+            stopTraslate();
+          })
+        } else if (siteEvent !== null && siteEvent !== 'invidious') {
           $("body").on(siteEvent, function () {
             stopTraslate();
             syncOriginalVolumeSlider();
           });
         }
 
-        // TODO: Fix audio for 9gag change video
-        // if (siteHostname === 'twitch' || siteHostname === 'vimeo' || siteHostname === '9gag') {
-        if (siteHostname === 'twitch' || siteHostname === 'vimeo') {
-          var mutationObserver = new MutationObserver(async function(mutations) {
+        if (siteHostname === 'twitch' || siteHostname === 'vimeo' || siteHostname === 'facebook' || siteHostname === 'rutube' || siteHostname === 'twitter') {
+          const mutationObserver = new MutationObserver(async function(mutations) {
             mutations.forEach(async function(mutation) {
-              // if (mutation.type === 'attributes' && ((mutation.attributeName === 'src' && mutation.target === video) || (siteHostname === '9gag' && mutation.attributeName === 'class' && (mutation.oldValue === 'hide' || mutation.oldValue === 'presenting')))) {
-              //   if (siteHostname === '9gag' || mutation.target.src !== '') {
               if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video) {
                 if (mutation.target.src !== '') {
                   stopTraslate();
@@ -1626,7 +1844,7 @@ async function src_main() {
               }
             });
           });
-        
+
           mutationObserver.observe($videoContainer[0], {
             attributes: true,
             childList: false,
@@ -1635,31 +1853,44 @@ async function src_main() {
           });
         }
 
+        // fix for video.paused stuck bug
+        if (video.paused) {
+          if (siteHostname === 'twitter') {
+            video = $('div[data-testid="videoComponent"] > div > div > video')[0]
+          } else if (siteHostname === 'vk') {
+            video = $('.videoplayer_media > video')[0]
+          }
+        }
+
         if (video && !video.paused) {
+          debug.log('video is playing lipsync 1')
           lipSync("play");
         }
 
         $("video").on("playing.translate ratechange.translate", function () {
+          debug.log('video ratechange')
           lipSync();
         });
 
         $("video").on("play.translate canplaythrough.translate", function () {
+          debug.log('video canplaythrough')
           lipSync();
 
           if (video && !video.paused) {
+            debug.log('video is playing lipsync 2')
             lipSync("play");
           }
         });
 
         $("video").on("pause.translate waiting.translate", function () {
+          debug.log('video is waiting')
           lipSync("pause");
         });
 
         transformBtn('success', 'Выключить');
+        let defaultTranslateVolume = 100;
         if (typeof(dbDefaultVolume) === 'number') {
-          var defaultTranslateVolume = dbDefaultVolume; 
-        } else {
-          var defaultTranslateVolume = 100;
+          defaultTranslateVolume = dbDefaultVolume;
         }
 
         addVideoSlider();
@@ -1743,15 +1974,18 @@ async function src_main() {
     btnHover();
 
     const lipSync = (mode = false) => {
+      debug.log('lipsync video', video)
       if (!video) return;
       audio.currentTime = video.currentTime;
       audio.playbackRate = video.playbackRate;
 
       if (!mode) {
+        debug.log('lipsync mode is not set')
         return;
       }
 
       if (mode === "play") {
+        debug.log('lipsync mode is play')
         var audioPromise = audio.play();
         if (audioPromise !== undefined) {
           audioPromise.catch(e => {
@@ -1773,6 +2007,7 @@ async function src_main() {
       }
 
       else if (mode === "pause") {
+        debug.log('lipsync mode is pause')
         audio.pause();
       }
     };
@@ -1787,8 +2022,13 @@ async function src_main() {
       }
 
       if (firstPlay && dbAutoTranslate === 1) {
-        translateExecutor(video, VIDEO_ID);
-        firstPlay = false;
+        try {
+          translateExecutor(VIDEO_ID);
+          firstPlay = false;
+        } catch (err) {
+          transformBtn('error', String(err).substring(4, err.length));
+          firstPlay = false;
+        }
       }
     });
 
@@ -1811,7 +2051,7 @@ async function src_main() {
           throw "VOT: Не найдено ID видео"; // not found video id
         }
 
-        translateExecutor(video, VIDEO_ID);
+        translateExecutor(VIDEO_ID);
         event.stopImmediatePropagation();
       } catch (err) {
         transformBtn('error', String(err).substring(4, err.length))
@@ -1828,15 +2068,15 @@ async function src_main() {
         await translateProccessor($('.html5-video-container'), 'youtube', null);
       } else {
         const ytPageEnter = function (event) {
-            var video = $('.html5-video-container');
-            if (video !== void 0 && video !== null && video.length > 0) {
-                translateProccessor(video, 'youtube', 'yt-translate-stop');
-            } else {
-                if (ytplayer === void 0 || ytplayer === null || ytplayer.config === void 0 || ytplayer.config === null) return;
-                ytplayer.config.args.jsapicallback = function(jsApi) {
-                    translateProccessor($('.html5-video-container'), 'youtube', 'yt-translate-stop');
-                }
+          var video = $('.html5-video-container');
+          if (video !== void 0 && video !== null && video.length > 0) {
+            translateProccessor(video, 'youtube', 'yt-translate-stop');
+          } else {
+            if (ytplayer === void 0 || ytplayer === null || ytplayer.config === void 0 || ytplayer.config === null) return;
+            ytplayer.config.args.jsapicallback = function(jsApi) {
+                translateProccessor($('.html5-video-container'), 'youtube', 'yt-translate-stop');
             }
+          }
         };
 
         document.addEventListener('spfdone', ytPageEnter);
@@ -1849,30 +2089,33 @@ async function src_main() {
         ytPageEnter(null);
       }
     } else if (window.location.hostname.includes('twitch')) {
-      if (window.location.hostname.includes('m.twitch.tv') && window.location.pathname.includes('videos')) {
-        await sleep(1000);
-        const $videoContainer = $('.sc-2035e8b3-0.lfUPeS');
-        await translateProccessor($videoContainer, 'twitch', null);
-        // Тоже самое, что и вариант снизу, но по идеи должен быть более производительным (так же требует дабл клика)
-        var mutationObserver = new MutationObserver(async function(mutations) {
-          mutations.forEach(async function(mutation) {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === $videoContainer.find('video')[0]) {
-              await sleep(1000);
-              // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
-              await translateProccessor($videoContainer, 'twitch', null);
-            }
+      if (window.location.hostname.includes('m.twitch.tv') && (window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/'))) {
+        const el = await waitForElement(twitchMobileSelector);
+        if (el) {
+          await sleep(200);
+          await translateProccessor($(twitchMobileSelector).first(), 'twitch', null);
+          // Тоже самое, что и вариант снизу, но по идеи должен быть более производительным (так же требует дабл клика)
+          const mutationObserver = new MutationObserver(async function(mutations) {
+            mutations.forEach(async function(mutation) {
+              if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === $(twitchMobileSelector).first().find('video')[0]) {
+                await sleep(1000);
+                await translateProccessor($(twitchMobileSelector).first(), 'twitch', null);
+              }
+            });
           });
-        });
-      
-        mutationObserver.observe($videoContainer[0], {
-          attributes: true,
-          childList: true,
-          subtree: true,
-          attributeOldValue: true,
-        });
-      } else if (window.location.hostname.includes('player.twitch.tv') || window.location.pathname.includes('videos')) {
-        await sleep(1000); // stupid fix for wait video load
-        await translateProccessor($('.video-ref'), 'twitch', null);
+
+          mutationObserver.observe($(twitchMobileSelector).first()[0], {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            attributeOldValue: true,
+          });
+        }
+      } else if (window.location.hostname.includes('player.twitch.tv') || window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/')) {
+        const el = await waitForElement(twitchSelector);
+        if (el) {
+          await translateProccessor(el, 'twitch', null);
+        }
       }
     } else if (window.location.hostname.includes('xvideos')) {
       await sleep(1000);
@@ -1883,26 +2126,24 @@ async function src_main() {
     } else if (sitesInvidious.includes(window.location.hostname)) { // Нужно дополнительное расширение для работы в хромоподбных браузерах
       await translateProccessor($('#player'), 'youtube', null);
     } else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
-      $(window).on('load', async () => {
-        await sleep(1500);
-        let videoIDVK;
+      const el = await waitForElement(vkSelector);
+      if (el) {
+        await translateProccessor($(vkSelector).last(), 'vk', null);
         let videoIDVKNew;
-        let videoFirst = true;
-        // Выглядит мега криво, зато работает :)
+        let videoIDVK = getVideoId('vk');
         setInterval(async () => {
           videoIDVKNew = getVideoId('vk');
-          if (/^video-[0-9]+_[0-9]+$/.test(videoIDVKNew) && typeof(videoIDVK) === 'undefined' && videoFirst === true) {
-            videoFirst = false;
-            await translateProccessor($('.videoplayer_media'), 'vk', null);
-          } else if (videoIDVK !== videoIDVKNew) {
+          if (videoIDVK !== videoIDVKNew) {
             if (videoIDVKNew) {
-              // Есть проблема с кнопкой перевода. Её необходимо нажать 2 раза при переходе на другое видео idk why (если это вас напрягает, то можете попробовать пофиксить или использовать автоперевод. С ним наудивление, всё идеально работает)
-              await translateProccessor($('.videoplayer_media'), 'vk', null);
+              const el = await waitForElement(vkSelector);
+              if (el) {
+                await translateProccessor(el, 'vk', null);
+              }
             }
             videoIDVK = videoIDVKNew;
-          } 
+          }
         }, 3000);
-      });
+      }
     } else if (window.location.hostname.includes('vimeo')) {
       await sleep(1000);
       await translateProccessor($('.player'), 'vimeo', null);
@@ -1910,10 +2151,55 @@ async function src_main() {
       await sleep(1000);
       await translateProccessor($('.video-post'), '9gag', null);
     } else if (window.location.hostname.includes('twitter')) {
-      const elementSelector = 'div[data-testid="videoPlayer"] > div > div > div > div > div';
+      const el = await waitForElement(twitterSelector);
+      if (el) {
+        let videoIDNew;
+        let videoID = getVideoId('twitter');
+        await translateProccessor(undefined, 'twitter', 'twitter');
+        setInterval(async () => {
+          videoIDNew = getVideoId('twitter');
+          if (videoID !== videoIDNew) {
+            if (videoIDNew) {
+              await translateProccessor(undefined, 'twitter', 'twitter');
+            }
+            videoID = videoIDNew;
+          }
+        }, 3000);
+
+      }
+    // } else if (window.location.hostname.includes('udemy')) {
+    //   const elementSelector = '.vjs-v7';
+    //   const el = await waitForElement(elementSelector);
+    //   if (el) {
+    //     await translateProccessor($(elementSelector), 'udemy', null);
+    //   }
+    // } else if (window.location.hostname.includes('facebook')) {
+    //   const el = await waitForElement(facebookSelector);
+    //   if (el) {
+    //     let videoIDNew;
+    //     let videoID = getVideoId('facebook');
+    //     await translateProccessor($(facebookSelector).last(), 'facebook', null);
+    //     setInterval(async () => {
+    //       videoIDNew = getVideoId('facebook');
+    //       if (videoID !== videoIDNew) {
+    //         if (videoIDNew) {
+    //           await translateProccessor($(facebookSelector).last(), 'facebook', null);
+    //         }
+    //         videoID = videoIDNew;
+    //       }
+    //     }, 3000);
+    //   }
+    } else if (window.location.hostname.includes('rutube')) {
+      let elementSelector;
+      if (window.location.pathname.includes('/play/embed')) {
+        elementSelector = '#app > div > div';
+      } else {
+        elementSelector = '.video-player > div > div > div:nth-child(2)';
+      }
+
       const el = await waitForElement(elementSelector);
       if (el) {
-        await translateProccessor($(el)[0], 'twitter', null);
+        await translateProccessor($(el), 'rutube', null);
       }
     }
   }
