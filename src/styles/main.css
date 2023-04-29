@@ -77,7 +77,7 @@
   font: 600 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif !important;
 
   width: 300px;
-  height: 350px;
+  height: 375px;
   opacity: 0;
   z-index: 10;
   transition: opacity 0.5s ease;
@@ -90,7 +90,8 @@
   height: 8px !important;
   outline: none !important;
   opacity: 0.7;
-  background: #3C3F4D !important;
+  /* background: #3C3F4D !important; */
+  background: rgb(253, 222, 85, 0.6) !important;
   border: none !important;
   border-radius: 2rem !important;
   -webkit-transition: 0.2s !important;
