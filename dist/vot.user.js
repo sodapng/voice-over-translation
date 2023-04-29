@@ -63,7 +63,7 @@
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\r\n  padding: 0.25rem 0.45rem !important;\r\n  width: max-content;\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  border-radius: 0.5rem !important;\r\n  left: 50%;\r\n  top: 5rem;\r\n  transform: translate(-50%);\r\n  text-align: center;\r\n  opacity: 0;\r\n  transition: opacity 1s;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n  user-select: none;\r\n  z-index: 10;\r\n}\r\n\r\n.translationBtn {\r\n  position: relative;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  color: #fff;\r\n  padding-right: 0.25rem !important;\r\n  cursor: pointer;\r\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\r\n}\r\n\r\n.translationBlock:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.translationMenu {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  border-left: 1px solid #424348;\r\n  max-height: 16px;\r\n  max-width: 24px;\r\n  cursor: pointer;\r\n}\r\n\r\n.translationMenuIcon {\r\n  padding: 0 10px !important;\r\n  width: 24px;\r\n}\r\n\r\n.translationIAlice {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 26px;\r\n  max-width: 50px;\r\n}\r\n\r\n.translationIconAlice {\r\n  height: 24px !important;\r\n  width: 24px !important;\r\n}\r\n\r\n.translationITranslate {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 20px;\r\n  max-width: 20px;\r\n}\r\n\r\n.translationMenuContent {\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  color: #fff;\r\n  display: none;\r\n  border-radius: 1rem !important;\r\n  left: 50%;\r\n  top: 9rem;\r\n  transform: translate(-50%);\r\n  text-align:left;\r\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n\r\n  width: 300px;\r\n  height: 350px;\r\n  opacity: 0;\r\n  z-index: 10;\r\n  transition: opacity 0.5s ease;\r\n}\r\n\r\n.translationVolumeSlider {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 80% !important;\r\n  height: 8px !important;\r\n  outline: none !important;\r\n  opacity: 0.7;\r\n  background: #3C3F4D !important;\r\n  border: none !important;\r\n  border-radius: 2rem !important;\r\n  -webkit-transition: 0.2s !important;\r\n  transition: opacity 0.2s ease !important;\r\n}\r\n\r\n.translationVolumeSlider:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.translationVolumeSlider::-webkit-slider-thumb {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.translationVolumeSlider::-moz-range-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.translationVolumeSlider::-ms-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.translationVolumeSlider::-ms-fill-lower {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\r\n}\r\n\r\n.translationVolumeSlider::-moz-range-progress {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\r\n}\r\n\r\n.translationHeader {\r\n  padding-bottom: 0.5rem !important;\r\n}\r\n\r\n.translationMainHeader {\r\n  margin: 16px !important;\r\n  color: #FFF;\r\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n}\r\n\r\n.translationMenuContainer {\r\n  width: 100%;\r\n  padding-left: 15px !important;\r\n  padding-top: 5px !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n.translationMenuContainer > input {\r\n  appearance: auto !important;\r\n}\r\n\r\n.translationMenuText {\r\n  color: #FFF;\r\n  width: 80%;\r\n}\r\n\r\n.translationVolumeBox, .translationVideoVolumeBox {\r\n  padding-top: 0.5rem !important;\r\n}\r\n\r\n.translationDropDB {\r\n  border: none;\r\n  border-radius: 4px !important;\r\n  background: #5426FF !important;\r\n  color: #fff !important;\r\n  padding: 6px 16px !important;\r\n  cursor: pointer;\r\n}\r\n\r\n.translationAbsoluteContainer {\r\n  position: absolute;\r\n  left: 0;\r\n  bottom: 0;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  margin-bottom: 2rem !important;\r\n  margin-left: 15px !important;\r\n  margin-top: 5px !important;\r\n}\r\n\r\n.translationDownload {\r\n  background: #5426FF !important;\r\n  color: #fff !important;\r\n  padding: 2px 10px !important;\r\n  border-radius: 4px !important;\r\n  margin-left: 58px !important;\r\n  cursor: pointer;\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\n  padding: 0.25rem 0.45rem !important;\n  width: max-content;\n  position: absolute;\n  background: #2e2f34;\n  border-radius: 0.5rem !important;\n  left: 50%;\n  top: 5rem;\n  transform: translate(-50%);\n  text-align: center;\n  opacity: 0;\n  transition: opacity 1s;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  z-index: 10;\n}\n\n.translationBtn {\n  position: relative;\n  display: inline-block;\n  vertical-align: middle;\n  color: #fff;\n  padding-right: 0.25rem !important;\n  cursor: pointer;\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\n}\n\n.translationBlock:hover {\n  opacity: 1;\n}\n\n.translationMenu {\n  display: inline-block;\n  vertical-align: middle;\n  border-left: 1px solid #424348;\n  max-height: 16px;\n  max-width: 24px;\n  cursor: pointer;\n}\n\n.translationMenuIcon {\n  padding: 0 10px !important;\n  width: 24px;\n}\n\n.translationIAlice {\n  display: inline-block;\n  vertical-align: middle;\n  max-height: 26px;\n  max-width: 50px;\n}\n\n.translationIconAlice {\n  height: 24px !important;\n  width: 24px !important;\n}\n\n.translationITranslate {\n  display: inline-block;\n  vertical-align: middle;\n  max-height: 20px;\n  max-width: 20px;\n}\n\n.translationMenuContent {\n  position: absolute;\n  background: #2e2f34;\n  color: #fff;\n  display: none;\n  border-radius: 1rem !important;\n  left: 50%;\n  top: 9rem;\n  transform: translate(-50%);\n  text-align:left;\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\n\n  width: 300px;\n  height: 350px;\n  opacity: 0;\n  z-index: 10;\n  transition: opacity 0.5s ease;\n}\n\n.translationVolumeSlider {\n  -webkit-appearance: none !important;\n  appearance: none !important;\n  width: 80% !important;\n  height: 8px !important;\n  outline: none !important;\n  opacity: 0.7;\n  background: #3C3F4D !important;\n  border: none !important;\n  border-radius: 2rem !important;\n  -webkit-transition: 0.2s !important;\n  transition: opacity 0.2s ease !important;\n}\n\n.translationVolumeSlider:hover {\n  opacity: 1;\n}\n\n.translationVolumeSlider::-webkit-slider-thumb {\n  -webkit-appearance: none !important;\n  appearance: none !important;\n  width: 10px !important;\n  height: 10px !important;\n  border-radius: 50% !important;\n  border: none !important;\n  background: #fff !important;\n  cursor: pointer !important;\n}\n\n.translationVolumeSlider::-moz-range-thumb {\n  width: 10px !important;\n  height: 10px !important;\n  border-radius: 50% !important;\n  border: none !important;\n  background: #fff !important;\n  cursor: pointer !important;\n}\n\n.translationVolumeSlider::-ms-thumb {\n  width: 10px !important;\n  height: 10px !important;\n  border-radius: 50% !important;\n  border: none !important;\n  background: #fff !important;\n  cursor: pointer !important;\n}\n\n.translationVolumeSlider::-ms-fill-lower {\n  height: 8px !important;\n  border-radius: 2rem !important;\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\n}\n\n.translationVolumeSlider::-moz-range-progress {\n  height: 8px !important;\n  border-radius: 2rem !important;\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\n}\n\n.translationHeader {\n  padding-bottom: 0.5rem !important;\n}\n\n.translationMainHeader {\n  margin: 16px !important;\n  color: #FFF;\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\n}\n\n.translationMenuContainer {\n  width: 100%;\n  padding-left: 15px !important;\n  padding-top: 5px !important;\n  display: inline-block !important;\n}\n\n.translationMenuContainer > input {\n  appearance: auto !important;\n}\n\n.translationMenuText {\n  color: #FFF;\n  width: 80%;\n}\n\n.translationVolumeBox, .translationVideoVolumeBox {\n  padding-top: 0.5rem !important;\n}\n\n.translationDropDB {\n  border: none;\n  border-radius: 4px !important;\n  background: #5426FF !important;\n  color: #fff !important;\n  padding: 6px 16px !important;\n  cursor: pointer;\n}\n\n.translationAbsoluteContainer {\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  display: inline-flex;\n  align-items: center;\n  margin-bottom: 2rem !important;\n  margin-left: 15px !important;\n  margin-top: 5px !important;\n}\n\n.translationDownload {\n  background: #5426FF !important;\n  color: #fff !important;\n  padding: 2px 10px !important;\n  border-radius: 4px !important;\n  margin-left: 58px !important;\n  cursor: pointer;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -434,8 +434,8 @@ __webpack_require__.d(__webpack_exports__, {
 
 ;// CONCATENATED MODULE: ./src/getUUID.js
 function getUUID(isLower) {
-    var uuid = ([1e7]+1e3+4e3+8e3+1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
-    return isLower ? uuid : uuid.toUpperCase();
+  const uuid = ([1e7]+1e3+4e3+8e3+1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+  return isLower ? uuid : uuid.toUpperCase();
 }
 
 
@@ -452,37 +452,55 @@ const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) 
 
 
 
-function requestVideoTranslation(url, unknown1, requestLang, responseLang, callback) {
-    var deviceId = getUUID(true);
-      var body = yandexRequests/* yandexRequests.encodeRequest */.G.encodeRequest(url, deviceId, unknown1, requestLang, responseLang);
-  
-    var utf8Encoder = new TextEncoder("utf-8");
-    window.crypto.subtle.importKey('raw', utf8Encoder.encode(yandexHmacKey), { name: 'HMAC', hash: {name: 'SHA-256'}}, false, ['sign', 'verify']).then(key => {
-      window.crypto.subtle.sign('HMAC', key, body).then(signature => {
-        GM_xmlhttpRequest({url: `https://${workerHost}/video-translation/translate`, method: "POST", headers: {
-          "Accept": "application/x-protobuf",
-          "Accept-Language": "en",
-          "Content-Type": "application/x-protobuf",
-          "User-Agent": yandexUserAgent,
-          "Pragma": "no-cache",
-          "Cache-Control": "no-cache",
-          "Sec-Fetch-Mode": "no-cors",
-          "sec-ch-ua": null,
-          "sec-ch-ua-mobile": null,
-          "sec-ch-ua-platform": null,
-          "Vtrans-Signature": Array.prototype.map.call(new Uint8Array(signature), x => x.toString(16).padStart(2, '0')).join(''),
-          "Sec-Vtrans-Token": getUUID(false)
-        }, data: String.fromCharCode.apply(null, body), responseType: "arraybuffer", onload: (http) => {
-          callback((http.status === 200), http.response);
-        }, onerror: (error) => {
-          callback(false);
-        }});
-      });
+// Request video translation from Yandex API
+async function requestVideoTranslation(url, unknown1, requestLang, responseLang, callback) {
+  // Initialize variables
+  const deviceId = getUUID(true);
+  const body = yandexRequests/* yandexRequests.encodeRequest */.G.encodeRequest(url, deviceId, unknown1, requestLang, responseLang);
+
+  try {
+    // Create a key from the HMAC secret
+    const utf8Encoder = new TextEncoder("utf-8");
+    const key = await window.crypto.subtle.importKey('raw', utf8Encoder.encode(yandexHmacKey), { name: 'HMAC', hash: {name: 'SHA-256'}}, false, ['sign', 'verify']);
+    // Sign the body with the key
+    const signature = await window.crypto.subtle.sign('HMAC', key, body);
+    // Convert the signature to a hex string
+    const hexSignature = Array.from(new Uint8Array(signature), x => x.toString(16).padStart(2, '0')).join('');
+    // Create a fetch options object with headers and body
+    const options = {
+      url: `https://${workerHost}/video-translation/translate`,
+      method: "POST",
+      headers: {
+        "Accept": "application/x-protobuf",
+        "Accept-Language": "en",
+        "Content-Type": "application/x-protobuf",
+        "User-Agent": yandexUserAgent,
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache",
+        "Sec-Fetch-Mode": "no-cors",
+        "Vtrans-Signature": hexSignature,
+        "Sec-Vtrans-Token": getUUID(false)
+      },
+      data: String.fromCharCode(...body),
+      responseType: "arraybuffer"
+    };
+    // Send the request using GM_xmlhttpRequest
+    GM_xmlhttpRequest({
+      ...options,
+      onload: (http) => {
+        callback((http.status === 200), http.response);
+      },
+      onerror: (error) => {
+        callback(false);
+      }
     });
+  } catch(exception) {
+    // Handle errors
+    callback(false);
   }
+}
 
 /* harmony default export */ const rvt = (requestVideoTranslation);
-
 
 /***/ }),
 
@@ -492,45 +510,46 @@ function requestVideoTranslation(url, unknown1, requestLang, responseLang, callb
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "G": () => (/* binding */ yandexRequests)
 /* harmony export */ });
-const yandexRequests = (function() {
-    var protoRequest = new protobuf.Type("VideoTranslationRequest")
-                          .add(new protobuf.Field("url", 3, "string"))
-                          .add(new protobuf.Field("deviceId", 4, "string"))
-                          .add(new protobuf.Field("unknown0", 5, "int32"))  // первый запрос на перевод - 1, последующие - 0
-                          .add(new protobuf.Field("unknown1", 6, "fixed64"))
-                          .add(new protobuf.Field("unknown2", 7, "int32"))
-                          .add(new protobuf.Field("language", 8, "string"))
-                          .add(new protobuf.Field("unknown3", 9, "int32"))
-                          .add(new protobuf.Field("unknown4", 10, "int32"))
-                          .add(new protobuf.Field("responseLanguage", 14, "string"));
-    var protoResponse = new protobuf.Type("VideoTranslationResponse")
-                            .add(new protobuf.Field("url", 1, "string"))
-                            .add(new protobuf.Field("duration",	2, "double"))
-                            .add(new protobuf.Field("status", 4, "int32"))
-                            .add(new protobuf.Field("remainingTime", 5,	"int32"))
-                            .add(new protobuf.Field("message", 9, "string"));
-    new protobuf.Root().define("yandex").add(protoRequest).add(protoResponse);
-    return {
-        encodeRequest: function(url, deviceId, unknown1, requestLang, responseLang) {
-            return protoRequest.encode({
-              url: url, 
-              deviceId: deviceId, 
-              unknown0: 1, 
-              unknown1: unknown1, 
-              unknown2: 1, 
-              language: requestLang, // en - english, zh - china, fr - french, it - italian, es - spanish, ru - russian
-              unknown3: 0, 
-              unknown4: 0,
-              responseLanguage: responseLang
-            }).finish();
-        },
-        decodeResponse: function(response) {
-            return protoResponse.decode(new Uint8Array(response));
-        }
-    };
-})();
+const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
+  .add(new protobuf.Field("url", 3, "string"))
+  .add(new protobuf.Field("deviceId", 4, "string"))
+  .add(new protobuf.Field("firstRequest", 5, "bool")) // true for the first request, false for subsequent ones
+  .add(new protobuf.Field("unknown1", 6, "fixed64"))
+  .add(new protobuf.Field("unknown2", 7, "int32"))
+  .add(new protobuf.Field("language", 8, "string")) // source language code
+  .add(new protobuf.Field("unknown3", 9, "int32"))
+  .add(new protobuf.Field("unknown4", 10, "int32"))
+  .add(new protobuf.Field("responseLanguage", 14, "string")); // target language code
 
+const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
+  .add(new protobuf.Field("url", 1, "string"))
+  .add(new protobuf.Field("duration", 2, "double"))
+  .add(new protobuf.Field("status", 4, "int32"))
+  .add(new protobuf.Field("remainingTime", 5, "int32"))
+  .add(new protobuf.Field("message", 9, "string"));
 
+// Create a root namespace and add the types
+const root = new protobuf.Root().define("yandex").add(VideoTranslationRequest).add(VideoTranslationResponse);
+
+// Export the encoding and decoding functions
+const yandexRequests = {
+  encodeRequest: function(url, deviceId, unknown1, requestLang, responseLang) {
+    return root.VideoTranslationRequest.encode({
+      url,
+      deviceId,
+      firstRequest: true,
+      unknown1,
+      unknown2: 1,
+      language: requestLang,
+      unknown3: 0,
+      unknown4: 0,
+      responseLanguage: responseLang
+    }).finish();
+  },
+  decodeResponse: function(response) {
+    return root.VideoTranslationResponse.decode(new Uint8Array(response));
+  }
+};
 
 /***/ })
 
@@ -675,55 +694,44 @@ function getCyrillicCount(string) {
 ;// CONCATENATED MODULE: ./src/utils/getYTVideoData.js
 
 
+// Get the language code from the response or the text
 function getLanguage(response, title, description, author) {
-  if (response) {
-    // Check if there is a caption track in the player response
-    if (response?.captions?.playerCaptionsTracklistRenderer?.captionTracks?.length) {
-      for (const caption of response.captions.playerCaptionsTracklistRenderer.captionTracks) {
-        if (caption.hasOwnProperty('kind') && caption.kind === 'asr') {
-          // ru, uk
-          console.log(caption.languageCode);
-          return caption.languageCode;
-        }
-      }
+  if (!response) {
+    return 'en';
+  }
+
+  // Check if there is an automatic caption track in the response
+  const captionTracks = response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
+  if (captionTracks?.length) {
+    const autoCaption = captionTracks.find(caption => caption.kind === 'asr');
+    if (autoCaption) {
+      return autoCaption.languageCode;
     }
+  }
 
-    // alternative check if captions are not found or captions are created manually
-    let titleStatus = title?.length ? checkCyrillic(title) : false;
-    let descStatus = description?.length ? checkCyrillic(description) : false;
-    let authorStatus = author?.length ? checkCyrillic(author) : false;
-
-    // check if cyrillic length is less than 1/3 of the title
-    if (titleStatus && getCyrillicCount(title) < title?.length / 3) {
-      titleStatus = false;
-    }
-
-    // check if cyrillic length is less than 1/3 of the description
-    if (descStatus && getCyrillicCount(description) < description?.length / 3) {
-      descStatus = false;
-    }
-
-    // check if cyrillic length is less than 1/3 of the author name
-    if (authorStatus && getCyrillicCount(author) < author?.length / 3) {
-      authorStatus = false;
-    }
-
-    if (descStatus || authorStatus || titleStatus) return 'ru';
+  // Check if the text contains cyrillic characters
+  const hasCyrillic = text => checkCyrillic(text) && !getCyrillicCount(text);
+  const isRussian = [title, description, author].some(hasCyrillic);
+  if (isRussian) {
+    return 'ru';
   }
 
   return 'en';
 }
 
+// Get the video data from the player
 function getYTVideoData() {
-  let videoData = {};
-  const data = document.querySelector("#movie_player").getVideoData();
-  const response = document.querySelector("#movie_player").getPlayerResponse();
-  videoData.isLive = data?.isLive;
-  videoData.isPremiere = data?.isPremiere;
-  videoData.title = data?.title;
-  videoData.description = response?.videoDetails?.shortDescription;
-  videoData.author = data?.author;
-  videoData.detectedLanguage = getLanguage(response, videoData.title, videoData.description, videoData.author);
+  const player = document.querySelector("#movie_player");
+  const data = player.getVideoData();
+  const response = player.getPlayerResponse();
+  const videoData = {
+    isLive: data?.isLive,
+    isPremiere: data?.isPremiere,
+    title: data?.title,
+    description: response?.videoDetails?.shortDescription,
+    author: data?.author,
+    detectedLanguage: getLanguage(response, data.title, response.videoDetails.shortDescription, data.author)
+  };
   console.log("VOT Detected language: ", videoData.detectedLanguage);
   return videoData;
 }
@@ -741,12 +749,10 @@ async function src_main() {
 
   const requestVideoTranslation = rvt.default;
 
-  if (true) {
-    if (GM_info?.scriptHandler && ['Violentmonkey', 'FireMonkey', 'Greasemonkey', 'AdGuard'].includes(GM_info.scriptHandler)) {
-      let errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
-      console.log(errorText);
-      return alert(errorText);
-    }
+  if ( true && (GM_info?.scriptHandler && ['Violentmonkey', 'FireMonkey', 'Greasemonkey', 'AdGuard'].includes(GM_info.scriptHandler))) {
+        let errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
+        console.log(errorText);
+        return alert(errorText);
   }
 
   const debug = {}
@@ -1052,8 +1058,7 @@ async function src_main() {
 
   // --- IndexedDB functions start:
   function openDB (name) {
-    var openRequest = indexedDB.open(name, 1);
-    return openRequest;
+    return indexedDB.open(name, 1);
   }
 
   async function initDB () {
@@ -1389,10 +1394,8 @@ async function src_main() {
     if (siteHostname == 'youtube' && window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) {
       const syncVolumeObserver = new MutationObserver(async function(mutations) {
         mutations.forEach(async function(mutation) {
-          if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow') {
-            if ($('.translationVideoVolumeBox').length) {
-              syncOriginalVolumeSlider();
-            }
+          if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow' && $('.translationVideoVolumeBox').length) {
+                syncOriginalVolumeSlider();
           }
         });
       });
@@ -1414,7 +1417,9 @@ async function src_main() {
       $('.translationVideoVolumeBox').parent().remove();
       $('.translationDownload').remove();
       transformBtn('none', 'Перевести видео');
-      if (volumeOnStart) video.volume = volumeOnStart;
+      if (volumeOnStart) {
+        video.volume = volumeOnStart;
+      }
     }
 
     function syncOriginalVolumeSlider() {
@@ -1641,7 +1646,7 @@ async function src_main() {
           let $volumePercent = videoVolumeBox.find('.volumePercent');
           tempOriginalVolume = newSlidersVolume;
           videoVolumeSlider.on('input', (event) => {
-            const value = event.target.value;
+            const {value} = event.target;
             video.volume = (value / 100);
             $volumePercent.text(`${value}%`);
 
@@ -1660,8 +1665,11 @@ async function src_main() {
                 // 100 - 69 = 31
                 // 15 + 31 = 46 - final translation volume
                 finalValue = volume + (value - tempOriginalVolume);
-                if (finalValue > 100) finalValue = 100;
-                else if (finalValue < 0) finalValue = 0;
+                if (finalValue > 100) {
+                  finalValue = 100;
+                } else {
+                  finalValue = Math.max(finalValue, 0)
+                }
 
                 audio.volume = finalValue / 100;
               } else if (value < tempOriginalVolume) {
@@ -1671,8 +1679,11 @@ async function src_main() {
                 // 100 - 69 = 31
                 // 15 - 31 = 0 - final translation volume
                 finalValue = volume - (tempOriginalVolume - value);
-                if (finalValue > 100) finalValue = 100;
-                else if (finalValue < 0) finalValue = 0;
+                if (finalValue > 100) {
+                  finalValue = 100;
+                } else {
+                  finalValue = Math.max(finalValue, 0)
+                }
 
                 audio.volume = finalValue / 100;
               }
@@ -1820,11 +1831,9 @@ async function src_main() {
         if (siteHostname === 'twitch' || siteHostname === 'vimeo' || siteHostname === 'facebook' || siteHostname === 'rutube' || siteHostname === 'twitter') {
           const mutationObserver = new MutationObserver(async function(mutations) {
             mutations.forEach(async function(mutation) {
-              if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video) {
-                if (mutation.target.src !== '') {
-                  stopTraslate();
-                  firstPlay = true;
-                }
+              if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video && mutation.target.src !== '') {
+                    stopTraslate();
+                                firstPlay = true;
               }
             });
           });
@@ -1901,7 +1910,7 @@ async function src_main() {
           let $volumePercent = volumeBox.find('.volumePercent');
           tempVolume = Number(defaultTranslateVolume);
           volumeSlider.on('input', async (event) => {
-            let value = event.target.value;
+            let {value} = event.target;
             audio.volume = (value / 100);
             $volumePercent.text(`${value}%`);
 
@@ -1920,8 +1929,11 @@ async function src_main() {
                 // 100 - 69 = 31
                 // 15 + 31 = 46 - final video volume
                 finalValue = volume + (value - tempVolume);
-                if (finalValue > 100) finalValue = 100;
-                else if (finalValue < 0) finalValue = 0;
+                if (finalValue > 100) {
+                  finalValue = 100;
+                } else {
+                  finalValue = Math.max(finalValue, 0)
+                }
 
                 video.volume = finalValue / 100;
               } else if (value < tempVolume) {
@@ -1931,8 +1943,11 @@ async function src_main() {
                 // 100 - 69 = 31
                 // 15 - 31 = 0 - final video volume
                 finalValue = volume - (tempVolume - value);
-                if (finalValue > 100) finalValue = 100;
-                else if (finalValue < 0) finalValue = 0;
+                if (finalValue > 100) {
+                  finalValue = 100;
+                } else {
+                  finalValue = Math.max(finalValue, 0)
+                }
 
                 video.volume = finalValue / 100;
               }
@@ -1959,7 +1974,9 @@ async function src_main() {
 
     const lipSync = (mode = false) => {
       debug.log('lipsync video', video)
-      if (!video) return;
+      if (!video) {
+        return;
+      }
       audio.currentTime = video.currentTime;
       audio.playbackRate = video.playbackRate;
 
@@ -2056,7 +2073,9 @@ async function src_main() {
           if (video !== void 0 && video !== null && video.length > 0) {
             translateProccessor(video, 'youtube', 'yt-translate-stop');
           } else {
-            if (ytplayer === void 0 || ytplayer === null || ytplayer.config === void 0 || ytplayer.config === null) return;
+            if (ytplayer === void 0 || ytplayer === null || ytplayer.config === void 0 || ytplayer.config === null) {
+              return;
+            }
             ytplayer.config.args.jsapicallback = function(jsApi) {
                 translateProccessor($('.html5-video-container'), 'youtube', 'yt-translate-stop');
             }
