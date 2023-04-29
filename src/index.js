@@ -662,7 +662,7 @@ async function main() {
       const syncVolumeObserver = new MutationObserver(async function(mutations) {
         mutations.forEach(async function(mutation) {
           if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow' && $('.translationVideoVolumeBox').length) {
-                syncOriginalVolumeSlider();
+            syncOriginalVolumeSlider();
           }
         });
       });
@@ -1099,8 +1099,8 @@ async function main() {
           const mutationObserver = new MutationObserver(async function(mutations) {
             mutations.forEach(async function(mutation) {
               if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video && mutation.target.src !== '') {
-                    stopTraslate();
-                                firstPlay = true;
+                stopTraslate();
+                firstPlay = true;
               }
             });
           });
