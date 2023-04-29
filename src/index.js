@@ -804,10 +804,6 @@ async function main() {
         $translationMenuContent.append($translationSVSCont);
       }
 
-      if (window.location.hostname.includes('m.youtube.com')) {
-        $translationMenuContent.css('height', '350px');
-      }
-
       if (!$translationMenuContent.has('.translationSyncVolume').length && dbSyncVolume !== undefined && window.location.hostname.includes('youtube.com')) {
         let $translationSyncVolumeContainter = $(
           `<div class = "translationMenuContainer">
