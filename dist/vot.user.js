@@ -708,7 +708,9 @@ function getLanguage(response, title, description, author) {
       authorStatus = false;
     }
 
-    if (descStatus || authorStatus || titleStatus) return 'ru';
+    if (descStatus || authorStatus || titleStatus) {
+      return 'ru';
+    }
   }
 
   return 'en';
@@ -741,20 +743,15 @@ async function src_main() {
 
   const requestVideoTranslation = rvt.default;
 
-  if (true) {
-    if (GM_info?.scriptHandler && ['Violentmonkey', 'FireMonkey', 'Greasemonkey', 'AdGuard'].includes(GM_info.scriptHandler)) {
-      let errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
-      console.log(errorText);
-      return alert(errorText);
-    }
+  if ((GM_info?.scriptHandler && ['Violentmonkey', 'FireMonkey', 'Greasemonkey', 'AdGuard'].includes(GM_info.scriptHandler))) {
+        let errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
+        console.log(errorText);
+        return alert(errorText);
   }
 
   const debug = {}
   debug.log = (...text) => {
-    if (true) {
-      return;
-    }
-    return console.log("%c[VOT DEBUG]", "background: #F2452D; color: #fff; padding: 5px;", ...text);
+    return ;
   }
 
   const defaultVideoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video with the translation (uses with option "autoSetVolumeYandexStyle")
@@ -993,7 +990,6 @@ async function src_main() {
     }
   };
 
-  if (false) { var translationPanding; }
 
   function secsToStrTime(secs) {
     const minutes = Math.floor(secs / 60);
@@ -1010,7 +1006,7 @@ async function src_main() {
   }
 
   function translateVideo(url, unknown1, requestLang, responseLang, callback) {
-    if (false) {}
+    
 
     requestVideoTranslation(url, unknown1, requestLang, responseLang, function (success, response) {
       if (!success) {
@@ -1389,10 +1385,8 @@ async function src_main() {
     if (siteHostname == 'youtube' && window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) {
       const syncVolumeObserver = new MutationObserver(async function(mutations) {
         mutations.forEach(async function(mutation) {
-          if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow') {
-            if ($('.translationVideoVolumeBox').length) {
-              syncOriginalVolumeSlider();
-            }
+          if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow' && $('.translationVideoVolumeBox').length) {
+                syncOriginalVolumeSlider();
           }
         });
       });
@@ -1414,7 +1408,9 @@ async function src_main() {
       $('.translationVideoVolumeBox').parent().remove();
       $('.translationDownload').remove();
       transformBtn('none', 'Перевести видео');
-      if (volumeOnStart) video.volume = volumeOnStart;
+      if (volumeOnStart) {
+        video.volume = volumeOnStart;
+      }
     }
 
     function syncOriginalVolumeSlider() {
@@ -1641,7 +1637,7 @@ async function src_main() {
           let $volumePercent = videoVolumeBox.find('.volumePercent');
           tempOriginalVolume = newSlidersVolume;
           videoVolumeSlider.on('input', (event) => {
-            const value = event.target.value;
+            const {value} = event.target;
             video.volume = (value / 100);
             $volumePercent.text(`${value}%`);
 
@@ -1660,8 +1656,11 @@ async function src_main() {
                 // 100 - 69 = 31
                 // 15 + 31 = 46 - final translation volume
                 finalValue = volume + (value - tempOriginalVolume);
-                if (finalValue > 100) finalValue = 100;
-                else if (finalValue < 0) finalValue = 0;
+                if (finalValue > 100) {
+                  finalValue = 100;
+                } else {
+                  finalValue = Math.max(finalValue, 0)
+                }
 
                 audio.volume = finalValue / 100;
               } else if (value < tempOriginalVolume) {
@@ -1671,8 +1670,11 @@ async function src_main() {
                 // 100 - 69 = 31
                 // 15 - 31 = 0 - final translation volume
                 finalValue = volume - (tempOriginalVolume - value);
-                if (finalValue > 100) finalValue = 100;
-                else if (finalValue < 0) finalValue = 0;
+                if (finalValue > 100) {
+                  finalValue = 100;
+                } else {
+                  finalValue = Math.max(finalValue, 0)
+                }
 
                 audio.volume = finalValue / 100;
               }
@@ -1820,11 +1822,9 @@ async function src_main() {
         if (siteHostname === 'twitch' || siteHostname === 'vimeo' || siteHostname === 'facebook' || siteHostname === 'rutube' || siteHostname === 'twitter') {
           const mutationObserver = new MutationObserver(async function(mutations) {
             mutations.forEach(async function(mutation) {
-              if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video) {
-                if (mutation.target.src !== '') {
-                  stopTraslate();
-                  firstPlay = true;
-                }
+              if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video && mutation.target.src !== '') {
+                    stopTraslate();
+                                firstPlay = true;
               }
             });
           });
@@ -1901,7 +1901,7 @@ async function src_main() {
           let $volumePercent = volumeBox.find('.volumePercent');
           tempVolume = Number(defaultTranslateVolume);
           volumeSlider.on('input', async (event) => {
-            let value = event.target.value;
+            let {value} = event.target;
             audio.volume = (value / 100);
             $volumePercent.text(`${value}%`);
 
@@ -1920,8 +1920,11 @@ async function src_main() {
                 // 100 - 69 = 31
                 // 15 + 31 = 46 - final video volume
                 finalValue = volume + (value - tempVolume);
-                if (finalValue > 100) finalValue = 100;
-                else if (finalValue < 0) finalValue = 0;
+                if (finalValue > 100) {
+                  finalValue = 100;
+                } else {
+                  finalValue = Math.max(finalValue, 0)
+                }
 
                 video.volume = finalValue / 100;
               } else if (value < tempVolume) {
@@ -1931,8 +1934,11 @@ async function src_main() {
                 // 100 - 69 = 31
                 // 15 - 31 = 0 - final video volume
                 finalValue = volume - (tempVolume - value);
-                if (finalValue > 100) finalValue = 100;
-                else if (finalValue < 0) finalValue = 0;
+                if (finalValue > 100) {
+                  finalValue = 100;
+                } else {
+                  finalValue = Math.max(finalValue, 0)
+                }
 
                 video.volume = finalValue / 100;
               }
@@ -1959,7 +1965,9 @@ async function src_main() {
 
     const lipSync = (mode = false) => {
       debug.log('lipsync video', video)
-      if (!video) return;
+      if (!video) {
+        return;
+      }
       audio.currentTime = video.currentTime;
       audio.playbackRate = video.playbackRate;
 
@@ -2056,7 +2064,9 @@ async function src_main() {
           if (video !== void 0 && video !== null && video.length > 0) {
             translateProccessor(video, 'youtube', 'yt-translate-stop');
           } else {
-            if (ytplayer === void 0 || ytplayer === null || ytplayer.config === void 0 || ytplayer.config === null) return;
+            if (ytplayer === void 0 || ytplayer === null || ytplayer.config === void 0 || ytplayer.config === null) {
+              return;
+            }
             ytplayer.config.args.jsapicallback = function(jsApi) {
                 translateProccessor($('.html5-video-container'), 'youtube', 'yt-translate-stop');
             }
