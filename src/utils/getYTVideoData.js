@@ -1,54 +1,43 @@
 import { checkCyrillic, getCyrillicCount } from './regex.js';
 
+// Get the language code from the response or the text
 function getLanguage(response, title, description, author) {
-  if (response) {
-    // Check if there is a caption track in the player response
-    if (response?.captions?.playerCaptionsTracklistRenderer?.captionTracks?.length) {
-      for (const caption of response.captions.playerCaptionsTracklistRenderer.captionTracks) {
-        if (caption.hasOwnProperty('kind') && caption.kind === 'asr') {
-          // ru, uk
-          console.log(caption.languageCode);
-          return caption.languageCode;
-        }
-      }
+  if (!response) {
+    return 'en';
+  }
+
+  // Check if there is an automatic caption track in the response
+  const captionTracks = response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
+  if (captionTracks?.length) {
+    const autoCaption = captionTracks.find(caption => caption.kind === 'asr');
+    if (autoCaption) {
+      return autoCaption.languageCode;
     }
+  }
 
-    // alternative check if captions are not found or captions are created manually
-    let titleStatus = title?.length ? checkCyrillic(title) : false;
-    let descStatus = description?.length ? checkCyrillic(description) : false;
-    let authorStatus = author?.length ? checkCyrillic(author) : false;
-
-    // check if cyrillic length is less than 1/3 of the title
-    if (titleStatus && getCyrillicCount(title) < title?.length / 3) {
-      titleStatus = false;
-    }
-
-    // check if cyrillic length is less than 1/3 of the description
-    if (descStatus && getCyrillicCount(description) < description?.length / 3) {
-      descStatus = false;
-    }
-
-    // check if cyrillic length is less than 1/3 of the author name
-    if (authorStatus && getCyrillicCount(author) < author?.length / 3) {
-      authorStatus = false;
-    }
-
-    if (descStatus || authorStatus || titleStatus) return 'ru';
+  // Check if the text contains cyrillic characters
+  const hasCyrillic = text => checkCyrillic(text) && !getCyrillicCount(text);
+  const isRussian = [title, description, author].some(hasCyrillic);
+  if (isRussian) {
+    return 'ru';
   }
 
   return 'en';
 }
 
+// Get the video data from the player
 function getYTVideoData() {
-  let videoData = {};
-  const data = document.querySelector("#movie_player").getVideoData();
-  const response = document.querySelector("#movie_player").getPlayerResponse();
-  videoData.isLive = data?.isLive;
-  videoData.isPremiere = data?.isPremiere;
-  videoData.title = data?.title;
-  videoData.description = response?.videoDetails?.shortDescription;
-  videoData.author = data?.author;
-  videoData.detectedLanguage = getLanguage(response, videoData.title, videoData.description, videoData.author);
+  const player = document.querySelector("#movie_player");
+  const data = player.getVideoData();
+  const response = player.getPlayerResponse();
+  const videoData = {
+    isLive: data?.isLive,
+    isPremiere: data?.isPremiere,
+    title: data?.title,
+    description: response?.videoDetails?.shortDescription,
+    author: data?.author,
+    detectedLanguage: getLanguage(response, data.title, response.videoDetails.shortDescription, data.author)
+  };
   console.log("VOT Detected language: ", videoData.detectedLanguage);
   return videoData;
 }
