@@ -26,34 +26,42 @@ const siteTranslates = {
 
 const translateAndDownload = (service, url) => {
   let videoId = getVideoId(service, url);
-  if (!videoId) return console.error(chalk.red("Invalid link"));
+  if (!videoId) {
+    return console.error(chalk.red("Invalid link"));
+  }
   let finalURL = `${siteTranslates[service]}${videoId}`;
-  if (!finalURL) return console.error(chalk.red("Unknown link"));
+  if (!finalURL) {
+    return console.error(chalk.red("Unknown link"));
+  }
   translateVideo(finalURL, (success, urlOrError) => {
     if (success) {
-        console.log('\n' +
-            chalk.green("Video translated successfully!") +
-              ' Your link: ' + chalk.blueBright(`${urlOrError}`)
-        );
-        if (!urlOrError) return console.error(chalk.red("Invalid file link"));
-        if (argv.output && urlOrError) {
-            download(urlOrError, argv.output, `(ID: ${videoId})`);
+            console.log('\n' +
+                chalk.green("Video translated successfully!") +
+                  ' Your link: ' + chalk.blueBright(`${urlOrError}`)
+            );
+            if (!urlOrError) {
+              return console.error(chalk.red("Invalid file link"));
+            }
+            if (argv.output && urlOrError) {
+                download(urlOrError, argv.output, `(ID: ${videoId})`);
+            }
         }
-    } else {
-      if (urlOrError === "The translation will take a few minutes") {
-        console.log('Waiting for translation...');
-        setTimeout(() => {
-            translateAndDownload(service, url);
-        }, 30000)
-      } else {
-        console.error(chalk.red(urlOrError));
-      }
-    } 
+    else if (urlOrError === "The translation will take a few minutes") {
+            console.log('Waiting for translation...');
+            setTimeout(() => {
+                translateAndDownload(service, url);
+            }, 30000)
+          }
+    else {
+            console.error(chalk.red(urlOrError));
+          } 
   });
 };
 
 const download = (url, dir, msg = null) => {
-    if (!url) return console.error(chalk.red("Invalid link"));
+    if (!url) {
+      return console.error(chalk.red("Invalid link"));
+    }
     if (!fs.existsSync(dir)) {
         try {
             fs.mkdirSync(dir);
@@ -63,15 +71,15 @@ const download = (url, dir, msg = null) => {
     }
     let dl = new DownloaderHelper(url, dir);
     const load = loading({
-        'text': `Downloading ${msg ? msg : ''}: 0%`,
+        'text': `Downloading ${msg || ''}: 0%`,
         'color': 'yellow'
     }).start();
 
     dl.on('end', () => {
         load.color = 'green';
-        load.text = `Download ${msg ? msg : ''} completed!\n`;
+        load.text = `Download ${msg || ''} completed!\n`;
         load.stop()
-        console.log(chalk.green(`Download ${msg ? msg : ''} completed!`));
+        console.log(chalk.green(`Download ${msg || ''} completed!`));
     });
 
     dl.on('error', (err) => {
@@ -85,7 +93,7 @@ const download = (url, dir, msg = null) => {
     });
 
     dl.on('progress.throttled', (stats) => {
-        load.text = `Downloading ${msg ? msg : ''}: ${stats.progress.toFixed(1)}%`;
+        load.text = `Downloading ${msg || ''}: ${stats.progress.toFixed(1)}%`;
     });
     dl.start().catch(err => console.error(chalk.red(`Failed to download ${msg} (read the comment in the code)`)));
 }
@@ -93,7 +101,9 @@ const download = (url, dir, msg = null) => {
 
 argLinks.forEach((url) => {
   let service = validate(url);
-  if (service === "unknown") return console.error(chalk.red("Unknown link"));
+  if (service === "unknown") {
+    return console.error(chalk.red("Unknown link"));
+  }
   translateAndDownload(service, url);
 });
 
