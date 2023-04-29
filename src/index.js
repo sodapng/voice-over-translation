@@ -325,8 +325,7 @@ async function main() {
 
   // --- IndexedDB functions start:
   function openDB (name) {
-    var openRequest = indexedDB.open(name, 1);
-    return openRequest;
+    return indexedDB.open(name, 1);
   }
 
   async function initDB () {
