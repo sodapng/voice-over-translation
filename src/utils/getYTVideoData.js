@@ -36,7 +36,7 @@ function getYTVideoData() {
     title: data?.title,
     description: response?.videoDetails?.shortDescription,
     author: data?.author,
-    detectedLanguage: getLanguage(response, data.title, response.videoDetails.shortDescription, data.author)
+    detectedLanguage: getLanguage(response, data.title, response?.videoDetails?.shortDescription, data.author)
   };
   console.log("VOT Detected language: ", videoData.detectedLanguage);
   return videoData;
