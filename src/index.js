@@ -1334,13 +1334,17 @@ async function main() {
       }
     });
 
-    $translationBtn.click(async function (event) {
+    $translationBtn.click((event) => {
       event.stopPropagation();
       if (audio.src) {
         debug.log('[click translationBtn] audio.src is not empty')
         stopTraslate();
-        return;
+        event.stopImmediatePropagation();
       }
+    })
+
+    $translationBtn.click(async function (event) {
+      event.stopPropagation();
 
       try {
         debug.log('[click translationBtn] trying execute translation')
@@ -1351,6 +1355,7 @@ async function main() {
         }
 
         translateExecutor(VIDEO_ID);
+        event.stopImmediatePropagation();
       } catch (err) {
         transformBtn('error', String(err).substring(4, err.length))
         console.error(err);
