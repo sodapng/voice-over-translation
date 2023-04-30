@@ -66,8 +66,8 @@
         "*://*.rutube.ru/*"
     ],
     "require": [
-        "https://code.jquery.com/jquery-3.6.0.min.js",
-        "https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js"
+        "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/protobuf.min.js"
     ],
     "grant": [
         "GM_xmlhttpRequest",
