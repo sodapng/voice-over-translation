@@ -1,6 +1,7 @@
 import './styles/main.css';
 import { getYTVideoData }  from './utils/getYTVideoData.js';
 import { yandexRequests } from './yandexRequests.js';
+import debug from './utils/debug.js';
 
 async function main() {
   const rvt = await import(
@@ -13,14 +14,6 @@ async function main() {
         let errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
         console.log(errorText);
         return alert(errorText);
-  }
-
-  const debug = {}
-  debug.log = (...text) => {
-    if (!DEBUG_MODE) {
-      return;
-    }
-    return console.log("%c[VOT DEBUG]", "background: #F2452D; color: #fff; padding: 5px;", ...text);
   }
 
   const defaultVideoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video with the translation (uses with option "autoSetVolumeYandexStyle")
@@ -300,25 +293,32 @@ async function main() {
     const minutes = Math.floor(secs / 60);
     const seconds = Math.floor(secs % 60);
     if (minutes >= 60) {
-      return "Перевод займёт больше часа"
+      return 'Перевод займёт больше часа';
     } else if (minutes >= 10 && minutes % 10) {
-      return `Перевод займёт ${minutes} минут`
+      return `Перевод займёт ${minutes} минут`;
     } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
-      return "Перевод займёт около минуты"
+      return 'Перевод займёт около минуты';
     } else {
-      return `Перевод займёт ${minutes} минуты`
+      return `Перевод займёт ${minutes} минуты`;
     }
   }
 
   function translateVideo(url, unknown1, requestLang, responseLang, callback) {
+    debug.log(`Translate video (url: ${url}, unknown1: ${unknown1}, requestLang: ${requestLang}, responseLang: ${responseLang})`);
     if (BUILD_MODE === 'cloudflare') {
       if (translationPanding) {
+        debug.log('translationPanding return')
         return;
       }
       translationPanding = true;
     }
 
     requestVideoTranslation(url, unknown1, requestLang, responseLang, function (success, response) {
+      if (BUILD_MODE === 'cloudflare') {
+        translationPanding = false;
+      }
+
+      debug.log('[exec callback] Requesting video translation');
       if (!success) {
         callback(false, "Не удалось запросить перевод видео");
         return;
@@ -1088,11 +1088,14 @@ async function main() {
     }
 
     const translateExecutor = (VIDEO_ID) => {
+      debug.log('Run videoValidator');
       videoValidator();
+      debug.log('Run translateFunc');
       translateFunc(VIDEO_ID, videoData.detectedLanguage, videoData.responseLanguage);
     }
 
     const translateFunc = (VIDEO_ID, requestLang, responseLang) => translateVideo(`${siteTranslates[siteHostname]['url']}${VIDEO_ID}`, siteTranslates[siteHostname]['func_param'], requestLang, responseLang, function (success, urlOrError) {
+      debug.log('[exec callback] translateVideo')
       if (getVideoId(siteHostname) === VIDEO_ID) {
         if (!success) {
           transformBtn('error', urlOrError);
@@ -1331,19 +1334,16 @@ async function main() {
       }
     });
 
-    $translationBtn.click(function (event) {
-      event.stopPropagation();
-
-      if (audio.src) {
-        stopTraslate();
-        event.stopImmediatePropagation();
-      }
-    });
-
     $translationBtn.click(async function (event) {
-      try {
-        event.stopPropagation();
+      event.stopPropagation();
+      if (audio.src) {
+        debug.log('[click translationBtn] audio.src is not empty')
+        stopTraslate();
+        return;
+      }
 
+      try {
+        debug.log('[click translationBtn] trying execute translation')
         const VIDEO_ID = getVideoId(siteHostname);
 
         if (!VIDEO_ID) {
@@ -1351,7 +1351,6 @@ async function main() {
         }
 
         translateExecutor(VIDEO_ID);
-        event.stopImmediatePropagation();
       } catch (err) {
         transformBtn('error', String(err).substring(4, err.length))
         console.error(err);
