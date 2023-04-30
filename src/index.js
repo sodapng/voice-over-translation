@@ -280,7 +280,7 @@ async function main() {
       case "facebook":
         return url.pathname;
       case "rutube":
-        if (url.pathname.includes("/video/")) {
+        if (url.pathname.includes("/video/") || url.pathname.includes("/play/embed/")) {
           const urlArray = url.pathname.split('/');
           return urlArray[urlArray.length - 2];
         }
