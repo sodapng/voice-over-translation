@@ -3,6 +3,18 @@ import { getYTVideoData }  from './utils/getYTVideoData.js';
 import { yandexRequests } from './yandexRequests.js';
 import debug from './utils/debug.js';
 
+const defaultVideoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video with the translation (uses with option "autoSetVolumeYandexStyle")
+
+const twitterSelector = 'article[data-testid="tweet"][tabindex="-1"]';
+
+const twitchMobileSelector = 'main > div > section > div > div > div';
+
+const twitchSelector = '.video-ref';
+
+const vkSelector = '.videoplayer_media';
+
+const pipedSelector = '.player-container';
+
 async function main() {
   const rvt = await import(
     `./rvt${BUILD_MODE === 'cloudflare' ? '-cloudflare' : ''}.js`
@@ -11,65 +23,57 @@ async function main() {
   const requestVideoTranslation = rvt.default;
 
   if (BUILD_MODE !== 'cloudflare' && (GM_info?.scriptHandler && ['Violentmonkey', 'FireMonkey', 'Greasemonkey', 'AdGuard'].includes(GM_info.scriptHandler))) {
-        let errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
+        const errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
         console.log(errorText);
         return alert(errorText);
   }
 
-  const defaultVideoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video with the translation (uses with option "autoSetVolumeYandexStyle")
   const availableLangs = ['ru', 'en', 'zh', 'fr', 'it', 'es']; // available languages for translation
-
-  const twitterSelector = 'article[data-testid="tweet"][tabindex="-1"]';
-  const twitchMobileSelector = 'main > div > section > div > div > div';
-  const twitchSelector = '.video-ref';
-  const vkSelector = '.videoplayer_media';
-  const facebookSelector = 'div[data-pagelet="WatchPermalinkVideo"]';
-  const pipedSelector = '.player-container';
 
   const siteTranslates = {
     'youtube': {
       'url': 'https://youtu.be/',
-      'func_param': 0x4075500000000000
+      'func_param': 0x40_75_50_00_00_00_00_00
     },
     'twitch': {
       'url': 'https://twitch.tv/',
-      'func_param': 0x4075500000000000
+      'func_param': 0x40_75_50_00_00_00_00_00
     },
     'vimeo': {
       'url': 'https://vimeo.com/',
-      'func_param': 0x4075500000000000
+      'func_param': 0x40_75_50_00_00_00_00_00
     },
     '9gag': {
       'url': 'https://9gag.com/gag/',
-      'func_param': 0x4075500000000000
+      'func_param': 0x40_75_50_00_00_00_00_00
     },
     'vk': {
       'url': 'https://vk.com/video?z=',
-      'func_param': 0x4075500000000000
+      'func_param': 0x40_75_50_00_00_00_00_00
     },
     'xvideos': {
       'url': 'https://www.xvideos.com/',
-      'func_param': 0x4075500000000000
+      'func_param': 0x40_75_50_00_00_00_00_00
     },
     'pornhub': {
       'url': 'https://rt.pornhub.com/view_video.php?viewkey=',
-      'func_param': 0x4075500000000000
+      'func_param': 0x40_75_50_00_00_00_00_00
     },
     'udemy': {
       'url': 'https://www.udemy.com',
-      'func_param': 0x4075500000000000
+      'func_param': 0x40_75_50_00_00_00_00_00
     },
     'twitter': {
       'url': 'https://twitter.com/i/status/',
-      'func_param': 0x4075500000000000
+      'func_param': 0x40_75_50_00_00_00_00_00
     },
     'facebook': {
       'url': 'https://www.facebook.com/',
-      'func_param': 0x4075500000000000
+      'func_param': 0x40_75_50_00_00_00_00_00
     },
     'rutube': {
       'url': 'https://rutube.ru/video/',
-      'func_param': 0x4075500000000000
+      'func_param': 0x40_75_50_00_00_00_00_00
     }
   }
 
@@ -183,9 +187,9 @@ async function main() {
 
       debug.log(`VOT: Added translation button (target: ${target})`)
       $(elem).append($translationBlock);
-    } else {
-      debug.log(`VOT: Already added translation button (target: ${target})`, elem)
+      return;
     }
+    debug.log(`VOT: Already added translation button (target: ${target})`, elem)
   };
 
   function addTranslationMenu(elem, target = 'desktop') {
@@ -198,9 +202,9 @@ async function main() {
 
       debug.log(`VOT: Added translation menu (target: ${target})`)
       $(elem).append($translationMenuContent);
-    } else {
-      debug.log(`VOT: Already added translation menu (target: ${target})`, elem)
+      return;
     }
+    debug.log(`VOT: Already added translation menu (target: ${target})`, elem)
   };
 
   const audio = new Audio();
@@ -213,7 +217,7 @@ async function main() {
         if (url.pathname.includes("watch")) {
           return url.searchParams.get("v");
         } else if (url.pathname.includes("embed/")) { // TODO: Добавить кнопку перевода на странице видео
-          let urlArray = url.pathname.split('/');
+          const urlArray = url.pathname.split('/');
           return urlArray[urlArray.length - 1];
         }
       case "vk":
@@ -226,16 +230,16 @@ async function main() {
         return videoId;
       case "9gag" || "gag":
         if (url.pathname.includes("gag/")) {
-          let urlArray = url.pathname.split('/');
+          const urlArray = url.pathname.split('/');
           return urlArray[urlArray.length - 1];
         }
       case "twitch":
         if (/^m\.twitch\.tv$/.test(window.location.hostname)) { // Если используется мобильная версия сайта (m.twitch.tv)
-          let linkUrl = document.head.querySelector('link[rel="canonical"]');
-          if (linkUrl && linkUrl.href.includes("/videos/")) {
-            let urlArray = linkUrl.href.split('/');
+          const linkUrl = document.head.querySelector('link[rel="canonical"]');
+          if (linkUrl?.href.includes("/videos/")) {
+            const urlArray = linkUrl.href.split('/');
             return `videos/${urlArray[urlArray.length - 1]}`;
-          } else if (linkUrl && linkUrl.href.includes) {
+          } else if (linkUrl?.href.includes) {
             return url.pathname.slice(1);
           } else {
             return false
@@ -243,27 +247,27 @@ async function main() {
         } else if (/^player\.twitch\.tv$/.test(window.location.hostname)) {
           return `videos/${url.searchParams.get("video")}`
         } else if (url.pathname.includes("/videos/")) {
-          let urlArray = url.pathname.split('/');
+          const urlArray = url.pathname.split('/');
           return `videos/${urlArray[urlArray.length - 1]}`;
         } else if (url.pathname.includes("/clip/")) {
           return url.pathname.slice(1);
         }
       case "tiktok":
         if (url.pathname.includes("video/")) {
-          let urlArray = url.pathname.split('/');
+          const urlArray = url.pathname.split('/');
           return urlArray[urlArray.length - 1];
         }
       case "vimeo":
-        let urlArray = url.pathname.split('/');
+        const urlArray = url.pathname.split('/');
         return urlArray[urlArray.length - 1];
       case "xvideos":
-        let urlArrayXVideos = url.pathname.split('/');
+        const urlArrayXVideos = url.pathname.split('/');
         return `${urlArrayXVideos[urlArrayXVideos.length - 2]}/${urlArrayXVideos[urlArrayXVideos.length - 1]}`;
       case "pornhub":
         if (url.pathname.includes('view_video.php')) {
           return url.searchParams.get("viewkey");
         } else if (url.pathname.includes('embed/')) {
-          let urlArray = url.pathname.split('/');
+          const urlArray = url.pathname.split('/');
           return urlArray[urlArray.length - 1];
         }
       case "twitter":
@@ -313,7 +317,7 @@ async function main() {
       translationPanding = true;
     }
 
-    requestVideoTranslation(url, unknown1, requestLang, responseLang, function (success, response) {
+    requestVideoTranslation(url, unknown1, requestLang, responseLang, (success, response) => {
       if (BUILD_MODE === 'cloudflare') {
         translationPanding = false;
       }
@@ -331,14 +335,11 @@ async function main() {
           callback(false, translateResponse.message);
           return;
         case 1:
-          var hasUrl = void 0 !== translateResponse.url && null !== translateResponse.url;
+          const hasUrl = translateResponse.url != null;
           callback(hasUrl, hasUrl ? translateResponse.url : "Не получена ссылка на аудио");
           return;
         case 2:
-          let remainingTime = 'Перевод займет несколько минут'
-          if (translateResponse.remainingTime) {
-            remainingTime = secsToStrTime(translateResponse.remainingTime);
-          }
+          const remainingTime = translateResponse.remainingTime ? secsToStrTime(translateResponse.remainingTime) : 'Перевод займет несколько минут'
           callback(false, remainingTime);
           return;
         case 3: /*
@@ -363,23 +364,23 @@ async function main() {
 
   async function initDB () {
     return new Promise((resolve, reject) => {
-      var openRequest = openDB("VOT");
+      const openRequest = openDB("VOT");
 
       openRequest.onerror = () => {
-        console.error("VOT: Ошибка инициализации Базы Данных: " + openRequest.errorCode);
+        console.error(`VOT: Ошибка инициализации Базы Данных: ${openRequest.errorCode}`);
         reject(false);
       }
 
       openRequest.onupgradeneeded = event => {
-        var db = openRequest.result;
+        const db = openRequest.result;
 
         db.onerror = () => {
           alert('VOT: Не удалось загрузить базу данных')
-          console.error("VOT: Не удалось загрузить базу данных: " + openRequest.error);
+          console.error(`VOT: Не удалось загрузить базу данных: ${openRequest.error}`);
           reject(false);
         }
 
-        var objectStore = db.createObjectStore('settings', {keyPath: 'key'});
+        const objectStore = db.createObjectStore('settings', {keyPath: 'key'});
 
         objectStore.createIndex('autoTranslate', 'autoTranslate', { unique: false });
         objectStore.createIndex('defaultVolume', 'defaultVolume', { unique: false });
@@ -390,8 +391,8 @@ async function main() {
         console.log('VOT: База Данных создана')
 
         objectStore.transaction.oncomplete = event => {
-          var objectStore = db.transaction('settings', 'readwrite').objectStore('settings');
-          var settingsDefault = {
+          const objectStore = db.transaction('settings', 'readwrite').objectStore('settings');
+          const settingsDefault = {
             key: 'settings',
             autoTranslate: 0,
             defaultVolume: 100,
@@ -399,8 +400,8 @@ async function main() {
             syncVolume: 0,
             autoSetVolumeYandexStyle: 1,
             dontTranslateRuVideos: 0
-          }
-          var request = objectStore.add(settingsDefault);
+          };
+          const request = objectStore.add(settingsDefault);
 
           request.onsuccess = () => {
             console.log("VOT: Стандартные настройки добавлены в Базу Данных: ", request.result);
@@ -414,7 +415,7 @@ async function main() {
       };
 
       openRequest.onsuccess = () => {
-        var db = openRequest.result;
+        const db = openRequest.result;
         db.onversionchange = () => {
           db.close();
           alert("Базе данных нужно обновление, пожалуйста, перезагрузите страницу.");
@@ -426,7 +427,7 @@ async function main() {
       };
 
       openRequest.onblocked = () => {
-        var db = openRequest.result;
+        const db = openRequest.result;
         console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
         alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
         reject(false);
@@ -450,23 +451,23 @@ async function main() {
         typeof(syncVolume) === 'number' ||
         typeof(autoSetVolumeYandexStyle) === 'number' ||
         typeof(dontTranslateRuVideos) === 'number') {
-        var openRequest = openDB("VOT");
+        const openRequest = openDB("VOT");
 
         openRequest.onerror = () => {
           alert('VOT: Произошла ошибка');
-          console.error("VOT: Ошибка Базы Данных: " + openRequest.errorCode);
+          console.error(`VOT: Ошибка Базы Данных: ${openRequest.errorCode}`);
           reject(false);
         };
 
         openRequest.onupgradeneeded = async () => {
-          var db = openRequest.result;
+          const db = openRequest.result;
           db.close();
           await initDB();
           resolve(true);
         };
 
         openRequest.onsuccess = () => {
-          var db = openRequest.result;
+          const db = openRequest.result;
           db.onversionchange = () => {
             db.close();
             console.log("VOT: Базе данных нужно обновление, пожалуЙста, перезагрузите страницу");
@@ -474,8 +475,8 @@ async function main() {
             reject(false);
           };
 
-          var objectStore = db.transaction('settings', 'readwrite').objectStore('settings');
-          var request = objectStore.get('settings');
+          const objectStore = db.transaction('settings', 'readwrite').objectStore('settings');
+          const request = objectStore.get('settings');
 
           request.onerror = (event) => {
             console.error("VOT: Не удалось получить данные из Базы Данных: ", event.error);
@@ -484,7 +485,7 @@ async function main() {
 
           request.onsuccess = () => {
             // console.log('VOT: Получены данные из Базы Данных: ', request.result);
-            var data = request.result;
+            const data = request.result;
 
             if (typeof(autoTranslate) === 'number') {
               data.autoTranslate = autoTranslate;
@@ -510,7 +511,7 @@ async function main() {
               data.dontTranslateRuVideos = dontTranslateRuVideos;
             };
 
-            var requestUpdate = objectStore.put(data);
+            const requestUpdate = objectStore.put(data);
 
             requestUpdate.onerror = (event) =>{
               console.error("VOT: Не удалось обновить данные в Базе Данных: ", event.error);
@@ -525,7 +526,7 @@ async function main() {
         };
 
         openRequest.onblocked = () => {
-          var db = openRequest.result;
+          const db = openRequest.result;
           console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
           alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
           reject(false);
@@ -536,31 +537,31 @@ async function main() {
 
   async function readDB() {
     return new Promise((resolve, reject) => {
-      var openRequest = openDB("VOT");
+      const openRequest = openDB("VOT");
 
       openRequest.onerror = () => {
         alert('VOT: Произошла ошибка');
-        console.error("VOT: Ошибка Базы Данных: " + openRequest.errorCode);
+        console.error(`VOT: Ошибка Базы Данных: ${openRequest.errorCode}`);
         reject(false);
       }
 
       openRequest.onupgradeneeded = async () => {
-        var db = openRequest.result;
+        const db = openRequest.result;
         db.close();
         await initDB();
         resolve(true);
       }
 
       openRequest.onsuccess = () => {
-        var db = openRequest.result;
+        const db = openRequest.result;
         db.onversionchange = () => {
           db.close();
           alert("VOT: База данных устарела, пожалуЙста, перезагрузите страницу.");
           reject(false);
         }
 
-        var objectStore = db.transaction('settings').objectStore('settings');
-        var request = objectStore.get('settings');
+        const objectStore = db.transaction('settings').objectStore('settings');
+        const request = objectStore.get('settings');
 
         request.onerror = (event) => {
           console.error("VOT: Не удалось получить данные из Базы Данных: ", event.error);
@@ -575,13 +576,13 @@ async function main() {
             deleteDB();
             reject(false);
           }
-          var data = request.result;
+          const data = request.result;
           resolve(data);
         }
       }
 
       openRequest.onblocked = () => {
-        var db = openRequest.result;
+        const db = openRequest.result;
         console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
         alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
         reject(false);
@@ -647,12 +648,12 @@ async function main() {
     $translationBtn.text(text);
   }
 
-  async function waitForElement(selector, timeout = 15000) {
+  async function waitForElement(selector, timeout = 15_000) {
     const start = Date.now();
 
     while (Date.now() - start < timeout) {
       const el = $(selector);
-      if ((el && el.length) || Date.now() - start > timeout) {
+      if ((el?.length) || Date.now() - start > timeout) {
         return el;
       }
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -663,12 +664,12 @@ async function main() {
 
   async function translateProccessor($videoContainer, siteHostname, siteEvent) {
     // --- Variables ---
-    var autoRetry;
-    var dbSyncVolume;
+    let autoRetry;
+    let dbSyncVolume;
     let volumeOnStart;
     let opacityRatio = 0.9;
-    var tempOriginalVolume;
-    var tempVolume;
+    let tempOriginalVolume;
+    let tempVolume;
     let video;
 
     // --- Get video element ---
@@ -684,7 +685,7 @@ async function main() {
       video = $($videoContainer).find('video')[0];
     }
 
-    let videoData = getVideoData();
+    const videoData = getVideoData();
     console.log('VOT Video Data: ', videoData)
 
     if (siteHostname === '9gag') {
@@ -737,8 +738,8 @@ async function main() {
       }
     }
 
-    var firstPlay = true;
-    var isDBInited = await initDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
+    let firstPlay = true;
+    const isDBInited = await initDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
     if (siteHostname === 'youtube' && window.location.hostname.includes('m.youtube.com')) {
       await sleep(1000);
       opacityRatio = 1;
@@ -766,7 +767,7 @@ async function main() {
     $('.translationDownload').remove();
 
     if (isDBInited) {
-      var dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
+      const dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
       var dbAutoTranslate = dbData !== undefined ? dbData.autoTranslate : undefined;
       var dbDefaultVolume = dbData !== undefined ? dbData.defaultVolume : undefined;
       var dbShowVideoSlider = dbData !== undefined ? dbData.showVideoSlider : undefined;
@@ -784,17 +785,17 @@ async function main() {
       console.log(`VOT: Значение dontTranslateRuVideos: ${dbDontTranslateRuVideos}`);
 
       if (!$translationMenuContent.has('.translationAT').length && dbAutoTranslate !== undefined) {
-        let $translationATCont = $(
+        const $translationATCont = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="auto_translate" value=${dbAutoTranslate} class = "translationAT" ${dbAutoTranslate === 1 ? "checked" : ''}>
             <label class = "translationMenuText" for = "auto_translate">Автоматический перевод видео${siteHostname === 'vk' || window.location.hostname.includes('m.twitch.tv') ? ' <strong>(рекомендуется)</strong>' : ''}</label>
           </div>
           `
         );
-        let $translationAT = $($translationATCont).find('.translationAT');
+        const $translationAT = $($translationATCont).find('.translationAT');
         $translationAT.on('click', async (event) => {
           event.stopPropagation();
-          let atValue = event.target.checked ? 1 : 0;
+          const atValue = event.target.checked ? 1 : 0;
           await updateDB({autoTranslate: atValue});
           dbAutoTranslate = atValue;
         });
@@ -802,7 +803,7 @@ async function main() {
       }
 
       if (!$translationMenuContent.has('.translationDropDB').length && dbData !== undefined) {
-        let $translationDropDB = $(
+        const $translationDropDB = $(
           `<button class = "translationDropDB">Сбросить настройки</button>`
         );
         $translationDropDB.on('click', async (event) => {
@@ -814,17 +815,17 @@ async function main() {
       }
 
       if (!$translationMenuContent.has('.translationSVS').length && dbData !== undefined) {
-        let $translationSVSCont = $(
+        const $translationSVSCont = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="show_video_slider" value=${typeof(dbShowVideoSlider) === 'number' ? dbShowVideoSlider : '0'} class = "translationSVS" ${dbShowVideoSlider === 1 ? "checked" : ''}>
             <label class = "translationMenuText" for = "show_video_slider">Слайдер громкости оригинала</label>
           </div>
           `
         );
-        let $translationSVS = $($translationSVSCont).find('.translationSVS');
+        const $translationSVS = $($translationSVSCont).find('.translationSVS');
         $translationSVS.on('click', async (event) => {
           event.stopPropagation();
-          let svsValue = event.target.checked ? 1 : 0;
+          const svsValue = event.target.checked ? 1 : 0;
           await updateDB({showVideoSlider: svsValue});
           dbShowVideoSlider = svsValue;
           if (svsValue === 1 && $translationBtn.text() === 'Выключить') {
@@ -837,17 +838,17 @@ async function main() {
       }
 
       if (!$translationMenuContent.has('.translationSyncVolume').length && dbSyncVolume !== undefined && window.location.hostname.includes('youtube.com')) {
-        let $translationSyncVolumeContainter = $(
+        const $translationSyncVolumeContainter = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="sync_volume" value=${dbSyncVolume} class = "translationSyncVolume" ${dbSyncVolume === 1 ? "checked" : ''}>
             <label class = "translationMenuText" for = "sync_volume">[YT Only] Синхронизация громкости перевода с громкостью видео</label>
           </div>
           `
         );
-        let $translationSyncVolume = $($translationSyncVolumeContainter).find('.translationSyncVolume');
+        const $translationSyncVolume = $($translationSyncVolumeContainter).find('.translationSyncVolume');
         $translationSyncVolume.on('click', async (event) => {
           event.stopPropagation();
-          let syncVolumeValue = event.target.checked ? 1 : 0;
+          const syncVolumeValue = event.target.checked ? 1 : 0;
           await updateDB({syncVolume: syncVolumeValue});
           dbSyncVolume = syncVolumeValue;
         });
@@ -862,17 +863,17 @@ async function main() {
       }
 
       if (!$translationMenuContent.has('.translationAutoSetVolume').length && dbData !== undefined) {
-        let $translationAutoSetVolumeContainer = $(
+        const $translationAutoSetVolumeContainer = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="auto_set_volume" value=${typeof(dbAutoSetVolumeYandexStyle) === 'number' ? dbAutoSetVolumeYandexStyle : '0'} class = "translationAutoSetVolume" ${dbAutoSetVolumeYandexStyle === 1 ? "checked" : ''}>
             <label class = "translationMenuText" for = "auto_set_volume">Автоматически выставлять громкость оригинала (Yandex-like)</label>
           </div>
           `
         );
-        let $translationAutoSetVolume = $($translationAutoSetVolumeContainer).find('.translationAutoSetVolume');
+        const $translationAutoSetVolume = $($translationAutoSetVolumeContainer).find('.translationAutoSetVolume');
         $translationAutoSetVolume.on('click', async (event) => {
           event.stopPropagation();
-          let autoSetVolumeValue = event.target.checked ? 1 : 0;
+          const autoSetVolumeValue = event.target.checked ? 1 : 0;
           await updateDB({autoSetVolumeYandexStyle: autoSetVolumeValue});
           dbAutoSetVolumeYandexStyle = autoSetVolumeValue;
         });
@@ -880,17 +881,17 @@ async function main() {
       }
 
       if (!$translationMenuContent.has('.translationDTRuV').length && dbDontTranslateRuVideos !== undefined && window.location.hostname.includes('youtube.com')) {
-        let $DTRuVContainter = $(
+        const $DTRuVContainter = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="dont_translate_ru_videos" value=${dbDontTranslateRuVideos} class = "translationDTRuV" ${dbDontTranslateRuVideos === 1 ? "checked" : ''}>
             <label class = "translationMenuText" for = "dont_translate_ru_videos">[YT Only] Ограничить перевод русскоязычных видео</label>
           </div>
           `
         );
-        let $translationDTRuV = $($DTRuVContainter).find('.translationDTRuV');
+        const $translationDTRuV = $($DTRuVContainter).find('.translationDTRuV');
         $translationDTRuV.on('click', async (event) => {
           event.stopPropagation();
-          let DTRuVValue = event.target.checked ? 1 : 0;
+          const DTRuVValue = event.target.checked ? 1 : 0;
           await updateDB({dontTranslateRuVideos: DTRuVValue});
           dbDontTranslateRuVideos = DTRuVValue;
         });
@@ -902,7 +903,7 @@ async function main() {
     }
 
     function getVideoData() {
-      let videoData = {};
+      const videoData = {};
       videoData.duration = video?.duration ? video.duration : 0;
       videoData.videoId = getVideoId(siteHostname);
       videoData.detectedLanguage = 'en'; // default language of video
@@ -917,91 +918,90 @@ async function main() {
           ytData.responseLanguage = 'en';
         }
 
-        videoData = {...videoData,...ytData};
+        return {...videoData,...ytData};
       }
 
       return videoData;
     }
 
     function addVideoSlider() {
-      if (dbShowVideoSlider === 1) {
-        const newSlidersVolume = (window.location.hostname.includes('youtube.com') && !dbAutoSetVolumeYandexStyle) ? $('.ytp-volume-panel').attr('aria-valuenow') : Math.round(video.volume * 100);
+      if (dbShowVideoSlider !== 1) {
+        return;
+      }
+      const newSlidersVolume = (window.location.hostname.includes('youtube.com') && !dbAutoSetVolumeYandexStyle) ? $('.ytp-volume-panel').attr('aria-valuenow') : Math.round(video.volume * 100);
 
-        const videoVolumeBox = $(`
+      const videoVolumeBox = $(`
           <div class = "translationMenuContainer">
             <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${newSlidersVolume}%</b></span>
             <div class = "translationVideoVolumeBox" tabindex = "0">
               <input type="range" min="0" max="100" value=${newSlidersVolume} class="translationVolumeSlider">
             </div>
           </div>`
-        );
-        const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
+      );
+      const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
 
-        if (!$translationMenuContent.has('.translationVideoVolumeBox').length) {
-          $translationMenuContent.append(videoVolumeBox);
-          let $volumePercent = videoVolumeBox.find('.volumePercent');
-          tempOriginalVolume = newSlidersVolume;
-          videoVolumeSlider.on('input', (event) => {
-            const {value} = event.target;
-            video.volume = (value / 100);
-            $volumePercent.text(`${value}%`);
-
-            if (dbSyncVolume === 1) {
-              // console.log(`VOT: Синхронизация громкости перевода с громкостью видео. Громкость оригинала: ${value}. Прошлая громкость оригинала: ${tempOriginalVolume}`);
-              const volumeBox = $('.translationVolumeBox');
-              const volumeSlider = volumeBox.find('.translationVolumeSlider');
-              const volumePercent = volumeBox.parent().find('.volumePercent');
-              const volume = Number(volumeSlider.val());
-              let finalValue;
-
-              if (value > tempOriginalVolume) {
-                // value = 100
-                // tempOriginalVolume = 69
-                // volume = 15
-                // 100 - 69 = 31
-                // 15 + 31 = 46 - final translation volume
-                finalValue = volume + (value - tempOriginalVolume);
-                if (finalValue > 100) {
-                  finalValue = 100;
-                } else {
-                  finalValue = Math.max(finalValue, 0)
-                }
-
-                audio.volume = finalValue / 100;
-              } else if (value < tempOriginalVolume) {
-                // value = 69
-                // tempOriginalVolume = 100
-                // volume = 15
-                // 100 - 69 = 31
-                // 15 - 31 = 0 - final translation volume
-                finalValue = volume - (tempOriginalVolume - value);
-                if (finalValue > 100) {
-                  finalValue = 100;
-                } else {
-                  finalValue = Math.max(finalValue, 0)
-                }
-
-                audio.volume = finalValue / 100;
-              }
-
-              volumeSlider.val(finalValue);
-              volumePercent.text(finalValue + '%');
-              tempVolume = finalValue;
-              tempOriginalVolume = value;
-            }
-          });
-        }
+      if ($translationMenuContent.has('.translationVideoVolumeBox').length) {
+        return;
       }
+      $translationMenuContent.append(videoVolumeBox);
+      const $volumePercent = videoVolumeBox.find('.volumePercent');
+      tempOriginalVolume = newSlidersVolume;
+      videoVolumeSlider.on('input', (event) => {
+        const {value} = event.target;
+        video.volume = (value / 100);
+        $volumePercent.text(`${value}%`);
+
+        if (dbSyncVolume !== 1) {
+          return;
+        }
+        // console.log(`VOT: Синхронизация громкости перевода с громкостью видео. Громкость оригинала: ${value}. Прошлая громкость оригинала: ${tempOriginalVolume}`);
+        const volumeBox = $('.translationVolumeBox');
+        const volumeSlider = volumeBox.find('.translationVolumeSlider');
+        const volumePercent = volumeBox.parent().find('.volumePercent');
+        const volume = Number(volumeSlider.val());
+        let finalValue;
+
+        if (value > tempOriginalVolume) {
+          // value = 100
+          // tempOriginalVolume = 69
+          // volume = 15
+          // 100 - 69 = 31
+          // 15 + 31 = 46 - final translation volume
+          finalValue = volume + (value - tempOriginalVolume);
+          finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
+
+          audio.volume = finalValue / 100;
+        } else if (value < tempOriginalVolume) {
+          // value = 69
+          // tempOriginalVolume = 100
+          // volume = 15
+          // 100 - 69 = 31
+          // 15 - 31 = 0 - final translation volume
+          finalValue = volume - (tempOriginalVolume - value);
+          finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
+
+          audio.volume = finalValue / 100;
+        }
+
+        volumeSlider.val(finalValue);
+        volumePercent.text(`${finalValue}%`);
+        tempVolume = finalValue;
+        tempOriginalVolume = value;
+      });
     }
 
-    let btnHover = function () {
+    const btnHover = () => {
       let time;
-      var isOpened = false;
-      var $translationMenu = $(".translationMenu");
+      let isOpened = false;
+      const $translationMenu = $(".translationMenu");
 
       $translationMenu.on('click', (event) => {
         event.stopPropagation();
-        isOpened ? $translationMenuContent.hide() : ($translationMenuContent.show(), $translationMenuContent.css('opacity', opacityRatio));
+        if (isOpened) {
+          $translationMenuContent.hide();
+        } else {
+          ($translationMenuContent.show(), $translationMenuContent.css('opacity', opacityRatio));
+        }
         isOpened = !isOpened;
       })
 
@@ -1023,16 +1023,17 @@ async function main() {
       }
 
       $(document).on("click", (event) => {
-        let isBlock = event.target === $($translationBlock)[0] || $($translationBlock).length ? $($translationBlock)[0].contains(event.target) : false;
-        let isContent = event.target === $($translationMenuContent)[0] || $($translationMenuContent).length ? $($translationMenuContent)[0].contains(event.target) : false;
-        let isVideo = event.target === $($videoContainer)[0] || $($videoContainer).length ? $($videoContainer)[0].contains(event.target) : false;
-        if (!isBlock && !isContent) {
-          $translationMenuContent.hide();
-          isOpened = false
-          if (!isVideo)
-          {
-            logout(0);
-          }
+        const isBlock = event.target === $($translationBlock)[0] || $($translationBlock).length ? $($translationBlock)[0].contains(event.target) : false;
+        const isContent = event.target === $($translationMenuContent)[0] || $($translationMenuContent).length ? $($translationMenuContent)[0].contains(event.target) : false;
+        const isVideo = event.target === $($videoContainer)[0] || $($videoContainer).length ? $($videoContainer)[0].contains(event.target) : false;
+        if (!(!isBlock && !isContent)) {
+          return;
+        }
+        $translationMenuContent.hide();
+        isOpened = false
+        if (!isVideo)
+        {
+          logout(0);
         }
       })
 
@@ -1080,7 +1081,7 @@ async function main() {
         }
       }
 
-      if (videoData.duration > 14400) {
+      if (videoData.duration > 14_400) {
         throw "VOT: Видео слишком длинное";
       }
 
@@ -1094,180 +1095,170 @@ async function main() {
       translateFunc(VIDEO_ID, videoData.detectedLanguage, videoData.responseLanguage);
     }
 
-    const translateFunc = (VIDEO_ID, requestLang, responseLang) => translateVideo(`${siteTranslates[siteHostname]['url']}${VIDEO_ID}`, siteTranslates[siteHostname]['func_param'], requestLang, responseLang, function (success, urlOrError) {
+    const translateFunc = (VIDEO_ID, requestLang, responseLang) => translateVideo(`${siteTranslates[siteHostname].url}${VIDEO_ID}`, siteTranslates[siteHostname].func_param, requestLang, responseLang, (success, urlOrError) => {
       debug.log('[exec callback] translateVideo')
-      if (getVideoId(siteHostname) === VIDEO_ID) {
-        if (!success) {
-          transformBtn('error', urlOrError);
-          if (urlOrError.includes('Перевод займёт')) {
-            clearTimeout(autoRetry);
-            autoRetry = setTimeout(() => {
-              translateFunc(VIDEO_ID, requestLang, responseLang);
-            }, 60000)
-          }
-
-          throw urlOrError;
+      if (getVideoId(siteHostname) !== VIDEO_ID) {
+        return;
+      }
+      if (!success) {
+        transformBtn('error', urlOrError);
+        if (urlOrError.includes('Перевод займёт')) {
+          clearTimeout(autoRetry);
+          autoRetry = setTimeout(() => {
+            translateFunc(VIDEO_ID, requestLang, responseLang);
+          }, 60_000)
         }
 
-        volumeOnStart = video.volume;
-        audio.src = urlOrError;
+        throw urlOrError;
+      }
 
-        if (typeof(dbDefaultVolume) === 'number') {
-          audio.volume = dbDefaultVolume / 100;
-        }
+      volumeOnStart = video.volume;
+      audio.src = urlOrError;
 
+      if (typeof(dbDefaultVolume) === 'number') {
+        audio.volume = dbDefaultVolume / 100;
+      }
+
+      if (siteHostname === 'twitter') {
+        $('div[data-testid="app-bar-back"][role="button"]').on('click', () => {
+          stopTraslate();
+        })
+      } else if (siteEvent !== null && siteEvent !== 'invidious' && siteEvent !== 'piped') {
+        $("body").on(siteEvent, () => {
+          stopTraslate();
+          syncOriginalVolumeSlider();
+        });
+      }
+
+      if (['twitch', 'vimeo', 'facebook', 'rutube', 'twitter'].includes(siteHostname)) {
+        const mutationObserver = new MutationObserver(async function(mutations) {
+          mutations.forEach(async function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video && mutation.target.src !== '') {
+              stopTraslate();
+              firstPlay = true;
+            }
+          });
+        });
+
+        mutationObserver.observe($videoContainer[0], {
+          attributes: true,
+          childList: false,
+          subtree: true,
+          attributeOldValue: true,
+        });
+      }
+
+      // fix for video.paused stuck bug
+      if (video.paused) {
         if (siteHostname === 'twitter') {
-          $('div[data-testid="app-bar-back"][role="button"]').on('click', function () {
-            stopTraslate();
-          })
-        } else if (siteEvent !== null && siteEvent !== 'invidious' && siteEvent !== 'piped') {
-          $("body").on(siteEvent, function () {
-            stopTraslate();
-            syncOriginalVolumeSlider();
-          });
+          video = $('div[data-testid="videoComponent"] > div > div > video')[0]
+        } else if (siteHostname === 'vk') {
+          video = $(vkSelector).find('video')[0]
+        } else if (siteHostname === 'youtube' && siteEvent === 'piped') {
+          video = $(pipedSelector).find('video')[0]
         }
+      }
 
-        if (siteHostname === 'twitch' || siteHostname === 'vimeo' || siteHostname === 'facebook' || siteHostname === 'rutube' || siteHostname === 'twitter') {
-          const mutationObserver = new MutationObserver(async function(mutations) {
-            mutations.forEach(async function(mutation) {
-              if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video && mutation.target.src !== '') {
-                stopTraslate();
-                firstPlay = true;
-              }
-            });
-          });
+      if (video && !video.paused) {
+        debug.log('video is playing lipsync 1')
+        lipSync("play");
+      }
 
-          mutationObserver.observe($videoContainer[0], {
-            attributes: true,
-            childList: false,
-            subtree: true,
-            attributeOldValue: true,
-          });
-        }
+      $("video").on("playing.translate ratechange.translate", () => {
+        debug.log('video ratechange')
+        lipSync();
+      });
 
-        // fix for video.paused stuck bug
-        if (video.paused) {
-          if (siteHostname === 'twitter') {
-            video = $('div[data-testid="videoComponent"] > div > div > video')[0]
-          } else if (siteHostname === 'vk') {
-            video = $(vkSelector).find('video')[0]
-          } else if (siteHostname === 'youtube' && siteEvent === 'piped') {
-            video = $(pipedSelector).find('video')[0]
-          }
-        }
+      $("video").on("play.translate canplaythrough.translate", () => {
+        debug.log('video canplaythrough')
+        lipSync();
 
         if (video && !video.paused) {
-          debug.log('video is playing lipsync 1')
+          debug.log('video is playing lipsync 2')
           lipSync("play");
         }
+      });
 
-        $("video").on("playing.translate ratechange.translate", function () {
-          debug.log('video ratechange')
-          lipSync();
-        });
+      $("video").on("pause.translate waiting.translate", () => {
+        debug.log('video is waiting')
+        lipSync("pause");
+      });
 
-        $("video").on("play.translate canplaythrough.translate", function () {
-          debug.log('video canplaythrough')
-          lipSync();
+      transformBtn('success', 'Выключить');
+      const defaultTranslateVolume = typeof(dbDefaultVolume) === 'number' ? dbDefaultVolume : 100;
 
-          if (video && !video.paused) {
-            debug.log('video is playing lipsync 2')
-            lipSync("play");
-          }
-        });
+      addVideoSlider();
 
-        $("video").on("pause.translate waiting.translate", function () {
-          debug.log('video is waiting')
-          lipSync("pause");
-        });
+      if (typeof(dbAutoSetVolumeYandexStyle) === 'number' && dbAutoSetVolumeYandexStyle === 1) {
+        video.volume = defaultVideoVolume;
+        const $translationVideoVolumeBox = $('.translationVideoVolumeBox');
+        $translationVideoVolumeBox.find('.translationVolumeSlider').val(defaultVideoVolume * 100);
+        $translationVideoVolumeBox.parent().find('.volumePercent').text(`${defaultVideoVolume * 100}%`);
+      }
 
-        transformBtn('success', 'Выключить');
-        let defaultTranslateVolume = 100;
-        if (typeof(dbDefaultVolume) === 'number') {
-          defaultTranslateVolume = dbDefaultVolume;
-        }
-
-        addVideoSlider();
-
-        if (typeof(dbAutoSetVolumeYandexStyle) === 'number' && dbAutoSetVolumeYandexStyle === 1) {
-          video.volume = defaultVideoVolume;
-          const $translationVideoVolumeBox = $('.translationVideoVolumeBox');
-          $translationVideoVolumeBox.find('.translationVolumeSlider').val(defaultVideoVolume * 100);
-          $translationVideoVolumeBox.parent().find('.volumePercent').text(defaultVideoVolume * 100 + '%');
-        }
-
-        const volumeBox = $(`
+      const volumeBox = $(`
           <div class = "translationMenuContainer">
             <span class = "translationHeader">Громкость перевода: <b class = "volumePercent">${defaultTranslateVolume}%</b></span>
             <div class = "translationVolumeBox" tabindex = "0">
               <input type="range" min="0" max="100" value=${defaultTranslateVolume} class="translationVolumeSlider">
             </div>
           </div>`
-        );
-        const volumeSlider = volumeBox.find('.translationVolumeSlider');
+      );
+      const volumeSlider = volumeBox.find('.translationVolumeSlider');
 
-        if (!$translationMenuContent.has('.translationVolumeBox').length) {
-          $translationMenuContent.append(volumeBox);
-          let $volumePercent = volumeBox.find('.volumePercent');
-          tempVolume = Number(defaultTranslateVolume);
-          volumeSlider.on('input', async (event) => {
-            let {value} = event.target;
-            audio.volume = (value / 100);
-            $volumePercent.text(`${value}%`);
+      if (!$translationMenuContent.has('.translationVolumeBox').length) {
+        $translationMenuContent.append(volumeBox);
+        const $volumePercent = volumeBox.find('.volumePercent');
+        tempVolume = Number(defaultTranslateVolume);
+        volumeSlider.on('input', async (event) => {
+          let {value} = event.target;
+          audio.volume = (value / 100);
+          $volumePercent.text(`${value}%`);
 
-            if (dbSyncVolume === 1) {
-              // console.log(`VOT: Синхронизация громкости видео с громкостью перевода. Громкость перевода: ${value}. Прошлая громкость перевода: ${tempVolume}`);
-              const volumeBox = $('.translationVideoVolumeBox');
-              const volumeSlider = volumeBox.find('.translationVolumeSlider');
-              const volumePercent = volumeBox.parent().find('.volumePercent');
-              const volume = Number(volumeSlider.val());
-              let finalValue;
+          if (dbSyncVolume === 1) {
+            // console.log(`VOT: Синхронизация громкости видео с громкостью перевода. Громкость перевода: ${value}. Прошлая громкость перевода: ${tempVolume}`);
+            const volumeBox = $('.translationVideoVolumeBox');
+            const volumeSlider = volumeBox.find('.translationVolumeSlider');
+            const volumePercent = volumeBox.parent().find('.volumePercent');
+            const volume = Number(volumeSlider.val());
+            let finalValue;
 
-              if (value > tempVolume) {
-                // value = 100
-                // tempVolume = 69
-                // volume = 15
-                // 100 - 69 = 31
-                // 15 + 31 = 46 - final video volume
-                finalValue = volume + (value - tempVolume);
-                if (finalValue > 100) {
-                  finalValue = 100;
-                } else {
-                  finalValue = Math.max(finalValue, 0)
-                }
+            if (value > tempVolume) {
+              // value = 100
+              // tempVolume = 69
+              // volume = 15
+              // 100 - 69 = 31
+              // 15 + 31 = 46 - final video volume
+              finalValue = volume + (value - tempVolume);
+              finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
 
-                video.volume = finalValue / 100;
-              } else if (value < tempVolume) {
-                // value = 69
-                // tempVolume = 100
-                // volume = 15
-                // 100 - 69 = 31
-                // 15 - 31 = 0 - final video volume
-                finalValue = volume - (tempVolume - value);
-                if (finalValue > 100) {
-                  finalValue = 100;
-                } else {
-                  finalValue = Math.max(finalValue, 0)
-                }
+              video.volume = finalValue / 100;
+            } else if (value < tempVolume) {
+              // value = 69
+              // tempVolume = 100
+              // volume = 15
+              // 100 - 69 = 31
+              // 15 - 31 = 0 - final video volume
+              finalValue = volume - (tempVolume - value);
+              finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
 
-                video.volume = finalValue / 100;
-              }
-
-              volumeSlider.val(finalValue);
-              volumePercent.text(finalValue + '%');
-              tempOriginalVolume = finalValue;
-              tempVolume = value;
+              video.volume = finalValue / 100;
             }
 
-            await updateDB({defaultVolume: Number(value)});
-            dbDefaultVolume = Number(value);
-          });
-        }
+            volumeSlider.val(finalValue);
+            volumePercent.text(`${finalValue}%`);
+            tempOriginalVolume = finalValue;
+            tempVolume = value;
+          }
 
-        if (!$translationMenuContent.find('.translationAbsoluteContainer').has('.translationDownload').length) {
-          $translationMenuContent.find('.translationAbsoluteContainer').append($translationDownload);
-          $translationDownload.attr('href', urlOrError);
-        }
+          await updateDB({defaultVolume: Number(value)});
+          dbDefaultVolume = Number(value);
+        });
+      }
+
+      if (!$translationMenuContent.find('.translationAbsoluteContainer').has('.translationDownload').length) {
+        $translationMenuContent.find('.translationAbsoluteContainer').append($translationDownload);
+        $translationDownload.attr('href', urlOrError);
       }
     });
 
@@ -1288,7 +1279,7 @@ async function main() {
 
       if (mode === "play") {
         debug.log('lipsync mode is play')
-        var audioPromise = audio.play();
+        const audioPromise = audio.play();
         if (audioPromise !== undefined) {
           audioPromise.catch(e => {
             console.error(e)
@@ -1306,9 +1297,9 @@ async function main() {
             }
           })
         }
+        return;
       }
-
-      else if (mode === "pause") {
+      if (mode === "pause") {
         debug.log('lipsync mode is pause')
         audio.pause();
       }
@@ -1334,28 +1325,27 @@ async function main() {
       }
     });
 
-    $translationBtn.click((event) => {
+    $translationBtn.click(async function (event) {
       event.stopPropagation();
+      event.stopImmediatePropagation();
+    
+      // check if the audio source is not empty
       if (audio.src) {
         debug.log('[click translationBtn] audio.src is not empty')
         stopTraslate();
-        event.stopImmediatePropagation();
+        return; // exit the function
       }
-    })
-
-    $translationBtn.click(async function (event) {
-      event.stopPropagation();
-
+    
+      // otherwise, try to execute the translation
       try {
         debug.log('[click translationBtn] trying execute translation')
         const VIDEO_ID = getVideoId(siteHostname);
-
+    
         if (!VIDEO_ID) {
           throw "VOT: Не найдено ID видео"; // not found video id
         }
-
+    
         translateExecutor(VIDEO_ID);
-        event.stopImmediatePropagation();
       } catch (err) {
         transformBtn('error', String(err).substring(4, err.length))
         console.error(err);
@@ -1370,15 +1360,15 @@ async function main() {
       } else if (window.location.hostname.includes("m.youtube.com") && window.location.pathname.includes('watch')){
         await translateProccessor($('.html5-video-container'), 'youtube', null);
       } else {
-        const ytPageEnter = function (event) {
-          var video = $('.html5-video-container');
-          if (video !== void 0 && video !== null && video.length > 0) {
+        const ytPageEnter = (event) => {
+          const video = $('.html5-video-container');
+          if (video != null && video.length > 0) {
             translateProccessor(video, 'youtube', 'yt-translate-stop');
           } else {
-            if (ytplayer === void 0 || ytplayer === null || ytplayer.config === void 0 || ytplayer.config === null) {
+            if (ytplayer == null || ytplayer.config === undefined || ytplayer.config === null) {
               return;
             }
-            ytplayer.config.args.jsapicallback = function(jsApi) {
+            ytplayer.config.args.jsapicallback = (jsApi) => {
                 translateProccessor($('.html5-video-container'), 'youtube', 'yt-translate-stop');
             }
           }
@@ -1387,7 +1377,7 @@ async function main() {
         document.addEventListener('spfdone', ytPageEnter);
         document.addEventListener('yt-navigate-finish', ytPageEnter);
 
-        const ytPageLeave = function () { document.body.dispatchEvent(new Event('yt-translate-stop')); };
+        const ytPageLeave = () => { document.body.dispatchEvent(new Event('yt-translate-stop')); };
         document.addEventListener('spfrequest', ytPageLeave);
         document.addEventListener('yt-navigate-start', ytPageLeave);
 
@@ -1511,12 +1501,7 @@ async function main() {
     //     }, 3000);
     //   }
     } else if (window.location.hostname.includes('rutube')) {
-      let elementSelector;
-      if (window.location.pathname.includes('/play/embed')) {
-        elementSelector = '#app > div > div';
-      } else {
-        elementSelector = '.video-player > div > div > div:nth-child(2)';
-      }
+      const elementSelector = window.location.pathname.includes('/play/embed') ? '#app > div > div' : '.video-player > div > div > div:nth-child(2)';
 
       const el = await waitForElement(elementSelector);
       if (el) {

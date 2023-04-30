@@ -25,11 +25,11 @@ const siteTranslates = {
 
 
 const translateAndDownload = (service, url) => {
-  let videoId = getVideoId(service, url);
+  const videoId = getVideoId(service, url);
   if (!videoId) {
     return console.error(chalk.red("Invalid link"));
   }
-  let finalURL = `${siteTranslates[service]}${videoId}`;
+  const finalURL = `${siteTranslates[service]}${videoId}`;
   if (!finalURL) {
     return console.error(chalk.red("Unknown link"));
   }
@@ -45,12 +45,13 @@ const translateAndDownload = (service, url) => {
             if (argv.output && urlOrError) {
                 download(urlOrError, argv.output, `(ID: ${videoId})`);
             }
-        }
-    else if (urlOrError === "The translation will take a few minutes") {
+      return;
+        } 
+    if (urlOrError === "The translation will take a few minutes") {
             console.log('Waiting for translation...');
             setTimeout(() => {
                 translateAndDownload(service, url);
-            }, 30000)
+            }, 30_000)
           }
     else {
             console.error(chalk.red(urlOrError));
@@ -69,7 +70,7 @@ const download = (url, dir, msg = null) => {
             return console.error(chalk.red("Invalid directory"));
         }
     }
-    let dl = new DownloaderHelper(url, dir);
+    const dl = new DownloaderHelper(url, dir);
     const load = loading({
         'text': `Downloading ${msg || ''}: 0%`,
         'color': 'yellow'
@@ -100,7 +101,7 @@ const download = (url, dir, msg = null) => {
 
 
 argLinks.forEach((url) => {
-  let service = validate(url);
+  const service = validate(url);
   if (service === "unknown") {
     return console.error(chalk.red("Unknown link"));
   }

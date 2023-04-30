@@ -28,7 +28,7 @@ const root = new protobuf.Root().define("yandex").add(VideoTranslationRequest).a
 
 // Export the encoding and decoding functions
 export const yandexRequests = {
-  encodeRequest: function(url, deviceId, unknown1, requestLang, responseLang) {
+  encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
     return root.VideoTranslationRequest.encode({
       url,
       deviceId,
@@ -41,7 +41,7 @@ export const yandexRequests = {
       responseLanguage: responseLang
     }).finish();
   },
-  decodeResponse: function(response) {
+  decodeResponse(response) {
     return root.VideoTranslationResponse.decode(new Uint8Array(response));
   }
 };
@@ -88,7 +88,7 @@ function requestVideoTranslation (url, unknown1, callback) {
 }
 
 function translateVideo(url, callback) {
-  requestVideoTranslation(url, 0x4075500000000000, function (success, response) {
+  requestVideoTranslation(url, 0x40_75_50_00_00_00_00_00, (success, response) => {
     if (!success) {
       callback(false, "Failed to request video translation");
       return;
@@ -100,7 +100,7 @@ function translateVideo(url, callback) {
         callback(false, translateResponse.message);
         return;
       case 1:
-        const hasUrl = void 0 !== translateResponse.url && null !== translateResponse.url;
+        const hasUrl = translateResponse.url != null;
         callback(hasUrl, hasUrl ? translateResponse.url : "Audio link not received");
         return;
       case 2:

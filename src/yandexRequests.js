@@ -21,7 +21,7 @@ const root = new protobuf.Root().define("yandex").add(VideoTranslationRequest).a
 
 // Export the encoding and decoding functions
 export const yandexRequests = {
-  encodeRequest: function(url, deviceId, unknown1, requestLang, responseLang) {
+  encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
     return root.VideoTranslationRequest.encode({
       url,
       deviceId,
@@ -34,7 +34,7 @@ export const yandexRequests = {
       responseLanguage: responseLang
     }).finish();
   },
-  decodeResponse: function(response) {
+  decodeResponse(response) {
     return root.VideoTranslationResponse.decode(new Uint8Array(response));
   }
 };
