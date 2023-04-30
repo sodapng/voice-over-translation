@@ -1,6 +1,7 @@
 import { getUUID } from './getUUID.js';
 import { yandexRequests } from './yandexRequests.js';
 import { workerHost, yandexHmacKey, yandexUserAgent } from './config/config-cloudflare.js';
+import debug from './utils/debug.js';
 
 // Request video translation from Yandex API
 async function requestVideoTranslation(url, unknown1, requestLang, responseLang, callback) {
@@ -11,6 +12,7 @@ async function requestVideoTranslation(url, unknown1, requestLang, responseLang,
   const body = yandexRequests.encodeRequest(url, deviceId, unknown1, requestLang, responseLang);
 
   try {
+    debug.log('requestVideoTranslation');
     // Create a key from the HMAC secret
     const utf8Encoder = new TextEncoder("utf-8");
     const key = await window.crypto.subtle.importKey('raw', utf8Encoder.encode(yandexHmacKey), { name: 'HMAC', hash: {name: 'SHA-256'}}, false, ['sign', 'verify']);
@@ -48,6 +50,7 @@ async function requestVideoTranslation(url, unknown1, requestLang, responseLang,
     // Get the response body as an array buffer
     responseBody = await response.arrayBuffer();
   } catch(exception) {
+    debug.log(exception)
     // Handle errors
     response = {status: -1};
     responseBody = exception;
