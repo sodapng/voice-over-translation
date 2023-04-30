@@ -1,5 +1,5 @@
 # 1.1.2.3
-- Добавлена поддержка для rutube embed
+- Добавлена поддержка rutube embed
 - Еще один рефакторинг от @SashaXse ([ilyhalight/voice-over-translation#142](https://github.com/ilyhalight/voice-over-translation/pull/142)
 - Откат "Два эвента для кнопки перевода объединены в один"
 
