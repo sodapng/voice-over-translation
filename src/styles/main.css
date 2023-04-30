@@ -166,6 +166,7 @@
 
 .translationMenuText {
   color: #FFF;
+  display: inline-flex;
   width: 80%;
 }
 
