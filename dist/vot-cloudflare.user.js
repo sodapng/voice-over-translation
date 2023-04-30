@@ -476,7 +476,10 @@ const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
 const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/104.0.5112.114 YaBrowser/22.9.4.633.10 SA/3 Mobile/15E148 Safari/604.1";
 
 
+// EXTERNAL MODULE: ./src/utils/debug.js
+var debug = __webpack_require__("./src/utils/debug.js");
 ;// CONCATENATED MODULE: ./src/rvt-cloudflare.js
+
 
 
 
@@ -490,6 +493,7 @@ async function requestVideoTranslation(url, unknown1, requestLang, responseLang,
   const body = yandexRequests/* yandexRequests.encodeRequest */.G.encodeRequest(url, deviceId, unknown1, requestLang, responseLang);
 
   try {
+    debug/* default.log */.Z.log('requestVideoTranslation');
     // Create a key from the HMAC secret
     const utf8Encoder = new TextEncoder("utf-8");
     const key = await window.crypto.subtle.importKey('raw', utf8Encoder.encode(yandexHmacKey), { name: 'HMAC', hash: {name: 'SHA-256'}}, false, ['sign', 'verify']);
@@ -527,6 +531,7 @@ async function requestVideoTranslation(url, unknown1, requestLang, responseLang,
     // Get the response body as an array buffer
     responseBody = await response.arrayBuffer();
   } catch(exception) {
+    debug/* default.log */.Z.log(exception)
     // Handle errors
     response = {status: -1};
     responseBody = exception;
@@ -537,6 +542,24 @@ async function requestVideoTranslation(url, unknown1, requestLang, responseLang,
 }
 
 /* harmony default export */ const rvt_cloudflare = (requestVideoTranslation);
+
+/***/ }),
+
+/***/ "./src/utils/debug.js":
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const debug = {}
+debug.log = (...text) => {
+  if (true) {
+    return;
+  }
+  return console.log("%c[VOT DEBUG]", "background: #F2452D; color: #fff; padding: 5px;", ...text);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (debug);
 
 /***/ }),
 
@@ -776,7 +799,10 @@ function getYTVideoData() {
 
 // EXTERNAL MODULE: ./src/yandexRequests.js
 var yandexRequests = __webpack_require__("./src/yandexRequests.js");
+// EXTERNAL MODULE: ./src/utils/debug.js
+var debug = __webpack_require__("./src/utils/debug.js");
 ;// CONCATENATED MODULE: ./src/index.js
+
 
 
 
@@ -787,14 +813,6 @@ async function src_main() {
   const requestVideoTranslation = rvt.default;
 
   if (false) {}
-
-  const debug = {}
-  debug.log = (...text) => {
-    if (true) {
-      return;
-    }
-    return console.log("%c[VOT DEBUG]", "background: #F2452D; color: #fff; padding: 5px;", ...text);
-  }
 
   const defaultVideoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video with the translation (uses with option "autoSetVolumeYandexStyle")
   const availableLangs = ['ru', 'en', 'zh', 'fr', 'it', 'es']; // available languages for translation
@@ -961,10 +979,10 @@ async function src_main() {
         $translationBlock.css('top', '1rem');
       }
 
-      debug.log(`VOT: Added translation button (target: ${target})`)
+      debug/* default.log */.Z.log(`VOT: Added translation button (target: ${target})`)
       $(elem).append($translationBlock);
     } else {
-      debug.log(`VOT: Already added translation button (target: ${target})`, elem)
+      debug/* default.log */.Z.log(`VOT: Already added translation button (target: ${target})`, elem)
     }
   };
 
@@ -976,10 +994,10 @@ async function src_main() {
         $translationMenuContent.css('top', '55%');
       }
 
-      debug.log(`VOT: Added translation menu (target: ${target})`)
+      debug/* default.log */.Z.log(`VOT: Added translation menu (target: ${target})`)
       $(elem).append($translationMenuContent);
     } else {
-      debug.log(`VOT: Already added translation menu (target: ${target})`, elem)
+      debug/* default.log */.Z.log(`VOT: Already added translation menu (target: ${target})`, elem)
     }
   };
 
@@ -1073,25 +1091,32 @@ async function src_main() {
     const minutes = Math.floor(secs / 60);
     const seconds = Math.floor(secs % 60);
     if (minutes >= 60) {
-      return "Перевод займёт больше часа"
+      return 'Перевод займёт больше часа';
     } else if (minutes >= 10 && minutes % 10) {
-      return `Перевод займёт ${minutes} минут`
+      return `Перевод займёт ${minutes} минут`;
     } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
-      return "Перевод займёт около минуты"
+      return 'Перевод займёт около минуты';
     } else {
-      return `Перевод займёт ${minutes} минуты`
+      return `Перевод займёт ${minutes} минуты`;
     }
   }
 
   function translateVideo(url, unknown1, requestLang, responseLang, callback) {
+    debug/* default.log */.Z.log(`Translate video (url: ${url}, unknown1: ${unknown1}, requestLang: ${requestLang}, responseLang: ${responseLang})`);
     if (true) {
       if (translationPanding) {
+        debug/* default.log */.Z.log('translationPanding return')
         return;
       }
       translationPanding = true;
     }
 
     requestVideoTranslation(url, unknown1, requestLang, responseLang, function (success, response) {
+      if (true) {
+        translationPanding = false;
+      }
+
+      debug/* default.log */.Z.log('[exec callback] Requesting video translation');
       if (!success) {
         callback(false, "Не удалось запросить перевод видео");
         return;
@@ -1861,11 +1886,14 @@ async function src_main() {
     }
 
     const translateExecutor = (VIDEO_ID) => {
+      debug/* default.log */.Z.log('Run videoValidator');
       videoValidator();
+      debug/* default.log */.Z.log('Run translateFunc');
       translateFunc(VIDEO_ID, videoData.detectedLanguage, videoData.responseLanguage);
     }
 
     const translateFunc = (VIDEO_ID, requestLang, responseLang) => translateVideo(`${siteTranslates[siteHostname]['url']}${VIDEO_ID}`, siteTranslates[siteHostname]['func_param'], requestLang, responseLang, function (success, urlOrError) {
+      debug/* default.log */.Z.log('[exec callback] translateVideo')
       if (getVideoId(siteHostname) === VIDEO_ID) {
         if (!success) {
           transformBtn('error', urlOrError);
@@ -1927,27 +1955,27 @@ async function src_main() {
         }
 
         if (video && !video.paused) {
-          debug.log('video is playing lipsync 1')
+          debug/* default.log */.Z.log('video is playing lipsync 1')
           lipSync("play");
         }
 
         $("video").on("playing.translate ratechange.translate", function () {
-          debug.log('video ratechange')
+          debug/* default.log */.Z.log('video ratechange')
           lipSync();
         });
 
         $("video").on("play.translate canplaythrough.translate", function () {
-          debug.log('video canplaythrough')
+          debug/* default.log */.Z.log('video canplaythrough')
           lipSync();
 
           if (video && !video.paused) {
-            debug.log('video is playing lipsync 2')
+            debug/* default.log */.Z.log('video is playing lipsync 2')
             lipSync("play");
           }
         });
 
         $("video").on("pause.translate waiting.translate", function () {
-          debug.log('video is waiting')
+          debug/* default.log */.Z.log('video is waiting')
           lipSync("pause");
         });
 
@@ -2044,7 +2072,7 @@ async function src_main() {
     btnHover();
 
     const lipSync = (mode = false) => {
-      debug.log('lipsync video', video)
+      debug/* default.log */.Z.log('lipsync video', video)
       if (!video) {
         return;
       }
@@ -2052,12 +2080,12 @@ async function src_main() {
       audio.playbackRate = video.playbackRate;
 
       if (!mode) {
-        debug.log('lipsync mode is not set')
+        debug/* default.log */.Z.log('lipsync mode is not set')
         return;
       }
 
       if (mode === "play") {
-        debug.log('lipsync mode is play')
+        debug/* default.log */.Z.log('lipsync mode is play')
         var audioPromise = audio.play();
         if (audioPromise !== undefined) {
           audioPromise.catch(e => {
@@ -2079,7 +2107,7 @@ async function src_main() {
       }
 
       else if (mode === "pause") {
-        debug.log('lipsync mode is pause')
+        debug/* default.log */.Z.log('lipsync mode is pause')
         audio.pause();
       }
     };
@@ -2104,19 +2132,16 @@ async function src_main() {
       }
     });
 
-    $translationBtn.click(function (event) {
-      event.stopPropagation();
-
-      if (audio.src) {
-        stopTraslate();
-        event.stopImmediatePropagation();
-      }
-    });
-
     $translationBtn.click(async function (event) {
-      try {
-        event.stopPropagation();
+      event.stopPropagation();
+      if (audio.src) {
+        debug/* default.log */.Z.log('[click translationBtn] audio.src is not empty')
+        stopTraslate();
+        return;
+      }
 
+      try {
+        debug/* default.log */.Z.log('[click translationBtn] trying execute translation')
         const VIDEO_ID = getVideoId(siteHostname);
 
         if (!VIDEO_ID) {
@@ -2124,7 +2149,6 @@ async function src_main() {
         }
 
         translateExecutor(VIDEO_ID);
-        event.stopImmediatePropagation();
       } catch (err) {
         transformBtn('error', String(err).substring(4, err.length))
         console.error(err);

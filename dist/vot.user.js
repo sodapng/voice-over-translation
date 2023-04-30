@@ -771,7 +771,18 @@ function getYTVideoData() {
 
 // EXTERNAL MODULE: ./src/yandexRequests.js
 var yandexRequests = __webpack_require__("./src/yandexRequests.js");
+;// CONCATENATED MODULE: ./src/utils/debug.js
+const debug = {}
+debug.log = (...text) => {
+  if (true) {
+    return;
+  }
+  return console.log("%c[VOT DEBUG]", "background: #F2452D; color: #fff; padding: 5px;", ...text);
+}
+
+/* harmony default export */ const utils_debug = (debug);
 ;// CONCATENATED MODULE: ./src/index.js
+
 
 
 
@@ -785,14 +796,6 @@ async function src_main() {
         let errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
         console.log(errorText);
         return alert(errorText);
-  }
-
-  const debug = {}
-  debug.log = (...text) => {
-    if (true) {
-      return;
-    }
-    return console.log("%c[VOT DEBUG]", "background: #F2452D; color: #fff; padding: 5px;", ...text);
   }
 
   const defaultVideoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video with the translation (uses with option "autoSetVolumeYandexStyle")
@@ -960,10 +963,10 @@ async function src_main() {
         $translationBlock.css('top', '1rem');
       }
 
-      debug.log(`VOT: Added translation button (target: ${target})`)
+      utils_debug.log(`VOT: Added translation button (target: ${target})`)
       $(elem).append($translationBlock);
     } else {
-      debug.log(`VOT: Already added translation button (target: ${target})`, elem)
+      utils_debug.log(`VOT: Already added translation button (target: ${target})`, elem)
     }
   };
 
@@ -975,10 +978,10 @@ async function src_main() {
         $translationMenuContent.css('top', '55%');
       }
 
-      debug.log(`VOT: Added translation menu (target: ${target})`)
+      utils_debug.log(`VOT: Added translation menu (target: ${target})`)
       $(elem).append($translationMenuContent);
     } else {
-      debug.log(`VOT: Already added translation menu (target: ${target})`, elem)
+      utils_debug.log(`VOT: Already added translation menu (target: ${target})`, elem)
     }
   };
 
@@ -1070,20 +1073,24 @@ async function src_main() {
     const minutes = Math.floor(secs / 60);
     const seconds = Math.floor(secs % 60);
     if (minutes >= 60) {
-      return "Перевод займёт больше часа"
+      return 'Перевод займёт больше часа';
     } else if (minutes >= 10 && minutes % 10) {
-      return `Перевод займёт ${minutes} минут`
+      return `Перевод займёт ${minutes} минут`;
     } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
-      return "Перевод займёт около минуты"
+      return 'Перевод займёт около минуты';
     } else {
-      return `Перевод займёт ${minutes} минуты`
+      return `Перевод займёт ${minutes} минуты`;
     }
   }
 
   function translateVideo(url, unknown1, requestLang, responseLang, callback) {
+    utils_debug.log(`Translate video (url: ${url}, unknown1: ${unknown1}, requestLang: ${requestLang}, responseLang: ${responseLang})`);
     if (false) {}
 
     requestVideoTranslation(url, unknown1, requestLang, responseLang, function (success, response) {
+      if (false) {}
+
+      utils_debug.log('[exec callback] Requesting video translation');
       if (!success) {
         callback(false, "Не удалось запросить перевод видео");
         return;
@@ -1853,11 +1860,14 @@ async function src_main() {
     }
 
     const translateExecutor = (VIDEO_ID) => {
+      utils_debug.log('Run videoValidator');
       videoValidator();
+      utils_debug.log('Run translateFunc');
       translateFunc(VIDEO_ID, videoData.detectedLanguage, videoData.responseLanguage);
     }
 
     const translateFunc = (VIDEO_ID, requestLang, responseLang) => translateVideo(`${siteTranslates[siteHostname]['url']}${VIDEO_ID}`, siteTranslates[siteHostname]['func_param'], requestLang, responseLang, function (success, urlOrError) {
+      utils_debug.log('[exec callback] translateVideo')
       if (getVideoId(siteHostname) === VIDEO_ID) {
         if (!success) {
           transformBtn('error', urlOrError);
@@ -1919,27 +1929,27 @@ async function src_main() {
         }
 
         if (video && !video.paused) {
-          debug.log('video is playing lipsync 1')
+          utils_debug.log('video is playing lipsync 1')
           lipSync("play");
         }
 
         $("video").on("playing.translate ratechange.translate", function () {
-          debug.log('video ratechange')
+          utils_debug.log('video ratechange')
           lipSync();
         });
 
         $("video").on("play.translate canplaythrough.translate", function () {
-          debug.log('video canplaythrough')
+          utils_debug.log('video canplaythrough')
           lipSync();
 
           if (video && !video.paused) {
-            debug.log('video is playing lipsync 2')
+            utils_debug.log('video is playing lipsync 2')
             lipSync("play");
           }
         });
 
         $("video").on("pause.translate waiting.translate", function () {
-          debug.log('video is waiting')
+          utils_debug.log('video is waiting')
           lipSync("pause");
         });
 
@@ -2036,7 +2046,7 @@ async function src_main() {
     btnHover();
 
     const lipSync = (mode = false) => {
-      debug.log('lipsync video', video)
+      utils_debug.log('lipsync video', video)
       if (!video) {
         return;
       }
@@ -2044,12 +2054,12 @@ async function src_main() {
       audio.playbackRate = video.playbackRate;
 
       if (!mode) {
-        debug.log('lipsync mode is not set')
+        utils_debug.log('lipsync mode is not set')
         return;
       }
 
       if (mode === "play") {
-        debug.log('lipsync mode is play')
+        utils_debug.log('lipsync mode is play')
         var audioPromise = audio.play();
         if (audioPromise !== undefined) {
           audioPromise.catch(e => {
@@ -2071,7 +2081,7 @@ async function src_main() {
       }
 
       else if (mode === "pause") {
-        debug.log('lipsync mode is pause')
+        utils_debug.log('lipsync mode is pause')
         audio.pause();
       }
     };
@@ -2096,19 +2106,16 @@ async function src_main() {
       }
     });
 
-    $translationBtn.click(function (event) {
-      event.stopPropagation();
-
-      if (audio.src) {
-        stopTraslate();
-        event.stopImmediatePropagation();
-      }
-    });
-
     $translationBtn.click(async function (event) {
-      try {
-        event.stopPropagation();
+      event.stopPropagation();
+      if (audio.src) {
+        utils_debug.log('[click translationBtn] audio.src is not empty')
+        stopTraslate();
+        return;
+      }
 
+      try {
+        utils_debug.log('[click translationBtn] trying execute translation')
         const VIDEO_ID = getVideoId(siteHostname);
 
         if (!VIDEO_ID) {
@@ -2116,7 +2123,6 @@ async function src_main() {
         }
 
         translateExecutor(VIDEO_ID);
-        event.stopImmediatePropagation();
       } catch (err) {
         transformBtn('error', String(err).substring(4, err.length))
         console.error(err);
