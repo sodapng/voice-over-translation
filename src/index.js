@@ -31,6 +31,7 @@ async function main() {
   const twitchSelector = '.video-ref';
   const vkSelector = '.videoplayer_media';
   const facebookSelector = 'div[data-pagelet="WatchPermalinkVideo"]';
+  const pipedSelector = '.player-container';
 
   const siteTranslates = {
     'youtube': {
@@ -79,7 +80,7 @@ async function main() {
     }
   }
 
-  // Сайты хостящие Invidious. Мной была протестирована работоспособность только на invidious.kavin.rocks, yewtu.be и inv.vern.cc
+  // Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
   const sitesInvidious = [
     'invidious.snopyta.org',
     'yewtu.be',
@@ -98,7 +99,12 @@ async function main() {
     'invidious.dhusch.de'
   ];
 
-  const sitesChromiumBlocked = Object.assign([], sitesInvidious); // Вынес в отдельную переменную на будущее, если вдруг понадобится
+  // Sites host Piped. I tested the performance only on piped.video
+  const sitesPiped = [
+    'piped.video',
+  ];
+
+  const sitesChromiumBlocked = Object.assign([], sitesInvidious, sitesPiped);
 
   const $translationBlock = $(`
     <div class = "translationBlock">
@@ -1084,7 +1090,7 @@ async function main() {
           $('div[data-testid="app-bar-back"][role="button"]').on('click', function () {
             stopTraslate();
           })
-        } else if (siteEvent !== null && siteEvent !== 'invidious') {
+        } else if (siteEvent !== null && siteEvent !== 'invidious' && siteEvent !== 'piped') {
           $("body").on(siteEvent, function () {
             stopTraslate();
             syncOriginalVolumeSlider();
@@ -1114,7 +1120,9 @@ async function main() {
           if (siteHostname === 'twitter') {
             video = $('div[data-testid="videoComponent"] > div > div > video')[0]
           } else if (siteHostname === 'vk') {
-            video = $('.videoplayer_media > video')[0]
+            video = $(vkSelector).find('video')[0]
+          } else if (siteHostname === 'youtube' && siteEvent === 'piped') {
+            video = $(pipedSelector).find('video')[0]
           }
         }
 
@@ -1389,8 +1397,24 @@ async function main() {
     } else if (window.location.hostname.includes('pornhub')) {
       await sleep(1000);
       await translateProccessor($('.mgp_videoWrapper'), 'pornhub', null);
-    } else if (sitesInvidious.includes(window.location.hostname)) { // Нужно дополнительное расширение для работы в хромоподбных браузерах
+    } else if (sitesInvidious.includes(window.location.hostname)) { // Need an additional extension to work in chrome-like browsers
       await translateProccessor($('#player'), 'youtube', null);
+    } else if (sitesPiped.includes(window.location.hostname)) { // Need an additional extension to work in chrome-like browsers
+      const el = await waitForElement(pipedSelector);
+      if (el) {
+        let videoIDNew;
+        let videoID = getVideoId('youtube');
+        await translateProccessor(el, 'youtube', 'piped');
+        setInterval(async () => {
+          videoIDNew = getVideoId('youtube');
+          if (videoID !== videoIDNew) {
+            if (videoIDNew) {
+              await translateProccessor($(pipedSelector), 'youtube', 'piped');
+            }
+            videoID = videoIDNew;
+          }
+        }, 3000);
+      }
     } else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
       const el = await waitForElement(vkSelector);
       if (el) {
