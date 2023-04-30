@@ -1,6 +1,8 @@
 # 1.1.2
-- Стандартная подложка слайдера смены громкости изменена на более яркую (сделано, чтобы у пользователей хрома ее было лучше видно)
-- Высота меню увеличена до 375 пикселей
+- Исправлено выползание текста за края меню ([ilyhalight/voice-over-translation#126](https://github.com/ilyhalight/voice-over-translation/issues/126))
+- Стандартная подложка слайдера смены громкости изменена на более яркую (сделано, чтобы у пользователей хромоподобных браузеров ее было лучше видно)
+- Высота меню увеличена до 375 пикселей ([ilyhalight/voice-over-translation#132](https://github.com/ilyhalight/voice-over-translation/issues/132))
+- Рефакторинг от @SashaXse ([ilyhalight/voice-over-translation#137](https://github.com/ilyhalight/voice-over-translation/pull/137))
 
 # 1.1.1
 - Задержка до повторного запроса немного уменьшена (70 -> 60)
