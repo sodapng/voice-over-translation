@@ -29,6 +29,7 @@
         "*://invidious.slipfox.xyz/*",
         "*://invidio.xamh.de/*",
         "*://invidious.dhusch.de/*",
+        "*://*.piped.video/*",
         "*://*.yewtu.be/*",
         "*://inv.vern.cc/*",
         "*://*.vimeo.com/*",
