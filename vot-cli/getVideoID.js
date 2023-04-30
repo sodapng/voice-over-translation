@@ -7,13 +7,11 @@ function getVideoId (service, url) {
             return url.split("embed/")[1];
         }
       case "vk":
-        let videoId;
         if (/^(https:\/\/|http:\/\/)?(www.|m.)?vk.(com|ru)\/video-?[0-9]{8,9}_[0-9]{9}/.test(url)) {
-          videoId = url.split('/').pop().split('?')[0]
+          return url.split('/').pop().split('?')[0];
         } else {
-          videoId = url.includes('z=') ? url.split('z=')[1].split('%2')[0] : false; // Убираем мусор в конце параметра
+          return url.includes('z=') ? url.split('z=')[1].split('%2')[0] : false; // Убираем мусор в конце параметра
         }
-        return videoId;
       case "9gag" || "gag":
         if (url.includes("/gag/")) {
           return url.split('/gag/')[1];
