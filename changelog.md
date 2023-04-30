@@ -1,3 +1,11 @@
+# 1.1.2.2
+- Два эвента для кнопки перевода объединены в один
+- Добавлено больше дебаг логов
+- Испралена работа версии "cloudflare" на Линукс (возвращена установка translationPanding = false в калбеке к requestVideoTranslation)
+
+# 1.1.2.1
+- Исправлена работа в хроме после [ilyhalight/voice-over-translation#137](https://github.com/ilyhalight/voice-over-translation/pull/137)
+
 # 1.1.2
 - Добавлена поддержка Piped (протестировано только на piped.video)
 - Исправлено выползание текста за края меню ([ilyhalight/voice-over-translation#126](https://github.com/ilyhalight/voice-over-translation/issues/126))
