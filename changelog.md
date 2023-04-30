@@ -1,4 +1,5 @@
 # 1.1.2
+- Добавлена поддержка Piped
 - Исправлено выползание текста за края меню ([ilyhalight/voice-over-translation#126](https://github.com/ilyhalight/voice-over-translation/issues/126))
 - Стандартная подложка слайдера смены громкости изменена на более яркую (сделано, чтобы у пользователей хромоподобных браузеров ее было лучше видно)
 - Высота меню увеличена до 375 пикселей ([ilyhalight/voice-over-translation#132](https://github.com/ilyhalight/voice-over-translation/issues/132))
