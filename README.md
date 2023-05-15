@@ -3,12 +3,12 @@
 Закадровый перевод видео не только в YandexBrowser.
 Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)**. Спасиб <3
 
-# Установка расширения:
+## Установка расширения:
 1. Установите расширение **[Tampermonkey](https://www.tampermonkey.net/)** (Альтернатива для Safari: **[UserScripts](https://apps.apple.com/app/userscripts/id1463298887 )**)
 2. **[«Установите Скрипт»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js)**
 
-## Полезные ссылки:
-1. Версия для VM, FM, GM, AdGuard, UserScripts: **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
+### Полезные ссылки:
+1. Версия для VM, FM, GM, AdGuard, UserScripts и некоторых браузеров: **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
 2. Версия для терминала: **[Ссылка](https://github.com/ilyhalight/voice-over-translation/tree/master/vot-cli)**
 3. Подробнее о создание воркера для VM, FM, GM, AdGuard, UserScripts: **[Ссылка](https://github.com/mynovelhost/voice-over-translation/)**
 
@@ -25,6 +25,7 @@
 - **[Twitter](https://twitter.com/)** (Работает только в открытых видео. В ленте не работает.)
 - **[Facebook*](https://facebook.com/)** (❌ Не работает)
 - **[Rutube](https://rutube.ru/)** (Полная поддержка **rutube.ru/video/** и **rutube.ru/play/embed/**)
+- **[Bilibili](https://bilibili.com/)** (Поддерживаются **bilibili.com/video/** и **bilibili.com/blackboard/webplayer/embed-old.html**)
 
 ## Список функционала:
 1. Перевод с одного из доступных языков на русский. Язык определяется автоматически, если языка нету в списке или не удалось его определить, то используется перевод с английского.
