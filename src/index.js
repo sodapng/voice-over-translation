@@ -136,37 +136,19 @@ async function main() {
 
   const $translationBlock = $(`
     <div class = "translationBlock">
-        <span class = "translationArea" role = "button">
-            <span class = "translationIAlice" tabindex = "-1">
-              <svg class="translationIconAlice" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <mask id="mask-main" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
-                    <circle cx="12" cy="12" r="12" fill="#fff"></circle>
-                </mask>
-                <g mask="url(#mask-main)">
-                    <path transform="translate(0 .028)" fill="url(#gradient-main)" d="M0 0h24v24H0z"></path>
-                    <path fill="#7626FF" d="M0 .028h24v24H0z"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.283 16.193c.9.888 3.297 1.42 5.74 1.43 2.444-.01 4.841-.542 5.74-1.43 2.236-2.204-3.199-10.653-5.737-10.665-2.544.012-7.979 8.461-5.743 10.665" fill="#fff"></path>
-                </g>
-                <defs>
-                    <linearGradient id="gradient-main" x1="19.778" y1="30.357" x2="30.132" y2="4.5" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#C826FF"></stop>
-                        <stop offset="1" stop-color="#5426FF"></stop>
-                    </linearGradient>
-                </defs>
-              </svg>
-            </span>
-            <span class = "translationITranslate" tabindex = "-1">
-              <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path class="translateIcon" fill-rule="evenodd" clip-rule="evenodd" d="M17.605 19.703c.794-.13 1.647-.476 2.47-.983.695 1.013 1.255 1.546 1.306 1.593l1.166-1.207c-.011-.01-.504-.48-1.124-1.401.277-.25.547-.512.797-.798a12.1 12.1 0 0 0 2.268-3.826c.383.216.761.541.96 1.027.68 1.649-.301 3.557-1.215 4.385l1.152 1.22c1.52-1.378 2.571-3.959 1.638-6.227-.368-.892-1.077-1.59-2.064-2.037.162-.763.216-1.38.233-1.785h-1.698c-.017.307-.06.762-.173 1.323-1.325-.187-2.818-.006-4.248.508a25.994 25.994 0 0 1-.313-2.547c5.092-.287 8.098-1.488 8.237-1.546l-.654-1.533c-.03.013-2.875 1.14-7.65 1.418-.001-.405-.008-.666-.012-.85-.008-.339-.01-.423.03-.67L17.01 5.75c-.026.283-.024.573-.018 1.278l.002.318c-.026 0-.051 0-.077.002l-.08.001a39.286 39.286 0 0 1-3.27-.14L13.25 8.89c.5.043 2.023.122 3.397.122h.1a19.457 19.457 0 0 1 .208-.003l.106-.002c.067.948.196 2.034.421 3.22a8.05 8.05 0 0 0-2.267 1.963l.811 1.871c.327-.732.995-1.51 1.856-2.111a16.762 16.762 0 0 0 1.33 3.346c-.811.514-1.64.818-2.301.804l.694 1.603Zm2.953-3.488a8.18 8.18 0 0 0 .374-.389 10.465 10.465 0 0 0 1.927-3.224c-.198-.021-.4-.031-.606-.031-.907 0-1.885.199-2.834.574.31 1.209.718 2.23 1.14 3.07ZM9.769 11.688 4.25 24.438h2.259l1.357-3.407h5.582l1.357 3.407h2.258l-5.52-12.75H9.77Zm.887 2.624 2.056 5H8.6l2.056-5Z" fill="#fff"></path>
-              </svg>
-            </span>
-            <span class = "translationBtn" tabindex = "0">Перевести видео</span>
-        </span>
-        <span class = "translationMenu" tabindex = "0" role = "button">
-          <svg class = "translationMenuIcon" height="15" width="5" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 13.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" fill="#fff"></path>
+      <span class = "translationArea" role = "button">
+        <span class = "translationITranslate" tabindex = "-1">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="translateIcon" fill-rule="evenodd" clip-rule="evenodd" d="M17.605 19.703c.794-.13 1.647-.476 2.47-.983.695 1.013 1.255 1.546 1.306 1.593l1.166-1.207c-.011-.01-.504-.48-1.124-1.401.277-.25.547-.512.797-.798a12.1 12.1 0 0 0 2.268-3.826c.383.216.761.541.96 1.027.68 1.649-.301 3.557-1.215 4.385l1.152 1.22c1.52-1.378 2.571-3.959 1.638-6.227-.368-.892-1.077-1.59-2.064-2.037.162-.763.216-1.38.233-1.785h-1.698c-.017.307-.06.762-.173 1.323-1.325-.187-2.818-.006-4.248.508a25.994 25.994 0 0 1-.313-2.547c5.092-.287 8.098-1.488 8.237-1.546l-.654-1.533c-.03.013-2.875 1.14-7.65 1.418-.001-.405-.008-.666-.012-.85-.008-.339-.01-.423.03-.67L17.01 5.75c-.026.283-.024.573-.018 1.278l.002.318c-.026 0-.051 0-.077.002l-.08.001a39.286 39.286 0 0 1-3.27-.14L13.25 8.89c.5.043 2.023.122 3.397.122h.1a19.457 19.457 0 0 1 .208-.003l.106-.002c.067.948.196 2.034.421 3.22a8.05 8.05 0 0 0-2.267 1.963l.811 1.871c.327-.732.995-1.51 1.856-2.111a16.762 16.762 0 0 0 1.33 3.346c-.811.514-1.64.818-2.301.804l.694 1.603Zm2.953-3.488a8.18 8.18 0 0 0 .374-.389 10.465 10.465 0 0 0 1.927-3.224c-.198-.021-.4-.031-.606-.031-.907 0-1.885.199-2.834.574.31 1.209.718 2.23 1.14 3.07ZM9.769 11.688 4.25 24.438h2.259l1.357-3.407h5.582l1.357 3.407h2.258l-5.52-12.75H9.77Zm.887 2.624 2.056 5H8.6l2.056-5Z" fill="#fff"></path>
           </svg>
         </span>
+        <span class = "translationBtn" tabindex = "0">Перевести видео</span>
+      </span>
+      <span class = "translationMenu" tabindex = "0" role = "button">
+        <svg class = "translationMenuIcon" height="15" width="5" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 13.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" fill="#fff"></path>
+        </svg>
+      </span>
     </div>`);
   const $translationDownload = $(`
       <a class = "translationDownload">
@@ -796,17 +778,16 @@ async function main() {
       console.log(`VOT: Значение dontTranslateRuVideos: ${dbDontTranslateRuVideos}`);
 
       if (!$translationMenuContent.has('.translationAT').length && dbAutoTranslate !== undefined) {
-        const $translationATCont = $(
-          `<div class = "translationMenuContainer">
+        const $translationATCont = $(`
+          <div class = "translationMenuContainer">
             <input type="checkbox" name="auto_translate" value=${dbAutoTranslate} class = "translationAT" ${dbAutoTranslate === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "auto_translate">Автоматический перевод видео${siteHostname === 'vk' || window.location.hostname.includes('m.twitch.tv') ? ' <strong>(рекомендуется)</strong>' : ''}</label>
+            <label class = "translationMenuText" for = "auto_translate">Переводить при открытие${siteHostname === 'vk' || window.location.hostname.includes('m.twitch.tv') ? ' <strong>(рекомендуется)</strong>' : ''}</label>
           </div>
-          `
-        );
+        `);
         const $translationAT = $($translationATCont).find('.translationAT');
         $translationAT.on('click', async (event) => {
           event.stopPropagation();
-          const atValue = event.target.checked ? 1 : 0; // Number(event.target.checked)
+          const atValue = Number(event.target.checked);
           await updateDB({autoTranslate: atValue});
           dbAutoTranslate = atValue;
         });
@@ -836,7 +817,7 @@ async function main() {
         const $translationSVS = $($translationSVSCont).find('.translationSVS');
         $translationSVS.on('click', async (event) => {
           event.stopPropagation();
-          const svsValue = event.target.checked ? 1 : 0;
+          const svsValue = Number(event.target.checked);
           await updateDB({showVideoSlider: svsValue});
           dbShowVideoSlider = svsValue;
           if (svsValue === 1 && $translationBtn.text() === 'Выключить') {
@@ -852,7 +833,7 @@ async function main() {
         const $translationSyncVolumeContainter = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="sync_volume" value=${dbSyncVolume} class = "translationSyncVolume" ${dbSyncVolume === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "sync_volume">[YT Only] Синхронизация громкости перевода с громкостью видео</label>
+            <label class = "translationMenuText" for = "sync_volume">Связать громкость перевода и оригинала (youtube)</label>
           </div>
           `
         );
@@ -877,7 +858,7 @@ async function main() {
         const $translationAutoSetVolumeContainer = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="auto_set_volume" value=${typeof(dbAutoSetVolumeYandexStyle) === 'number' ? dbAutoSetVolumeYandexStyle : '0'} class = "translationAutoSetVolume" ${dbAutoSetVolumeYandexStyle === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "auto_set_volume">Автоматически выставлять громкость оригинала (Yandex-like)</label>
+            <label class = "translationMenuText" for = "auto_set_volume">Уменьшать громкость оригинала</label>
           </div>
           `
         );
@@ -895,7 +876,7 @@ async function main() {
         const $DTRuVContainter = $(
           `<div class = "translationMenuContainer">
             <input type="checkbox" name="dont_translate_ru_videos" value=${dbDontTranslateRuVideos} class = "translationDTRuV" ${dbDontTranslateRuVideos === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "dont_translate_ru_videos">[YT Only] Ограничить перевод русскоязычных видео</label>
+            <label class = "translationMenuText" for = "dont_translate_ru_videos">Не переводить с русского (youtube)</label>
           </div>
           `
         );
@@ -1344,39 +1325,28 @@ async function main() {
       }
     });
 
-    $translationBtn.on('click', function (event) {
-      debug.log('[click translationBtn] init before all stops');
+    $translationBtn.click(async function (event) {
       event.stopPropagation();
-      // event.stopImmediatePropagation();
-      debug.log('[click translationBtn] init');
+      event.stopImmediatePropagation();
 
       // check if the audio source is not empty
       if (audio.src) {
         debug.log('[click translationBtn] audio.src is not empty')
         stopTraslate();
-        event.stopImmediatePropagation();
+        return; // exit the function
       }
-    });
 
-    $translationBtn.on('click', async function (event) {
-      debug.log('[click translationBtn] init before all stops');
-      event.stopPropagation();
-      // event.stopImmediatePropagation();
-      debug.log('[click translationBtn] init');
-
+      // otherwise, try to execute the translation
       try {
         debug.log('[click translationBtn] trying execute translation')
         const VIDEO_ID = getVideoId(siteHostname);
 
         if (!VIDEO_ID) {
-          debug.log('[click translationBtn] videoId not finded');
           throw "VOT: Не найдено ID видео"; // not found video id
         }
 
         translateExecutor(VIDEO_ID);
-        event.stopImmediatePropagation();
       } catch (err) {
-        debug.log('[click translationBtn] An error occurred while executing', err);
         transformBtn('error', String(err).substring(4, err.length))
         console.error(err);
       }
