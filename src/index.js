@@ -74,6 +74,10 @@ async function main() {
     'rutube': {
       'url': 'https://rutube.ru/video/',
       'func_param': 0x40_75_50_00_00_00_00_00
+    },
+    'bilibili.com': {
+      'url': 'https://www.bilibili.com/video/',
+      'func_param': 0x40_75_50_00_00_00_00_00
     }
   }
 
@@ -211,6 +215,7 @@ async function main() {
 
   const getVideoId = (service) => {
     const url = new URL(window.location.href);
+    debug.log(`VOT: Get video id for ${service}`);
 
     switch (service) {
       case "youtube":
@@ -221,13 +226,11 @@ async function main() {
           return urlArray[urlArray.length - 1];
         }
       case "vk":
-        let videoId;
         if (/^video-?[0-9]{8,9}_[0-9]{9}$/.test(url.pathname.split('/')[1])) {
-          videoId = url.pathname.split('/')[1]; // Убираем слэш в начале
+          return url.pathname.split('/')[1]; // Убираем слэш в начале
         } else {
-          videoId = url.searchParams.has('z') ? url.searchParams.get("z").split('/')[0] : null; // Убираем мусор в конце параметра
+          return url.searchParams.has('z') ? url.searchParams.get("z").split('/')[0] : null; // Убираем мусор в конце параметра
         }
-        return videoId;
       case "9gag" || "gag":
         if (url.pathname.includes("gag/")) {
           const urlArray = url.pathname.split('/');
@@ -239,7 +242,7 @@ async function main() {
           if (linkUrl?.href.includes("/videos/")) {
             const urlArray = linkUrl.href.split('/');
             return `videos/${urlArray[urlArray.length - 1]}`;
-          } else if (linkUrl?.href.includes) {
+          } else if (linkUrl?.href.includes('/clip/')) {
             return url.pathname.slice(1);
           } else {
             return false
@@ -280,9 +283,16 @@ async function main() {
       case "facebook":
         return url.pathname;
       case "rutube":
-        if (url.pathname.includes("/video/") || url.pathname.includes("/play/embed/")) {
+        if (url.pathname.includes('/video/') || url.pathname.includes('/play/embed/')) {
           const urlArray = url.pathname.split('/');
           return urlArray[urlArray.length - 2];
+        }
+      case "bilibili.com":
+        if (url.pathname.includes('/video/')) {
+          const urlArray = url.pathname.split('/');
+          return urlArray[urlArray.length - 2];
+        } else if (url.pathname.includes('/blackboard/webplayer/embed-old.html')) {
+          return url.searchParams.get("bvid");
         }
       default:
         return false;
@@ -673,6 +683,7 @@ async function main() {
     let video;
 
     // --- Get video element ---
+    debug.log('VideoContainer element: ', $videoContainer);
     if (siteHostname === 'vimeo') {
       video = $($videoContainer).find('.vp-video-wrapper > .vp-video > .vp-telecine > video')[0];
     } else if (siteHostname === 'facebook') {
@@ -692,7 +703,7 @@ async function main() {
       $videoContainer.parent().removeAttr('href');
     }
 
-    if (siteHostname == 'youtube' && window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) {
+    if (window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) {
       const syncVolumeObserver = new MutationObserver(async function(mutations) {
         mutations.forEach(async function(mutation) {
           if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow' && $('.translationVideoVolumeBox').length) {
@@ -740,7 +751,7 @@ async function main() {
 
     let firstPlay = true;
     const isDBInited = await initDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
-    if (siteHostname === 'youtube' && window.location.hostname.includes('m.youtube.com')) {
+    if (window.location.hostname.includes('m.youtube.com')) {
       await sleep(1000);
       opacityRatio = 1;
       addTranslationBtn($('.slim-video-information-title-and-badges'), 'yt-mobile');
@@ -795,7 +806,7 @@ async function main() {
         const $translationAT = $($translationATCont).find('.translationAT');
         $translationAT.on('click', async (event) => {
           event.stopPropagation();
-          const atValue = event.target.checked ? 1 : 0;
+          const atValue = event.target.checked ? 1 : 0; // Number(event.target.checked)
           await updateDB({autoTranslate: atValue});
           dbAutoTranslate = atValue;
         });
@@ -919,6 +930,8 @@ async function main() {
         }
 
         return {...videoData,...ytData};
+      } else if (window.location.hostname.includes('bilibili.com')) {
+        videoData.detectedLanguage = 'zh';
       }
 
       return videoData;
@@ -928,6 +941,7 @@ async function main() {
       if (dbShowVideoSlider !== 1) {
         return;
       }
+
       const newSlidersVolume = (window.location.hostname.includes('youtube.com') && !dbAutoSetVolumeYandexStyle) ? $('.ytp-volume-panel').attr('aria-valuenow') : Math.round(video.volume * 100);
 
       const videoVolumeBox = $(`
@@ -943,6 +957,7 @@ async function main() {
       if ($translationMenuContent.has('.translationVideoVolumeBox').length) {
         return;
       }
+
       $translationMenuContent.append(videoVolumeBox);
       const $volumePercent = videoVolumeBox.find('.volumePercent');
       tempOriginalVolume = newSlidersVolume;
@@ -1000,7 +1015,8 @@ async function main() {
         if (isOpened) {
           $translationMenuContent.hide();
         } else {
-          ($translationMenuContent.show(), $translationMenuContent.css('opacity', opacityRatio));
+          $translationMenuContent.show();
+          $translationMenuContent.css('opacity', opacityRatio);
         }
         isOpened = !isOpened;
       })
@@ -1029,6 +1045,7 @@ async function main() {
         if (!(!isBlock && !isContent)) {
           return;
         }
+
         $translationMenuContent.hide();
         isOpened = false
         if (!isVideo)
@@ -1067,6 +1084,7 @@ async function main() {
 
     const videoValidator = () => {
       if (window.location.hostname.includes('youtube.com')) {
+        debug.log("VideoValidator videoData: ", videoData)
         if (dbDontTranslateRuVideos === 1 && videoData.detectedLanguage === 'ru') {
           firstPlay = false;
           throw "VOT: Вы отключили перевод русскоязычных видео";
@@ -1100,6 +1118,7 @@ async function main() {
       if (getVideoId(siteHostname) !== VIDEO_ID) {
         return;
       }
+
       if (!success) {
         transformBtn('error', urlOrError);
         if (urlOrError.includes('Перевод займёт')) {
@@ -1112,7 +1131,7 @@ async function main() {
         throw urlOrError;
       }
 
-      volumeOnStart = video.volume;
+      volumeOnStart = video?.volume;
       audio.src = urlOrError;
 
       if (typeof(dbDefaultVolume) === 'number') {
@@ -1130,7 +1149,7 @@ async function main() {
         });
       }
 
-      if (['twitch', 'vimeo', 'facebook', 'rutube', 'twitter'].includes(siteHostname)) {
+      if (['twitch', 'vimeo', 'facebook', 'rutube', 'twitter', 'bilibili.com'].includes(siteHostname)) {
         const mutationObserver = new MutationObserver(async function(mutations) {
           mutations.forEach(async function(mutation) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video && mutation.target.src !== '') {
@@ -1308,13 +1327,13 @@ async function main() {
     $(video).on('progress', event => {
       event.stopPropagation();
 
-      const VIDEO_ID = getVideoId(siteHostname);
-
-      if (!VIDEO_ID) {
-        throw "VOT: Не найдено ID видео";
-      }
-
       if (firstPlay && dbAutoTranslate === 1) {
+        const VIDEO_ID = getVideoId(siteHostname);
+
+        if (!VIDEO_ID) {
+          throw "VOT: Не найдено ID видео";
+        }
+
         try {
           translateExecutor(VIDEO_ID);
           firstPlay = false;
@@ -1325,28 +1344,39 @@ async function main() {
       }
     });
 
-    $translationBtn.click(async function (event) {
+    $translationBtn.on('click', function (event) {
+      debug.log('[click translationBtn] init before all stops');
       event.stopPropagation();
-      event.stopImmediatePropagation();
-    
+      // event.stopImmediatePropagation();
+      debug.log('[click translationBtn] init');
+
       // check if the audio source is not empty
       if (audio.src) {
         debug.log('[click translationBtn] audio.src is not empty')
         stopTraslate();
-        return; // exit the function
+        event.stopImmediatePropagation();
       }
-    
-      // otherwise, try to execute the translation
+    });
+
+    $translationBtn.on('click', async function (event) {
+      debug.log('[click translationBtn] init before all stops');
+      event.stopPropagation();
+      // event.stopImmediatePropagation();
+      debug.log('[click translationBtn] init');
+
       try {
         debug.log('[click translationBtn] trying execute translation')
         const VIDEO_ID = getVideoId(siteHostname);
-    
+
         if (!VIDEO_ID) {
+          debug.log('[click translationBtn] videoId not finded');
           throw "VOT: Не найдено ID видео"; // not found video id
         }
-    
+
         translateExecutor(VIDEO_ID);
+        event.stopImmediatePropagation();
       } catch (err) {
+        debug.log('[click translationBtn] An error occurred while executing', err);
         transformBtn('error', String(err).substring(4, err.length))
         console.error(err);
       }
@@ -1363,27 +1393,30 @@ async function main() {
         const ytPageEnter = (event) => {
           const video = $('.html5-video-container');
           if (video != null && video.length > 0) {
+            debug.log('[exec] translateProccessor youtube on page enter')
             translateProccessor(video, 'youtube', 'yt-translate-stop');
           } else {
             if (ytplayer == null || ytplayer.config === undefined || ytplayer.config === null) {
+              debug.log('[exec] ytplayer is null')
               return;
             }
             ytplayer.config.args.jsapicallback = (jsApi) => {
-                translateProccessor($('.html5-video-container'), 'youtube', 'yt-translate-stop');
+              debug.log('[exec] translateProccessor youtube on page enter (ytplayer.config.args.jsapicallback)')
+              translateProccessor($('.html5-video-container'), 'youtube', 'yt-translate-stop');
             }
           }
         };
 
-        document.addEventListener('spfdone', ytPageEnter);
-        document.addEventListener('yt-navigate-finish', ytPageEnter);
+        document.addEventListener('spfdone', () => {ytPageEnter(), debug.log('spfdone')});
+        document.addEventListener('yt-navigate-finish', () => {ytPageEnter(), debug.log('yt-navigate-finish')});
 
         const ytPageLeave = () => { document.body.dispatchEvent(new Event('yt-translate-stop')); };
         document.addEventListener('spfrequest', ytPageLeave);
         document.addEventListener('yt-navigate-start', ytPageLeave);
 
-        ytPageEnter(null);
+        // ytPageEnter(null);
       }
-    } else if (window.location.hostname.includes('twitch')) {
+    } else if (window.location.hostname.includes('twitch.tv')) {
       if (window.location.hostname.includes('m.twitch.tv') && (window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/'))) {
         const el = await waitForElement(twitchMobileSelector);
         if (el) {
@@ -1412,10 +1445,10 @@ async function main() {
           await translateProccessor(el, 'twitch', null);
         }
       }
-    } else if (window.location.hostname.includes('xvideos')) {
+    } else if (window.location.hostname.includes('xvideos.com')) {
       await sleep(1000);
       await translateProccessor($('.video-bg-pic'), 'xvideos', null);
-    } else if (window.location.hostname.includes('pornhub')) {
+    } else if (window.location.hostname.includes('pornhub.com')) {
       await sleep(1000);
       await translateProccessor($('.mgp_videoWrapper'), 'pornhub', null);
     } else if (sitesInvidious.includes(window.location.hostname)) { // Need an additional extension to work in chrome-like browsers
@@ -1455,13 +1488,13 @@ async function main() {
           }
         }, 3000);
       }
-    } else if (window.location.hostname.includes('vimeo')) {
+    } else if (window.location.hostname.includes('vimeo.com')) {
       await sleep(1000);
       await translateProccessor($('.player'), 'vimeo', null);
-    } else if (window.location.hostname.includes('9gag')) {
+    } else if (window.location.hostname.includes('9gag.com')) {
       await sleep(1000);
       await translateProccessor($('.video-post'), '9gag', null);
-    } else if (window.location.hostname.includes('twitter')) {
+    } else if (window.location.hostname.includes('twitter.com')) {
       const el = await waitForElement(twitterSelector);
       if (el) {
         let videoIDNew;
@@ -1500,13 +1533,30 @@ async function main() {
     //       }
     //     }, 3000);
     //   }
-    } else if (window.location.hostname.includes('rutube')) {
+    } else if (window.location.hostname.includes('rutube.ru')) {
       const elementSelector = window.location.pathname.includes('/play/embed') ? '#app > div > div' : '.video-player > div > div > div:nth-child(2)';
 
       const el = await waitForElement(elementSelector);
       if (el) {
         await translateProccessor($(el), 'rutube', null);
       }
+    } else if (window.location.hostname.includes('bilibili.com')) {
+      if (window.location.pathname.includes('/video/')) {
+        const elementSelector = '.bpx-player-video-wrap';
+
+        const el = await waitForElement(elementSelector);
+        if (el) {
+          await translateProccessor($(el), 'bilibili.com', null);
+        }
+      } else if (window.location.pathname.includes('/blackboard/webplayer/embed-old.html')) {
+        const elementSelector = 'video';
+
+        const el = await waitForElement(elementSelector);
+        if (el) {
+          await translateProccessor($(el).parent(), 'bilibili.com', null);
+        }
+      }
+
     }
   }
 
@@ -1514,5 +1564,5 @@ async function main() {
 }
 
 main().catch((e) => {
-  console.log(e);
+  console.error(e);
 });
