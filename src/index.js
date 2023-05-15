@@ -15,6 +15,8 @@ const vkSelector = '.videoplayer_media';
 
 const pipedSelector = '.player-container';
 
+const youtubeSelector = '.html5-video-container';
+
 async function main() {
   const rvt = await import(
     `./rvt${BUILD_MODE === 'cloudflare' ? '-cloudflare' : ''}.js`
@@ -138,8 +140,8 @@ async function main() {
     <div class = "translationBlock">
       <span class = "translationArea" role = "button">
         <span class = "translationITranslate" tabindex = "-1">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path class="translateIcon" fill-rule="evenodd" clip-rule="evenodd" d="M17.605 19.703c.794-.13 1.647-.476 2.47-.983.695 1.013 1.255 1.546 1.306 1.593l1.166-1.207c-.011-.01-.504-.48-1.124-1.401.277-.25.547-.512.797-.798a12.1 12.1 0 0 0 2.268-3.826c.383.216.761.541.96 1.027.68 1.649-.301 3.557-1.215 4.385l1.152 1.22c1.52-1.378 2.571-3.959 1.638-6.227-.368-.892-1.077-1.59-2.064-2.037.162-.763.216-1.38.233-1.785h-1.698c-.017.307-.06.762-.173 1.323-1.325-.187-2.818-.006-4.248.508a25.994 25.994 0 0 1-.313-2.547c5.092-.287 8.098-1.488 8.237-1.546l-.654-1.533c-.03.013-2.875 1.14-7.65 1.418-.001-.405-.008-.666-.012-.85-.008-.339-.01-.423.03-.67L17.01 5.75c-.026.283-.024.573-.018 1.278l.002.318c-.026 0-.051 0-.077.002l-.08.001a39.286 39.286 0 0 1-3.27-.14L13.25 8.89c.5.043 2.023.122 3.397.122h.1a19.457 19.457 0 0 1 .208-.003l.106-.002c.067.948.196 2.034.421 3.22a8.05 8.05 0 0 0-2.267 1.963l.811 1.871c.327-.732.995-1.51 1.856-2.111a16.762 16.762 0 0 0 1.33 3.346c-.811.514-1.64.818-2.301.804l.694 1.603Zm2.953-3.488a8.18 8.18 0 0 0 .374-.389 10.465 10.465 0 0 0 1.927-3.224c-.198-.021-.4-.031-.606-.031-.907 0-1.885.199-2.834.574.31 1.209.718 2.23 1.14 3.07ZM9.769 11.688 4.25 24.438h2.259l1.357-3.407h5.582l1.357 3.407h2.258l-5.52-12.75H9.77Zm.887 2.624 2.056 5H8.6l2.056-5Z" fill="#fff"></path>
+          <svg class="translateIcon" width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M17.605 19.703c.794-.13 1.647-.476 2.47-.983.695 1.013 1.255 1.546 1.306 1.593l1.166-1.207c-.011-.01-.504-.48-1.124-1.401.277-.25.547-.512.797-.798a12.1 12.1 0 0 0 2.268-3.826c.383.216.761.541.96 1.027.68 1.649-.301 3.557-1.215 4.385l1.152 1.22c1.52-1.378 2.571-3.959 1.638-6.227-.368-.892-1.077-1.59-2.064-2.037.162-.763.216-1.38.233-1.785h-1.698c-.017.307-.06.762-.173 1.323-1.325-.187-2.818-.006-4.248.508a25.994 25.994 0 0 1-.313-2.547c5.092-.287 8.098-1.488 8.237-1.546l-.654-1.533c-.03.013-2.875 1.14-7.65 1.418-.001-.405-.008-.666-.012-.85-.008-.339-.01-.423.03-.67L17.01 5.75c-.026.283-.024.573-.018 1.278l.002.318c-.026 0-.051 0-.077.002l-.08.001a39.286 39.286 0 0 1-3.27-.14L13.25 8.89c.5.043 2.023.122 3.397.122h.1a19.457 19.457 0 0 1 .208-.003l.106-.002c.067.948.196 2.034.421 3.22a8.05 8.05 0 0 0-2.267 1.963l.811 1.871c.327-.732.995-1.51 1.856-2.111a16.762 16.762 0 0 0 1.33 3.346c-.811.514-1.64.818-2.301.804l.694 1.603Zm2.953-3.488a8.18 8.18 0 0 0 .374-.389 10.465 10.465 0 0 0 1.927-3.224c-.198-.021-.4-.031-.606-.031-.907 0-1.885.199-2.834.574.31 1.209.718 2.23 1.14 3.07ZM9.769 11.688 4.25 24.438h2.259l1.357-3.407h5.582l1.357 3.407h2.258l-5.52-12.75H9.77Zm.887 2.624 2.056 5H8.6l2.056-5Z"></path>
           </svg>
         </span>
         <span class = "translationBtn" tabindex = "0">Перевести видео</span>
@@ -150,13 +152,11 @@ async function main() {
         </svg>
       </span>
     </div>`);
+
   const $translationDownload = $(`
       <a class = "translationDownload">
         <svg width="24px" height="24px" data-darkreader-inline-stroke="" fill="none" stroke="currentColor" style="--darkreader-inline-stroke: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
       </span>`);
-  const $translationBtn = $translationBlock.find('.translationArea > .translationBtn');
-  const $translationImageAlice = $translationBlock.find('.translationIconAlice');
-  const $translationImageTranslate = $translationBlock.find('.translateIcon');
 
   const $translationMenuContent = $('<div class = "translationMenuContent"><p class = "translationMainHeader">Перевод видео</p><div class = "translationAbsoluteContainer"></div></div>');
   $translationMenuContent.on('click', (event) => {
@@ -588,38 +588,23 @@ async function main() {
 
 
   function changeColor(n) {
-    $translationBtn.css("color", n);
+    document.querySelector('.translationBtn').style.color = n;
   }
 
   function changeBackground(type = 'none') {
-    let aliceMaskFill;
-    let aliceGradientStop1;
-    let aliceGradientStop2;
     let imgBackgroundColor;
     switch (type) {
       case 'error':
-        aliceMaskFill = '#7A7A7D';
-        aliceGradientStop1 = '#7A7A7D';
-        aliceGradientStop2 = '#7A7A7D';
         imgBackgroundColor = '#7A7A7D';
         break;
       case 'success':
-        aliceMaskFill = '#7626FF';
-        aliceGradientStop1 = '#C826FF';
-        aliceGradientStop2 = '#5426FF';
         imgBackgroundColor = '#A36EFF';
         break;
       default:
-        aliceMaskFill = '#7626FF';
-        aliceGradientStop1 = '#C826FF';
-        aliceGradientStop2 = '#5426FF';
         imgBackgroundColor = '#FFFFFF';
         break;
     }
-    $translationImageAlice.find('g > path:nth-child(2)').attr('fill', aliceMaskFill);
-    $translationImageAlice.find('defs > linearGradient > stop:nth-child(1)').attr('stop-color', aliceGradientStop1);
-    $translationImageAlice.find('defs > linearGradient > stop:nth-child(2)').attr('stop-color', aliceGradientStop2);
-    $translationImageTranslate.attr('fill', imgBackgroundColor)
+    document.querySelector('.translateIcon').style.fill = imgBackgroundColor;
   }
 
   function transformBtn(type = 'none', text) {
@@ -637,7 +622,7 @@ async function main() {
         changeColor('#FFFFFF');
         break;
     }
-    $translationBtn.text(text);
+    document.querySelector('.translationBtn').innerText = text;
   }
 
   async function waitForElement(selector, timeout = 15_000) {
@@ -677,6 +662,8 @@ async function main() {
     } else {
       video = $($videoContainer).find('video')[0];
     }
+
+    debug.log('Video element: ', video)
 
     const videoData = getVideoData();
     console.log('VOT Video Data: ', videoData)
@@ -718,14 +705,13 @@ async function main() {
 
     function syncOriginalVolumeSlider() {
       // Sync volume slider with original video (youtube only)
-      const newSlidersVolume = $('.ytp-volume-panel').attr('aria-valuenow');
-      const videoVolumeBox = $('.translationVideoVolumeBox');
+      const newSlidersVolume = document.querySelector('.ytp-volume-panel').getAttribute('aria-valuenow');
+      const videoVolumeBox = document.querySelector('.translationVideoVolumeBox');
       if (videoVolumeBox.length) {
-        const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
-        videoVolumeSlider.val(newSlidersVolume);
-        const volumePercent = videoVolumeBox.parent().find('.volumePercent');
-        volumePercent.text(`${newSlidersVolume}%`);
+        document.querySelector('#VOTOriginalVolumeSlider').value = newSlidersVolume;
+        document.querySelector('#VOTOriginalVolume').innerText = `${newSlidersVolume}%`;
       }
+
       if (dbSyncVolume === 1) {
         tempOriginalVolume = Number(newSlidersVolume);
       }
@@ -784,26 +770,25 @@ async function main() {
             <label class = "translationMenuText" for = "auto_translate">Переводить при открытие${siteHostname === 'vk' || window.location.hostname.includes('m.twitch.tv') ? ' <strong>(рекомендуется)</strong>' : ''}</label>
           </div>
         `);
-        const $translationAT = $($translationATCont).find('.translationAT');
-        $translationAT.on('click', async (event) => {
+        $translationMenuContent.append($translationATCont);
+        document.querySelector('.translationMenuContainer > .translationAT').addEventListener('click', async (event) => {
           event.stopPropagation();
           const atValue = Number(event.target.checked);
           await updateDB({autoTranslate: atValue});
           dbAutoTranslate = atValue;
         });
-        $translationMenuContent.append($translationATCont);
       }
 
       if (!$translationMenuContent.has('.translationDropDB').length && dbData !== undefined) {
         const $translationDropDB = $(
           `<button class = "translationDropDB">Сбросить настройки</button>`
         );
-        $translationDropDB.on('click', async (event) => {
+        $translationMenuContent.find('.translationAbsoluteContainer').append($translationDropDB);
+        document.querySelector('.translationDropDB').addEventListener('click', async (event) => {
           event.stopPropagation();
           deleteDB();
           location.reload();
         });
-        $translationMenuContent.find('.translationAbsoluteContainer').append($translationDropDB);
       }
 
       if (!$translationMenuContent.has('.translationSVS').length && dbData !== undefined) {
@@ -814,19 +799,18 @@ async function main() {
           </div>
           `
         );
-        const $translationSVS = $($translationSVSCont).find('.translationSVS');
-        $translationSVS.on('click', async (event) => {
+        $translationMenuContent.append($translationSVSCont);
+        document.querySelector('.translationMenuContainer > .translationSVS').addEventListener('click', async (event) => {
           event.stopPropagation();
           const svsValue = Number(event.target.checked);
           await updateDB({showVideoSlider: svsValue});
           dbShowVideoSlider = svsValue;
-          if (svsValue === 1 && $translationBtn.text() === 'Выключить') {
+          if (svsValue === 1 && document.querySelector('.translationBtn').innerText === 'Выключить') {
             addVideoSlider();
           } else {
             $('.translationVideoVolumeBox').parent().remove();
           }
         });
-        $translationMenuContent.append($translationSVSCont);
       }
 
       if (!$translationMenuContent.has('.translationSyncVolume').length && dbSyncVolume !== undefined && window.location.hostname.includes('youtube.com')) {
@@ -837,14 +821,13 @@ async function main() {
           </div>
           `
         );
-        const $translationSyncVolume = $($translationSyncVolumeContainter).find('.translationSyncVolume');
-        $translationSyncVolume.on('click', async (event) => {
+        $translationMenuContent.append($translationSyncVolumeContainter);
+        document.querySelector('.translationMenuContainer > .translationSyncVolume').addEventListener('click', async (event) => {
           event.stopPropagation();
           const syncVolumeValue = event.target.checked ? 1 : 0;
           await updateDB({syncVolume: syncVolumeValue});
           dbSyncVolume = syncVolumeValue;
         });
-        $translationMenuContent.append($translationSyncVolumeContainter);
       } else if (dbSyncVolume === undefined) {
         try {
           await updateDB({syncVolume: 0});
@@ -862,14 +845,13 @@ async function main() {
           </div>
           `
         );
-        const $translationAutoSetVolume = $($translationAutoSetVolumeContainer).find('.translationAutoSetVolume');
-        $translationAutoSetVolume.on('click', async (event) => {
+        $translationMenuContent.append($translationAutoSetVolumeContainer);
+        document.querySelector('.translationMenuContainer > .translationAutoSetVolume').addEventListener('click', async (event) => {
           event.stopPropagation();
           const autoSetVolumeValue = event.target.checked ? 1 : 0;
           await updateDB({autoSetVolumeYandexStyle: autoSetVolumeValue});
           dbAutoSetVolumeYandexStyle = autoSetVolumeValue;
         });
-        $translationMenuContent.append($translationAutoSetVolumeContainer);
       }
 
       if (!$translationMenuContent.has('.translationDTRuV').length && dbDontTranslateRuVideos !== undefined && window.location.hostname.includes('youtube.com')) {
@@ -880,14 +862,13 @@ async function main() {
           </div>
           `
         );
-        const $translationDTRuV = $($DTRuVContainter).find('.translationDTRuV');
-        $translationDTRuV.on('click', async (event) => {
+        $translationMenuContent.append($DTRuVContainter);
+        document.querySelector('.translationMenuContainer > .translationDTRuV').addEventListener('click', async (event) => {
           event.stopPropagation();
           const DTRuVValue = event.target.checked ? 1 : 0;
           await updateDB({dontTranslateRuVideos: DTRuVValue});
           dbDontTranslateRuVideos = DTRuVValue;
         });
-        $translationMenuContent.append($DTRuVContainter);
       }
     } else {
       $translationMenuContent.remove();
@@ -925,36 +906,33 @@ async function main() {
 
       const newSlidersVolume = (window.location.hostname.includes('youtube.com') && !dbAutoSetVolumeYandexStyle) ? $('.ytp-volume-panel').attr('aria-valuenow') : Math.round(video.volume * 100);
 
+      // original volume slider
       const videoVolumeBox = $(`
           <div class = "translationMenuContainer">
-            <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${newSlidersVolume}%</b></span>
+            <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent" id="VOTOriginalVolume">${newSlidersVolume}%</b></span>
             <div class = "translationVideoVolumeBox" tabindex = "0">
-              <input type="range" min="0" max="100" value=${newSlidersVolume} class="translationVolumeSlider">
+              <input type="range" min="0" max="100" value=${newSlidersVolume} class="translationVolumeSlider" id="VOTOriginalVolumeSlider">
             </div>
           </div>`
       );
-      const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
 
       if ($translationMenuContent.has('.translationVideoVolumeBox').length) {
         return;
       }
 
       $translationMenuContent.append(videoVolumeBox);
-      const $volumePercent = videoVolumeBox.find('.volumePercent');
       tempOriginalVolume = newSlidersVolume;
-      videoVolumeSlider.on('input', (event) => {
+      document.querySelector('#VOTOriginalVolumeSlider').addEventListener('input', (event) => {
         const {value} = event.target;
         video.volume = (value / 100);
-        $volumePercent.text(`${value}%`);
+        document.querySelector('#VOTOriginalVolume').innerText = `${value}%`;
 
         if (dbSyncVolume !== 1) {
           return;
         }
-        // console.log(`VOT: Синхронизация громкости перевода с громкостью видео. Громкость оригинала: ${value}. Прошлая громкость оригинала: ${tempOriginalVolume}`);
-        const volumeBox = $('.translationVolumeBox');
-        const volumeSlider = volumeBox.find('.translationVolumeSlider');
-        const volumePercent = volumeBox.parent().find('.volumePercent');
-        const volume = Number(volumeSlider.val());
+
+        const volumeSlider = document.querySelector('#VOTTranslateVolumeSlider');
+        const volume = Number(volumeSlider.value);
         let finalValue;
 
         if (value > tempOriginalVolume) {
@@ -979,8 +957,8 @@ async function main() {
           audio.volume = finalValue / 100;
         }
 
-        volumeSlider.val(finalValue);
-        volumePercent.text(`${finalValue}%`);
+        volumeSlider.value = finalValue;
+        document.querySelector('#VOTTranslateVolume').innerText = `${finalValue}%`;
         tempVolume = finalValue;
         tempOriginalVolume = value;
       });
@@ -989,9 +967,8 @@ async function main() {
     const btnHover = () => {
       let time;
       let isOpened = false;
-      const $translationMenu = $(".translationMenu");
 
-      $translationMenu.on('click', (event) => {
+      document.querySelector('.translationMenu').addEventListener('click', (event) => {
         event.stopPropagation();
         if (isOpened) {
           $translationMenuContent.hide();
@@ -1004,22 +981,21 @@ async function main() {
 
       if (siteHostname === 'pornhub') {
         if (window.location.pathname.includes('view_video.php')) {
-          $('.original.mainPlayerDiv > video-element > div').on("mousemove", () => resetTimer());
-          $('.original.mainPlayerDiv > video-element > div').on("mouseout", () => logout(0));
+          document.querySelector('.original.mainPlayerDiv > video-element > div').addEventListener("mousemove", () => resetTimer());
+          document.querySelector('.original.mainPlayerDiv > video-element > div').addEventListener("mouseout", () => logout(0));
         } else if (window.location.pathname.includes('embed/')) {
-          $('#player').on("mousemove", () => resetTimer());
-          $('#player').on("mouseout", () => logout(0));
+          document.querySelector('#player').addEventListener("mousemove", () => resetTimer());
+          document.querySelector('#player').addEventListener("mouseout", () => logout(0));
         }
       } else if (siteHostname === 'twitter') {
-        const twitterPlayer = $('div[data-testid="videoPlayer"');
-        twitterPlayer.on("mousemove", () => resetTimer());
-        twitterPlayer.on("mouseout", () => logout(0));
+        document.querySelector('div[data-testid="videoPlayer"').addEventListener("mousemove", () => resetTimer());
+        document.querySelector('div[data-testid="videoPlayer"').addEventListener("mouseout", () => logout(0));
       } else {
-        $($videoContainer).on("mousemove", () => resetTimer());
-        $($videoContainer).on("mouseout", () => logout(0));
+        $videoContainer[0].addEventListener("mousemove", () => resetTimer());
+        $videoContainer[0].addEventListener("mouseout", () => logout(0));
       }
 
-      $(document).on("click", (event) => {
+      document.addEventListener("click", (event) => {
         const isBlock = event.target === $($translationBlock)[0] || $($translationBlock).length ? $($translationBlock)[0].contains(event.target) : false;
         const isContent = event.target === $($translationMenuContent)[0] || $($translationMenuContent).length ? $($translationMenuContent)[0].contains(event.target) : false;
         const isVideo = event.target === $($videoContainer)[0] || $($videoContainer).length ? $($videoContainer)[0].contains(event.target) : false;
@@ -1041,12 +1017,12 @@ async function main() {
         event.stopPropagation()
       }
 
-      $translationBlock.on("mousemove", (event) => changeOpacityByEvent(event, time, opacityRatio));
-      $translationMenuContent.on("mousemove", (event) => changeOpacityByEvent(event, time, opacityRatio));
+      document.querySelector('.translationBlock').addEventListener("mousemove", (event) => changeOpacityByEvent(event, time, opacityRatio));
+      document.querySelector('.translationMenuContent').addEventListener("mousemove", (event) => changeOpacityByEvent(event, time, opacityRatio));
 
-      $(document).on("touchstart", (event) => changeOpacityByEvent(event, time, opacityRatio));
-      $(document).on("touchmove", (event) => changeOpacityByEvent(event, time, opacityRatio));
-      $(document).on("touchend", (event) => changeOpacityByEvent(event, time, opacityRatio));
+      document.addEventListener("touchstart", (event) => changeOpacityByEvent(event, time, opacityRatio));
+      document.addEventListener("touchmove", (event) => changeOpacityByEvent(event, time, opacityRatio));
+      document.addEventListener("touchend", (event) => changeOpacityByEvent(event, time, opacityRatio));
 
       function logout(n) {
         if (!isOpened) {
@@ -1120,11 +1096,11 @@ async function main() {
       }
 
       if (siteHostname === 'twitter') {
-        $('div[data-testid="app-bar-back"][role="button"]').on('click', () => {
+        document.querySelector('div[data-testid="app-bar-back"][role="button"]').addEventListener('click', () => {
           stopTraslate();
-        })
+        });
       } else if (siteEvent !== null && siteEvent !== 'invidious' && siteEvent !== 'piped') {
-        $("body").on(siteEvent, () => {
+        document.body.addEventListener(siteEvent, () => {
           stopTraslate();
           syncOriginalVolumeSlider();
         });
@@ -1151,11 +1127,11 @@ async function main() {
       // fix for video.paused stuck bug
       if (video.paused) {
         if (siteHostname === 'twitter') {
-          video = $('div[data-testid="videoComponent"] > div > div > video')[0]
+          video = $('div[data-testid="videoComponent"] > div > div > video')[0];
         } else if (siteHostname === 'vk') {
-          video = $(vkSelector).find('video')[0]
+          video = $(vkSelector).find('video')[0];
         } else if (siteHostname === 'youtube' && siteEvent === 'piped') {
-          video = $(pipedSelector).find('video')[0]
+          video = $(pipedSelector).find('video')[0];
         }
       }
 
@@ -1191,36 +1167,31 @@ async function main() {
 
       if (typeof(dbAutoSetVolumeYandexStyle) === 'number' && dbAutoSetVolumeYandexStyle === 1) {
         video.volume = defaultVideoVolume;
-        const $translationVideoVolumeBox = $('.translationVideoVolumeBox');
-        $translationVideoVolumeBox.find('.translationVolumeSlider').val(defaultVideoVolume * 100);
-        $translationVideoVolumeBox.parent().find('.volumePercent').text(`${defaultVideoVolume * 100}%`);
+        document.querySelector('#VOTOriginalVolumeSlider').value = defaultVideoVolume * 100;
+        document.querySelector('#VOTOriginalVolume').innerText = `${defaultVideoVolume * 100}%`;
       }
 
       const volumeBox = $(`
           <div class = "translationMenuContainer">
-            <span class = "translationHeader">Громкость перевода: <b class = "volumePercent">${defaultTranslateVolume}%</b></span>
+            <span class = "translationHeader">Громкость перевода: <b class = "volumePercent" id="VOTTranslateVolume">${defaultTranslateVolume}%</b></span>
             <div class = "translationVolumeBox" tabindex = "0">
-              <input type="range" min="0" max="100" value=${defaultTranslateVolume} class="translationVolumeSlider">
+              <input type="range" min="0" max="100" value=${defaultTranslateVolume} class="translationVolumeSlider"  id="VOTTranslateVolumeSlider">
             </div>
           </div>`
       );
-      const volumeSlider = volumeBox.find('.translationVolumeSlider');
 
       if (!$translationMenuContent.has('.translationVolumeBox').length) {
         $translationMenuContent.append(volumeBox);
-        const $volumePercent = volumeBox.find('.volumePercent');
         tempVolume = Number(defaultTranslateVolume);
-        volumeSlider.on('input', async (event) => {
+        document.querySelector('#VOTTranslateVolumeSlider').addEventListener('input', async (event) => {
           let {value} = event.target;
           audio.volume = (value / 100);
-          $volumePercent.text(`${value}%`);
+          document.querySelector('#VOTTranslateVolume').innerText = `${value}%`;
 
           if (dbSyncVolume === 1) {
             // console.log(`VOT: Синхронизация громкости видео с громкостью перевода. Громкость перевода: ${value}. Прошлая громкость перевода: ${tempVolume}`);
-            const volumeBox = $('.translationVideoVolumeBox');
-            const volumeSlider = volumeBox.find('.translationVolumeSlider');
-            const volumePercent = volumeBox.parent().find('.volumePercent');
-            const volume = Number(volumeSlider.val());
+            const volumeSlider = document.querySelector('#VOTTranslateVolumeSlider');
+            const volume = Number(volumeSlider.value);
             let finalValue;
 
             if (value > tempVolume) {
@@ -1245,8 +1216,8 @@ async function main() {
               video.volume = finalValue / 100;
             }
 
-            volumeSlider.val(finalValue);
-            volumePercent.text(`${finalValue}%`);
+            volumeSlider.value = finalValue;
+            document.querySelector('#VOTOriginalVolume').innerText = `${finalValue}%`;
             tempOriginalVolume = finalValue;
             tempVolume = value;
           }
@@ -1258,7 +1229,7 @@ async function main() {
 
       if (!$translationMenuContent.find('.translationAbsoluteContainer').has('.translationDownload').length) {
         $translationMenuContent.find('.translationAbsoluteContainer').append($translationDownload);
-        $translationDownload.attr('href', urlOrError);
+        document.querySelector('.translationDownload').href = urlOrError
       }
     });
 
@@ -1305,7 +1276,7 @@ async function main() {
       }
     };
 
-    $(video).on('progress', event => {
+    video.addEventListener('progress', event => {
       event.stopPropagation();
 
       if (firstPlay && dbAutoTranslate === 1) {
@@ -1325,7 +1296,8 @@ async function main() {
       }
     });
 
-    $translationBtn.click(async function (event) {
+    document.querySelector('.translationBtn').addEventListener('click', async (event) => {
+      debug.log('[click translationBtn] before all functions & methods');
       event.stopPropagation();
       event.stopImmediatePropagation();
 
@@ -1350,18 +1322,18 @@ async function main() {
         transformBtn('error', String(err).substring(4, err.length))
         console.error(err);
       }
-    });
+    })
   }
 
   async function initWebsite() {
     if (/^(www.|m.)?youtube(-nocookie)?.com$/.test(window.location.hostname)) {
       if (window.location.pathname.includes('embed')) {
-        await translateProccessor($('.html5-video-container'), 'youtube', null);
+        await translateProccessor($(youtubeSelector), 'youtube', null);
       } else if (window.location.hostname.includes("m.youtube.com") && window.location.pathname.includes('watch')){
-        await translateProccessor($('.html5-video-container'), 'youtube', null);
+        await translateProccessor($(youtubeSelector), 'youtube', null);
       } else {
         const ytPageEnter = (event) => {
-          const video = $('.html5-video-container');
+          const video = $(youtubeSelector);
           if (video != null && video.length > 0) {
             debug.log('[exec] translateProccessor youtube on page enter')
             translateProccessor(video, 'youtube', 'yt-translate-stop');
@@ -1372,7 +1344,7 @@ async function main() {
             }
             ytplayer.config.args.jsapicallback = (jsApi) => {
               debug.log('[exec] translateProccessor youtube on page enter (ytplayer.config.args.jsapicallback)')
-              translateProccessor($('.html5-video-container'), 'youtube', 'yt-translate-stop');
+              translateProccessor($(youtubeSelector), 'youtube', 'yt-translate-stop');
             }
           }
         };
