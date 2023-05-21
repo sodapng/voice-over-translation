@@ -24,10 +24,10 @@ $video_link = $args[0]
 if ($args[1]) {
     $original_sound_ratio = $args[1]
 }
-Write-Host "Original volume is set to $original_sound_ratio"
 
 # Check that var is init
 if ($video_link) {
+    Write-Host "Original volume is set to $original_sound_ratio"
     # No -Force, to make sure nothing is overwritten
     New-Item -ItemType Directory -Path $temp_dir -ErrorAction SilentlyContinue | Out-Null
     New-Item -ItemType Directory -Path $temp_video_dir -ErrorAction SilentlyContinue | Out-Null
@@ -52,4 +52,6 @@ if ($video_link) {
         -y $video_full_name
 
     Remove-Item -Recurse -Force $temp_dir
+} else {
+    Write-Host "You didn't enter a link to the video"
 }
