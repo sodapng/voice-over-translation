@@ -2465,7 +2465,7 @@ async function src_main() {
     }
   }
 
-  initWebsite();
+  await initWebsite();
 }
 
 src_main().catch((e) => {

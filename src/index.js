@@ -1002,7 +1002,7 @@ async function main() {
     }
   }
 
-  initWebsite();
+  await initWebsite();
 }
 
 main().catch((e) => {
