@@ -1,81 +1,16 @@
 import './styles/main.css';
 import { getYTVideoData }  from './utils/getYTVideoData.js';
 import { yandexRequests } from './yandexRequests.js';
-import { waitForElm, getVideoId, sleep } from './utils/utils.js';
+import { waitForElm, getVideoId, sleep, secsToStrTime } from './utils/utils.js';
 import { autoVolume } from './config/config.js';
+import { sitesInvidious, sitesPiped } from './config/alternativeUrls.js';
+import { translateFuncParam, availableFromLangs, availableToLangs, siteTranslates } from './config/constants.js';
 import { initDB, readDB, updateDB, deleteDB } from './indexedDB.js';
-import { transformBtn, addTranslationBlock } from './menu.js';
+import { transformBtn, addTranslationBlock, createTranslationMenu, createMenuCheckbox, createMenuSlider, createMenuSelect } from './menu.js';
+import { syncVolume } from './utils/volume.js';
 import regexes from './config/regexes.js';
 import selectors from './config/selectors.js';
 import debug from './utils/debug.js';
-
-// Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
-const sitesInvidious = [
-  'invidious.snopyta.org',
-  'yewtu.be',
-  'invidious.kavin.rocks',
-  'vid.puffyan.us',
-  'invidious.namazso.eu',
-  'inv.riverside.rocks',
-  'yt.artemislena.eu',
-  'invidious.flokinet.to',
-  'invidious.esmailelbob.xyz',
-  'y.com.sb',
-  'invidious.nerdvpn.de',
-  'inv.vern.cc',
-  'invidious.slipfox.xyz',
-  'invidio.xamh.de',
-  'invidious.dhusch.de'
-];
-
-// Sites host Piped. I tested the performance only on piped.video
-const sitesPiped = [
-  'piped.video',
-  'piped.tokhmi.xyz',
-  'piped.moomoo.me',
-  'piped.syncpundit.io',
-  'piped.mha.fi',
-  'watch.whatever.social',
-  'piped.garudalinux.org',
-  'efy.piped.pages.dev',
-  'watch.leptons.xyz',
-  'piped.lunar.icu',
-  'yt.dc09.ru',
-  'piped.mint.lgbt',
-  'il.ax',
-  'piped.privacy.com.de',
-  'piped.esmailelbob.xyz',
-  'piped.projectsegfau.lt',
-  'piped.in.projectsegfau.lt',
-  'piped.us.projectsegfau.lt',
-  'piped.privacydev.net',
-  'piped.palveluntarjoaja.eu',
-  'piped.smnz.de',
-  'piped.adminforge.de',
-  'piped.qdi.fi',
-  'piped.hostux.net',
-  'piped.chauvet.pro',
-  'piped.jotoma.de',
-  'piped.pfcd.me',
-  'piped.frontendfriendly.xyz'
-];
-
-const siteTranslates = {
-  'youtube': 'https://youtu.be/',
-  'twitch': 'https://twitch.tv/',
-  'vimeo': 'https://vimeo.com/',
-  '9gag': 'https://9gag.com/gag/',
-  'vk': 'https://vk.com/video?z=',
-  'xvideos': 'https://www.xvideos.com/',
-  'pornhub': 'https://rt.pornhub.com/view_video.php?viewkey=',
-  'udemy': 'https://www.udemy.com',
-  'twitter': 'https://twitter.com/i/status/',
-  'facebook': 'https://www.facebook.com/',
-  'rutube': 'https://rutube.ru/video/',
-  'bilibili.com': 'https://www.bilibili.com/video/'
-}
-
-const translateFuncParam = 0x40_75_50_00_00_00_00_00;
 
 const sitesChromiumBlocked = Object.assign([], sitesInvidious, sitesPiped);
 
@@ -87,13 +22,10 @@ async function main() {
   const requestVideoTranslation = rvt.default;
 
   if (BUILD_MODE !== 'cloudflare' && (GM_info?.scriptHandler && ['Violentmonkey', 'FireMonkey', 'Greasemonkey', 'AdGuard'].includes(GM_info.scriptHandler))) {
-        const errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
-        console.log(errorText);
-        return alert(errorText);
+    const errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
+    console.log(errorText);
+    return alert(errorText);
   }
-
-  const availableFromLangs = {'ru': 'Русский', 'en': 'Английский', 'zh': 'Китайский', 'fr': 'Французский', 'it': 'Итальянский', 'es': 'Испанский'}; // available languages for translation (from)
-  const availableToLangs = {'ru': 'Русский', 'en': 'Английский'}; // available languages for translation (to)
 
   let timer;
   const audio = new Audio();
@@ -133,21 +65,10 @@ async function main() {
   function addTranslationMenu(element) {
     if (element.querySelector('.translationMenuContent')) return;
 
-    const container = document.createElement('div');
-    container.classList.add('translationMenuContent');
-    container.innerHTML = `
-      <p class = "translationMainHeader">Настройки перевода</p>
-      <div class="translationMenuOptions"></div>
-      <div class="translationMenuFunctional">
-        <a class = "translationDownload">
-          <svg width="24px" height="24px" data-darkreader-inline-stroke="" fill="none" stroke="currentColor" style="--darkreader-inline-stroke: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-        </a>
-        <button class = "translationDropDB">Сбросить настройки</button>
-      </div>
-    `;
-    container.onclick = (event) => event.stopPropagation();
-
+    const container = createTranslationMenu();
     element.appendChild(container);
+
+    // click to translation menu icon
     document.querySelector('.translationMenu')?.addEventListener('click', (event) => {
       event.stopPropagation();
       const content = document.querySelector('.translationMenuContent');
@@ -168,103 +89,6 @@ async function main() {
     });
 
     debug.log(`VOT: Added translation menu to `, element);
-  }
-
-
-  // Create checkbox for menu
-  function createMenuCheckbox(id, valueToCheck, content) {
-    const checkboxContainer = document.createElement('div');
-    const checkbox = document.createElement('input');
-    const checkboxLabel = document.createElement('label');
-
-    checkbox.type = 'checkbox';
-    checkbox.id = id;
-    checkbox.checked = Boolean(valueToCheck);
-
-    checkboxLabel.htmlFor = id;
-    checkboxLabel.innerHTML = content;
-
-    checkboxContainer.classList.add('translationMenuContainer');
-    checkboxContainer.appendChild(checkbox);
-    checkboxContainer.appendChild(checkboxLabel);
-
-    return checkboxContainer;
-  }
-
-  // Create slider for menu
-  function createMenuSlider(id, sliderValue, content) {
-    const sliderContainer = document.createElement('div');
-    const slider = document.createElement('input');
-    const sliderLabel = document.createElement('label');
-
-    slider.type = 'range';
-    slider.id = id;
-    slider.classList.add('VOTMenuSlider');
-    slider.min = 0;
-    slider.max = 100;
-    slider.value = sliderValue;
-
-    sliderLabel.htmlFor = id;
-    sliderLabel.classList.add('translationHeader');
-    sliderLabel.innerHTML = content;
-
-    sliderContainer.classList.add('translationMenuContainer');
-    sliderContainer.appendChild(sliderLabel);
-    sliderContainer.appendChild(slider);
-
-    return sliderContainer;
-  }
-
-  // Create select for menu
-  function createMenuSelect(id, selectOptions) {
-    // selectOptions structure:
-    // [
-    //     {
-    //         label: string,
-    //         value: string,
-    //         selected: boolean,
-    //         disabled: boolean
-    //     }
-    // ]
-    const selectContainer = document.createElement('div');
-    const select = document.createElement('select');
-
-    select.id = id;
-    select.classList.add('VOTMenuSelect');
-
-    for (const option of selectOptions) {
-      const optionElement = document.createElement('option');
-      optionElement.innerText = option.label;
-      optionElement.value = option.value;
-      if (option.hasOwnProperty('selected') && option.selected) {
-        optionElement.setAttribute('selected', 'selected');
-      }
-
-      if (option.hasOwnProperty('disabled')) {
-        optionElement.disabled = option.disabled;
-      }
-
-      select.appendChild(optionElement);
-    }
-
-    selectContainer.classList.add('translationMenuContainer');
-    selectContainer.appendChild(select);
-
-    return selectContainer;
-  }
-
-  function secsToStrTime(secs) {
-    const minutes = Math.floor(secs / 60);
-    const seconds = Math.floor(secs % 60);
-    if (minutes >= 60) {
-      return 'Перевод займёт больше часа';
-    } else if (minutes >= 10 && minutes % 10) {
-      return `Перевод займёт примерно ${minutes} минут`;
-    } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
-      return 'Перевод займёт около минуты';
-    } else {
-      return `Перевод займёт примерно ${minutes} минуты`;
-    }
   }
 
   function translateVideo(url, unknown1, requestLang, responseLang, callback) {
@@ -710,34 +534,6 @@ async function main() {
       }
     };
 
-    // element - audio / video element
-    function syncVolume(element, sliderVolume, otherSliderVolume, tempVolume) {
-      let finalValue;
-      if (sliderVolume > tempVolume) {
-        // sliderVolume = 100
-        // tempVolume = 69
-        // volume = 15
-        // 100 - 69 = 31
-        // 15 + 31 = 46 - final video volume
-        finalValue = otherSliderVolume + (sliderVolume - tempVolume);
-        finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
-
-        element.volume = finalValue / 100;
-      } else if (sliderVolume < tempVolume) {
-        // sliderVolume = 69
-        // tempVolume = 100
-        // volume = 15
-        // 100 - 69 = 31
-        // 15 - 31 = 0 - final video volume
-        finalValue = otherSliderVolume - (tempVolume - sliderVolume);
-        finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
-
-        element.volume = finalValue / 100;
-      }
-
-      return finalValue
-    }
-
     function addVideoSlider() {
       if (dbShowVideoSlider !== 1 || document.querySelector(`#VOTVideoSlider`) || document.querySelector('.translationBtn').dataset.state !== 'success') {
         return;
@@ -977,9 +773,6 @@ async function main() {
         document.querySelector('#player').addEventListener("mousemove", resetTimer);
         document.querySelector('#player').addEventListener("mouseout", () => logout(0));
       }
-    } else if (siteHostname === 'twitter') {
-      document.querySelector('div[data-testid="videoPlayer"').addEventListener("mousemove", resetTimer);
-      document.querySelector('div[data-testid="videoPlayer"').addEventListener("mouseout", () => logout(0));
     } else {
       videoContainer.addEventListener("mousemove", resetTimer);
       videoContainer.addEventListener("mouseout", () => logout(0));
