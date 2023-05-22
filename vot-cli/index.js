@@ -29,33 +29,39 @@ const translateAndDownload = (service, url) => {
   if (!videoId) {
     return console.error(chalk.red("Invalid link"));
   }
+
   const finalURL = `${siteTranslates[service]}${videoId}`;
   if (!finalURL) {
     return console.error(chalk.red("Unknown link"));
   }
+
   translateVideo(finalURL, (success, urlOrError) => {
     if (success) {
-            console.log('\n' +
-                chalk.green("Video translated successfully!") +
-                  ' Your link: ' + chalk.blueBright(`${urlOrError}`)
-            );
-            if (!urlOrError) {
-              return console.error(chalk.red("Invalid file link"));
-            }
-            if (argv.output && urlOrError) {
-                download(urlOrError, argv.output, `(ID: ${videoId})`);
-            }
+      console.log('\n' +
+        chalk.green("Video translated successfully!") +
+        ' Your link: ' + chalk.blueBright(`${urlOrError}`)
+      );
+
+      if (!urlOrError) {
+        return console.error(chalk.red("Invalid file link"));
+      }
+
+      if (argv.output && urlOrError) {
+          download(urlOrError, argv.output, `(ID: ${videoId})`);
+      }
+
       return;
-        } 
+    }
+
     if (urlOrError === "The translation will take a few minutes") {
-            console.log('Waiting for translation...');
-            setTimeout(() => {
-                translateAndDownload(service, url);
-            }, 30_000)
-          }
+      console.log('Waiting for translation...');
+      setTimeout(() => {
+          translateAndDownload(service, url);
+      }, 30_000)
+    }
     else {
-            console.error(chalk.red(urlOrError));
-          } 
+      console.error(chalk.red(urlOrError));
+    }
   });
 };
 
@@ -64,37 +70,37 @@ const download = (url, dir, msg = null) => {
       return console.error(chalk.red("Invalid link"));
     }
     if (!fs.existsSync(dir)) {
-        try {
-            fs.mkdirSync(dir);
-        } catch {
-            return console.error(chalk.red("Invalid directory"));
-        }
+      try {
+        fs.mkdirSync(dir);
+      } catch {
+        return console.error(chalk.red("Invalid directory"));
+      }
     }
     const dl = new DownloaderHelper(url, dir);
     const load = loading({
-        'text': `Downloading ${msg || ''}: 0%`,
-        'color': 'yellow'
+      'text': `Downloading ${msg || ''}: 0%`,
+      'color': 'yellow'
     }).start();
 
     dl.on('end', () => {
-        load.color = 'green';
-        load.text = `Download ${msg || ''} completed!\n`;
-        load.stop()
-        console.log(chalk.green(`Download ${msg || ''} completed!`));
+      load.color = 'green';
+      load.text = `Download ${msg || ''} completed!\n`;
+      load.stop()
+      console.log(chalk.green(`Download ${msg || ''} completed!`));
     });
 
     dl.on('error', (err) => {
-        load.color = 'red';
-        load.text = `Downloading error: ${err.message}`
-        console.error(chalk.red(`\nDownloading error: ${err.message}`));
-        load.stop()
-        // IDK why but sometimes it throws an error
-        // Error: read ECONNRESET
-        // at TLSWrap.onStreamRead (node:internal/stream_base_commons:217:20)
+      load.color = 'red';
+      load.text = `Downloading error: ${err.message}`
+      console.error(chalk.red(`\nDownloading error: ${err.message}`));
+      load.stop()
+      // IDK why but sometimes it throws an error
+      // Error: read ECONNRESET
+      // at TLSWrap.onStreamRead (node:internal/stream_base_commons:217:20)
     });
 
     dl.on('progress.throttled', (stats) => {
-        load.text = `Downloading ${msg || ''}: ${stats.progress.toFixed(1)}%`;
+      load.text = `Downloading ${msg || ''}: ${stats.progress.toFixed(1)}%`;
     });
     dl.start().catch(err => console.error(chalk.red(`Failed to download ${msg} (read the comment in the code)`)));
 }
@@ -105,6 +111,7 @@ argLinks.forEach((url) => {
   if (service === "unknown") {
     return console.error(chalk.red("Unknown link"));
   }
+
   translateAndDownload(service, url);
 });
 
