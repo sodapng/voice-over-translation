@@ -1,6 +1,7 @@
 import { getUUID } from './getUUID.js';
 import { yandexRequests } from './yandexRequests.js';
-import { workerHost, yandexHmacKey, yandexUserAgent } from './config/config-cloudflare.js';
+import { workerHost, yandexHmacKey } from './config/config-cloudflare.js';
+import { yandexUserAgent } from './config/config.js';
 import debug from './utils/debug.js';
 
 // Request video translation from Yandex API
