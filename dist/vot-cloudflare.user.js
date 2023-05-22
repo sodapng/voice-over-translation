@@ -1488,7 +1488,7 @@ const selectors = () => {
     'twitchMobileSelector': 'main > div > section > div > div > div',
     'pipedSelector': '.player-container',
     'vkSelector': '.videoplayer_media',
-    'twitterSelector': 'article[data-testid="tweet"][tabindex="-1"]',
+    'twitterSelector': 'div[data-testid="videoComponent"] > div:nth-child(1) > div',
     'vimeoSelector': '.player',
     'gagSelector': '.video-post',
     'bilibilicomSelector': '.bpx-player-video-wrap'
@@ -1658,7 +1658,7 @@ async function src_main() {
       video = videoContainer.querySelector('video');
     }
 
-    debug/* default.log */.Z.log('video', video)
+    debug/* default.log */.Z.log('video', video);
 
     let videoData = getVideoData();
     console.log('VOT Video Data: ', videoData);
@@ -1699,7 +1699,7 @@ async function src_main() {
 
         debug/* default.log */.Z.log('[db] data from db: ', dbData);
         const menuOptions = document.querySelector('.translationMenuOptions');
-        if (!menuOptions.querySelector('#VOTTranslateFromLang')) {
+        if (menuOptions && !menuOptions.querySelector('#VOTTranslateFromLang')) {
           const selectFromLangOptions = [
             {
               label: 'Язык видео',
@@ -1763,7 +1763,7 @@ async function src_main() {
           })
         }
 
-        if (dbAutoTranslate !== undefined && !menuOptions.querySelector('#VOTAutoTranslate')) {
+        if (dbAutoTranslate !== undefined && menuOptions && !menuOptions.querySelector('#VOTAutoTranslate')) {
           const checkbox = createMenuCheckbox(
             'VOTAutoTranslate',
             dbAutoTranslate,
@@ -1781,7 +1781,7 @@ async function src_main() {
           menuOptions.appendChild(checkbox);
         }
 
-        if (dbShowVideoSlider !== undefined && !menuOptions.querySelector('#VOTShowVideoSlider')) {
+        if (dbShowVideoSlider !== undefined && menuOptions && !menuOptions.querySelector('#VOTShowVideoSlider')) {
           const checkbox = createMenuCheckbox(
             'VOTShowVideoSlider',
             dbShowVideoSlider,
@@ -1804,7 +1804,7 @@ async function src_main() {
           menuOptions.appendChild(checkbox);
         }
 
-        if (dbAutoSetVolumeYandexStyle !== undefined && !menuOptions.querySelector('#VOTAutoSetVolume')) {
+        if (dbAutoSetVolumeYandexStyle !== undefined && menuOptions && !menuOptions.querySelector('#VOTAutoSetVolume')) {
           const checkbox = createMenuCheckbox(
             'VOTAutoSetVolume',
             dbAutoSetVolumeYandexStyle,
@@ -1822,7 +1822,7 @@ async function src_main() {
           menuOptions.appendChild(checkbox);
         }
 
-        if ((window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) && dbSyncVolume !== undefined && !menuOptions.querySelector('#VOTSyncVolume')) {
+        if ((window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) && dbSyncVolume !== undefined && menuOptions && !menuOptions.querySelector('#VOTSyncVolume')) {
           const checkbox = createMenuCheckbox(
             'VOTSyncVolume',
             dbSyncVolume,
@@ -1840,7 +1840,7 @@ async function src_main() {
           menuOptions.appendChild(checkbox);
         }
 
-        if (window.location.hostname.includes('youtube.com') && dbDontTranslateRuVideos !== undefined && !menuOptions.querySelector('#VOTDontTranslateRu')) {
+        if (window.location.hostname.includes('youtube.com') && dbDontTranslateRuVideos !== undefined && menuOptions && !menuOptions.querySelector('#VOTDontTranslateRu')) {
           const checkbox = createMenuCheckbox(
             'VOTDontTranslateRu',
             dbDontTranslateRuVideos,
@@ -2163,7 +2163,11 @@ async function src_main() {
         audio.volume = dbDefaultVolume / 100;
       }
 
-      if (siteEvent !== null && siteEvent !== 'invidious' && siteEvent !== 'piped') {
+      if (siteHostname === 'twitter') {
+        document.querySelector('div[data-testid="app-bar-back"][role="button"]').addEventListener('click', () => {
+          stopTraslate();
+        });
+      } else if (siteEvent !== null && siteEvent !== 'invidious' && siteEvent !== 'piped') {
         document.body.addEventListener(siteEvent, () => {
           stopTraslate();
           syncVideoVolumeSlider();
@@ -2268,6 +2272,9 @@ async function src_main() {
         document.querySelector('#player').addEventListener("mousemove", resetTimer);
         document.querySelector('#player').addEventListener("mouseout", () => logout(0));
       }
+    } else if (siteHostname === 'twitter') {
+      document.querySelector('div[data-testid="videoPlayer"').addEventListener("mousemove", () => resetTimer());
+      document.querySelector('div[data-testid="videoPlayer"').addEventListener("mouseout", () => logout(0));
     } else {
       videoContainer.addEventListener("mousemove", resetTimer);
       videoContainer.addEventListener("mouseout", () => logout(0));
@@ -2471,7 +2478,22 @@ async function src_main() {
           await translateProccessor(el.parentElement, 'bilibili.com', null);
         }
       }
-
+    } else if (window.location.hostname.includes('twitter.com')) {
+      const el = await waitForElm(config_selectors.twitterSelector);
+      if (el) {
+        let videoIDNew;
+        let videoID = getVideoId('twitter');
+        await translateProccessor(el, 'twitter', null);
+        setInterval(async () => {
+          videoIDNew = getVideoId('twitter');
+          if (videoID !== videoIDNew) {
+            if (videoIDNew) {
+              await translateProccessor(document.querySelector(config_selectors.twitterSelector), 'twitter', null);
+            }
+            videoID = videoIDNew;
+          }
+        }, 3000);
+      }
     }
   }
 
