@@ -40,7 +40,7 @@ export default (env) => {
     },
     devServer: {
       server: "http",
-      port: 11944,
+      port: 11945,
       allowedHosts: "all",
       hot: true,
       liveReload: false,
@@ -67,12 +67,12 @@ export default (env) => {
       new UserscriptPlugin({
         headers: async () => {
           const headers = getHeaders('headers.json');
-  
+
           let version = headers.version;
           if (dev) {
             headers["version"] = `${version}-build.[buildNo]`;
           }
-  
+
           if (build_mode === 'cloudflare') {
             headers['name'] = '[VOT Cloudflare] - Voice Over Translation';
             headers['inject-into'] = 'page';
@@ -80,7 +80,7 @@ export default (env) => {
             headers['updateURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
             headers['downloadURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
           }
-  
+
           return headers;
         },
         proxyScript: {
