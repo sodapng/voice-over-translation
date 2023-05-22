@@ -106,4 +106,18 @@ const getVideoId = (service) => {
   }
 };
 
-export { waitForElm, sleep, getVideoId };
+function secsToStrTime(secs) {
+  const minutes = Math.floor(secs / 60);
+  const seconds = Math.floor(secs % 60);
+  if (minutes >= 60) {
+    return 'Перевод займёт больше часа';
+  } else if (minutes >= 10 && minutes % 10) {
+    return `Перевод займёт примерно ${minutes} минут`;
+  } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
+    return 'Перевод займёт около минуты';
+  } else {
+    return `Перевод займёт примерно ${minutes} минуты`;
+  }
+}
+
+export { waitForElm, sleep, getVideoId, secsToStrTime };
