@@ -22,7 +22,7 @@
 - **[VK](https://vk.com)** (Поддерживаются **vk.com|ru/video**, **vk.com|ru/video-xxxxxxxxx_xxxxxxxxx** и **vk.com|ru/im?z=video-xxxxxxxxx_xxxxxxxxx** (+ другие страницы, на которых видео открывается через z параметр ссылки). Рекомендую использовать только совместно с автопереводом, ибо без него кнопка перевода требует 2-ого нажатия, и звук перевода пропадает при переходе на другое видео. Не знаю как это исправить :с)
 - **[Vimeo](https://vimeo.com/)**
 - **[9GAG](https://9gag.com/gag/)** (Работает только в открытых видео. В ленте не работает.)
-- **[Twitter](https://twitter.com/)** (❌ На переработке, когда вернется и вернется ли не знаю)
+- **[Twitter](https://twitter.com/)** (Работает только в открытых видео. В ленте не работает.)
 - **[Facebook*](https://facebook.com/)** (❌ Не работает)
 - **[Rutube](https://rutube.ru/)** (Полная поддержка **rutube.ru/video/** и **rutube.ru/play/embed/**)
 - **[Bilibili](https://bilibili.com/)** (Поддерживаются **bilibili.com/video/** и **bilibili.com/blackboard/webplayer/embed-old.html**)
