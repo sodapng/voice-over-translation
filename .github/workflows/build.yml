@@ -1,6 +1,18 @@
 name: Build
 
-on: [push, pull_request, release, workflow_dispatch]
+on:
+  push:
+    paths-ignore:
+    - vot-cli/*
+  pull_request:
+    paths-ignore:
+    - vot-cli/*
+  release:
+    paths-ignore:
+    - vot-cli/*
+  workflow_dispatch:
+    paths-ignore:
+    - vot-cli/*
 
 permissions:
   contents: write
