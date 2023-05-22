@@ -5,7 +5,7 @@ const selectors = () => {
     'twitchMobileSelector': 'main > div > section > div > div > div',
     'pipedSelector': '.player-container',
     'vkSelector': '.videoplayer_media',
-    'twitterSelector': 'article[data-testid="tweet"][tabindex="-1"]',
+    'twitterSelector': 'div[data-testid="videoComponent"] > div:nth-child(1) > div',
     'vimeoSelector': '.player',
     'gagSelector': '.video-post',
     'bilibilicomSelector': '.bpx-player-video-wrap'
