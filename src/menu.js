@@ -73,4 +73,104 @@ function addTranslationBlock(element) {
   debug.log(`VOT: Added translation button to `, element);
 }
 
-export { transformBtn, addTranslationBlock };
+function createTranslationMenu() {
+  const container = document.createElement('div');
+  container.classList.add('translationMenuContent');
+  container.innerHTML = `
+    <p class = "translationMainHeader">Настройки перевода</p>
+    <div class="translationMenuOptions"></div>
+    <div class="translationMenuFunctional">
+      <a class = "translationDownload">
+        <svg width="24px" height="24px" data-darkreader-inline-stroke="" fill="none" stroke="currentColor" style="--darkreader-inline-stroke: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+      </a>
+      <button class = "translationDropDB">Сбросить настройки</button>
+    </div>
+  `;
+
+  container.onclick = (event) => event.stopPropagation();
+  return container;
+}
+
+// Create checkbox for menu
+function createMenuCheckbox(id, valueToCheck, content) {
+  const checkboxContainer = document.createElement('div');
+  const checkbox = document.createElement('input');
+  const checkboxLabel = document.createElement('label');
+
+  checkbox.type = 'checkbox';
+  checkbox.id = id;
+  checkbox.checked = Boolean(valueToCheck);
+
+  checkboxLabel.htmlFor = id;
+  checkboxLabel.innerHTML = content;
+
+  checkboxContainer.classList.add('translationMenuContainer');
+  checkboxContainer.appendChild(checkbox);
+  checkboxContainer.appendChild(checkboxLabel);
+
+  return checkboxContainer;
+}
+
+// Create slider for menu
+function createMenuSlider(id, sliderValue, content) {
+  const sliderContainer = document.createElement('div');
+  const slider = document.createElement('input');
+  const sliderLabel = document.createElement('label');
+
+  slider.type = 'range';
+  slider.id = id;
+  slider.classList.add('VOTMenuSlider');
+  slider.min = 0;
+  slider.max = 100;
+  slider.value = sliderValue;
+
+  sliderLabel.htmlFor = id;
+  sliderLabel.classList.add('translationHeader');
+  sliderLabel.innerHTML = content;
+
+  sliderContainer.classList.add('translationMenuContainer');
+  sliderContainer.appendChild(sliderLabel);
+  sliderContainer.appendChild(slider);
+
+  return sliderContainer;
+}
+
+// Create select for menu
+function createMenuSelect(id, selectOptions) {
+  // selectOptions structure:
+  // [
+  //     {
+  //         label: string,
+  //         value: string,
+  //         selected: boolean,
+  //         disabled: boolean
+  //     }
+  // ]
+  const selectContainer = document.createElement('div');
+  const select = document.createElement('select');
+
+  select.id = id;
+  select.classList.add('VOTMenuSelect');
+
+  for (const option of selectOptions) {
+    const optionElement = document.createElement('option');
+    optionElement.innerText = option.label;
+    optionElement.value = option.value;
+    if (option.hasOwnProperty('selected') && option.selected) {
+      optionElement.setAttribute('selected', 'selected');
+    }
+
+    if (option.hasOwnProperty('disabled')) {
+      optionElement.disabled = option.disabled;
+    }
+
+    select.appendChild(optionElement);
+  }
+
+  selectContainer.classList.add('translationMenuContainer');
+  selectContainer.appendChild(select);
+
+  return selectContainer;
+}
+
+export { transformBtn, addTranslationBlock, createTranslationMenu, createMenuCheckbox, createMenuSlider, createMenuSelect };
