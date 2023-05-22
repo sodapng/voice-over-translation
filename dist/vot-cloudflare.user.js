@@ -3,7 +3,7 @@
 // @name:ru [VOT Cloudflare] - Закадровый перевод видео
 // @description A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version 1.1.2.3
+// @version 1.2.0
 // @author sodapng, mynovelhost, Toil
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -60,6 +60,7 @@
 // @match *://*.twitter.com/*
 // @match *://*.facebook.com/*
 // @match *://*.rutube.ru/*
+// @match *://*.bilibili.com/*
 // @connect api.browser.yandex.ru
 // @downloadURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js
 // @grant GM_xmlhttpRequest
@@ -68,8 +69,8 @@
 // @icon https://translate.yandex.ru/icons/favicon.ico
 // @inject-into page
 // @namespace vot-cloudflare
-// @require https://code.jquery.com/jquery-3.6.0.min.js
-// @require https://cdn.jsdelivr.net/gh/dcodeIO/protobuf.js@6.X.X/dist/protobuf.min.js
+// @require https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js
+// @require https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/protobuf.min.js
 // @updateURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js
 // ==/UserScript==
 
@@ -92,7 +93,7 @@
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\n  padding: 0.25rem 0.45rem !important;\n  width: max-content;\n  position: absolute;\n  background: #2e2f34;\n  border-radius: 0.5rem !important;\n  left: 50%;\n  top: 5rem;\n  transform: translate(-50%);\n  text-align: center;\n  opacity: 0;\n  transition: opacity 1s;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  z-index: 10;\n}\n\n.translationBtn {\n  position: relative;\n  display: inline-block;\n  vertical-align: middle;\n  color: #fff;\n  padding-right: 0.25rem !important;\n  cursor: pointer;\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\n}\n\n.translationBlock:hover {\n  opacity: 1;\n}\n\n.translationMenu {\n  display: inline-block;\n  vertical-align: middle;\n  border-left: 1px solid #424348;\n  max-height: 16px;\n  max-width: 24px;\n  cursor: pointer;\n}\n\n.translationMenuIcon {\n  padding: 0 10px !important;\n  width: 24px;\n}\n\n.translationIAlice {\n  display: inline-block;\n  vertical-align: middle;\n  max-height: 26px;\n  max-width: 50px;\n}\n\n.translationIconAlice {\n  height: 24px !important;\n  width: 24px !important;\n}\n\n.translationITranslate {\n  display: inline-block;\n  vertical-align: middle;\n  max-height: 20px;\n  max-width: 20px;\n}\n\n.translationMenuContent {\n  position: absolute;\n  background: #2e2f34;\n  color: #fff;\n  display: none;\n  border-radius: 1rem !important;\n  left: 50%;\n  top: 9rem;\n  transform: translate(-50%);\n  text-align:left;\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\n\n  width: 300px;\n  height: 375px;\n  opacity: 0;\n  z-index: 10;\n  transition: opacity 0.5s ease;\n}\n\n.translationVolumeSlider {\n  -webkit-appearance: none !important;\n  appearance: none !important;\n  width: 80% !important;\n  height: 8px !important;\n  outline: none !important;\n  opacity: 0.7;\n  /* background: #3C3F4D !important; */\n  background: rgb(253, 222, 85, 0.6) !important;\n  border: none !important;\n  border-radius: 2rem !important;\n  -webkit-transition: 0.2s !important;\n  transition: opacity 0.2s ease !important;\n}\n\n.translationVolumeSlider:hover {\n  opacity: 1;\n}\n\n.translationVolumeSlider::-webkit-slider-thumb {\n  -webkit-appearance: none !important;\n  appearance: none !important;\n  width: 10px !important;\n  height: 10px !important;\n  border-radius: 50% !important;\n  border: none !important;\n  background: #fff !important;\n  cursor: pointer !important;\n}\n\n.translationVolumeSlider::-moz-range-thumb {\n  width: 10px !important;\n  height: 10px !important;\n  border-radius: 50% !important;\n  border: none !important;\n  background: #fff !important;\n  cursor: pointer !important;\n}\n\n.translationVolumeSlider::-ms-thumb {\n  width: 10px !important;\n  height: 10px !important;\n  border-radius: 50% !important;\n  border: none !important;\n  background: #fff !important;\n  cursor: pointer !important;\n}\n\n.translationVolumeSlider::-ms-fill-lower {\n  height: 8px !important;\n  border-radius: 2rem !important;\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\n}\n\n.translationVolumeSlider::-moz-range-progress {\n  height: 8px !important;\n  border-radius: 2rem !important;\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\n}\n\n.translationHeader {\n  padding-bottom: 0.5rem !important;\n}\n\n.translationMainHeader {\n  margin: 16px !important;\n  color: #FFF;\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\n}\n\n.translationMenuContainer {\n  width: 100%;\n  padding-left: 15px !important;\n  padding-top: 5px !important;\n  display: inline-block !important;\n}\n\n.translationMenuContainer > input {\n  appearance: auto !important;\n}\n\n.translationMenuText {\n  color: #FFF;\n  display: inline-flex;\n  width: 80%;\n}\n\n.translationVolumeBox, .translationVideoVolumeBox {\n  padding-top: 0.5rem !important;\n}\n\n.translationDropDB {\n  border: none;\n  border-radius: 4px !important;\n  background: #5426FF !important;\n  color: #fff !important;\n  padding: 6px 16px !important;\n  cursor: pointer;\n}\n\n.translationAbsoluteContainer {\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  display: inline-flex;\n  align-items: center;\n  margin-bottom: 2rem !important;\n  margin-left: 15px !important;\n  margin-top: 5px !important;\n}\n\n.translationDownload {\n  background: #5426FF !important;\n  color: #fff !important;\n  padding: 2px 10px !important;\n  border-radius: 4px !important;\n  margin-left: 58px !important;\n  cursor: pointer;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\r\n  padding: 0.45rem !important;\r\n  width: max-content;\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  border-radius: 0.5rem !important;\r\n  left: 50%;\r\n  top: 5rem;\r\n  transform: translate(-50%);\r\n  text-align: center;\r\n  opacity: 0;\r\n  transition: opacity 1s;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n  user-select: none;\r\n  z-index: 100;\r\n}\r\n\r\n.translationBtn {\r\n  position: relative;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  color: #fff;\r\n  padding-right: 0.25rem !important;\r\n  cursor: pointer;\r\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\r\n}\r\n\r\n.translationBlock:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.translationMenu {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  border-left: 1px solid #424348;\r\n  max-height: 16px;\r\n  max-width: 24px;\r\n  cursor: pointer;\r\n}\r\n\r\n.translationMenuIcon {\r\n  padding: 0 10px !important;\r\n  width: 24px;\r\n}\r\n\r\n.translationIAlice {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 26px;\r\n  max-width: 50px;\r\n}\r\n\r\n.translationIconAlice {\r\n  height: 24px !important;\r\n  width: 24px !important;\r\n}\r\n\r\n.translationITranslate {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 20px;\r\n  max-width: 20px;\r\n}\r\n\r\n.translationMenuContent {\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  color: #fff;\r\n  display: none;\r\n  border-radius: 1rem !important;\r\n  left: 50%;\r\n  top: 9rem;\r\n  transform: translate(-50%);\r\n  text-align:left;\r\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n\r\n  width: 300px;\r\n  /* height: 375px; */\r\n  opacity: 0;\r\n  z-index: 100;\r\n  transition: opacity 0.5s ease;\r\n}\r\n\r\n.VOTMenuSlider {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 268px !important;\r\n  height: 8px !important;\r\n  outline: none !important;\r\n  margin-top: 0.5rem;\r\n  opacity: 0.7;\r\n  /* background: #3C3F4D !important; */\r\n  background: rgb(253, 222, 85, 0.6) !important;\r\n  border: none !important;\r\n  border-radius: 2rem !important;\r\n  -webkit-transition: 0.2s !important;\r\n  transition: opacity 0.2s ease !important;\r\n}\r\n\r\n.VOTMenuSlider:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.VOTMenuSlider::-webkit-slider-thumb {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-fill-lower {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-progress {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\r\n}\r\n\r\n.translationHeader {\r\n  padding-bottom: 0.5rem !important;\r\n}\r\n\r\n.translationMainHeader {\r\n  margin: 16px !important;\r\n  color: #FFF;\r\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n}\r\n\r\n.translationMenuContainer {\r\n  /* width: 100%; */\r\n  padding-left: 16px !important;\r\n  padding-top: 5px !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n.translationMenuContainer > input {\r\n  appearance: auto !important;\r\n}\r\n\r\n.translationMenuText {\r\n  color: #FFF;\r\n  display: inline-flex;\r\n  width: 80%;\r\n}\r\n\r\n.translationVolumeBox, .translationVideoVolumeBox {\r\n  padding-top: 0.5rem !important;\r\n}\r\n\r\n.translationDropDB {\r\n  border: none !important;\r\n  border-radius: 4px !important;\r\n  background: #5426FF !important;\r\n  color: #fff !important;\r\n  padding: 6px 16px !important;\r\n  margin-left: auto !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.translationDownload {\r\n  background: #5426FF !important;\r\n  color: #fff !important;\r\n  padding: 2px 10px !important;\r\n  border-radius: 4px !important;\r\n  cursor: pointer;\r\n  display: none;\r\n}\r\n\r\n.translationMenuFunctional {\r\n  display: flex;\r\n  margin: 16px !important;\r\n}\r\n\r\n.VOTMenuSelect {\r\n  width: 110px;\r\n  border-radius: 5px !important;\r\n  border: 1px solid #DADCE0 !important;\r\n  box-shadow: 0 1px 3px -2px #9098A9;\r\n  padding: 5px !important;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n  border-color: #0077FF;\r\n  box-shadow: 0 0 0 2px rgba(#0077FF,.2)\r\n}\r\n\r\n#VOTSelectLanguages {\r\n  display: flex !important;\r\n  margin-left: 5px;\r\n}\r\n\r\n#VOTSelectLanguages svg {\r\n  margin: 0 5px;\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -450,6 +451,24 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
+/***/ "./src/config/config.js":
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "IM": () => (/* binding */ autoVolume),
+/* harmony export */   "Rr": () => (/* binding */ yandexUserAgent)
+/* harmony export */ });
+/* unused harmony exports workerHost, yandexHmacKey */
+// CONFIGURATION
+const workerHost = "api.browser.yandex.ru";
+const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
+const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/104.0.5112.114 YaBrowser/22.9.4.633.10 SA/3 Mobile/15E148 Safari/604.1";
+const autoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video with the translation
+
+
+
+/***/ }),
+
 /***/ "./src/rvt-cloudflare.js":
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
@@ -471,14 +490,17 @@ function getUUID(isLower) {
 // EXTERNAL MODULE: ./src/yandexRequests.js
 var yandexRequests = __webpack_require__("./src/yandexRequests.js");
 ;// CONCATENATED MODULE: ./src/config/config-cloudflare.js
+// CLOUDFLARE CONFIGURATION
 const workerHost = "cors.yandexproxy.workers.dev";
 const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
-const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/104.0.5112.114 YaBrowser/22.9.4.633.10 SA/3 Mobile/15E148 Safari/604.1";
 
 
+// EXTERNAL MODULE: ./src/config/config.js
+var config = __webpack_require__("./src/config/config.js");
 // EXTERNAL MODULE: ./src/utils/debug.js
 var debug = __webpack_require__("./src/utils/debug.js");
 ;// CONCATENATED MODULE: ./src/rvt-cloudflare.js
+
 
 
 
@@ -516,7 +538,7 @@ async function requestVideoTranslation(url, unknown1, requestLang, responseLang,
           "Accept": "application/x-protobuf",
           "Accept-Language": "en",
           "Content-Type": "application/x-protobuf",
-          "User-Agent": yandexUserAgent,
+          "User-Agent": config/* yandexUserAgent */.Rr,
           "Pragma": "no-cache",
           "Cache-Control": "no-cache",
           "Sec-Fetch-Mode": "no-cors",
@@ -799,25 +821,699 @@ function getYTVideoData() {
 
 // EXTERNAL MODULE: ./src/yandexRequests.js
 var yandexRequests = __webpack_require__("./src/yandexRequests.js");
+;// CONCATENATED MODULE: ./src/utils/utils.js
+function waitForElm(selector) {
+  // https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
+  return new Promise(resolve => {
+    if (document.querySelector(selector)) {
+      return resolve(document.querySelector(selector));
+    }
+
+    const observer = new MutationObserver(() => {
+      if (document.querySelector(selector)) {
+        resolve(document.querySelector(selector));
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  });
+}
+
+const sleep = m => new Promise(r => setTimeout(r, m))
+
+const getVideoId = (service) => {
+  const url = new URL(window.location.href);
+
+  switch (service) {
+    case "youtube":
+      if (url.pathname.includes("watch")) {
+        return url.searchParams.get("v");
+      } else if (url.pathname.includes("embed/")) { // TODO: Добавить кнопку перевода на странице видео
+        const urlArray = url.pathname.split('/');
+        return urlArray[urlArray.length - 1];
+      }
+    case "vk":
+      if (/^video-?[0-9]{8,9}_[0-9]{9}$/.test(url.pathname.split('/')[1])) {
+        return url.pathname.split('/')[1]; // Убираем слэш в начале
+      } else {
+        return url.searchParams.has('z') ? url.searchParams.get("z").split('/')[0] : null; // Убираем мусор в конце параметра
+      }
+    case "9gag" || 0:
+      if (url.pathname.includes("gag/")) {
+        const urlArray = url.pathname.split('/');
+        return urlArray[urlArray.length - 1];
+      }
+    case "twitch":
+      if (/^m\.twitch\.tv$/.test(window.location.hostname)) { // Если используется мобильная версия сайта (m.twitch.tv)
+        const linkUrl = document.head.querySelector('link[rel="canonical"]');
+        if (linkUrl?.href.includes("/videos/")) {
+          const urlArray = linkUrl.href.split('/');
+          return `videos/${urlArray[urlArray.length - 1]}`;
+        } else if (linkUrl?.href.includes('/clip/')) {
+          return url.pathname.slice(1);
+        } else {
+          return false
+        }
+      } else if (/^player\.twitch\.tv$/.test(window.location.hostname)) {
+        return `videos/${url.searchParams.get("video")}`
+      } else if (url.pathname.includes("/videos/")) {
+        const urlArray = url.pathname.split('/');
+        return `videos/${urlArray[urlArray.length - 1]}`;
+      } else if (url.pathname.includes("/clip/")) {
+        return url.pathname.slice(1);
+      }
+    case "tiktok":
+      if (url.pathname.includes("video/")) {
+        const urlArray = url.pathname.split('/');
+        return urlArray[urlArray.length - 1];
+      }
+    case "vimeo":
+      const urlArray = url.pathname.split('/');
+      return urlArray[urlArray.length - 1];
+    case "xvideos":
+      const urlArrayXVideos = url.pathname.split('/');
+      return `${urlArrayXVideos[urlArrayXVideos.length - 2]}/${urlArrayXVideos[urlArrayXVideos.length - 1]}`;
+    case "pornhub":
+      if (url.pathname.includes('view_video.php')) {
+        return url.searchParams.get("viewkey");
+      } else if (url.pathname.includes('embed/')) {
+        const urlArray = url.pathname.split('/');
+        return urlArray[urlArray.length - 1];
+      }
+    case "twitter":
+      if (url.pathname.includes("/status/")) {
+        const urlArray = url.pathname.split('/');
+        return urlArray[urlArray.length - 1];
+      }
+    case "udemy":
+      return url.pathname;
+    case "facebook":
+      return url.pathname;
+    case "rutube":
+      if (url.pathname.includes('/video/') || url.pathname.includes('/play/embed/')) {
+        const urlArray = url.pathname.split('/');
+        return urlArray[urlArray.length - 2];
+      }
+    case "bilibili.com":
+      if (url.pathname.includes('/video/')) {
+        const urlArray = url.pathname.split('/');
+        return urlArray[urlArray.length - 2];
+      } else if (url.pathname.includes('/blackboard/webplayer/embed-old.html')) {
+        return url.searchParams.get("bvid");
+      }
+    default:
+      return false;
+  }
+};
+
+function secsToStrTime(secs) {
+  const minutes = Math.floor(secs / 60);
+  const seconds = Math.floor(secs % 60);
+  if (minutes >= 60) {
+    return 'Перевод займёт больше часа';
+  } else if (minutes >= 10 && minutes % 10) {
+    return `Перевод займёт примерно ${minutes} минут`;
+  } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
+    return 'Перевод займёт около минуты';
+  } else {
+    return `Перевод займёт примерно ${minutes} минуты`;
+  }
+}
+
+
+// EXTERNAL MODULE: ./src/config/config.js
+var config = __webpack_require__("./src/config/config.js");
+;// CONCATENATED MODULE: ./src/config/alternativeUrls.js
+// Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
+const sitesInvidious = [
+  'invidious.snopyta.org',
+  'yewtu.be',
+  'invidious.kavin.rocks',
+  'vid.puffyan.us',
+  'invidious.namazso.eu',
+  'inv.riverside.rocks',
+  'yt.artemislena.eu',
+  'invidious.flokinet.to',
+  'invidious.esmailelbob.xyz',
+  'y.com.sb',
+  'invidious.nerdvpn.de',
+  'inv.vern.cc',
+  'invidious.slipfox.xyz',
+  'invidio.xamh.de',
+  'invidious.dhusch.de'
+];
+
+// Sites host Piped. I tested the performance only on piped.video
+const sitesPiped = [
+  'piped.video',
+  'piped.tokhmi.xyz',
+  'piped.moomoo.me',
+  'piped.syncpundit.io',
+  'piped.mha.fi',
+  'watch.whatever.social',
+  'piped.garudalinux.org',
+  'efy.piped.pages.dev',
+  'watch.leptons.xyz',
+  'piped.lunar.icu',
+  'yt.dc09.ru',
+  'piped.mint.lgbt',
+  'il.ax',
+  'piped.privacy.com.de',
+  'piped.esmailelbob.xyz',
+  'piped.projectsegfau.lt',
+  'piped.in.projectsegfau.lt',
+  'piped.us.projectsegfau.lt',
+  'piped.privacydev.net',
+  'piped.palveluntarjoaja.eu',
+  'piped.smnz.de',
+  'piped.adminforge.de',
+  'piped.qdi.fi',
+  'piped.hostux.net',
+  'piped.chauvet.pro',
+  'piped.jotoma.de',
+  'piped.pfcd.me',
+  'piped.frontendfriendly.xyz'
+];
+
+
+;// CONCATENATED MODULE: ./src/config/constants.js
+const translateFuncParam = 0x40_75_50_00_00_00_00_00;
+const availableFromLangs = {'ru': 'Русский', 'en': 'Английский', 'zh': 'Китайский', 'fr': 'Французский', 'it': 'Итальянский', 'es': 'Испанский'}; // available languages for translation (from)
+const availableToLangs = {'ru': 'Русский', 'en': 'Английский'}; // available languages for translation (to)
+const siteTranslates = {
+  'youtube': 'https://youtu.be/',
+  'twitch': 'https://twitch.tv/',
+  'vimeo': 'https://vimeo.com/',
+  '9gag': 'https://9gag.com/gag/',
+  'vk': 'https://vk.com/video?z=',
+  'xvideos': 'https://www.xvideos.com/',
+  'pornhub': 'https://rt.pornhub.com/view_video.php?viewkey=',
+  'udemy': 'https://www.udemy.com',
+  'twitter': 'https://twitter.com/i/status/',
+  'facebook': 'https://www.facebook.com/',
+  'rutube': 'https://rutube.ru/video/',
+  'bilibili.com': 'https://www.bilibili.com/video/'
+};
+
+
+
+;// CONCATENATED MODULE: ./src/indexedDB.js
+// --- IndexedDB functions start:
+function openDB (name) {
+  return indexedDB.open(name, 1);
+}
+
+async function initDB () {
+  return new Promise((resolve, reject) => {
+    const openRequest = openDB("VOT");
+
+    openRequest.onerror = () => {
+      console.error(`VOT: Ошибка инициализации Базы Данных: ${openRequest.errorCode}`);
+      reject(false);
+    }
+
+    openRequest.onupgradeneeded = event => {
+      const db = openRequest.result;
+
+      db.onerror = () => {
+        alert('VOT: Не удалось загрузить базу данных')
+        console.error(`VOT: Не удалось загрузить базу данных: ${openRequest.error}`);
+        reject(false);
+      }
+
+      const objectStore = db.createObjectStore('settings', {keyPath: 'key'});
+
+      objectStore.createIndex('autoTranslate', 'autoTranslate', { unique: false });
+      objectStore.createIndex('defaultVolume', 'defaultVolume', { unique: false });
+      objectStore.createIndex('showVideoSlider', 'showVideoSlider', { unique: false });
+      objectStore.createIndex('syncVolume', 'syncVolume', { unique: false });
+      objectStore.createIndex('autoSetVolumeYandexStyle', 'autoSetVolumeYandexStyle', { unique: false });
+      objectStore.createIndex('dontTranslateRuVideos', 'dontTranslateRuVideos', { unique: false });
+      console.log('VOT: База Данных создана')
+
+      objectStore.transaction.oncomplete = event => {
+        const objectStore = db.transaction('settings', 'readwrite').objectStore('settings');
+        const settingsDefault = {
+          key: 'settings',
+          autoTranslate: 0,
+          defaultVolume: 100,
+          showVideoSlider: 0,
+          syncVolume: 0,
+          autoSetVolumeYandexStyle: 1,
+          dontTranslateRuVideos: 0
+        };
+        const request = objectStore.add(settingsDefault);
+
+        request.onsuccess = () => {
+          console.log("VOT: Стандартные настройки добавлены в Базу Данных: ", request.result);
+          resolve(true);
+        };
+        request.onerror = () => {
+          console.log("VOT: Ошибка при добавление стандартных настроек в Базу Данных: ", request.error);
+          reject(false);
+        };
+      };
+    };
+
+    openRequest.onsuccess = () => {
+      const db = openRequest.result;
+      db.onversionchange = () => {
+        db.close();
+        alert("Базе данных нужно обновление, пожалуйста, перезагрузите страницу.");
+        console.log("VOT: Базе данных нужно обновление, пожалуйста, перезагрузите страницу");
+        window.location.reload();
+        reject(false);
+      }
+      resolve(true);
+    };
+
+    openRequest.onblocked = () => {
+      const db = openRequest.result;
+      console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
+      alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
+      reject(false);
+    };
+  });
+}
+
+async function updateDB({
+  autoTranslate,
+  defaultVolume,
+  showVideoSlider,
+  syncVolume,
+  autoSetVolumeYandexStyle,
+  dontTranslateRuVideos
+}) {
+  return new Promise((resolve, reject) => {
+    if (
+      typeof(autoTranslate) === 'number' ||
+      typeof(defaultVolume) === 'number' ||
+      typeof(showVideoSlider) === 'number' ||
+      typeof(syncVolume) === 'number' ||
+      typeof(autoSetVolumeYandexStyle) === 'number' ||
+      typeof(dontTranslateRuVideos) === 'number') {
+      const openRequest = openDB("VOT");
+
+      openRequest.onerror = () => {
+        alert('VOT: Произошла ошибка');
+        console.error(`VOT: Ошибка Базы Данных: ${openRequest.errorCode}`);
+        reject(false);
+      };
+
+      openRequest.onupgradeneeded = async () => {
+        const db = openRequest.result;
+        db.close();
+        await initDB();
+        resolve(true);
+      };
+
+      openRequest.onsuccess = () => {
+        const db = openRequest.result;
+        db.onversionchange = () => {
+          db.close();
+          console.log("VOT: Базе данных нужно обновление, пожалуЙста, перезагрузите страницу");
+          window.location.reload();
+          reject(false);
+        };
+
+        const objectStore = db.transaction('settings', 'readwrite').objectStore('settings');
+        const request = objectStore.get('settings');
+
+        request.onerror = (event) => {
+          console.error("VOT: Не удалось получить данные из Базы Данных: ", event.error);
+          reject(false);
+        };
+
+        request.onsuccess = () => {
+          // console.log('VOT: Получены данные из Базы Данных: ', request.result);
+          const data = request.result;
+
+          if (typeof(autoTranslate) === 'number') {
+            data.autoTranslate = autoTranslate;
+          };
+
+          if (typeof(defaultVolume) === 'number') {
+            data.defaultVolume = defaultVolume;
+          };
+
+          if (typeof(showVideoSlider) === 'number') {
+            data.showVideoSlider = showVideoSlider;
+          };
+
+          if (typeof(syncVolume) === 'number') {
+            data.syncVolume = syncVolume;
+          };
+
+          if (typeof(autoSetVolumeYandexStyle) === 'number') {
+            data.autoSetVolumeYandexStyle = autoSetVolumeYandexStyle;
+          };
+
+          if (typeof(dontTranslateRuVideos) === 'number') {
+            data.dontTranslateRuVideos = dontTranslateRuVideos;
+          };
+
+          const requestUpdate = objectStore.put(data);
+
+          requestUpdate.onerror = (event) =>{
+            console.error("VOT: Не удалось обновить данные в Базе Данных: ", event.error);
+            reject(false);
+          };
+
+          requestUpdate.onsuccess = () => {
+            // console.log('VOT: Данные в Базе Данных обновлены, вы великолепны!');
+            resolve(true);
+          };
+        };
+      };
+
+      openRequest.onblocked = () => {
+        const db = openRequest.result;
+        console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
+        alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
+        reject(false);
+      };
+    };
+  });
+}
+
+async function readDB() {
+  return new Promise((resolve, reject) => {
+    const openRequest = openDB("VOT");
+
+    openRequest.onerror = () => {
+      alert('VOT: Произошла ошибка');
+      console.error(`VOT: Ошибка Базы Данных: ${openRequest.errorCode}`);
+      reject(false);
+    }
+
+    openRequest.onupgradeneeded = async () => {
+      const db = openRequest.result;
+      db.close();
+      await initDB();
+      resolve(true);
+    }
+
+    openRequest.onsuccess = () => {
+      const db = openRequest.result;
+      db.onversionchange = () => {
+        db.close();
+        alert("VOT: База данных устарела, пожалуЙста, перезагрузите страницу.");
+        reject(false);
+      }
+
+      const objectStore = db.transaction('settings').objectStore('settings');
+      const request = objectStore.get('settings');
+
+      request.onerror = (event) => {
+        console.error("VOT: Не удалось получить данные из Базы Данных: ", event.error);
+        console.error(event);
+        reject(false);
+      }
+
+      request.onsuccess = () => {
+        // console.log('VOT: Получены данные из Базы Данных: ', request.result);
+        if (request.result === undefined) {
+          db.close()
+          deleteDB();
+          reject(false);
+        }
+        const data = request.result;
+        resolve(data);
+      }
+    }
+
+    openRequest.onblocked = () => {
+      const db = openRequest.result;
+      console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
+      alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
+      reject(false);
+    }
+  });
+}
+
+function deleteDB() {
+  indexedDB.deleteDatabase('VOT');
+}
+
+
 // EXTERNAL MODULE: ./src/utils/debug.js
 var debug = __webpack_require__("./src/utils/debug.js");
+;// CONCATENATED MODULE: ./src/menu.js
+
+
+function changeBtnColor(n) {
+  document.querySelector('.translationBtn').style.color = n;
+}
+
+function changeBtnState(newState = 'none') {
+  document.querySelector('.translationBtn').dataset.state = newState;
+}
+
+function changeIconBackground(type = 'none') {
+  let iconBackgroundColor;
+  switch (type) {
+    case 'error':
+      iconBackgroundColor = '#7A7A7D';
+      break;
+    case 'success':
+      iconBackgroundColor = '#A36EFF';
+      break;
+    default:
+      iconBackgroundColor = '#FFFFFF';
+      break;
+  }
+
+  document.querySelector('.translateIcon').style.fill = iconBackgroundColor;
+}
+
+function transformBtn(type = 'none', text) {
+  switch (type) {
+    case 'error':
+      changeIconBackground(type);
+      changeBtnColor('#7A7A7D');
+      changeBtnState(type);
+      break;
+    case 'success':
+      changeIconBackground(type);
+      changeBtnColor('#A36EFF');
+      changeBtnState(type);
+      break;
+    default:
+      changeIconBackground('none');
+      changeBtnColor('#FFFFFF');
+      changeBtnState('none');
+      break;
+  }
+
+  document.querySelector('.translationBtn').innerText = text;
+}
+
+// Add translation buttton block
+function addTranslationBlock(element) {
+  if (!element || element.querySelector('.translationBlock')) return;
+
+  const block = document.createElement('div');
+  block.classList.add('translationBlock');
+  block.innerHTML = `
+    <span class = "translationArea" role = "button">
+      <span class = "translationITranslate" tabindex = "-1">
+        <svg class="translateIcon" width="24" height="24" viewBox="0 0 32 32" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M17.605 19.703c.794-.13 1.647-.476 2.47-.983.695 1.013 1.255 1.546 1.306 1.593l1.166-1.207c-.011-.01-.504-.48-1.124-1.401.277-.25.547-.512.797-.798a12.1 12.1 0 0 0 2.268-3.826c.383.216.761.541.96 1.027.68 1.649-.301 3.557-1.215 4.385l1.152 1.22c1.52-1.378 2.571-3.959 1.638-6.227-.368-.892-1.077-1.59-2.064-2.037.162-.763.216-1.38.233-1.785h-1.698c-.017.307-.06.762-.173 1.323-1.325-.187-2.818-.006-4.248.508a25.994 25.994 0 0 1-.313-2.547c5.092-.287 8.098-1.488 8.237-1.546l-.654-1.533c-.03.013-2.875 1.14-7.65 1.418-.001-.405-.008-.666-.012-.85-.008-.339-.01-.423.03-.67L17.01 5.75c-.026.283-.024.573-.018 1.278l.002.318c-.026 0-.051 0-.077.002l-.08.001a39.286 39.286 0 0 1-3.27-.14L13.25 8.89c.5.043 2.023.122 3.397.122h.1a19.457 19.457 0 0 1 .208-.003l.106-.002c.067.948.196 2.034.421 3.22a8.05 8.05 0 0 0-2.267 1.963l.811 1.871c.327-.732.995-1.51 1.856-2.111a16.762 16.762 0 0 0 1.33 3.346c-.811.514-1.64.818-2.301.804l.694 1.603Zm2.953-3.488a8.18 8.18 0 0 0 .374-.389 10.465 10.465 0 0 0 1.927-3.224c-.198-.021-.4-.031-.606-.031-.907 0-1.885.199-2.834.574.31 1.209.718 2.23 1.14 3.07ZM9.769 11.688 4.25 24.438h2.259l1.357-3.407h5.582l1.357 3.407h2.258l-5.52-12.75H9.77Zm.887 2.624 2.056 5H8.6l2.056-5Z"></path>
+        </svg>
+      </span>
+      <span class = "translationBtn" tabindex = "0">Перевести видео</span>
+    </span>
+    <span class = "translationMenu" tabindex = "0" role = "button">
+      <svg class = "translationMenuIcon" height="15" width="5" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 13.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"></path>
+      </svg>
+    </span>
+  `;
+
+  element.appendChild(block);
+  debug/* default.log */.Z.log(`VOT: Added translation button to `, element);
+}
+
+function createTranslationMenu() {
+  const container = document.createElement('div');
+  container.classList.add('translationMenuContent');
+  container.innerHTML = `
+    <p class = "translationMainHeader">Настройки перевода</p>
+    <div class="translationMenuOptions"></div>
+    <div class="translationMenuFunctional">
+      <a class = "translationDownload">
+        <svg width="24px" height="24px" data-darkreader-inline-stroke="" fill="none" stroke="currentColor" style="--darkreader-inline-stroke: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+      </a>
+      <button class = "translationDropDB">Сбросить настройки</button>
+    </div>
+  `;
+
+  container.onclick = (event) => event.stopPropagation();
+  return container;
+}
+
+// Create checkbox for menu
+function createMenuCheckbox(id, valueToCheck, content) {
+  const checkboxContainer = document.createElement('div');
+  const checkbox = document.createElement('input');
+  const checkboxLabel = document.createElement('label');
+
+  checkbox.type = 'checkbox';
+  checkbox.id = id;
+  checkbox.checked = Boolean(valueToCheck);
+
+  checkboxLabel.htmlFor = id;
+  checkboxLabel.innerHTML = content;
+
+  checkboxContainer.classList.add('translationMenuContainer');
+  checkboxContainer.appendChild(checkbox);
+  checkboxContainer.appendChild(checkboxLabel);
+
+  return checkboxContainer;
+}
+
+// Create slider for menu
+function createMenuSlider(id, sliderValue, content) {
+  const sliderContainer = document.createElement('div');
+  const slider = document.createElement('input');
+  const sliderLabel = document.createElement('label');
+
+  slider.type = 'range';
+  slider.id = id;
+  slider.classList.add('VOTMenuSlider');
+  slider.min = 0;
+  slider.max = 100;
+  slider.value = sliderValue;
+
+  sliderLabel.htmlFor = id;
+  sliderLabel.classList.add('translationHeader');
+  sliderLabel.innerHTML = content;
+
+  sliderContainer.classList.add('translationMenuContainer');
+  sliderContainer.appendChild(sliderLabel);
+  sliderContainer.appendChild(slider);
+
+  return sliderContainer;
+}
+
+// Create select for menu
+function createMenuSelect(id, selectOptions) {
+  // selectOptions structure:
+  // [
+  //     {
+  //         label: string,
+  //         value: string,
+  //         selected: boolean,
+  //         disabled: boolean
+  //     }
+  // ]
+  const selectContainer = document.createElement('div');
+  const select = document.createElement('select');
+
+  select.id = id;
+  select.classList.add('VOTMenuSelect');
+
+  for (const option of selectOptions) {
+    const optionElement = document.createElement('option');
+    optionElement.innerText = option.label;
+    optionElement.value = option.value;
+    if (option.hasOwnProperty('selected') && option.selected) {
+      optionElement.setAttribute('selected', 'selected');
+    }
+
+    if (option.hasOwnProperty('disabled')) {
+      optionElement.disabled = option.disabled;
+    }
+
+    select.appendChild(optionElement);
+  }
+
+  selectContainer.classList.add('translationMenuContainer');
+  selectContainer.appendChild(select);
+
+  return selectContainer;
+}
+
+
+
+;// CONCATENATED MODULE: ./src/utils/volume.js
+// element - audio / video element
+function syncVolume(element, sliderVolume, otherSliderVolume, tempVolume) {
+  let finalValue;
+  if (sliderVolume > tempVolume) {
+    // sliderVolume = 100
+    // tempVolume = 69
+    // volume = 15
+    // 100 - 69 = 31
+    // 15 + 31 = 46 - final video volume
+    finalValue = otherSliderVolume + (sliderVolume - tempVolume);
+    finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
+
+    element.volume = finalValue / 100;
+  } else if (sliderVolume < tempVolume) {
+    // sliderVolume = 69
+    // tempVolume = 100
+    // volume = 15
+    // 100 - 69 = 31
+    // 15 - 31 = 0 - final video volume
+    finalValue = otherSliderVolume - (tempVolume - sliderVolume);
+    finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
+
+    element.volume = finalValue / 100;
+  }
+
+  return finalValue
+}
+
+
+;// CONCATENATED MODULE: ./src/config/regexes.js
+const regexes = () => {
+  return {
+    'youtubeRegex':  /^(www.|m.)?youtube(-nocookie)?.com$/,
+  }
+}
+
+/* harmony default export */ const config_regexes = (regexes());
+
+
+;// CONCATENATED MODULE: ./src/config/selectors.js
+const selectors = () => {
+  return {
+    'youtubeSelector':  '.html5-video-container',
+    'twitchSelector': '.video-ref',
+    'twitchMobileSelector': 'main > div > section > div > div > div',
+    'pipedSelector': '.player-container',
+    'vkSelector': '.videoplayer_media',
+    'twitterSelector': 'article[data-testid="tweet"][tabindex="-1"]',
+    'vimeoSelector': '.player',
+    'gagSelector': '.video-post',
+    'bilibilicomSelector': '.bpx-player-video-wrap'
+  }
+}
+
+/* harmony default export */ const config_selectors = (selectors());
+
+
 ;// CONCATENATED MODULE: ./src/index.js
 
 
 
 
 
-const defaultVideoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video with the translation (uses with option "autoSetVolumeYandexStyle")
 
-const twitterSelector = 'article[data-testid="tweet"][tabindex="-1"]';
 
-const twitchMobileSelector = 'main > div > section > div > div > div';
 
-const twitchSelector = '.video-ref';
 
-const vkSelector = '.videoplayer_media';
 
-const pipedSelector = '.player-container';
+
+
+
+
+const sitesChromiumBlocked = Object.assign([], sitesInvidious, sitesPiped);
 
 async function src_main() {
   const rvt = await Promise.resolve(/* import() */).then(__webpack_require__.bind(__webpack_require__, "./src/rvt-cloudflare.js"));
@@ -826,283 +1522,68 @@ async function src_main() {
 
   if (false) {}
 
-  const availableLangs = ['ru', 'en', 'zh', 'fr', 'it', 'es']; // available languages for translation
-
-  const siteTranslates = {
-    'youtube': {
-      'url': 'https://youtu.be/',
-      'func_param': 0x40_75_50_00_00_00_00_00
-    },
-    'twitch': {
-      'url': 'https://twitch.tv/',
-      'func_param': 0x40_75_50_00_00_00_00_00
-    },
-    'vimeo': {
-      'url': 'https://vimeo.com/',
-      'func_param': 0x40_75_50_00_00_00_00_00
-    },
-    '9gag': {
-      'url': 'https://9gag.com/gag/',
-      'func_param': 0x40_75_50_00_00_00_00_00
-    },
-    'vk': {
-      'url': 'https://vk.com/video?z=',
-      'func_param': 0x40_75_50_00_00_00_00_00
-    },
-    'xvideos': {
-      'url': 'https://www.xvideos.com/',
-      'func_param': 0x40_75_50_00_00_00_00_00
-    },
-    'pornhub': {
-      'url': 'https://rt.pornhub.com/view_video.php?viewkey=',
-      'func_param': 0x40_75_50_00_00_00_00_00
-    },
-    'udemy': {
-      'url': 'https://www.udemy.com',
-      'func_param': 0x40_75_50_00_00_00_00_00
-    },
-    'twitter': {
-      'url': 'https://twitter.com/i/status/',
-      'func_param': 0x40_75_50_00_00_00_00_00
-    },
-    'facebook': {
-      'url': 'https://www.facebook.com/',
-      'func_param': 0x40_75_50_00_00_00_00_00
-    },
-    'rutube': {
-      'url': 'https://rutube.ru/video/',
-      'func_param': 0x40_75_50_00_00_00_00_00
-    }
-  }
-
-  // Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
-  const sitesInvidious = [
-    'invidious.snopyta.org',
-    'yewtu.be',
-    'invidious.kavin.rocks',
-    'vid.puffyan.us',
-    'invidious.namazso.eu',
-    'inv.riverside.rocks',
-    'yt.artemislena.eu',
-    'invidious.flokinet.to',
-    'invidious.esmailelbob.xyz',
-    'y.com.sb',
-    'invidious.nerdvpn.de',
-    'inv.vern.cc',
-    'invidious.slipfox.xyz',
-    'invidio.xamh.de',
-    'invidious.dhusch.de'
-  ];
-
-  // Sites host Piped. I tested the performance only on piped.video
-  const sitesPiped = [
-    'piped.video',
-    'piped.tokhmi.xyz',
-    'piped.moomoo.me',
-    'piped.syncpundit.io',
-    'piped.mha.fi',
-    'watch.whatever.social',
-    'piped.garudalinux.org',
-    'efy.piped.pages.dev',
-    'watch.leptons.xyz',
-    'piped.lunar.icu',
-    'yt.dc09.ru',
-    'piped.mint.lgbt',
-    'il.ax',
-    'piped.privacy.com.de',
-    'piped.esmailelbob.xyz',
-    'piped.projectsegfau.lt',
-    'piped.in.projectsegfau.lt',
-    'piped.us.projectsegfau.lt',
-    'piped.privacydev.net',
-    'piped.palveluntarjoaja.eu',
-    'piped.smnz.de',
-    'piped.adminforge.de',
-    'piped.qdi.fi',
-    'piped.hostux.net',
-    'piped.chauvet.pro',
-    'piped.jotoma.de',
-    'piped.pfcd.me',
-    'piped.frontendfriendly.xyz'
-  ];
-
-  const sitesChromiumBlocked = Object.assign([], sitesInvidious, sitesPiped);
-
-  const $translationBlock = $(`
-    <div class = "translationBlock">
-        <span class = "translationArea" role = "button">
-            <span class = "translationIAlice" tabindex = "-1">
-              <svg class="translationIconAlice" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <mask id="mask-main" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
-                    <circle cx="12" cy="12" r="12" fill="#fff"></circle>
-                </mask>
-                <g mask="url(#mask-main)">
-                    <path transform="translate(0 .028)" fill="url(#gradient-main)" d="M0 0h24v24H0z"></path>
-                    <path fill="#7626FF" d="M0 .028h24v24H0z"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.283 16.193c.9.888 3.297 1.42 5.74 1.43 2.444-.01 4.841-.542 5.74-1.43 2.236-2.204-3.199-10.653-5.737-10.665-2.544.012-7.979 8.461-5.743 10.665" fill="#fff"></path>
-                </g>
-                <defs>
-                    <linearGradient id="gradient-main" x1="19.778" y1="30.357" x2="30.132" y2="4.5" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#C826FF"></stop>
-                        <stop offset="1" stop-color="#5426FF"></stop>
-                    </linearGradient>
-                </defs>
-              </svg>
-            </span>
-            <span class = "translationITranslate" tabindex = "-1">
-              <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path class="translateIcon" fill-rule="evenodd" clip-rule="evenodd" d="M17.605 19.703c.794-.13 1.647-.476 2.47-.983.695 1.013 1.255 1.546 1.306 1.593l1.166-1.207c-.011-.01-.504-.48-1.124-1.401.277-.25.547-.512.797-.798a12.1 12.1 0 0 0 2.268-3.826c.383.216.761.541.96 1.027.68 1.649-.301 3.557-1.215 4.385l1.152 1.22c1.52-1.378 2.571-3.959 1.638-6.227-.368-.892-1.077-1.59-2.064-2.037.162-.763.216-1.38.233-1.785h-1.698c-.017.307-.06.762-.173 1.323-1.325-.187-2.818-.006-4.248.508a25.994 25.994 0 0 1-.313-2.547c5.092-.287 8.098-1.488 8.237-1.546l-.654-1.533c-.03.013-2.875 1.14-7.65 1.418-.001-.405-.008-.666-.012-.85-.008-.339-.01-.423.03-.67L17.01 5.75c-.026.283-.024.573-.018 1.278l.002.318c-.026 0-.051 0-.077.002l-.08.001a39.286 39.286 0 0 1-3.27-.14L13.25 8.89c.5.043 2.023.122 3.397.122h.1a19.457 19.457 0 0 1 .208-.003l.106-.002c.067.948.196 2.034.421 3.22a8.05 8.05 0 0 0-2.267 1.963l.811 1.871c.327-.732.995-1.51 1.856-2.111a16.762 16.762 0 0 0 1.33 3.346c-.811.514-1.64.818-2.301.804l.694 1.603Zm2.953-3.488a8.18 8.18 0 0 0 .374-.389 10.465 10.465 0 0 0 1.927-3.224c-.198-.021-.4-.031-.606-.031-.907 0-1.885.199-2.834.574.31 1.209.718 2.23 1.14 3.07ZM9.769 11.688 4.25 24.438h2.259l1.357-3.407h5.582l1.357 3.407h2.258l-5.52-12.75H9.77Zm.887 2.624 2.056 5H8.6l2.056-5Z" fill="#fff"></path>
-              </svg>
-            </span>
-            <span class = "translationBtn" tabindex = "0">Перевести видео</span>
-        </span>
-        <span class = "translationMenu" tabindex = "0" role = "button">
-          <svg class = "translationMenuIcon" height="15" width="5" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 13.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" fill="#fff"></path>
-          </svg>
-        </span>
-    </div>`);
-  const $translationDownload = $(`
-      <a class = "translationDownload">
-        <svg width="24px" height="24px" data-darkreader-inline-stroke="" fill="none" stroke="currentColor" style="--darkreader-inline-stroke: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-      </span>`);
-  const $translationBtn = $translationBlock.find('.translationArea > .translationBtn');
-  const $translationImageAlice = $translationBlock.find('.translationIconAlice');
-  const $translationImageTranslate = $translationBlock.find('.translateIcon');
-
-  const $translationMenuContent = $('<div class = "translationMenuContent"><p class = "translationMainHeader">Перевод видео</p><div class = "translationAbsoluteContainer"></div></div>');
-  $translationMenuContent.on('click', (event) => {
-    event.stopPropagation();
-  });
-
-  const sleep = m => new Promise(r => setTimeout(r, m))
-
-  function addTranslationBtn(elem, target = 'desktop') {
-    if (!$(elem).has($translationBlock).length) {
-      if (target === 'yt-mobile') {
-        $translationBlock.css('top', '1rem');
-      }
-
-      debug/* default.log */.Z.log(`VOT: Added translation button (target: ${target})`)
-      $(elem).append($translationBlock);
-      return;
-    }
-    debug/* default.log */.Z.log(`VOT: Already added translation button (target: ${target})`, elem)
-  };
-
-  function addTranslationMenu(elem, target = 'desktop') {
-    if (!$(elem).has($translationMenuContent).length) {
-      if (target === 'yt-mobile') {
-        $translationMenuContent.css('top', '5rem');
-      } else if (target === 'twitter') {
-        $translationMenuContent.css('top', '55%');
-      }
-
-      debug/* default.log */.Z.log(`VOT: Added translation menu (target: ${target})`)
-      $(elem).append($translationMenuContent);
-      return;
-    }
-    debug/* default.log */.Z.log(`VOT: Already added translation menu (target: ${target})`, elem)
-  };
-
+  let timer;
   const audio = new Audio();
-
-  const getVideoId = (service) => {
-    const url = new URL(window.location.href);
-
-    switch (service) {
-      case "youtube":
-        if (url.pathname.includes("watch")) {
-          return url.searchParams.get("v");
-        } else if (url.pathname.includes("embed/")) { // TODO: Добавить кнопку перевода на странице видео
-          const urlArray = url.pathname.split('/');
-          return urlArray[urlArray.length - 1];
-        }
-      case "vk":
-        let videoId;
-        if (/^video-?[0-9]{8,9}_[0-9]{9}$/.test(url.pathname.split('/')[1])) {
-          videoId = url.pathname.split('/')[1]; // Убираем слэш в начале
-        } else {
-          videoId = url.searchParams.has('z') ? url.searchParams.get("z").split('/')[0] : null; // Убираем мусор в конце параметра
-        }
-        return videoId;
-      case "9gag" || 0:
-        if (url.pathname.includes("gag/")) {
-          const urlArray = url.pathname.split('/');
-          return urlArray[urlArray.length - 1];
-        }
-      case "twitch":
-        if (/^m\.twitch\.tv$/.test(window.location.hostname)) { // Если используется мобильная версия сайта (m.twitch.tv)
-          const linkUrl = document.head.querySelector('link[rel="canonical"]');
-          if (linkUrl?.href.includes("/videos/")) {
-            const urlArray = linkUrl.href.split('/');
-            return `videos/${urlArray[urlArray.length - 1]}`;
-          } else if (linkUrl?.href.includes) {
-            return url.pathname.slice(1);
-          } else {
-            return false
-          }
-        } else if (/^player\.twitch\.tv$/.test(window.location.hostname)) {
-          return `videos/${url.searchParams.get("video")}`
-        } else if (url.pathname.includes("/videos/")) {
-          const urlArray = url.pathname.split('/');
-          return `videos/${urlArray[urlArray.length - 1]}`;
-        } else if (url.pathname.includes("/clip/")) {
-          return url.pathname.slice(1);
-        }
-      case "tiktok":
-        if (url.pathname.includes("video/")) {
-          const urlArray = url.pathname.split('/');
-          return urlArray[urlArray.length - 1];
-        }
-      case "vimeo":
-        const urlArray = url.pathname.split('/');
-        return urlArray[urlArray.length - 1];
-      case "xvideos":
-        const urlArrayXVideos = url.pathname.split('/');
-        return `${urlArrayXVideos[urlArrayXVideos.length - 2]}/${urlArrayXVideos[urlArrayXVideos.length - 1]}`;
-      case "pornhub":
-        if (url.pathname.includes('view_video.php')) {
-          return url.searchParams.get("viewkey");
-        } else if (url.pathname.includes('embed/')) {
-          const urlArray = url.pathname.split('/');
-          return urlArray[urlArray.length - 1];
-        }
-      case "twitter":
-        if (url.pathname.includes("/status/")) {
-          const urlArray = url.pathname.split('/');
-          return urlArray[urlArray.length - 1];
-        }
-      case "udemy":
-        return url.pathname;
-      case "facebook":
-        return url.pathname;
-      case "rutube":
-        if (url.pathname.includes("/video/")) {
-          const urlArray = url.pathname.split('/');
-          return urlArray[urlArray.length - 2];
-        }
-      default:
-        return false;
-    }
-  };
+  let opacityRatio = 0.9;
+  let openedMenu = false;
 
   if (true) {
     var translationPanding = false;
   }
 
-  function secsToStrTime(secs) {
-    const minutes = Math.floor(secs / 60);
-    const seconds = Math.floor(secs % 60);
-    if (minutes >= 60) {
-      return 'Перевод займёт больше часа';
-    } else if (minutes >= 10 && minutes % 10) {
-      return `Перевод займёт ${minutes} минут`;
-    } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
-      return 'Перевод займёт около минуты';
-    } else {
-      return `Перевод займёт ${minutes} минуты`;
-    }
+  function logout(n) {
+    if (openedMenu) return;
+
+    document.querySelector('.translationBlock').style.opacity = n;
+  }
+
+  function resetTimer() {
+    clearTimeout(timer);
+    logout(1);
+    timer = setTimeout(() => {
+      logout(0);
+    }, 2000);
+  }
+
+  function changeOpacityOnEvent(event, timer, opacityRatio) {
+    clearTimeout(timer);
+    logout(opacityRatio);
+    event.stopPropagation();
+  }
+
+  const deleteAudioSrc = () => {
+    audio.src = '';
+    audio.removeAttribute('src');
+  };
+
+  // Add menu container
+  function addTranslationMenu(element) {
+    if (element.querySelector('.translationMenuContent')) return;
+
+    const container = createTranslationMenu();
+    element.appendChild(container);
+
+    // click to translation menu icon
+    document.querySelector('.translationMenu')?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const content = document.querySelector('.translationMenuContent');
+      if (openedMenu) {
+        content.style.display = 'none';
+      } else {
+        content.style.display = 'block';
+        content.style.opacity = opacityRatio;
+      }
+
+      openedMenu = !openedMenu;
+    });
+
+    document.querySelector('.translationDropDB').addEventListener('click', (event) => {
+      event.stopPropagation();
+      deleteDB();
+      location.reload();
+    });
+
+    debug/* default.log */.Z.log(`VOT: Added translation menu to `, element);
   }
 
   function translateVideo(url, unknown1, requestLang, responseLang, callback) {
@@ -1150,356 +1631,247 @@ async function src_main() {
     });
   }
 
-  const deleteAudioSrc = () => {
-    audio.src = "";
-    audio.removeAttribute("src");
-  };
+  async function translateProccessor(videoContainer, siteHostname, siteEvent ) {
+    debug/* default.log */.Z.log(`[translateProccessor] execute `, videoContainer);
 
-  // --- IndexedDB functions start:
-  function openDB (name) {
-    return indexedDB.open(name, 1);
-  }
-
-  async function initDB () {
-    return new Promise((resolve, reject) => {
-      const openRequest = openDB("VOT");
-
-      openRequest.onerror = () => {
-        console.error(`VOT: Ошибка инициализации Базы Данных: ${openRequest.errorCode}`);
-        reject(false);
-      }
-
-      openRequest.onupgradeneeded = event => {
-        const db = openRequest.result;
-
-        db.onerror = () => {
-          alert('VOT: Не удалось загрузить базу данных')
-          console.error(`VOT: Не удалось загрузить базу данных: ${openRequest.error}`);
-          reject(false);
-        }
-
-        const objectStore = db.createObjectStore('settings', {keyPath: 'key'});
-
-        objectStore.createIndex('autoTranslate', 'autoTranslate', { unique: false });
-        objectStore.createIndex('defaultVolume', 'defaultVolume', { unique: false });
-        objectStore.createIndex('showVideoSlider', 'showVideoSlider', { unique: false });
-        objectStore.createIndex('syncVolume', 'syncVolume', { unique: false });
-        objectStore.createIndex('autoSetVolumeYandexStyle', 'autoSetVolumeYandexStyle', { unique: false });
-        objectStore.createIndex('dontTranslateRuVideos', 'dontTranslateRuVideos', { unique: false });
-        console.log('VOT: База Данных создана')
-
-        objectStore.transaction.oncomplete = event => {
-          const objectStore = db.transaction('settings', 'readwrite').objectStore('settings');
-          const settingsDefault = {
-            key: 'settings',
-            autoTranslate: 0,
-            defaultVolume: 100,
-            showVideoSlider: 0,
-            syncVolume: 0,
-            autoSetVolumeYandexStyle: 1,
-            dontTranslateRuVideos: 0
-          };
-          const request = objectStore.add(settingsDefault);
-
-          request.onsuccess = () => {
-            console.log("VOT: Стандартные настройки добавлены в Базу Данных: ", request.result);
-            resolve(true);
-          };
-          request.onerror = () => {
-            console.log("VOT: Ошибка при добавление стандартных настроек в Базу Данных: ", request.error);
-            reject(false);
-          };
-        };
-      };
-
-      openRequest.onsuccess = () => {
-        const db = openRequest.result;
-        db.onversionchange = () => {
-          db.close();
-          alert("Базе данных нужно обновление, пожалуйста, перезагрузите страницу.");
-          console.log("VOT: Базе данных нужно обновление, пожалуйста, перезагрузите страницу");
-          window.location.reload();
-          reject(false);
-        }
-        resolve(true);
-      };
-
-      openRequest.onblocked = () => {
-        const db = openRequest.result;
-        console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
-        alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
-        reject(false);
-      };
-    });
-  }
-
-  async function updateDB({
-    autoTranslate,
-    defaultVolume,
-    showVideoSlider,
-    syncVolume,
-    autoSetVolumeYandexStyle,
-    dontTranslateRuVideos
-  }) {
-    return new Promise((resolve, reject) => {
-      if (
-        typeof(autoTranslate) === 'number' ||
-        typeof(defaultVolume) === 'number' ||
-        typeof(showVideoSlider) === 'number' ||
-        typeof(syncVolume) === 'number' ||
-        typeof(autoSetVolumeYandexStyle) === 'number' ||
-        typeof(dontTranslateRuVideos) === 'number') {
-        const openRequest = openDB("VOT");
-
-        openRequest.onerror = () => {
-          alert('VOT: Произошла ошибка');
-          console.error(`VOT: Ошибка Базы Данных: ${openRequest.errorCode}`);
-          reject(false);
-        };
-
-        openRequest.onupgradeneeded = async () => {
-          const db = openRequest.result;
-          db.close();
-          await initDB();
-          resolve(true);
-        };
-
-        openRequest.onsuccess = () => {
-          const db = openRequest.result;
-          db.onversionchange = () => {
-            db.close();
-            console.log("VOT: Базе данных нужно обновление, пожалуЙста, перезагрузите страницу");
-            window.location.reload();
-            reject(false);
-          };
-
-          const objectStore = db.transaction('settings', 'readwrite').objectStore('settings');
-          const request = objectStore.get('settings');
-
-          request.onerror = (event) => {
-            console.error("VOT: Не удалось получить данные из Базы Данных: ", event.error);
-            reject(false);
-          };
-
-          request.onsuccess = () => {
-            // console.log('VOT: Получены данные из Базы Данных: ', request.result);
-            const data = request.result;
-
-            if (typeof(autoTranslate) === 'number') {
-              data.autoTranslate = autoTranslate;
-            };
-
-            if (typeof(defaultVolume) === 'number') {
-              data.defaultVolume = defaultVolume;
-            };
-
-            if (typeof(showVideoSlider) === 'number') {
-              data.showVideoSlider = showVideoSlider;
-            };
-
-            if (typeof(syncVolume) === 'number') {
-              data.syncVolume = syncVolume;
-            };
-
-            if (typeof(autoSetVolumeYandexStyle) === 'number') {
-              data.autoSetVolumeYandexStyle = autoSetVolumeYandexStyle;
-            };
-
-            if (typeof(dontTranslateRuVideos) === 'number') {
-              data.dontTranslateRuVideos = dontTranslateRuVideos;
-            };
-
-            const requestUpdate = objectStore.put(data);
-
-            requestUpdate.onerror = (event) =>{
-              console.error("VOT: Не удалось обновить данные в Базе Данных: ", event.error);
-              reject(false);
-            };
-
-            requestUpdate.onsuccess = () => {
-              // console.log('VOT: Данные в Базе Данных обновлены, вы великолепны!');
-              resolve(true);
-            };
-          };
-        };
-
-        openRequest.onblocked = () => {
-          const db = openRequest.result;
-          console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
-          alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
-          reject(false);
-        };
-      };
-    });
-  }
-
-  async function readDB() {
-    return new Promise((resolve, reject) => {
-      const openRequest = openDB("VOT");
-
-      openRequest.onerror = () => {
-        alert('VOT: Произошла ошибка');
-        console.error(`VOT: Ошибка Базы Данных: ${openRequest.errorCode}`);
-        reject(false);
-      }
-
-      openRequest.onupgradeneeded = async () => {
-        const db = openRequest.result;
-        db.close();
-        await initDB();
-        resolve(true);
-      }
-
-      openRequest.onsuccess = () => {
-        const db = openRequest.result;
-        db.onversionchange = () => {
-          db.close();
-          alert("VOT: База данных устарела, пожалуЙста, перезагрузите страницу.");
-          reject(false);
-        }
-
-        const objectStore = db.transaction('settings').objectStore('settings');
-        const request = objectStore.get('settings');
-
-        request.onerror = (event) => {
-          console.error("VOT: Не удалось получить данные из Базы Данных: ", event.error);
-          console.error(event);
-          reject(false);
-        }
-
-        request.onsuccess = () => {
-          // console.log('VOT: Получены данные из Базы Данных: ', request.result);
-          if (request.result === undefined) {
-            db.close()
-            deleteDB();
-            reject(false);
-          }
-          const data = request.result;
-          resolve(data);
-        }
-      }
-
-      openRequest.onblocked = () => {
-        const db = openRequest.result;
-        console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
-        alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
-        reject(false);
-      }
-    });
-  }
-
-  function deleteDB() {
-    indexedDB.deleteDatabase('VOT');
-  }
-
-
-  function changeColor(n) {
-    $translationBtn.css("color", n);
-  }
-
-  function changeBackground(type = 'none') {
-    let aliceMaskFill;
-    let aliceGradientStop1;
-    let aliceGradientStop2;
-    let imgBackgroundColor;
-    switch (type) {
-      case 'error':
-        aliceMaskFill = '#7A7A7D';
-        aliceGradientStop1 = '#7A7A7D';
-        aliceGradientStop2 = '#7A7A7D';
-        imgBackgroundColor = '#7A7A7D';
-        break;
-      case 'success':
-        aliceMaskFill = '#7626FF';
-        aliceGradientStop1 = '#C826FF';
-        aliceGradientStop2 = '#5426FF';
-        imgBackgroundColor = '#A36EFF';
-        break;
-      default:
-        aliceMaskFill = '#7626FF';
-        aliceGradientStop1 = '#C826FF';
-        aliceGradientStop2 = '#5426FF';
-        imgBackgroundColor = '#FFFFFF';
-        break;
-    }
-    $translationImageAlice.find('g > path:nth-child(2)').attr('fill', aliceMaskFill);
-    $translationImageAlice.find('defs > linearGradient > stop:nth-child(1)').attr('stop-color', aliceGradientStop1);
-    $translationImageAlice.find('defs > linearGradient > stop:nth-child(2)').attr('stop-color', aliceGradientStop2);
-    $translationImageTranslate.attr('fill', imgBackgroundColor)
-  }
-
-  function transformBtn(type = 'none', text) {
-    switch (type) {
-      case 'error':
-        changeBackground('error');
-        changeColor('#7A7A7D');
-        break;
-      case 'success':
-        changeBackground('success');
-        changeColor('#A36EFF');
-        break;
-      default:
-        changeBackground('none');
-        changeColor('#FFFFFF');
-        break;
-    }
-    $translationBtn.text(text);
-  }
-
-  async function waitForElement(selector, timeout = 15_000) {
-    const start = Date.now();
-
-    while (Date.now() - start < timeout) {
-      const el = $(selector);
-      if ((el?.length) || Date.now() - start > timeout) {
-        return el;
-      }
-      await new Promise(resolve => setTimeout(resolve, 1000));
-    }
-
-    return null;
-  }
-
-  async function translateProccessor($videoContainer, siteHostname, siteEvent) {
-    // --- Variables ---
+    let video;
     let autoRetry;
-    let dbSyncVolume;
     let volumeOnStart;
-    let opacityRatio = 0.9;
     let tempOriginalVolume;
     let tempVolume;
-    let video;
+    let dbAutoTranslate;
+    let dbDefaultVolume;
+    let dbShowVideoSlider;
+    let dbAutoSetVolumeYandexStyle;
+    let dbDontTranslateRuVideos;
+    let dbSyncVolume;
+    let firstPlay = true;
+    // translate properties
+    let translateFromLang = 'en'; // default language of video
+    let translateToLang = 'ru'; // default language of audio response
 
-    // --- Get video element ---
+    debug/* default.log */.Z.log('videoContainer', videoContainer)
+
     if (siteHostname === 'vimeo') {
-      video = $($videoContainer).find('.vp-video-wrapper > .vp-video > .vp-telecine > video')[0];
-    } else if (siteHostname === 'facebook') {
-      video = $($videoContainer).find('div > div > div > div > div > div > div > div > div > div > video')[0];
-    } else if (siteHostname === 'twitter') {
-      $videoContainer = $(twitterSelector)
-      video = $videoContainer.find('div[data-testid="videoComponent"] > div > div > video')[0];
-      stopTraslate();
+      video = videoContainer.querySelector('.vp-video-wrapper > .vp-video > .vp-telecine > video');
     } else {
-      video = $($videoContainer).find('video')[0];
+      video = videoContainer.querySelector('video');
     }
 
-    const videoData = getVideoData();
-    console.log('VOT Video Data: ', videoData)
+    debug/* default.log */.Z.log('video', video)
 
-    if (siteHostname === '9gag') {
-      $videoContainer.parent().removeAttr('href');
+    let videoData = getVideoData();
+    console.log('VOT Video Data: ', videoData);
+
+    if (window.location.hostname.includes('m.youtube.com')) {
+      await sleep(1000);
+      opacityRatio = 1;
+      const container = document.querySelector('.slim-video-information-title-and-badges')
+      addTranslationBlock(container, 'yt-mobile');
+      addTranslationMenu(container, 'yt-mobile');
+    } else if (siteHostname === 'pornhub') {
+      if (window.location.pathname.includes('view_video.php')) {
+        const container = document.querySelector('.original.mainPlayerDiv')
+        addTranslationBlock(container);
+        addTranslationMenu(container);
+      } else if (window.location.pathname.includes('embed/')) {
+        const container = document.querySelector('body')
+        addTranslationBlock(container);
+        addTranslationMenu(container);
+      }
+    } else {
+      addTranslationBlock(videoContainer);
+      addTranslationMenu(videoContainer);
     }
 
-    if (siteHostname == 'youtube' && window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) {
+    const isDBInited = await initDB();
+
+    if (isDBInited) {
+      const dbData = await readDB();
+      if (dbData) {
+        dbAutoTranslate = dbData.autoTranslate;
+        dbDefaultVolume = dbData.defaultVolume;
+        dbShowVideoSlider = dbData.showVideoSlider;
+        dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
+        dbDontTranslateRuVideos = dbData.dontTranslateRuVideos;
+        // only youtube:
+        dbSyncVolume = dbData.syncVolume;
+
+        debug/* default.log */.Z.log('[db] data from db: ', dbData);
+        const menuOptions = document.querySelector('.translationMenuOptions');
+        if (!menuOptions.querySelector('#VOTTranslateFromLang')) {
+          const selectFromLangOptions = [
+            {
+              label: 'Язык видео',
+              value: 'default',
+              disabled: true
+            },
+          ]
+
+          for (const [key, value] of Object.entries(availableFromLangs)) {
+            selectFromLangOptions.push({
+              label: value,
+              value: key,
+              selected: videoData.detectedLanguage === key
+            });
+          }
+
+          const selectToLangOptions = [
+            {
+              label: 'Язык перевода',
+              value: 'default',
+              disabled: true
+            },
+          ]
+
+          for (const [key, value] of Object.entries(availableToLangs)) {
+            selectToLangOptions.push({
+              label: value,
+              value: key,
+              selected: videoData.responseLanguage === key
+            });
+          }
+
+          const selectFromLang = createMenuSelect(
+            'VOTTranslateFromLang',
+            selectFromLangOptions
+          );
+
+          const selectToLang = createMenuSelect(
+            'VOTTranslateToLang',
+            selectToLangOptions
+          ).firstElementChild;
+
+          selectFromLang.id = 'VOTSelectLanguages';
+          selectFromLang.innerHTML += `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16m0 0l-6 6m6-6l-6-6"/>
+            </svg>
+          `;
+
+          selectFromLang.appendChild(selectToLang);
+          menuOptions.appendChild(selectFromLang);
+
+          menuOptions.querySelector('#VOTTranslateFromLang').addEventListener('change', (event) => {
+            debug/* default.log */.Z.log('[onchange] select from language', event.target.value)
+            videoData = setDetectedLangauge(videoData, event.target.value);
+          });
+
+          menuOptions.querySelector('#VOTTranslateToLang').addEventListener('change', (event) => {
+            debug/* default.log */.Z.log('[onchange] select to language', event.target.value);
+            videoData = setResponseLangauge(videoData, event.target.value);
+          })
+        }
+
+        if (dbAutoTranslate !== undefined && !menuOptions.querySelector('#VOTAutoTranslate')) {
+          const checkbox = createMenuCheckbox(
+            'VOTAutoTranslate',
+            dbAutoTranslate,
+            `Переводить при открытие${siteHostname === 'vk' || window.location.hostname.includes('m.twitch.tv') ? ' <strong>(рекомендуется)</strong>' : ''}`
+          );
+
+          checkbox.querySelector('#VOTAutoTranslate').onclick = async (event) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({autoTranslate: value});
+            dbAutoTranslate = value;
+            debug/* default.log */.Z.log('autoTranslate value changed. New value: ', dbAutoTranslate)
+          }
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        if (dbShowVideoSlider !== undefined && !menuOptions.querySelector('#VOTShowVideoSlider')) {
+          const checkbox = createMenuCheckbox(
+            'VOTShowVideoSlider',
+            dbShowVideoSlider,
+            'Слайдер громкости видео'
+          );
+
+          checkbox.querySelector('#VOTShowVideoSlider').onclick = async (event) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({showVideoSlider: value});
+            dbShowVideoSlider = value;
+            debug/* default.log */.Z.log('showVideoSlider value changed. New value: ', dbShowVideoSlider);
+            if (dbShowVideoSlider === 1 && document.querySelector('.translationBtn').dataset.state === 'success') {
+              addVideoSlider();
+            } else {
+              document.querySelector('#VOTVideoSlider')?.parentElement.remove();
+            }
+          }
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        if (dbAutoSetVolumeYandexStyle !== undefined && !menuOptions.querySelector('#VOTAutoSetVolume')) {
+          const checkbox = createMenuCheckbox(
+            'VOTAutoSetVolume',
+            dbAutoSetVolumeYandexStyle,
+            `Уменьшать громкость видео до ${config/* autoVolume */.IM * 100}%`
+          );
+
+          checkbox.querySelector('#VOTAutoSetVolume').onclick = async (event) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({autoSetVolumeYandexStyle: value});
+            dbAutoSetVolumeYandexStyle = value;
+            debug/* default.log */.Z.log('autoSetVolumeYandexStyle value changed. New value: ', dbAutoSetVolumeYandexStyle);
+          }
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        if ((window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) && dbSyncVolume !== undefined && !menuOptions.querySelector('#VOTSyncVolume')) {
+          const checkbox = createMenuCheckbox(
+            'VOTSyncVolume',
+            dbSyncVolume,
+            'Связать громкость перевода и видео (youtube)'
+          );
+
+          checkbox.querySelector('#VOTSyncVolume').onclick = async (event) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({syncVolume: value});
+            dbSyncVolume = value;
+            debug/* default.log */.Z.log('syncVolume value changed. New value: ', dbSyncVolume);
+          }
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        if (window.location.hostname.includes('youtube.com') && dbDontTranslateRuVideos !== undefined && !menuOptions.querySelector('#VOTDontTranslateRu')) {
+          const checkbox = createMenuCheckbox(
+            'VOTDontTranslateRu',
+            dbDontTranslateRuVideos,
+            `Не переводить с русского (youtube)`
+          );
+
+          checkbox.querySelector('#VOTDontTranslateRu').onclick = async (event) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({dontTranslateRuVideos: value});
+            dbDontTranslateRuVideos = value;
+            debug/* default.log */.Z.log('dontTranslateRuVideos value changed. New value: ', dbDontTranslateRuVideos);
+          }
+
+          menuOptions.appendChild(checkbox);
+        }
+      }
+    }
+
+    transformBtn('none', 'Перевести видео');
+
+    if (window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) {
       const syncVolumeObserver = new MutationObserver(async function(mutations) {
         mutations.forEach(async function(mutation) {
-          if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow' && $('.translationVideoVolumeBox').length) {
-            syncOriginalVolumeSlider();
+          if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow' && document.querySelector('#VOTVideoSlider')) {
+            syncVideoVolumeSlider();
           }
         });
       });
 
-      syncVolumeObserver.observe($('.ytp-volume-panel')[0], {
+      syncVolumeObserver.observe(document.querySelector('.ytp-volume-panel'), {
         attributes: true,
         childList: false,
         subtree: true,
@@ -1507,560 +1879,114 @@ async function src_main() {
       });
     }
 
+    function setSelectMenuValues(from, to) {
+      if (document.querySelector('#VOTSelectLanguages')) {
+        console.log(`Set translation from ${from} to ${to}`);
+        document.querySelector('#VOTTranslateFromLang').value = from;
+        document.querySelector('#VOTTranslateToLang').value = to;
+      }
+    }
+
+    // data - ytData or VideoData
+    function setDetectedLangauge(data, lang) {
+      switch (lang) {
+        case 'en':
+          data.detectedLanguage = lang;
+          data.responseLanguage = 'ru';
+          break;
+        case 'ru':
+          data.detectedLanguage = lang;
+          data.responseLanguage = 'en';
+          break;
+        default:
+          if (!Object.keys(availableFromLangs).includes(lang)) {
+            return setDetectedLangauge('en');
+          }
+
+          data.detectedLanguage = lang;
+      }
+
+      setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+
+      return data;
+    }
+
+    // data - ytData or VideoData
+    function setResponseLangauge(data, lang) {
+      switch (lang) {
+        case 'en':
+          data.responseLanguage = lang;
+          data.detectedLanguage = 'ru';
+          break;
+        default:
+          if (!Object.keys(availableToLangs).includes(lang)) {
+            return setResponseLangauge('ru');
+          }
+
+          if (data.detectedLanguage === 'ru' && lang === 'ru') {
+            data.detectedLanguage = 'en';
+          }
+
+          data.responseLanguage = lang;
+      }
+
+      setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+
+      return data;
+    }
+
     function stopTraslate() {
       // Default actions on stop translate
       audio.pause();
-      $("video").off(".translate");
+      $('video').off('.translate');
       deleteAudioSrc();
-      $('.translationVolumeBox').parent().remove();
-      $('.translationVideoVolumeBox').parent().remove();
-      $('.translationDownload').remove();
+      document.querySelector('#VOTVideoSlider')?.parentElement.remove();
+      document.querySelector('#VOTTranslationSlider')?.parentElement.remove();
+      const downloadBtn = document.querySelector('.translationDownload');
+      downloadBtn.href = '';
+      downloadBtn.style.display = 'none';
       transformBtn('none', 'Перевести видео');
       if (volumeOnStart) {
         video.volume = volumeOnStart;
       }
     }
 
-    function syncOriginalVolumeSlider() {
+    function syncVideoVolumeSlider() {
       // Sync volume slider with original video (youtube only)
-      const newSlidersVolume = $('.ytp-volume-panel').attr('aria-valuenow');
-      const videoVolumeBox = $('.translationVideoVolumeBox');
-      if (videoVolumeBox.length) {
-        const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
-        videoVolumeSlider.val(newSlidersVolume);
-        const volumePercent = videoVolumeBox.parent().find('.volumePercent');
-        volumePercent.text(`${newSlidersVolume}%`);
+      const newSlidersVolume = document.querySelector('.ytp-volume-panel').getAttribute('aria-valuenow');
+      if (document.querySelector('#VOTVideoSlider')) {
+        document.querySelector('#VOTVideoSlider').value = newSlidersVolume;
       }
+
+      if (document.querySelector('#VOTVideoVolume')) {
+        document.querySelector('#VOTVideoVolume').innerText = `${newSlidersVolume}%`;
+      }
+
       if (dbSyncVolume === 1) {
         tempOriginalVolume = Number(newSlidersVolume);
       }
-    }
-
-    let firstPlay = true;
-    const isDBInited = await initDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
-    if (siteHostname === 'youtube' && window.location.hostname.includes('m.youtube.com')) {
-      await sleep(1000);
-      opacityRatio = 1;
-      addTranslationBtn($('.slim-video-information-title-and-badges'), 'yt-mobile');
-      addTranslationMenu($('.slim-video-information-title-and-badges'), 'yt-mobile');
-    } else if (siteHostname === 'pornhub') {
-      if (window.location.pathname.includes('view_video.php')) {
-        addTranslationBtn($('.original.mainPlayerDiv'));
-        addTranslationMenu($('.original.mainPlayerDiv'));
-      } else if (window.location.pathname.includes('embed/')) {
-        addTranslationBtn($('body'));
-        addTranslationMenu($('body'));
-      }
-    } else if (siteHostname === 'twitter') {
-      const elementMenuContainer = $(`${twitterSelector} > div > div > div:nth-child(3)`);
-      const elementContainer = elementMenuContainer.find('div[data-testid="videoPlayer"]');
-      addTranslationBtn(elementContainer);
-      addTranslationMenu(elementMenuContainer, 'twitter');
-    } else {
-      addTranslationBtn($videoContainer);
-      addTranslationMenu($videoContainer);
-    }
-
-    transformBtn('none', 'Перевести видео');
-    $('.translationDownload').remove();
-
-    if (isDBInited) {
-      const dbData = await readDB().then(value => {return(value)}).catch(err => {console.error(err); return false});
-      var dbAutoTranslate = dbData !== undefined ? dbData.autoTranslate : undefined;
-      var dbDefaultVolume = dbData !== undefined ? dbData.defaultVolume : undefined;
-      var dbShowVideoSlider = dbData !== undefined ? dbData.showVideoSlider : undefined;
-      var dbAutoSetVolumeYandexStyle = dbData !== undefined ? dbData.autoSetVolumeYandexStyle : undefined;
-      var dbDontTranslateRuVideos = dbData !== undefined ? dbData.dontTranslateRuVideos : undefined;
-
-      // Только для ютуба
-      dbSyncVolume = dbData !== undefined ? dbData.syncVolume : undefined;
-
-      console.log(`VOT: Значение autoTranslate: ${dbAutoTranslate}`);
-      console.log(`VOT: Значение dbDefaultVolume: ${dbDefaultVolume}`);
-      console.log(`VOT: Значение dbShowVideoSlider: ${dbShowVideoSlider}`);
-      console.log(`VOT: Значение syncVolume (только для YouTube): ${dbSyncVolume}`);
-      console.log(`VOT: Значение autoSetVolumeYandexStyle: ${dbAutoSetVolumeYandexStyle}`);
-      console.log(`VOT: Значение dontTranslateRuVideos: ${dbDontTranslateRuVideos}`);
-
-      if (!$translationMenuContent.has('.translationAT').length && dbAutoTranslate !== undefined) {
-        const $translationATCont = $(
-          `<div class = "translationMenuContainer">
-            <input type="checkbox" name="auto_translate" value=${dbAutoTranslate} class = "translationAT" ${dbAutoTranslate === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "auto_translate">Автоматический перевод видео${siteHostname === 'vk' || window.location.hostname.includes('m.twitch.tv') ? ' <strong>(рекомендуется)</strong>' : ''}</label>
-          </div>
-          `
-        );
-        const $translationAT = $($translationATCont).find('.translationAT');
-        $translationAT.on('click', async (event) => {
-          event.stopPropagation();
-          const atValue = event.target.checked ? 1 : 0;
-          await updateDB({autoTranslate: atValue});
-          dbAutoTranslate = atValue;
-        });
-        $translationMenuContent.append($translationATCont);
-      }
-
-      if (!$translationMenuContent.has('.translationDropDB').length && dbData !== undefined) {
-        const $translationDropDB = $(
-          `<button class = "translationDropDB">Сбросить настройки</button>`
-        );
-        $translationDropDB.on('click', async (event) => {
-          event.stopPropagation();
-          deleteDB();
-          location.reload();
-        });
-        $translationMenuContent.find('.translationAbsoluteContainer').append($translationDropDB);
-      }
-
-      if (!$translationMenuContent.has('.translationSVS').length && dbData !== undefined) {
-        const $translationSVSCont = $(
-          `<div class = "translationMenuContainer">
-            <input type="checkbox" name="show_video_slider" value=${typeof(dbShowVideoSlider) === 'number' ? dbShowVideoSlider : '0'} class = "translationSVS" ${dbShowVideoSlider === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "show_video_slider">Слайдер громкости оригинала</label>
-          </div>
-          `
-        );
-        const $translationSVS = $($translationSVSCont).find('.translationSVS');
-        $translationSVS.on('click', async (event) => {
-          event.stopPropagation();
-          const svsValue = event.target.checked ? 1 : 0;
-          await updateDB({showVideoSlider: svsValue});
-          dbShowVideoSlider = svsValue;
-          if (svsValue === 1 && $translationBtn.text() === 'Выключить') {
-            addVideoSlider();
-          } else {
-            $('.translationVideoVolumeBox').parent().remove();
-          }
-        });
-        $translationMenuContent.append($translationSVSCont);
-      }
-
-      if (!$translationMenuContent.has('.translationSyncVolume').length && dbSyncVolume !== undefined && window.location.hostname.includes('youtube.com')) {
-        const $translationSyncVolumeContainter = $(
-          `<div class = "translationMenuContainer">
-            <input type="checkbox" name="sync_volume" value=${dbSyncVolume} class = "translationSyncVolume" ${dbSyncVolume === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "sync_volume">[YT Only] Синхронизация громкости перевода с громкостью видео</label>
-          </div>
-          `
-        );
-        const $translationSyncVolume = $($translationSyncVolumeContainter).find('.translationSyncVolume');
-        $translationSyncVolume.on('click', async (event) => {
-          event.stopPropagation();
-          const syncVolumeValue = event.target.checked ? 1 : 0;
-          await updateDB({syncVolume: syncVolumeValue});
-          dbSyncVolume = syncVolumeValue;
-        });
-        $translationMenuContent.append($translationSyncVolumeContainter);
-      } else if (dbSyncVolume === undefined) {
-        try {
-          await updateDB({syncVolume: 0});
-          console.log('VOT: Применено стандартное значение для "SyncVolume" (0). Пожалуйста, перезагрузите страницу.')
-        } catch (err) {
-          console.error('VOT: Не удалось применить стандартное значение для "SyncVolume". Причина: ', err)
-        }
-      }
-
-      if (!$translationMenuContent.has('.translationAutoSetVolume').length && dbData !== undefined) {
-        const $translationAutoSetVolumeContainer = $(
-          `<div class = "translationMenuContainer">
-            <input type="checkbox" name="auto_set_volume" value=${typeof(dbAutoSetVolumeYandexStyle) === 'number' ? dbAutoSetVolumeYandexStyle : '0'} class = "translationAutoSetVolume" ${dbAutoSetVolumeYandexStyle === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "auto_set_volume">Автоматически выставлять громкость оригинала (Yandex-like)</label>
-          </div>
-          `
-        );
-        const $translationAutoSetVolume = $($translationAutoSetVolumeContainer).find('.translationAutoSetVolume');
-        $translationAutoSetVolume.on('click', async (event) => {
-          event.stopPropagation();
-          const autoSetVolumeValue = event.target.checked ? 1 : 0;
-          await updateDB({autoSetVolumeYandexStyle: autoSetVolumeValue});
-          dbAutoSetVolumeYandexStyle = autoSetVolumeValue;
-        });
-        $translationMenuContent.append($translationAutoSetVolumeContainer);
-      }
-
-      if (!$translationMenuContent.has('.translationDTRuV').length && dbDontTranslateRuVideos !== undefined && window.location.hostname.includes('youtube.com')) {
-        const $DTRuVContainter = $(
-          `<div class = "translationMenuContainer">
-            <input type="checkbox" name="dont_translate_ru_videos" value=${dbDontTranslateRuVideos} class = "translationDTRuV" ${dbDontTranslateRuVideos === 1 ? "checked" : ''}>
-            <label class = "translationMenuText" for = "dont_translate_ru_videos">[YT Only] Ограничить перевод русскоязычных видео</label>
-          </div>
-          `
-        );
-        const $translationDTRuV = $($DTRuVContainter).find('.translationDTRuV');
-        $translationDTRuV.on('click', async (event) => {
-          event.stopPropagation();
-          const DTRuVValue = event.target.checked ? 1 : 0;
-          await updateDB({dontTranslateRuVideos: DTRuVValue});
-          dbDontTranslateRuVideos = DTRuVValue;
-        });
-        $translationMenuContent.append($DTRuVContainter);
-      }
-    } else {
-      $translationMenuContent.remove();
-      console.error('VOT: Не удалось создать меню. Причина: База данных не загружена.');
     }
 
     function getVideoData() {
       const videoData = {};
       videoData.duration = video?.duration ? video.duration : 0;
       videoData.videoId = getVideoId(siteHostname);
-      videoData.detectedLanguage = 'en'; // default language of video
-      videoData.responseLanguage = 'ru'; // default language of audio response
+      videoData.detectedLanguage = translateFromLang;
+      videoData.responseLanguage = translateToLang;
       if (window.location.hostname.includes('youtube.com')) {
-        const ytData = getYTVideoData();
-        if (!availableLangs.includes(ytData.detectedLanguage)) {
-          ytData.detectedLanguage = 'en';
-        }
-
-        if (ytData.detectedLanguage === 'ru') {
-          ytData.responseLanguage = 'en';
-        }
+        let ytData = getYTVideoData();
+        ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
 
         return {...videoData,...ytData};
+      } else if (window.location.hostname.includes('rutube')) {
+        videoData.detectedLanguage = 'ru';
+        videoData.responseLanguage = 'en';
+      } else if (window.location.hostname.includes('bilibili.com')) {
+        videoData.detectedLanguage = 'zh';
       }
 
       return videoData;
     }
-
-    function addVideoSlider() {
-      if (dbShowVideoSlider !== 1) {
-        return;
-      }
-      const newSlidersVolume = (window.location.hostname.includes('youtube.com') && !dbAutoSetVolumeYandexStyle) ? $('.ytp-volume-panel').attr('aria-valuenow') : Math.round(video.volume * 100);
-
-      const videoVolumeBox = $(`
-          <div class = "translationMenuContainer">
-            <span class = "translationHeader">Громкость оригинала: <b class = "volumePercent">${newSlidersVolume}%</b></span>
-            <div class = "translationVideoVolumeBox" tabindex = "0">
-              <input type="range" min="0" max="100" value=${newSlidersVolume} class="translationVolumeSlider">
-            </div>
-          </div>`
-      );
-      const videoVolumeSlider = videoVolumeBox.find('.translationVolumeSlider');
-
-      if ($translationMenuContent.has('.translationVideoVolumeBox').length) {
-        return;
-      }
-      $translationMenuContent.append(videoVolumeBox);
-      const $volumePercent = videoVolumeBox.find('.volumePercent');
-      tempOriginalVolume = newSlidersVolume;
-      videoVolumeSlider.on('input', (event) => {
-        const {value} = event.target;
-        video.volume = (value / 100);
-        $volumePercent.text(`${value}%`);
-
-        if (dbSyncVolume !== 1) {
-          return;
-        }
-        // console.log(`VOT: Синхронизация громкости перевода с громкостью видео. Громкость оригинала: ${value}. Прошлая громкость оригинала: ${tempOriginalVolume}`);
-        const volumeBox = $('.translationVolumeBox');
-        const volumeSlider = volumeBox.find('.translationVolumeSlider');
-        const volumePercent = volumeBox.parent().find('.volumePercent');
-        const volume = Number(volumeSlider.val());
-        let finalValue;
-
-        if (value > tempOriginalVolume) {
-          // value = 100
-          // tempOriginalVolume = 69
-          // volume = 15
-          // 100 - 69 = 31
-          // 15 + 31 = 46 - final translation volume
-          finalValue = volume + (value - tempOriginalVolume);
-          finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
-
-          audio.volume = finalValue / 100;
-        } else if (value < tempOriginalVolume) {
-          // value = 69
-          // tempOriginalVolume = 100
-          // volume = 15
-          // 100 - 69 = 31
-          // 15 - 31 = 0 - final translation volume
-          finalValue = volume - (tempOriginalVolume - value);
-          finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
-
-          audio.volume = finalValue / 100;
-        }
-
-        volumeSlider.val(finalValue);
-        volumePercent.text(`${finalValue}%`);
-        tempVolume = finalValue;
-        tempOriginalVolume = value;
-      });
-    }
-
-    const btnHover = () => {
-      let time;
-      let isOpened = false;
-      const $translationMenu = $(".translationMenu");
-
-      $translationMenu.on('click', (event) => {
-        event.stopPropagation();
-        if (isOpened) {
-          $translationMenuContent.hide();
-        } else {
-          ($translationMenuContent.show(), $translationMenuContent.css('opacity', opacityRatio));
-        }
-        isOpened = !isOpened;
-      })
-
-      if (siteHostname === 'pornhub') {
-        if (window.location.pathname.includes('view_video.php')) {
-          $('.original.mainPlayerDiv > video-element > div').on("mousemove", () => resetTimer());
-          $('.original.mainPlayerDiv > video-element > div').on("mouseout", () => logout(0));
-        } else if (window.location.pathname.includes('embed/')) {
-          $('#player').on("mousemove", () => resetTimer());
-          $('#player').on("mouseout", () => logout(0));
-        }
-      } else if (siteHostname === 'twitter') {
-        const twitterPlayer = $('div[data-testid="videoPlayer"');
-        twitterPlayer.on("mousemove", () => resetTimer());
-        twitterPlayer.on("mouseout", () => logout(0));
-      } else {
-        $($videoContainer).on("mousemove", () => resetTimer());
-        $($videoContainer).on("mouseout", () => logout(0));
-      }
-
-      $(document).on("click", (event) => {
-        const isBlock = event.target === $($translationBlock)[0] || $($translationBlock).length ? $($translationBlock)[0].contains(event.target) : false;
-        const isContent = event.target === $($translationMenuContent)[0] || $($translationMenuContent).length ? $($translationMenuContent)[0].contains(event.target) : false;
-        const isVideo = event.target === $($videoContainer)[0] || $($videoContainer).length ? $($videoContainer)[0].contains(event.target) : false;
-        if (!(!isBlock && !isContent)) {
-          return;
-        }
-        $translationMenuContent.hide();
-        isOpened = false
-        if (!isVideo)
-        {
-          logout(0);
-        }
-      })
-
-      function changeOpacityByEvent(event, timer, opacityRatio) {
-        clearTimeout(timer)
-        logout(opacityRatio)
-        event.stopPropagation()
-      }
-
-      $translationBlock.on("mousemove", (event) => changeOpacityByEvent(event, time, opacityRatio));
-      $translationMenuContent.on("mousemove", (event) => changeOpacityByEvent(event, time, opacityRatio));
-
-      $(document).on("touchstart", (event) => changeOpacityByEvent(event, time, opacityRatio));
-      $(document).on("touchmove", (event) => changeOpacityByEvent(event, time, opacityRatio));
-      $(document).on("touchend", (event) => changeOpacityByEvent(event, time, opacityRatio));
-
-      function logout(n) {
-        if (!isOpened) {
-          $translationBlock.css("opacity", n);
-        }
-      }
-
-      function resetTimer() {
-        clearTimeout(time);
-        logout(1);
-        time = setTimeout(() => {
-          logout(0);
-        }, 2000);
-      }
-    };
-
-    const videoValidator = () => {
-      if (window.location.hostname.includes('youtube.com')) {
-        if (dbDontTranslateRuVideos === 1 && videoData.detectedLanguage === 'ru') {
-          firstPlay = false;
-          throw "VOT: Вы отключили перевод русскоязычных видео";
-        }
-
-        if (videoData.isLive) {
-          throw "VOT: Не поддерживается перевод трансляций в прямом эфире";
-        }
-
-        if (videoData.isPremiere) {
-          throw "VOT: Дождитесь окончания премьеры перед переводом";
-        }
-      }
-
-      if (videoData.duration > 14_400) {
-        throw "VOT: Видео слишком длинное";
-      }
-
-      return true;
-    }
-
-    const translateExecutor = (VIDEO_ID) => {
-      debug/* default.log */.Z.log('Run videoValidator');
-      videoValidator();
-      debug/* default.log */.Z.log('Run translateFunc');
-      translateFunc(VIDEO_ID, videoData.detectedLanguage, videoData.responseLanguage);
-    }
-
-    const translateFunc = (VIDEO_ID, requestLang, responseLang) => translateVideo(`${siteTranslates[siteHostname].url}${VIDEO_ID}`, siteTranslates[siteHostname].func_param, requestLang, responseLang, (success, urlOrError) => {
-      debug/* default.log */.Z.log('[exec callback] translateVideo')
-      if (getVideoId(siteHostname) !== VIDEO_ID) {
-        return;
-      }
-      if (!success) {
-        transformBtn('error', urlOrError);
-        if (urlOrError.includes('Перевод займёт')) {
-          clearTimeout(autoRetry);
-          autoRetry = setTimeout(() => {
-            translateFunc(VIDEO_ID, requestLang, responseLang);
-          }, 60_000)
-        }
-
-        throw urlOrError;
-      }
-
-      volumeOnStart = video.volume;
-      audio.src = urlOrError;
-
-      if (typeof(dbDefaultVolume) === 'number') {
-        audio.volume = dbDefaultVolume / 100;
-      }
-
-      if (siteHostname === 'twitter') {
-        $('div[data-testid="app-bar-back"][role="button"]').on('click', () => {
-          stopTraslate();
-        })
-      } else if (siteEvent !== null && siteEvent !== 'invidious' && siteEvent !== 'piped') {
-        $("body").on(siteEvent, () => {
-          stopTraslate();
-          syncOriginalVolumeSlider();
-        });
-      }
-
-      if (['twitch', 'vimeo', 'facebook', 'rutube', 'twitter'].includes(siteHostname)) {
-        const mutationObserver = new MutationObserver(async function(mutations) {
-          mutations.forEach(async function(mutation) {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video && mutation.target.src !== '') {
-              stopTraslate();
-              firstPlay = true;
-            }
-          });
-        });
-
-        mutationObserver.observe($videoContainer[0], {
-          attributes: true,
-          childList: false,
-          subtree: true,
-          attributeOldValue: true,
-        });
-      }
-
-      // fix for video.paused stuck bug
-      if (video.paused) {
-        if (siteHostname === 'twitter') {
-          video = $('div[data-testid="videoComponent"] > div > div > video')[0]
-        } else if (siteHostname === 'vk') {
-          video = $(vkSelector).find('video')[0]
-        } else if (siteHostname === 'youtube' && siteEvent === 'piped') {
-          video = $(pipedSelector).find('video')[0]
-        }
-      }
-
-      if (video && !video.paused) {
-        debug/* default.log */.Z.log('video is playing lipsync 1')
-        lipSync("play");
-      }
-
-      $("video").on("playing.translate ratechange.translate", () => {
-        debug/* default.log */.Z.log('video ratechange')
-        lipSync();
-      });
-
-      $("video").on("play.translate canplaythrough.translate", () => {
-        debug/* default.log */.Z.log('video canplaythrough')
-        lipSync();
-
-        if (video && !video.paused) {
-          debug/* default.log */.Z.log('video is playing lipsync 2')
-          lipSync("play");
-        }
-      });
-
-      $("video").on("pause.translate waiting.translate", () => {
-        debug/* default.log */.Z.log('video is waiting')
-        lipSync("pause");
-      });
-
-      transformBtn('success', 'Выключить');
-      const defaultTranslateVolume = typeof(dbDefaultVolume) === 'number' ? dbDefaultVolume : 100;
-
-      addVideoSlider();
-
-      if (typeof(dbAutoSetVolumeYandexStyle) === 'number' && dbAutoSetVolumeYandexStyle === 1) {
-        video.volume = defaultVideoVolume;
-        const $translationVideoVolumeBox = $('.translationVideoVolumeBox');
-        $translationVideoVolumeBox.find('.translationVolumeSlider').val(defaultVideoVolume * 100);
-        $translationVideoVolumeBox.parent().find('.volumePercent').text(`${defaultVideoVolume * 100}%`);
-      }
-
-      const volumeBox = $(`
-          <div class = "translationMenuContainer">
-            <span class = "translationHeader">Громкость перевода: <b class = "volumePercent">${defaultTranslateVolume}%</b></span>
-            <div class = "translationVolumeBox" tabindex = "0">
-              <input type="range" min="0" max="100" value=${defaultTranslateVolume} class="translationVolumeSlider">
-            </div>
-          </div>`
-      );
-      const volumeSlider = volumeBox.find('.translationVolumeSlider');
-
-      if (!$translationMenuContent.has('.translationVolumeBox').length) {
-        $translationMenuContent.append(volumeBox);
-        const $volumePercent = volumeBox.find('.volumePercent');
-        tempVolume = Number(defaultTranslateVolume);
-        volumeSlider.on('input', async (event) => {
-          let {value} = event.target;
-          audio.volume = (value / 100);
-          $volumePercent.text(`${value}%`);
-
-          if (dbSyncVolume === 1) {
-            // console.log(`VOT: Синхронизация громкости видео с громкостью перевода. Громкость перевода: ${value}. Прошлая громкость перевода: ${tempVolume}`);
-            const volumeBox = $('.translationVideoVolumeBox');
-            const volumeSlider = volumeBox.find('.translationVolumeSlider');
-            const volumePercent = volumeBox.parent().find('.volumePercent');
-            const volume = Number(volumeSlider.val());
-            let finalValue;
-
-            if (value > tempVolume) {
-              // value = 100
-              // tempVolume = 69
-              // volume = 15
-              // 100 - 69 = 31
-              // 15 + 31 = 46 - final video volume
-              finalValue = volume + (value - tempVolume);
-              finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
-
-              video.volume = finalValue / 100;
-            } else if (value < tempVolume) {
-              // value = 69
-              // tempVolume = 100
-              // volume = 15
-              // 100 - 69 = 31
-              // 15 - 31 = 0 - final video volume
-              finalValue = volume - (tempVolume - value);
-              finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
-
-              video.volume = finalValue / 100;
-            }
-
-            volumeSlider.val(finalValue);
-            volumePercent.text(`${finalValue}%`);
-            tempOriginalVolume = finalValue;
-            tempVolume = value;
-          }
-
-          await updateDB({defaultVolume: Number(value)});
-          dbDefaultVolume = Number(value);
-        });
-      }
-
-      if (!$translationMenuContent.find('.translationAbsoluteContainer').has('.translationDownload').length) {
-        $translationMenuContent.find('.translationAbsoluteContainer').append($translationDownload);
-        $translationDownload.attr('href', urlOrError);
-      }
-    });
-
-    btnHover();
 
     const lipSync = (mode = false) => {
       debug/* default.log */.Z.log('lipsync video', video)
@@ -2103,16 +2029,294 @@ async function src_main() {
       }
     };
 
-    $(video).on('progress', event => {
-      event.stopPropagation();
-
-      const VIDEO_ID = getVideoId(siteHostname);
-
-      if (!VIDEO_ID) {
-        throw "VOT: Не найдено ID видео";
+    function addVideoSlider() {
+      if (dbShowVideoSlider !== 1 || document.querySelector(`#VOTVideoSlider`) || document.querySelector('.translationBtn').dataset.state !== 'success') {
+        return;
       }
 
+      const newVolume = (window.location.hostname.includes('youtube.com') && !dbAutoSetVolumeYandexStyle) ? document.querySelector('.ytp-volume-panel')?.getAttribute('aria-valuenow') : Math.round(video.volume * 100);
+      tempOriginalVolume = newVolume;
+
+      const slider = createMenuSlider(
+        'VOTVideoSlider',
+        newVolume,
+        `Громкость видео: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
+      );
+
+      slider.querySelector('#VOTVideoSlider').oninput = (event) => {
+        const {value} = event.target;
+        video.volume = (value / 100);
+        slider.querySelector('#VOTOriginalVolume').innerText = `${value}%`;
+
+        if (dbSyncVolume !== 1) {
+          return;
+        }
+
+        // Sync translation volume slider with video volume slider
+        const translateVolumeSlider = document.querySelector('#VOTTranslationSlider');
+        const translateVolume = Number(translateVolumeSlider.value);
+        let finalValue = syncVolume(audio, value, translateVolume, tempOriginalVolume);
+
+        translateVolumeSlider.value = finalValue;
+        document.querySelector('#VOTTranslationVolume').innerText = `${finalValue}%`;
+        tempVolume = finalValue;
+        tempOriginalVolume = value;
+      }
+
+      const menuOptions = document.querySelector('.translationMenuOptions');
+      menuOptions.appendChild(slider);
+    }
+
+    function addTranslationSlider() {
+      if (document.querySelector(`#VOTTranslationSlider`) || document.querySelector('.translationBtn').dataset.state !== 'success') {
+        return;
+      }
+
+      const defaultTranslateVolume = typeof(dbDefaultVolume) === 'number' ? dbDefaultVolume : 100;
+      tempOriginalVolume = defaultTranslateVolume;
+      const slider = createMenuSlider(
+        'VOTTranslationSlider',
+        defaultTranslateVolume,
+        `Громкость перевода: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
+      );
+
+      slider.querySelector('#VOTTranslationSlider').oninput = async (event) => {
+        let {value} = event.target;
+        audio.volume = (value / 100);
+        document.querySelector('#VOTTranslationVolume').innerText = `${value}%`;
+        await updateDB({defaultVolume: Number(value)});
+        dbDefaultVolume = Number(value);
+
+        if (dbSyncVolume !== 1) {
+          return;
+        }
+
+        // Sync translation volume slider with video volume slider
+        const videoVolumeSlider = document.querySelector('#VOTVideoSlider');
+        const videoVolume = Number(videoVolumeSlider.value);
+        let finalValue = syncVolume(video, value, videoVolume, tempVolume);
+
+        videoVolumeSlider.value = finalValue;
+        document.querySelector('#VOTOriginalVolume').innerText = `${finalValue}%`;
+        tempOriginalVolume = finalValue;
+        tempVolume = value;
+      }
+
+      const menuOptions = document.querySelector('.translationMenuOptions');
+      menuOptions.appendChild(slider);
+    }
+
+
+    const videoValidator = () => {
+      if (window.location.hostname.includes('youtube.com')) {
+        debug/* default.log */.Z.log("VideoValidator videoData: ", videoData)
+        if (dbDontTranslateRuVideos === 1 && videoData.detectedLanguage === 'ru') {
+          firstPlay = false;
+          throw "VOT: Вы отключили перевод русскоязычных видео";
+        }
+
+        if (videoData.isLive) {
+          throw "VOT: Не поддерживается перевод трансляций в прямом эфире";
+        }
+
+        if (videoData.isPremiere) {
+          throw "VOT: Дождитесь окончания премьеры перед переводом";
+        }
+      }
+
+      if (videoData.duration > 14_400) {
+        throw "VOT: Видео слишком длинное";
+      }
+
+      return true;
+    }
+
+    const translateExecutor = (VIDEO_ID) => {
+      debug/* default.log */.Z.log('Run videoValidator');
+      videoValidator();
+      debug/* default.log */.Z.log('Run translateFunc');
+      translateFunc(VIDEO_ID, videoData.detectedLanguage, videoData.responseLanguage);
+    }
+
+    const translateFunc = (VIDEO_ID, requestLang, responseLang) => translateVideo(`${siteTranslates[siteHostname]}${VIDEO_ID}`, translateFuncParam, requestLang, responseLang, (success, urlOrError) => {
+      debug/* default.log */.Z.log('[exec callback] translateVideo')
+      if (getVideoId(siteHostname) !== VIDEO_ID) {
+        return;
+      }
+
+      if (!success) {
+        transformBtn('error', urlOrError);
+        if (urlOrError.includes('Перевод займёт')) {
+          clearTimeout(autoRetry);
+          autoRetry = setTimeout(() => {
+            translateFunc(VIDEO_ID, requestLang, responseLang);
+          }, 60_000)
+        }
+
+        throw urlOrError;
+      }
+
+      volumeOnStart = video?.volume;
+      audio.src = urlOrError;
+
+      if (typeof(dbDefaultVolume) === 'number') {
+        audio.volume = dbDefaultVolume / 100;
+      }
+
+      if (siteEvent !== null && siteEvent !== 'invidious' && siteEvent !== 'piped') {
+        document.body.addEventListener(siteEvent, () => {
+          stopTraslate();
+          syncVideoVolumeSlider();
+        });
+      }
+
+      if (['twitch', 'vimeo', 'facebook', 'rutube', 'twitter', 'bilibili.com'].includes(siteHostname)) {
+        const mutationObserver = new MutationObserver(async function(mutations) {
+          mutations.forEach(async function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video && mutation.target.src !== '') {
+              stopTraslate();
+              firstPlay = true;
+            }
+          });
+        });
+
+        mutationObserver.observe(videoContainer, {
+          attributes: true,
+          childList: false,
+          subtree: true,
+          attributeOldValue: true,
+        });
+      }
+
+      // // fix for video.paused stuck bug
+      // if (video.paused) {
+      //   if (siteHostname === 'twitter') {
+      //     video = $('div[data-testid="videoComponent"] > div > div > video')[0];
+      //   } else if (siteHostname === 'vk') {
+      //     video = $(vkSelector).find('video')[0];
+      //   } else if (siteHostname === 'youtube' && siteEvent === 'piped') {
+      //     video = $(pipedSelector).find('video')[0];
+      //   }
+      // }
+
+      if (video && !video.paused) {
+        debug/* default.log */.Z.log('video is playing lipsync 1')
+        lipSync("play");
+      }
+
+      $("video").on("playing.translate ratechange.translate", () => {
+        debug/* default.log */.Z.log('video ratechange')
+        lipSync();
+      });
+
+      $("video").on("play.translate canplaythrough.translate", () => {
+        debug/* default.log */.Z.log('video canplaythrough')
+        lipSync();
+
+        if (video && !video.paused) {
+          debug/* default.log */.Z.log('video is playing lipsync 2')
+          lipSync("play");
+        }
+      });
+
+      $("video").on("pause.translate waiting.translate", () => {
+        debug/* default.log */.Z.log('video is waiting')
+        lipSync("pause");
+      });
+
+      transformBtn('success', 'Выключить');
+      addVideoSlider();
+      addTranslationSlider();
+
+      if (typeof(dbAutoSetVolumeYandexStyle) === 'number' && dbAutoSetVolumeYandexStyle) {
+        video.volume = config/* autoVolume */.IM;
+        if (document.querySelector('#VOTVideoSlider')) {
+          document.querySelector('#VOTVideoSlider').value = config/* autoVolume */.IM * 100;
+        }
+
+        if (document.querySelector('#VOTOriginalVolume')) {
+          document.querySelector('#VOTOriginalVolume').innerText = `${config/* autoVolume */.IM * 100}%`;
+        }
+      }
+
+      const downloadBtn = document.querySelector('.translationDownload');
+      downloadBtn.href = urlOrError;
+      downloadBtn.style.display = 'initial';
+    });
+
+
+    document.addEventListener("click", (event) => {
+      const block = document.querySelector('.translationBlock');
+      const menuContainer = document.querySelector('.translationMenuContent');
+      const isBlock = block || event.target === block ? block.contains(event.target) : false;
+      const isContent = menuContainer || event.target === menuContainer ? menuContainer.contains(event.target) : false;
+      const isVideo = videoContainer || event.target === videoContainer ? videoContainer.contains(event.target) : false;
+
+      debug/* default.log */.Z.log(`[document click] ${isBlock} ${isContent} ${isVideo}`)
+      if (!(!isBlock && !isContent)) return;
+      if (!isVideo) logout(0);
+
+      menuContainer.style.display = 'none';
+      openedMenu = false;
+    })
+
+    if (siteHostname === 'pornhub') {
+      if (window.location.pathname.includes('view_video.php')) {
+        document.querySelector('.original.mainPlayerDiv > video-element > div').addEventListener("mousemove", resetTimer);
+        document.querySelector('.original.mainPlayerDiv > video-element > div').addEventListener("mouseout", () => logout(0));
+      } else if (window.location.pathname.includes('embed/')) {
+        document.querySelector('#player').addEventListener("mousemove", resetTimer);
+        document.querySelector('#player').addEventListener("mouseout", () => logout(0));
+      }
+    } else {
+      videoContainer.addEventListener("mousemove", resetTimer);
+      videoContainer.addEventListener("mouseout", () => logout(0));
+    }
+
+    document.querySelector('.translationBlock').addEventListener("mousemove", (event) => changeOpacityOnEvent(event, timer, opacityRatio));
+    document.querySelector('.translationMenuContent').addEventListener("mousemove", (event) => changeOpacityOnEvent(event, timer, opacityRatio));
+
+    document.addEventListener("touchstart", (event) => changeOpacityOnEvent(event, timer, opacityRatio));
+    document.addEventListener("touchmove", (event) => changeOpacityOnEvent(event, timer, opacityRatio));
+    document.addEventListener("touchend", (event) => changeOpacityOnEvent(event, timer, opacityRatio));
+
+    document.querySelector('.translationBtn').addEventListener('click', async (event) => {
+      debug/* default.log */.Z.log('[click translationBtn] before all functions & methods');
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
+      // check if the audio source is not empty
+      if (audio.src) {
+        debug/* default.log */.Z.log('[click translationBtn] audio.src is not empty')
+        stopTraslate();
+        return;
+      }
+
+      try {
+        debug/* default.log */.Z.log('[click translationBtn] trying execute translation')
+        const VIDEO_ID = getVideoId(siteHostname);
+
+        if (!VIDEO_ID) {
+          throw "VOT: Не найдено ID видео"; // not found video id
+        }
+
+        translateExecutor(VIDEO_ID);
+      } catch (err) {
+        transformBtn('error', String(err).substring(4, err.length))
+        console.error(err);
+      }
+    });
+
+    video.addEventListener('progress', event => {
+      event.stopPropagation();
+
       if (firstPlay && dbAutoTranslate === 1) {
+        const VIDEO_ID = getVideoId(siteHostname);
+
+        if (!VIDEO_ID) {
+          throw "VOT: Не найдено ID видео";
+        }
+
         try {
           translateExecutor(VIDEO_ID);
           firstPlay = false;
@@ -2122,82 +2326,59 @@ async function src_main() {
         }
       }
     });
-
-    $translationBtn.click(async function (event) {
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-    
-      // check if the audio source is not empty
-      if (audio.src) {
-        debug/* default.log */.Z.log('[click translationBtn] audio.src is not empty')
-        stopTraslate();
-        return; // exit the function
-      }
-    
-      // otherwise, try to execute the translation
-      try {
-        debug/* default.log */.Z.log('[click translationBtn] trying execute translation')
-        const VIDEO_ID = getVideoId(siteHostname);
-    
-        if (!VIDEO_ID) {
-          throw "VOT: Не найдено ID видео"; // not found video id
-        }
-    
-        translateExecutor(VIDEO_ID);
-      } catch (err) {
-        transformBtn('error', String(err).substring(4, err.length))
-        console.error(err);
-      }
-    });
   }
 
+
   async function initWebsite() {
-    if (/^(www.|m.)?youtube(-nocookie)?.com$/.test(window.location.hostname)) {
-      if (window.location.pathname.includes('embed')) {
-        await translateProccessor($('.html5-video-container'), 'youtube', null);
-      } else if (window.location.hostname.includes("m.youtube.com") && window.location.pathname.includes('watch')){
-        await translateProccessor($('.html5-video-container'), 'youtube', null);
-      } else {
-        const ytPageEnter = (event) => {
-          const video = $('.html5-video-container');
-          if (video != null && video.length > 0) {
-            translateProccessor(video, 'youtube', 'yt-translate-stop');
-          } else {
-            if (ytplayer == null || ytplayer.config === undefined || ytplayer.config === null) {
-              return;
-            }
-            ytplayer.config.args.jsapicallback = (jsApi) => {
-                translateProccessor($('.html5-video-container'), 'youtube', 'yt-translate-stop');
-            }
+    if (config_regexes.youtubeRegex.test(window.location.hostname)) {
+      debug/* default.log */.Z.log('[entered] YT Regex Passed', config_regexes.youtubeRegex);
+      const ytPageEnter = (event) => {
+        const videoContainer = document.querySelectorAll(config_selectors.youtubeSelector)[0];
+        if (videoContainer != null) {
+          debug/* default.log */.Z.log('[exec] translateProccessor youtube on page enter')
+          translateProccessor(videoContainer, 'youtube', 'yt-translate-stop');
+        } else {
+          if (ytplayer == null || ytplayer.config === undefined || ytplayer.config === null) {
+            debug/* default.log */.Z.log('[exec] ytplayer is null')
+            return;
           }
-        };
+          ytplayer.config.args.jsapicallback = (jsApi) => {
+            debug/* default.log */.Z.log('[exec] translateProccessor youtube on page enter (ytplayer.config.args.jsapicallback)')
+            translateProccessor(videoContainer, 'youtube', 'yt-translate-stop');
+          }
+        }
+      };
 
-        document.addEventListener('spfdone', ytPageEnter);
-        document.addEventListener('yt-navigate-finish', ytPageEnter);
+      document.addEventListener('spfdone', ytPageEnter);
+      document.addEventListener('yt-navigate-finish', ytPageEnter);
 
-        const ytPageLeave = () => { document.body.dispatchEvent(new Event('yt-translate-stop')); };
-        document.addEventListener('spfrequest', ytPageLeave);
-        document.addEventListener('yt-navigate-start', ytPageLeave);
+      const ytPageLeave = () => {
+        document.body.dispatchEvent(new Event('yt-translate-stop'));
+      };
 
-        ytPageEnter(null);
-      }
-    } else if (window.location.hostname.includes('twitch')) {
+      document.addEventListener('spfrequest', ytPageLeave);
+      document.addEventListener('yt-navigate-start', ytPageLeave);
+
+      // ytPageEnter(null);
+    } else if (window.location.hostname.includes('twitch.tv')) {
+      debug/* default.log */.Z.log('[entered] Twitch');
       if (window.location.hostname.includes('m.twitch.tv') && (window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/'))) {
-        const el = await waitForElement(twitchMobileSelector);
+        debug/* default.log */.Z.log('[entered] twitch mobile');
+        const el = await waitForElm(config_selectors.twitchMobileSelector);
         if (el) {
           await sleep(200);
-          await translateProccessor($(twitchMobileSelector).first(), 'twitch', null);
+          await translateProccessor(document.querySelector(config_selectors.twitchMobileSelector), 'twitch', null);
           // Тоже самое, что и вариант снизу, но по идеи должен быть более производительным (так же требует дабл клика)
           const mutationObserver = new MutationObserver(async function(mutations) {
             mutations.forEach(async function(mutation) {
-              if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === $(twitchMobileSelector).first().find('video')[0]) {
+              if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === document.querySelector(config_selectors.twitchMobileSelector)?.querySelector('video')) {
                 await sleep(1000);
-                await translateProccessor($(twitchMobileSelector).first(), 'twitch', null);
+                await translateProccessor(document.querySelector(config_selectors.twitchMobileSelector), 'twitch', null);
               }
             });
           });
 
-          mutationObserver.observe($(twitchMobileSelector).first()[0], {
+          mutationObserver.observe(document.querySelector(config_selectors.twitchMobileSelector), {
             attributes: true,
             childList: true,
             subtree: true,
@@ -2205,21 +2386,27 @@ async function src_main() {
           });
         }
       } else if (window.location.hostname.includes('player.twitch.tv') || window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/')) {
-        const el = await waitForElement(twitchSelector);
+        debug/* default.log */.Z.log('[entered] twitch')
+        const el = await waitForElm(config_selectors.twitchSelector);
         if (el) {
+          await sleep(200);
           await translateProccessor(el, 'twitch', null);
         }
       }
-    } else if (window.location.hostname.includes('xvideos')) {
+    } else if (window.location.hostname.includes('xvideos.com')) {
+      debug/* default.log */.Z.log('[entered] xvideos')
       await sleep(1000);
-      await translateProccessor($('.video-bg-pic'), 'xvideos', null);
-    } else if (window.location.hostname.includes('pornhub')) {
+      await translateProccessor(document.querySelector('.video-bg-pic'), 'xvideos', null);
+    } else if (window.location.hostname.includes('pornhub.com')) {
+      debug/* default.log */.Z.log('[entered] pornhub')
       await sleep(1000);
-      await translateProccessor($('.mgp_videoWrapper'), 'pornhub', null);
+      await translateProccessor(document.querySelector('.mgp_videoWrapper'), 'pornhub', null);
     } else if (sitesInvidious.includes(window.location.hostname)) { // Need an additional extension to work in chrome-like browsers
-      await translateProccessor($('#player'), 'youtube', null);
+      debug/* default.log */.Z.log('[entered] invidious')
+      await translateProccessor(document.querySelector('#player'), 'youtube', null);
     } else if (sitesPiped.includes(window.location.hostname)) { // Need an additional extension to work in chrome-like browsers
-      const el = await waitForElement(pipedSelector);
+      debug/* default.log */.Z.log('[entered] piped')
+      const el = await waitForElm(config_selectors.pipedSelector);
       if (el) {
         let videoIDNew;
         let videoID = getVideoId('youtube');
@@ -2228,23 +2415,24 @@ async function src_main() {
           videoIDNew = getVideoId('youtube');
           if (videoID !== videoIDNew) {
             if (videoIDNew) {
-              await translateProccessor($(pipedSelector), 'youtube', 'piped');
+              await translateProccessor(document.querySelector(config_selectors.pipedSelector), 'youtube', 'piped');
             }
             videoID = videoIDNew;
           }
         }, 3000);
       }
     } else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
-      const el = await waitForElement(vkSelector);
+      debug/* default.log */.Z.log('[entered] vk.com')
+      const el = await waitForElm(config_selectors.vkSelector);
       if (el) {
-        await translateProccessor($(vkSelector).last(), 'vk', null);
+        await translateProccessor(document.querySelector(config_selectors.vkSelector), 'vk', null);
         let videoIDVKNew;
         let videoIDVK = getVideoId('vk');
         setInterval(async () => {
           videoIDVKNew = getVideoId('vk');
           if (videoIDVK !== videoIDVKNew) {
             if (videoIDVKNew) {
-              const el = await waitForElement(vkSelector);
+              const el = await waitForElm(config_selectors.vkSelector);
               if (el) {
                 await translateProccessor(el, 'vk', null);
               }
@@ -2253,68 +2441,46 @@ async function src_main() {
           }
         }, 3000);
       }
-    } else if (window.location.hostname.includes('vimeo')) {
-      await sleep(1000);
-      await translateProccessor($('.player'), 'vimeo', null);
-    } else if (window.location.hostname.includes('9gag')) {
-      await sleep(1000);
-      await translateProccessor($('.video-post'), '9gag', null);
-    } else if (window.location.hostname.includes('twitter')) {
-      const el = await waitForElement(twitterSelector);
+    } else if (window.location.hostname.includes('vimeo.com')) {
+      debug/* default.log */.Z.log('[entered] vimeo.com')
+      const el = await waitForElm(config_selectors.vimeoSelector);
       if (el) {
-        let videoIDNew;
-        let videoID = getVideoId('twitter');
-        await translateProccessor(undefined, 'twitter', 'twitter');
-        setInterval(async () => {
-          videoIDNew = getVideoId('twitter');
-          if (videoID !== videoIDNew) {
-            if (videoIDNew) {
-              await translateProccessor(undefined, 'twitter', 'twitter');
-            }
-            videoID = videoIDNew;
-          }
-        }, 3000);
-
+        await sleep(1000);
+        await translateProccessor(document.querySelector(config_selectors.vimeoSelector), 'vimeo', null);
       }
-    // } else if (window.location.hostname.includes('udemy')) {
-    //   const elementSelector = '.vjs-v7';
-    //   const el = await waitForElement(elementSelector);
-    //   if (el) {
-    //     await translateProccessor($(elementSelector), 'udemy', null);
-    //   }
-    // } else if (window.location.hostname.includes('facebook')) {
-    //   const el = await waitForElement(facebookSelector);
-    //   if (el) {
-    //     let videoIDNew;
-    //     let videoID = getVideoId('facebook');
-    //     await translateProccessor($(facebookSelector).last(), 'facebook', null);
-    //     setInterval(async () => {
-    //       videoIDNew = getVideoId('facebook');
-    //       if (videoID !== videoIDNew) {
-    //         if (videoIDNew) {
-    //           await translateProccessor($(facebookSelector).last(), 'facebook', null);
-    //         }
-    //         videoID = videoIDNew;
-    //       }
-    //     }, 3000);
-    //   }
-    } else if (window.location.hostname.includes('rutube')) {
+    } else if (window.location.hostname.includes('9gag.com')) {
+      await sleep(1000);
+      await translateProccessor(document.querySelector(config_selectors.gagSelector), '9gag', null);
+    } else if (window.location.hostname.includes('rutube.ru')) {
       const elementSelector = window.location.pathname.includes('/play/embed') ? '#app > div > div' : '.video-player > div > div > div:nth-child(2)';
 
-      const el = await waitForElement(elementSelector);
+      const el = await waitForElm(elementSelector);
       if (el) {
-        await translateProccessor($(el), 'rutube', null);
+        await translateProccessor(el, 'rutube', null);
       }
+    } else if (window.location.hostname.includes('bilibili.com')) {
+      if (window.location.pathname.includes('/video/')) {
+
+        const el = await waitForElm(config_selectors.bilibilicomSelector);
+        if (el) {
+          await translateProccessor(el, 'bilibili.com', null);
+        }
+      } else if (window.location.pathname.includes('/blackboard/webplayer/embed-old.html')) {
+        const el = await waitForElm('video');
+        if (el) {
+          await translateProccessor(el.parentElement, 'bilibili.com', null);
+        }
+      }
+
     }
   }
 
-  await initWebsite();
+  initWebsite();
 }
 
 src_main().catch((e) => {
-  console.log(e);
+  console.error(e);
 });
-
 })();
 
 /******/ })()
