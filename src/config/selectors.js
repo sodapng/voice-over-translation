@@ -8,7 +8,8 @@ const selectors = () => {
     'twitterSelector': 'div[data-testid="videoComponent"] > div:nth-child(1) > div',
     'vimeoSelector': '.player',
     'gagSelector': '.video-post',
-    'bilibilicomSelector': '.bpx-player-video-wrap'
+    'bilibilicomSelector': '.bpx-player-video-wrap',
+    'mailSelector': '#b-video-wrapper'
   }
 }
 

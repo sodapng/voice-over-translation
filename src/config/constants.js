@@ -13,7 +13,8 @@ const siteTranslates = {
   'twitter': 'https://twitter.com/i/status/',
   'facebook': 'https://www.facebook.com/',
   'rutube': 'https://rutube.ru/video/',
-  'bilibili.com': 'https://www.bilibili.com/video/'
+  'bilibili.com': 'https://www.bilibili.com/video/',
+  'mail.ru': 'https://my.mail.ru/v/'
 };
 
 
