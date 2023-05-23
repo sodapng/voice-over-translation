@@ -679,7 +679,7 @@ async function main() {
         });
       }
 
-      if (['twitch', 'vimeo', 'facebook', 'rutube', 'twitter', 'bilibili.com'].includes(siteHostname)) {
+      if (['twitch', 'vimeo', 'facebook', 'rutube', 'twitter', 'bilibili.com', 'mail.ru'].includes(siteHostname)) {
         const mutationObserver = new MutationObserver(async function(mutations) {
           mutations.forEach(async function(mutation) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video && mutation.target.src !== '') {
@@ -994,6 +994,22 @@ async function main() {
           if (videoID !== videoIDNew) {
             if (videoIDNew) {
               await translateProccessor(document.querySelector(selectors.twitterSelector), 'twitter', null);
+            }
+            videoID = videoIDNew;
+          }
+        }, 3000);
+      }
+    } else if (window.location.hostname.includes('my.mail.ru')) {
+      const el = await waitForElm(selectors.mailSelector);
+      if (el) {
+        let videoIDNew;
+        let videoID = getVideoId('mail.ru');
+        await translateProccessor(el, 'mail.ru', null);
+        setInterval(async () => {
+          videoIDNew = getVideoId('mail.ru');
+          if (videoID !== videoIDNew) {
+            if (videoIDNew) {
+              await translateProccessor(document.querySelector(selectors.mailSelector), 'mail.ru', null);
             }
             videoID = videoIDNew;
           }
