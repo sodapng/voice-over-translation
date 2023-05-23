@@ -3,7 +3,7 @@
 // @name:ru [VOT] - Закадровый перевод видео
 // @description A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version 1.2.1
+// @version 1.2.2
 // @author sodapng, mynovelhost, Toil
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -93,7 +93,7 @@
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\r\n  padding: 0.45rem !important;\r\n  width: max-content;\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  border-radius: 0.5rem !important;\r\n  left: 50%;\r\n  top: 5rem;\r\n  transform: translate(-50%);\r\n  text-align: center;\r\n  opacity: 0;\r\n  transition: opacity 1s;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n  user-select: none;\r\n  z-index: 100;\r\n}\r\n\r\n.translationBtn {\r\n  position: relative;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  color: #fff;\r\n  padding-right: 0.25rem !important;\r\n  cursor: pointer;\r\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\r\n}\r\n\r\n.translationBlock:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.translationMenu {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  border-left: 1px solid #424348;\r\n  max-height: 16px;\r\n  max-width: 24px;\r\n  cursor: pointer;\r\n}\r\n\r\n.translationMenuIcon {\r\n  padding: 0 10px !important;\r\n  width: 24px;\r\n}\r\n\r\n.translationIAlice {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 26px;\r\n  max-width: 50px;\r\n}\r\n\r\n.translationIconAlice {\r\n  height: 24px !important;\r\n  width: 24px !important;\r\n}\r\n\r\n.translationITranslate {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 20px;\r\n  max-width: 20px;\r\n}\r\n\r\n.translationMenuContent {\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  color: #fff;\r\n  display: none;\r\n  border-radius: 1rem !important;\r\n  left: 50%;\r\n  top: 9rem;\r\n  transform: translate(-50%);\r\n  text-align:left;\r\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n\r\n  width: 300px;\r\n  /* height: 375px; */\r\n  opacity: 0;\r\n  z-index: 100;\r\n  transition: opacity 0.5s ease;\r\n}\r\n\r\n.VOTMenuSlider {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 268px !important;\r\n  height: 8px !important;\r\n  outline: none !important;\r\n  margin-top: 0.5rem;\r\n  opacity: 0.7;\r\n  /* background: #3C3F4D !important; */\r\n  background: rgb(253, 222, 85, 0.6) !important;\r\n  border: none !important;\r\n  border-radius: 2rem !important;\r\n  -webkit-transition: 0.2s !important;\r\n  transition: opacity 0.2s ease !important;\r\n}\r\n\r\n.VOTMenuSlider:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.VOTMenuSlider::-webkit-slider-thumb {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-fill-lower {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-progress {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\r\n}\r\n\r\n.translationHeader {\r\n  padding-bottom: 0.5rem !important;\r\n}\r\n\r\n.translationMainHeader {\r\n  margin: 16px !important;\r\n  color: #FFF;\r\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n}\r\n\r\n.translationMenuContainer {\r\n  /* width: 100%; */\r\n  padding-left: 16px !important;\r\n  padding-top: 5px !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n.translationMenuContainer > input {\r\n  appearance: auto !important;\r\n}\r\n\r\n.translationMenuText {\r\n  color: #FFF;\r\n  display: inline-flex;\r\n  width: 80%;\r\n}\r\n\r\n.translationVolumeBox, .translationVideoVolumeBox {\r\n  padding-top: 0.5rem !important;\r\n}\r\n\r\n.translationDropDB {\r\n  border: none !important;\r\n  border-radius: 4px !important;\r\n  background: #5426FF !important;\r\n  color: #fff !important;\r\n  padding: 6px 16px !important;\r\n  margin-left: auto !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.translationDownload {\r\n  background: #5426FF !important;\r\n  color: #fff !important;\r\n  padding: 2px 10px !important;\r\n  border-radius: 4px !important;\r\n  cursor: pointer;\r\n  display: none;\r\n}\r\n\r\n.translationMenuFunctional {\r\n  display: flex;\r\n  margin: 16px !important;\r\n}\r\n\r\n.VOTMenuSelect {\r\n  width: 110px;\r\n  border-radius: 5px !important;\r\n  border: 1px solid #DADCE0 !important;\r\n  box-shadow: 0 1px 3px -2px #9098A9;\r\n  color: #2e2f34 !important;\r\n  padding: 5px !important;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n  border-color: #0077FF;\r\n  box-shadow: 0 0 0 2px rgba(#0077FF,.2)\r\n}\r\n\r\n#VOTSelectLanguages {\r\n  display: flex !important;\r\n  margin-left: 5px;\r\n}\r\n\r\n#VOTSelectLanguages svg {\r\n  margin: 0 5px;\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\r\n  padding: 0.45rem !important;\r\n  width: max-content;\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  border-radius: 0.5rem !important;\r\n  left: 50%;\r\n  top: 5rem;\r\n  transform: translate(-50%);\r\n  text-align: center;\r\n  opacity: 0;\r\n  transition: opacity 1s;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n  user-select: none;\r\n  z-index: 100;\r\n}\r\n\r\n.translationBtn {\r\n  position: relative;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  color: #fff;\r\n  padding-right: 0.25rem !important;\r\n  cursor: pointer;\r\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\r\n}\r\n\r\n.translationBlock:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.translationMenu {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  border-left: 1px solid #424348;\r\n  max-height: 16px;\r\n  max-width: 24px;\r\n  cursor: pointer;\r\n}\r\n\r\n.translationMenuIcon {\r\n  padding: 0 10px !important;\r\n  width: 24px;\r\n}\r\n\r\n.translationIAlice {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 26px;\r\n  max-width: 50px;\r\n}\r\n\r\n.translationIconAlice {\r\n  height: 24px !important;\r\n  width: 24px !important;\r\n}\r\n\r\n.translationITranslate {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 20px;\r\n  max-width: 20px;\r\n}\r\n\r\n.translationMenuContent {\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  color: #fff;\r\n  display: none;\r\n  border-radius: 1rem !important;\r\n  left: 50%;\r\n  top: 9rem;\r\n  transform: translate(-50%);\r\n  text-align:left;\r\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n\r\n  width: 300px;\r\n  /* height: 375px; */\r\n  opacity: 0;\r\n  z-index: 100;\r\n  transition: opacity 0.5s ease;\r\n}\r\n\r\n.VOTMenuSlider {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 268px !important;\r\n  height: 8px !important;\r\n  outline: none !important;\r\n  margin-top: 0.5rem;\r\n  opacity: 0.7;\r\n  /* background: #3C3F4D !important; */\r\n  background: rgb(253, 222, 85, 0.6) !important;\r\n  border: none !important;\r\n  border-radius: 2rem !important;\r\n  -webkit-transition: 0.2s !important;\r\n  transition: opacity 0.2s ease !important;\r\n}\r\n\r\n.VOTMenuSlider:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.VOTMenuSlider::-webkit-slider-thumb {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-fill-lower {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-progress {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\r\n}\r\n\r\n.translationHeader {\r\n  padding-bottom: 0.5rem !important;\r\n}\r\n\r\n.translationMainHeader {\r\n  margin: 16px !important;\r\n  color: #FFF;\r\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n}\r\n\r\n.translationMenuContainer {\r\n  /* width: 100%; */\r\n  padding-left: 16px !important;\r\n  padding-top: 5px !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n.translationMenuContainer > input {\r\n  appearance: auto !important;\r\n}\r\n\r\n.translationMenuText {\r\n  color: #FFF;\r\n  display: inline-flex;\r\n  width: 80%;\r\n}\r\n\r\n.translationVolumeBox, .translationVideoVolumeBox {\r\n  padding-top: 0.5rem !important;\r\n}\r\n\r\n.translationDropDB {\r\n  border: none !important;\r\n  border-radius: 4px !important;\r\n  background: #5426FF !important;\r\n  color: #fff !important;\r\n  padding: 6px 16px !important;\r\n  margin-left: auto !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.translationDownload {\r\n  background: #5426FF !important;\r\n  color: #fff !important;\r\n  padding: 2px 10px !important;\r\n  border-radius: 4px !important;\r\n  cursor: pointer;\r\n  display: none;\r\n}\r\n\r\n.translationMenuFunctional {\r\n  display: flex;\r\n  margin: 16px !important;\r\n}\r\n\r\n.VOTMenuSelect {\r\n  width: 110px;\r\n  border-radius: 5px !important;\r\n  border: 1px solid #DADCE0 !important;\r\n  box-shadow: 0 1px 3px -2px #9098A9;\r\n  box-sizing: border-box !important;\r\n  color: #2e2f34 !important;\r\n  padding: 5px !important;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n  border-color: #0077FF;\r\n  box-shadow: 0 0 0 2px rgba(#0077FF,.2)\r\n}\r\n\r\n#VOTSelectLanguages {\r\n  display: flex !important;\r\n  margin-left: 5px;\r\n}\r\n\r\n#VOTSelectLanguages svg {\r\n  margin: 0 5px;\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -513,6 +513,8 @@ async function requestVideoTranslation(url, unknown1, requestLang, responseLang,
     const hexSignature = Array.from(new Uint8Array(signature), x => x.toString(16).padStart(2, '0')).join('');
     // Create a fetch options object with headers and body
     const options = {
+      // url: `https://${workerHost}/stream-translation/whitelist-stream`,
+      // url: `https://${workerHost}/stream-translation/translate-stream`,
       url: `https://${config/* workerHost */.iF}/video-translation/translate`,
       method: "POST",
       headers: {
@@ -563,18 +565,73 @@ const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
   .add(new protobuf.Field("deviceId", 4, "string"))
   .add(new protobuf.Field("firstRequest", 5, "bool")) // true for the first request, false for subsequent ones
   .add(new protobuf.Field("unknown1", 6, "fixed64"))
-  .add(new protobuf.Field("unknown2", 7, "int32"))
+  .add(new protobuf.Field("unknown2", 7, "int32")) // 1 1
   .add(new protobuf.Field("language", 8, "string")) // source language code
-  .add(new protobuf.Field("unknown3", 9, "int32"))
-  .add(new protobuf.Field("unknown4", 10, "int32"))
+  .add(new protobuf.Field("unknown3", 9, "int32")) // 0 0
+  .add(new protobuf.Field("unknown4", 10, "int32")) // 0 0
   .add(new protobuf.Field("responseLanguage", 14, "string")); // target language code
+
+// const VideoWhitelistStreamRequest = new protobuf.Type("VideoWhitelistStreamRequest")
+//   .add(new protobuf.Field("url", 1, "string"))
+//   .add(new protobuf.Field("deviceId", 4, "string"))
+
+// const VideoTranslationStreamRequest = new protobuf.Type("VideoTranslationStreamRequest")
+//   .add(new protobuf.Field("url", 1, "string"))
+//   .add(new protobuf.Field("language", 2, "string"))
+//   .add(new protobuf.Field("responseLanguage", 3, "string"))
 
 const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
   .add(new protobuf.Field("url", 1, "string"))
   .add(new protobuf.Field("duration", 2, "double"))
-  .add(new protobuf.Field("status", 4, "int32"))
-  .add(new protobuf.Field("remainingTime", 5, "int32"))
+  .add(new protobuf.Field("status", 4, "int32")) // status
+  .add(new protobuf.Field("remainingTime", 5, "int32")) // secs before translation
+  .add(new protobuf.Field("language", 8, "string")) // detected language (if the wrong one is set)
   .add(new protobuf.Field("message", 9, "string"));
+  // 6 - unknown 0 (1st request) -> 10 (2nd, 3th and etc requests)
+  // 7 - unknown array
+
+// const VideoWhitelistStreamResponse = new protobuf.Type("VideoWhitelistStreamResponse")
+//   .add(new protobuf.Field("inWhitelist", 1, "bool"))
+
+// const VideoTranslationStreamResponse = new protobuf.Type("VideoTranslationStreamResponse")
+//   .add(new protobuf.Field("unknown1", 1, "int32"))
+//   .add(new protobuf.Field("array", 2, "string"))
+//   .add(new protobuf.Field("ping", 3, "int32"))
+
+// Create a root namespace and add the types
+// const root = new protobuf.Root().define("yandex").add(VideoWhitelistStreamRequest).add(VideoWhitelistStreamResponse);
+
+// // Export the encoding and decoding functions
+// export const yandexRequests = {
+//   encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
+//     return root.VideoWhitelistStreamRequest.encode({
+//       url,
+//       deviceId: 'UCLA_DiR1FfKNvjuUpBHmylQ'
+//     }).finish();
+//   },
+//   decodeResponse(response) {
+//     return root.VideoWhitelistStreamResponse.decode(new Uint8Array(response));
+//   }
+// };
+
+
+// // Create a root namespace and add the types
+// const root = new protobuf.Root().define("yandex").add(VideoTranslationStreamRequest).add(VideoTranslationStreamResponse);
+
+// // Export the encoding and decoding functions
+// export const yandexRequests = {
+//   encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
+//     return root.VideoTranslationStreamRequest.encode({
+//       url,
+//       language: requestLang,
+//       responseLanguage: responseLang
+//     }).finish();
+//   },
+//   decodeResponse(response) {
+//     return root.VideoTranslationStreamResponse.decode(new Uint8Array(response));
+//   }
+// };
+
 
 // Create a root namespace and add the types
 const root = new protobuf.Root().define("yandex").add(VideoTranslationRequest).add(VideoTranslationResponse);
@@ -888,7 +945,11 @@ const getVideoId = (service) => {
     case "bilibili.com":
       if (url.pathname.includes('/video/')) {
         const urlArray = url.pathname.split('/');
-        return urlArray[urlArray.length - 2];
+        let vid = urlArray[urlArray.length - 2];
+        if (url.search && url.searchParams.get('p') !== null) {
+          vid += `/?p=${url.searchParams.get('p')}`;
+        }
+        return vid;
       } else if (url.pathname.includes('/blackboard/webplayer/embed-old.html')) {
         return url.searchParams.get("bvid");
       }
@@ -1954,7 +2015,7 @@ async function src_main() {
         ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
 
         return {...videoData,...ytData};
-      } else if (window.location.hostname.includes('rutube')) {
+      } else if (window.location.hostname.includes('rutube') || window.location.hostname.includes('my.mail.ru')) {
         videoData.detectedLanguage = 'ru';
         videoData.responseLanguage = 'en';
       } else if (window.location.hostname.includes('bilibili.com')) {
