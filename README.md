@@ -26,6 +26,7 @@
 - **[Facebook*](https://facebook.com/)** (❌ Не работает)
 - **[Rutube](https://rutube.ru/)** (Полная поддержка **rutube.ru/video/** и **rutube.ru/play/embed/**)
 - **[Bilibili](https://bilibili.com/)** (Поддерживаются **bilibili.com/video/** и **bilibili.com/blackboard/webplayer/embed-old.html**)
+- **[Видео Mail.ru](https://my.mail.ru/video)** (Работает только в открытых видео. В ленте не работает.)
 
 ## Список функционала:
 1. Перевод с одного из доступных языков на русский. Язык определяется автоматически, если языка нету в списке или не удалось его определить, то используется перевод с английского.
