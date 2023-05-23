@@ -19,6 +19,8 @@ function validate(site) {
     return 'vimeo';
   } else if (/^(https:\/\/|http:\/\/)?twitter.com\/*/.test(site)) {
     return 'twitter';
+  } else if (site.includes('mail.ru')) {
+    return 'mail.ru';
   }
   return 'unknown';
 }
