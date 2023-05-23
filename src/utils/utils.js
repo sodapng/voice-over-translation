@@ -101,6 +101,11 @@ const getVideoId = (service) => {
       } else if (url.pathname.includes('/blackboard/webplayer/embed-old.html')) {
         return url.searchParams.get("bvid");
       }
+    case "mail.ru":
+      if (url.pathname.includes('/v/')) {
+        const urlArray = url.pathname.split('/v/');
+        return urlArray[urlArray.length - 1];
+      }
     default:
       return false;
   }
