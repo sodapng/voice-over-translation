@@ -483,7 +483,7 @@ async function main() {
         ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
 
         return {...videoData,...ytData};
-      } else if (window.location.hostname.includes('rutube')) {
+      } else if (window.location.hostname.includes('rutube') || window.location.hostname.includes('my.mail.ru')) {
         videoData.detectedLanguage = 'ru';
         videoData.responseLanguage = 'en';
       } else if (window.location.hostname.includes('bilibili.com')) {
