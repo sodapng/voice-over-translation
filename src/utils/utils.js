@@ -97,7 +97,11 @@ const getVideoId = (service) => {
     case "bilibili.com":
       if (url.pathname.includes('/video/')) {
         const urlArray = url.pathname.split('/');
-        return urlArray[urlArray.length - 2];
+        let vid = urlArray[urlArray.length - 2];
+        if (url.search && url.searchParams.get('p') !== null) {
+          vid += `/?p=${url.searchParams.get('p')}`;
+        }
+        return vid;
       } else if (url.pathname.includes('/blackboard/webplayer/embed-old.html')) {
         return url.searchParams.get("bvid");
       }
