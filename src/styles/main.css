@@ -204,6 +204,7 @@
   border-radius: 5px !important;
   border: 1px solid #DADCE0 !important;
   box-shadow: 0 1px 3px -2px #9098A9;
+  box-sizing: border-box !important;
   color: #2e2f34 !important;
   padding: 5px !important;
 }
