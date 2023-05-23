@@ -18,6 +18,8 @@ async function requestVideoTranslation(url, unknown1, requestLang, responseLang,
     const hexSignature = Array.from(new Uint8Array(signature), x => x.toString(16).padStart(2, '0')).join('');
     // Create a fetch options object with headers and body
     const options = {
+      // url: `https://${workerHost}/stream-translation/whitelist-stream`,
+      // url: `https://${workerHost}/stream-translation/translate-stream`,
       url: `https://${workerHost}/video-translation/translate`,
       method: "POST",
       headers: {
