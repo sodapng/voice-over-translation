@@ -443,7 +443,7 @@ async function main() {
     function stopTraslate() {
       // Default actions on stop translate
       audio.pause();
-      $('video').off('.translate');
+      document.querySelector('video').removeEventListener(".translate", stopTraslate, false);
       deleteAudioSrc();
       document.querySelector('#VOTVideoSlider')?.parentElement.remove();
       document.querySelector('#VOTTranslationSlider')?.parentElement.remove();
@@ -713,25 +713,25 @@ async function main() {
         lipSync("play");
       }
 
-      $("video").on("playing.translate ratechange.translate", () => {
-        debug.log('video ratechange')
-        lipSync();
-      });
+      // Define a function to handle common events
+      // Haram jquery delete method
+      function handleVideoEvent(event) {
+        debug.log(`video ${event.type}`);
+        lipSync(event.type);
+      }
 
-      $("video").on("play.translate canplaythrough.translate", () => {
-        debug.log('video canplaythrough')
-        lipSync();
+      // Get all the video elements
+      const videos = document.querySelectorAll("video");
 
-        if (video && !video.paused) {
-          debug.log('video is playing lipsync 2')
-          lipSync("play");
+      // Loop through the videos and add event listeners
+      for (const v of videos) {
+        // Use an array of event types to avoid repetition
+        const events = ["playing", "ratechange", "play", "canplaythrough", "pause", "waiting"];
+        // Add a listener for each event type and call the handleVideoEvent function
+        for (const e of events) {
+          v.addEventListener(e, handleVideoEvent);
         }
-      });
-
-      $("video").on("pause.translate waiting.translate", () => {
-        debug.log('video is waiting')
-        lipSync("pause");
-      });
+      }
 
       transformBtn('success', 'Выключить');
       addVideoSlider();
