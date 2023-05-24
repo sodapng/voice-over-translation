@@ -272,7 +272,7 @@ async function main() {
           const checkbox = createMenuCheckbox(
             'VOTAutoTranslate',
             dbAutoTranslate,
-            `Переводить при открытие${siteHostname === 'vk' || window.location.hostname.includes('m.twitch.tv') ? ' <strong>(рекомендуется)</strong>' : ''}`
+            `Переводить при открытии${siteHostname === 'vk' || window.location.hostname.includes('m.twitch.tv') ? ' <strong>(рекомендуется)</strong>' : ''}`
           );
 
           checkbox.querySelector('#VOTAutoTranslate').onclick = async (event) => {
@@ -281,6 +281,42 @@ async function main() {
             await updateDB({autoTranslate: value});
             dbAutoTranslate = value;
             debug.log('autoTranslate value changed. New value: ', dbAutoTranslate)
+          }
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        if (window.location.hostname.includes('youtube.com') && dbDontTranslateRuVideos !== undefined && menuOptions && !menuOptions.querySelector('#VOTDontTranslateRu')) {
+          const checkbox = createMenuCheckbox(
+            'VOTDontTranslateRu',
+            dbDontTranslateRuVideos,
+            `Не переводить с русского (youtube)`
+          );
+
+          checkbox.querySelector('#VOTDontTranslateRu').onclick = async (event) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({dontTranslateRuVideos: value});
+            dbDontTranslateRuVideos = value;
+            debug.log('dontTranslateRuVideos value changed. New value: ', dbDontTranslateRuVideos);
+          }
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        if (dbAutoSetVolumeYandexStyle !== undefined && menuOptions && !menuOptions.querySelector('#VOTAutoSetVolume')) {
+          const checkbox = createMenuCheckbox(
+            'VOTAutoSetVolume',
+            dbAutoSetVolumeYandexStyle,
+            `Уменьшать громкость видео до ${autoVolume * 100}%`
+          );
+
+          checkbox.querySelector('#VOTAutoSetVolume').onclick = async (event) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({autoSetVolumeYandexStyle: value});
+            dbAutoSetVolumeYandexStyle = value;
+            debug.log('autoSetVolumeYandexStyle value changed. New value: ', dbAutoSetVolumeYandexStyle);
           }
 
           menuOptions.appendChild(checkbox);
@@ -309,24 +345,6 @@ async function main() {
           menuOptions.appendChild(checkbox);
         }
 
-        if (dbAutoSetVolumeYandexStyle !== undefined && menuOptions && !menuOptions.querySelector('#VOTAutoSetVolume')) {
-          const checkbox = createMenuCheckbox(
-            'VOTAutoSetVolume',
-            dbAutoSetVolumeYandexStyle,
-            `Уменьшать громкость видео до ${autoVolume * 100}%`
-          );
-
-          checkbox.querySelector('#VOTAutoSetVolume').onclick = async (event) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await updateDB({autoSetVolumeYandexStyle: value});
-            dbAutoSetVolumeYandexStyle = value;
-            debug.log('autoSetVolumeYandexStyle value changed. New value: ', dbAutoSetVolumeYandexStyle);
-          }
-
-          menuOptions.appendChild(checkbox);
-        }
-
         if ((window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) && dbSyncVolume !== undefined && menuOptions && !menuOptions.querySelector('#VOTSyncVolume')) {
           const checkbox = createMenuCheckbox(
             'VOTSyncVolume',
@@ -340,24 +358,6 @@ async function main() {
             await updateDB({syncVolume: value});
             dbSyncVolume = value;
             debug.log('syncVolume value changed. New value: ', dbSyncVolume);
-          }
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (window.location.hostname.includes('youtube.com') && dbDontTranslateRuVideos !== undefined && menuOptions && !menuOptions.querySelector('#VOTDontTranslateRu')) {
-          const checkbox = createMenuCheckbox(
-            'VOTDontTranslateRu',
-            dbDontTranslateRuVideos,
-            `Не переводить с русского (youtube)`
-          );
-
-          checkbox.querySelector('#VOTDontTranslateRu').onclick = async (event) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await updateDB({dontTranslateRuVideos: value});
-            dbDontTranslateRuVideos = value;
-            debug.log('dontTranslateRuVideos value changed. New value: ', dbDontTranslateRuVideos);
           }
 
           menuOptions.appendChild(checkbox);
@@ -871,7 +871,9 @@ async function main() {
       document.addEventListener('spfrequest', ytPageLeave);
       document.addEventListener('yt-navigate-start', ytPageLeave);
 
-      // ytPageEnter(null);
+      if (window.location.hostname.includes('m.youtube.com')) {
+        ytPageEnter(null);
+      }
     } else if (window.location.hostname.includes('twitch.tv')) {
       debug.log('[entered] Twitch');
       if (window.location.hostname.includes('m.twitch.tv') && (window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/'))) {
