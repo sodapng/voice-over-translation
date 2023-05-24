@@ -1,4 +1,5 @@
 # 1.2.3-Beta
+- JQuery полностью убран - [ilyhalight/voice-over-translation#169](https://github.com/ilyhalight/voice-over-translation/pull/169)
 - Добавлена возможность перевода Видео Mail.ru начинающихся с помощью /mail/
 - Небольшие изменения в меню
 - Добавлены все языки для озвучки
