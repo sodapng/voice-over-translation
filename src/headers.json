@@ -68,7 +68,6 @@
         "*://my.mail.ru/*"
     ],
     "require": [
-        "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js",
         "https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/protobuf.min.js"
     ],
     "grant": [
