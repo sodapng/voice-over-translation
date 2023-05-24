@@ -106,9 +106,8 @@ const getVideoId = (service) => {
         return url.searchParams.get("bvid");
       }
     case "mail.ru":
-      if (url.pathname.includes('/v/')) {
-        const urlArray = url.pathname.split('/v/');
-        return urlArray[urlArray.length - 1];
+      if (url.pathname.startsWith('/v/') || url.pathname.startsWith('/mail/')) {
+        return url.pathname;
       }
     default:
       return false;
