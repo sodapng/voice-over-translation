@@ -14,6 +14,11 @@ import debug from './utils/debug.js';
 
 const sitesChromiumBlocked = Object.assign([], sitesInvidious, sitesPiped);
 
+// translate properties
+const translateFromLang = 'en'; // default language of video
+
+const translateToLang = 'ru'; // default language of audio response
+
 async function main() {
   const rvt = await import(
     `./rvt${BUILD_MODE === 'cloudflare' ? '-cloudflare' : ''}.js`
@@ -151,17 +156,10 @@ async function main() {
     let dbDontTranslateRuVideos;
     let dbSyncVolume;
     let firstPlay = true;
-    // translate properties
-    let translateFromLang = 'en'; // default language of video
-    let translateToLang = 'ru'; // default language of audio response
 
     debug.log('videoContainer', videoContainer)
 
-    if (siteHostname === 'vimeo') {
-      video = videoContainer.querySelector('.vp-video-wrapper > .vp-video > .vp-telecine > video');
-    } else {
-      video = videoContainer.querySelector('video');
-    }
+    video = siteHostname === 'vimeo' ? videoContainer.querySelector('.vp-video-wrapper > .vp-video > .vp-telecine > video') : videoContainer.querySelector('video');
 
     debug.log('video', video);
 
@@ -385,11 +383,12 @@ async function main() {
     }
 
     function setSelectMenuValues(from, to) {
-      if (document.querySelector('#VOTSelectLanguages')) {
-        console.log(`Set translation from ${from} to ${to}`);
-        document.querySelector('#VOTTranslateFromLang').value = from;
-        document.querySelector('#VOTTranslateToLang').value = to;
+      if (!document.querySelector('#VOTSelectLanguages')) {
+        return;
       }
+      console.log(`Set translation from ${from} to ${to}`);
+      document.querySelector('#VOTTranslateFromLang').value = from;
+      document.querySelector('#VOTTranslateToLang').value = to;
     }
 
     // data - ytData or VideoData
@@ -443,7 +442,7 @@ async function main() {
     function stopTraslate() {
       // Default actions on stop translate
       audio.pause();
-      $('video').off('.translate');
+      document.querySelector('video').removeEventListener(".translate", stopTraslate, false);
       deleteAudioSrc();
       document.querySelector('#VOTVideoSlider')?.parentElement.remove();
       document.querySelector('#VOTTranslationSlider')?.parentElement.remove();
@@ -560,7 +559,7 @@ async function main() {
         // Sync translation volume slider with video volume slider
         const translateVolumeSlider = document.querySelector('#VOTTranslationSlider');
         const translateVolume = Number(translateVolumeSlider.value);
-        let finalValue = syncVolume(audio, value, translateVolume, tempOriginalVolume);
+        const finalValue = syncVolume(audio, value, translateVolume, tempOriginalVolume);
 
         translateVolumeSlider.value = finalValue;
         document.querySelector('#VOTTranslationVolume').innerText = `${finalValue}%`;
@@ -599,7 +598,7 @@ async function main() {
         // Sync translation volume slider with video volume slider
         const videoVolumeSlider = document.querySelector('#VOTVideoSlider');
         const videoVolume = Number(videoVolumeSlider.value);
-        let finalValue = syncVolume(video, value, videoVolume, tempVolume);
+        const finalValue = syncVolume(video, value, videoVolume, tempVolume);
 
         videoVolumeSlider.value = finalValue;
         document.querySelector('#VOTOriginalVolume').innerText = `${finalValue}%`;
@@ -711,27 +710,27 @@ async function main() {
       if (video && !video.paused) {
         debug.log('video is playing lipsync 1')
         lipSync("play");
+        }
+       
+      // Define a function to handle common events
+      // Haram jquery delete method
+      function handleVideoEvent(event) {
+        debug.log(`video ${event.type}`);
+        lipSync(event.type);
       }
 
-      $("video").on("playing.translate ratechange.translate", () => {
-        debug.log('video ratechange')
-        lipSync();
-      });
+      // Get all the video elements
+      const videos = document.querySelectorAll("video");
 
-      $("video").on("play.translate canplaythrough.translate", () => {
-        debug.log('video canplaythrough')
-        lipSync();
-
-        if (video && !video.paused) {
-          debug.log('video is playing lipsync 2')
-          lipSync("play");
+      // Loop through the videos and add event listeners
+      for (const v of videos) {
+        // Use an array of event types to avoid repetition
+        const events = ["playing", "ratechange", "play", "canplaythrough", "pause", "waiting"];
+        // Add a listener for each event type and call the handleVideoEvent function
+        for (const e of events) {
+          v.addEventListener(e, handleVideoEvent);
         }
-      });
-
-      $("video").on("pause.translate waiting.translate", () => {
-        debug.log('video is waiting')
-        lipSync("pause");
-      });
+      }
 
       transformBtn('success', 'Выключить');
       addVideoSlider();
@@ -822,20 +821,21 @@ async function main() {
     video.addEventListener('progress', event => {
       event.stopPropagation();
 
-      if (firstPlay && dbAutoTranslate === 1) {
-        const VIDEO_ID = getVideoId(siteHostname);
+      if (!(firstPlay && dbAutoTranslate === 1)) {
+        return;
+      }
+      const VIDEO_ID = getVideoId(siteHostname);
 
-        if (!VIDEO_ID) {
-          throw "VOT: Не найдено ID видео";
-        }
+      if (!VIDEO_ID) {
+        throw "VOT: Не найдено ID видео";
+      }
 
-        try {
-          translateExecutor(VIDEO_ID);
-          firstPlay = false;
-        } catch (err) {
-          transformBtn('error', String(err).substring(4, err.length));
-          firstPlay = false;
-        }
+      try {
+        translateExecutor(VIDEO_ID);
+        firstPlay = false;
+      } catch (err) {
+        transformBtn('error', String(err).substring(4, err.length));
+        firstPlay = false;
       }
     });
   }
@@ -846,10 +846,7 @@ async function main() {
       debug.log('[entered] YT Regex Passed', regexes.youtubeRegex);
       const ytPageEnter = (event) => {
         const videoContainer = document.querySelectorAll(selectors.youtubeSelector)[0];
-        if (videoContainer != null) {
-          debug.log('[exec] translateProccessor youtube on page enter')
-          translateProccessor(videoContainer, 'youtube', 'yt-translate-stop');
-        } else {
+        if (videoContainer == null) {
           if (ytplayer == null || ytplayer.config === undefined || ytplayer.config === null) {
             debug.log('[exec] ytplayer is null')
             return;
@@ -858,6 +855,9 @@ async function main() {
             debug.log('[exec] translateProccessor youtube on page enter (ytplayer.config.args.jsapicallback)')
             translateProccessor(videoContainer, 'youtube', 'yt-translate-stop');
           }
+        } else {
+          debug.log('[exec] translateProccessor youtube on page enter')
+          translateProccessor(videoContainer, 'youtube', 'yt-translate-stop');
         }
       };
 
@@ -870,9 +870,11 @@ async function main() {
 
       document.addEventListener('spfrequest', ytPageLeave);
       document.addEventListener('yt-navigate-start', ytPageLeave);
+      return;
 
       // ytPageEnter(null);
-    } else if (window.location.hostname.includes('twitch.tv')) {
+    }
+    if (window.location.hostname.includes('twitch.tv')) {
       debug.log('[entered] Twitch');
       if (window.location.hostname.includes('m.twitch.tv') && (window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/'))) {
         debug.log('[entered] twitch mobile');
