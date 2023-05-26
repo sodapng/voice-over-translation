@@ -157,11 +157,7 @@ async function main() {
 
     debug.log('videoContainer', videoContainer)
 
-    if (siteHostname === 'vimeo') {
-      video = videoContainer.querySelector('.vp-video-wrapper > .vp-video > .vp-telecine > video');
-    } else {
-      video = videoContainer.querySelector('video');
-    }
+    video = siteHostname === 'vimeo' ? videoContainer.querySelector('.vp-video-wrapper > .vp-video > .vp-telecine > video') : videoContainer.querySelector('video');
 
     debug.log('video', video);
 
@@ -385,37 +381,36 @@ async function main() {
     }
 
     function setSelectMenuValues(from, to) {
-      if (document.querySelector('#VOTSelectLanguages')) {
-        console.log(`Set translation from ${from} to ${to}`);
-        document.querySelector('#VOTTranslateFromLang').value = from;
-        document.querySelector('#VOTTranslateToLang').value = to;
+      if (!document.querySelector('#VOTSelectLanguages')) {
+        return;
       }
+      console.log(`Set translation from ${from} to ${to}`);
+      document.querySelector('#VOTTranslateFromLang').value = from;
+      document.querySelector('#VOTTranslateToLang').value = to;
     }
 
-    // data - ytData or VideoData
     function setDetectedLangauge(data, lang) {
-      switch (lang) {
-        case 'en':
-          data.detectedLanguage = lang;
-          data.responseLanguage = 'ru';
-          break;
-        case 'ru':
-          data.detectedLanguage = lang;
-          data.responseLanguage = 'en';
-          break;
-        default:
-          if (!Object.keys(availableFromLangs).includes(lang)) {
-            return setDetectedLangauge('en');
-          }
-
-          data.detectedLanguage = lang;
+      // use an object to map the detected language to the response language
+      const langMap = {
+        en: 'ru',
+        fr: 'ru',
+        zh: 'ru',
+        es: 'ru',
+        it: 'ru',
+        ru: 'en' 
+      };
+      // if the language is not in the available from languages, default to 'en'
+      if (!Object.keys(availableFromLangs).includes(lang)) {
+        lang = 'en';
       }
-
+      // set the detected and response languages using the map or the original value
+      data.detectedLanguage = lang;
+      data.responseLanguage = langMap[lang] || lang;
+      // update the select menu values
       setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
-
       return data;
     }
-
+    
     // data - ytData or VideoData
     function setResponseLangauge(data, lang) {
       switch (lang) {
@@ -457,19 +452,20 @@ async function main() {
     }
 
     function syncVideoVolumeSlider() {
-      // Sync volume slider with original video (youtube only)
-      const newSlidersVolume = document.querySelector('.ytp-volume-panel').getAttribute('aria-valuenow');
-      if (document.querySelector('#VOTVideoSlider')) {
-        document.querySelector('#VOTVideoSlider').value = newSlidersVolume;
+      const volumePanel = document.querySelector('.ytp-volume-panel');
+      const VOTVideoSlider = document.querySelector('#VOTVideoSlider');
+      const VOTVideoVolume = document.querySelector('#VOTVideoVolume');
+      
+      if (!(volumePanel && VOTVideoSlider && VOTVideoVolume)) {
+        return;
       }
-
-      if (document.querySelector('#VOTVideoVolume')) {
-        document.querySelector('#VOTVideoVolume').innerText = `${newSlidersVolume}%`;
-      }
-
+      const newSlidersVolume = volumePanel.getAttribute('aria-valuenow');
+      VOTVideoSlider.value = newSlidersVolume;
+      VOTVideoVolume.innerText = `${newSlidersVolume}%`;
+       
       if (dbSyncVolume === 1) {
         tempOriginalVolume = Number(newSlidersVolume);
-      }
+       }
     }
 
     function getVideoData() {
@@ -609,31 +605,6 @@ async function main() {
 
       const menuOptions = document.querySelector('.translationMenuOptions');
       menuOptions.appendChild(slider);
-    }
-
-
-    const videoValidator = () => {
-      if (window.location.hostname.includes('youtube.com')) {
-        debug.log("VideoValidator videoData: ", videoData)
-        if (dbDontTranslateRuVideos === 1 && videoData.detectedLanguage === 'ru') {
-          firstPlay = false;
-          throw "VOT: Вы отключили перевод русскоязычных видео";
-        }
-
-        if (videoData.isLive) {
-          throw "VOT: Не поддерживается перевод трансляций в прямом эфире";
-        }
-
-        if (videoData.isPremiere) {
-          throw "VOT: Дождитесь окончания премьеры перед переводом";
-        }
-      }
-
-      if (videoData.duration > 14_400) {
-        throw "VOT: Видео слишком длинное";
-      }
-
-      return true;
     }
 
     const translateExecutor = (VIDEO_ID) => {
@@ -818,22 +789,42 @@ async function main() {
         console.error(err);
       }
     });
-
+    const videoValidator = () => {
+      if (window.location.hostname.includes('youtube.com')) {
+        debug.log("VideoValidator videoData: ", videoData)
+        if (dbDontTranslateRuVideos === 1 && videoData.detectedLanguage === 'ru') {
+          firstPlay = false;
+          throw "VOT: Вы отключили перевод русскоязычных видео";
+        }
+    
+        if (videoData.isLive) {
+          throw "VOT: Не поддерживается перевод трансляций в прямом эфире";
+        }
+    
+        if (videoData.isPremiere) {
+          throw "VOT: Дождитесь окончания премьеры перед переводом";
+        }
+      }
+    
+      if (videoData.duration > 14_400) {
+        throw "VOT: Видео слишком длинное";
+      }
+    
+      return true;
+    }
+    
     video.addEventListener('progress', event => {
       event.stopPropagation();
-
       if (firstPlay && dbAutoTranslate === 1) {
         const VIDEO_ID = getVideoId(siteHostname);
-
         if (!VIDEO_ID) {
           throw "VOT: Не найдено ID видео";
         }
-
         try {
           translateExecutor(VIDEO_ID);
-          firstPlay = false;
         } catch (err) {
           transformBtn('error', String(err).substring(4, err.length));
+        } finally {
           firstPlay = false;
         }
       }
@@ -846,10 +837,7 @@ async function main() {
       debug.log('[entered] YT Regex Passed', regexes.youtubeRegex);
       const ytPageEnter = (event) => {
         const videoContainer = document.querySelectorAll(selectors.youtubeSelector)[0];
-        if (videoContainer != null) {
-          debug.log('[exec] translateProccessor youtube on page enter')
-          translateProccessor(videoContainer, 'youtube', 'yt-translate-stop');
-        } else {
+        if (videoContainer == null) {
           if (ytplayer == null || ytplayer.config === undefined || ytplayer.config === null) {
             debug.log('[exec] ytplayer is null')
             return;
@@ -858,6 +846,9 @@ async function main() {
             debug.log('[exec] translateProccessor youtube on page enter (ytplayer.config.args.jsapicallback)')
             translateProccessor(videoContainer, 'youtube', 'yt-translate-stop');
           }
+        } else {
+          debug.log('[exec] translateProccessor youtube on page enter')
+          translateProccessor(videoContainer, 'youtube', 'yt-translate-stop');
         }
       };
 
@@ -874,7 +865,9 @@ async function main() {
       if (window.location.hostname.includes('m.youtube.com')) {
         ytPageEnter(null);
       }
-    } else if (window.location.hostname.includes('twitch.tv')) {
+      return;
+    }
+    if (window.location.hostname.includes('twitch.tv')) {
       debug.log('[entered] Twitch');
       if (window.location.hostname.includes('m.twitch.tv') && (window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/'))) {
         debug.log('[entered] twitch mobile');
