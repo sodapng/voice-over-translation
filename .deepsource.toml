@@ -8,3 +8,9 @@ name = "javascript"
     "nodejs",
     "browser"
   ]
+
+[[transformers]]
+name = "prettier"
+
+[[transformers]]
+name = "standardjs"
