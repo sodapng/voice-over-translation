@@ -4,7 +4,8 @@ function openDB (name) {
 }
 
 async function initDB () {
-  return new Promise((resolve, reject) => {
+  // add await before returning the promise
+  return await new Promise((resolve, reject) => {
     const openRequest = openDB("VOT");
 
     openRequest.onerror = () => {
@@ -177,59 +178,54 @@ async function updateDB({
 }
 
 async function readDB() {
-  return new Promise((resolve, reject) => {
-    const openRequest = openDB("VOT");
-
-    openRequest.onerror = () => {
-      alert('VOT: Произошла ошибка');
-      console.error(`VOT: Ошибка Базы Данных: ${openRequest.errorCode}`);
-      reject(false);
-    }
-
-    openRequest.onupgradeneeded = async () => {
-      const db = openRequest.result;
-      db.close();
-      await initDB();
-      resolve(true);
-    }
-
-    openRequest.onsuccess = () => {
-      const db = openRequest.result;
-      db.onversionchange = () => {
-        db.close();
-        alert("VOT: База данных устарела, пожалуЙста, перезагрузите страницу.");
-        reject(false);
+  return new Promise(async(resolve, reject) => {
+      const openRequest = await openDB("VOT");
+      openRequest.onerror = async() => {
+          alert('VOT: Произошла ошибка');
+          console.error(`VOT: Ошибка Базы Данных: ${openRequest.errorCode}`);
+          await reject(false);
       }
-
-      const objectStore = db.transaction('settings').objectStore('settings');
-      const request = objectStore.get('settings');
-
-      request.onerror = (event) => {
-        console.error("VOT: Не удалось получить данные из Базы Данных: ", event.error);
-        console.error(event);
-        reject(false);
+      openRequest.onupgradeneeded = async() => {
+          const db = openRequest.result;
+          db.close();
+          await initDB();
+          await resolve(true);
       }
-
-      request.onsuccess = () => {
-        // console.log('VOT: Получены данные из Базы Данных: ', request.result);
-        if (request.result === undefined) {
-          db.close()
-          deleteDB();
-          reject(false);
-        }
-        const data = request.result;
-        resolve(data);
+      openRequest.onsuccess = async() => {
+          const db = openRequest.result;
+          db.onversionchange = async() => {
+              db.close();
+              alert("VOT: База данных устарела, пожалуЙста, перезагрузите страницу.");
+              await reject(false);
+          }
+          const objectStore = db.transaction('settings')
+              .objectStore('settings');
+          const request = objectStore.get('settings');
+          request.onerror = async(event) => {
+              console.error("VOT: Не удалось получить данные из Базы Данных: ", event.error);
+              console.error(event);
+              await reject(false);
+          }
+          request.onsuccess = async() => {
+              // console.log('VOT: Получены данные из Базы Данных: ', request.result);
+              if (request.result === undefined) {
+                  db.close()
+                  deleteDB();
+                  await reject(false);
+              }
+              const data = request.result;
+              await resolve(data);
+          }
       }
-    }
-
-    openRequest.onblocked = () => {
-      const db = openRequest.result;
-      console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
-      alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
-      reject(false);
-    }
+      openRequest.onblocked = async() => {
+          const db = openRequest.result;
+          console.error('VOT: База Данных временно заблокирована из-за ошибки: ', db);
+          alert("VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова.");
+          await reject(false);
+      }
   });
 }
+
 
 function deleteDB() {
   indexedDB.deleteDatabase('VOT');

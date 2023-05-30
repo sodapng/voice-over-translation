@@ -365,11 +365,13 @@ async function main() {
 
     if (window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) {
       const syncVolumeObserver = new MutationObserver(async function(mutations) {
-        mutations.forEach(async function(mutation) {
+        // use Promise.all to wait for all async operations to finish
+        await Promise.all(mutations.map(async function(mutation) {
           if (mutation.type === 'attributes' && mutation.attributeName === 'aria-valuenow' && document.querySelector('#VOTVideoSlider')) {
-            syncVideoVolumeSlider();
+            // use await to wait for syncVideoVolumeSlider to finish
+            await syncVideoVolumeSlider();
           }
-        });
+        }));
       });
 
       syncVolumeObserver.observe(document.querySelector('.ytp-volume-panel'), {
@@ -652,13 +654,14 @@ async function main() {
 
       if (['twitch', 'vimeo', 'facebook', 'rutube', 'twitter', 'bilibili.com', 'mail.ru'].includes(siteHostname)) {
         const mutationObserver = new MutationObserver(async function(mutations) {
-          mutations.forEach(async function(mutation) {
+          for (let mutation of mutations) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === video && mutation.target.src !== '') {
-              stopTraslate();
+              await stopTraslate();
               firstPlay = true;
             }
-          });
+          }
         });
+        
 
         mutationObserver.observe(videoContainer, {
           attributes: true,
@@ -877,14 +880,17 @@ async function main() {
           await translateProccessor(document.querySelector(selectors.twitchMobileSelector), 'twitch', null);
           // Тоже самое, что и вариант снизу, но по идеи должен быть более производительным (так же требует дабл клика)
           const mutationObserver = new MutationObserver(async function(mutations) {
-            mutations.forEach(async function(mutation) {
-              if (mutation.type === 'attributes' && mutation.attributeName === 'src' && mutation.target === document.querySelector(selectors.twitchMobileSelector)?.querySelector('video')) {
-                await sleep(1000);
-                await translateProccessor(document.querySelector(selectors.twitchMobileSelector), 'twitch', null);
+            for (const mutation of mutations) {
+              if (mutation.type === 'attributes' && mutation.attributeName === 'src') {
+                const video = mutation.target.closest(selectors.twitchMobileSelector)?.querySelector('video');
+                if (video) {
+                  await sleep(1000);
+                  await translateProccessor(video, 'twitch', null);
+                }
               }
-            });
+            }
           });
-
+          
           mutationObserver.observe(document.querySelector(selectors.twitchMobileSelector), {
             attributes: true,
             childList: true,
