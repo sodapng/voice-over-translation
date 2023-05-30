@@ -119,7 +119,7 @@ async function main() {
           callback(false, translateResponse.message);
           return;
         case 1:
-          const hasUrl = translateResponse.url != null;
+          const hasUrl = translateResponse.url !== null;
           callback(hasUrl, hasUrl ? translateResponse.url : "Не получена ссылка на аудио");
           return;
         case 2:
@@ -837,8 +837,8 @@ async function main() {
       debug.log('[entered] YT Regex Passed', regexes.youtubeRegex);
       const ytPageEnter = (event) => {
         const videoContainer = document.querySelectorAll(selectors.youtubeSelector)[0];
-        if (videoContainer == null) {
-          if (ytplayer == null || ytplayer.config === undefined || ytplayer.config === null) {
+        if (videoContainer === null) {
+          if (ytplayer === null || ytplayer.config === undefined || ytplayer.config === null) {
             debug.log('[exec] ytplayer is null')
             return;
           }
