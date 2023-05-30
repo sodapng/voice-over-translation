@@ -88,7 +88,7 @@ async function main() {
       location.reload();
     });
 
-    debug.log(`VOT: Added translation menu to `, element);
+    debug.log("VOT: Added translation menu to ", element);
   }
 
   function translateVideo(url, unknown1, requestLang, responseLang, callback) {
@@ -137,7 +137,7 @@ async function main() {
   }
 
   async function translateProccessor(videoContainer, siteHostname, siteEvent ) {
-    debug.log(`[translateProccessor] execute `, videoContainer);
+    debug.log("[translateProccessor] execute ", videoContainer);
 
     let video;
     let autoRetry;
@@ -286,7 +286,7 @@ async function main() {
           const checkbox = createMenuCheckbox(
             'VOTDontTranslateRu',
             dbDontTranslateRuVideos,
-            `Не переводить с русского (youtube)`
+            "Не переводить с русского (youtube)"
           );
 
           checkbox.querySelector('#VOTDontTranslateRu').onclick = async (event) => {
@@ -531,7 +531,7 @@ async function main() {
     };
 
     function addVideoSlider() {
-      if (dbShowVideoSlider !== 1 || document.querySelector(`#VOTVideoSlider`) || document.querySelector('.translationBtn').dataset.state !== 'success') {
+      if (dbShowVideoSlider !== 1 || document.querySelector("#VOTVideoSlider") || document.querySelector('.translationBtn').dataset.state !== 'success') {
         return;
       }
 
@@ -569,7 +569,7 @@ async function main() {
     }
 
     function addTranslationSlider() {
-      if (document.querySelector(`#VOTTranslationSlider`) || document.querySelector('.translationBtn').dataset.state !== 'success') {
+      if (document.querySelector("#VOTTranslationSlider") || document.querySelector('.translationBtn').dataset.state !== 'success') {
         return;
       }
 
