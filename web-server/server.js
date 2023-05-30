@@ -75,7 +75,7 @@ app.post('/video', timeout('60s', { respond: false } ), haltOnTimedout, async (r
         page.on('request', async () => {
             try {
               res.sendStatus(412)
-              logger.info(`Возвращен статус код 412`)
+              logger.info("Возвращен статус код 412")
             } catch {}
           })
 
