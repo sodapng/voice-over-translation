@@ -100,7 +100,7 @@ function translateVideo(url, callback) {
         callback(false, translateResponse.message);
         return;
       case 1:
-        const hasUrl = translateResponse.url !== null;
+        const hasUrl = translateResponse.url != null;
         callback(hasUrl, hasUrl ? translateResponse.url : "Audio link not received");
         return;
       case 2:

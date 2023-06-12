@@ -1,17 +1,29 @@
-// sliderVolume - current volume of the slider
-// otherSliderVolume - volume of the other slider
-// tempVolume - previous volume of the slider
+// element - audio / video element
 function syncVolume(element, sliderVolume, otherSliderVolume, tempVolume) {
-  // calculate the difference between the current and previous volumes
-  let diff = sliderVolume - tempVolume;
-  // adjust the other slider volume by adding or subtracting the difference
-  let finalValue = otherSliderVolume + diff;
-  // clamp the final value between 0 and 100
-  finalValue = Math.min(Math.max(finalValue, 0), 100);
-  // set the element volume to the final value divided by 100
-  element.volume = finalValue / 100;
-  // return the final value
-  return finalValue;
+  let finalValue;
+  if (sliderVolume > tempVolume) {
+    // sliderVolume = 100
+    // tempVolume = 69
+    // volume = 15
+    // 100 - 69 = 31
+    // 15 + 31 = 46 - final video volume
+    finalValue = otherSliderVolume + (sliderVolume - tempVolume);
+    finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
+
+    element.volume = finalValue / 100;
+  } else if (sliderVolume < tempVolume) {
+    // sliderVolume = 69
+    // tempVolume = 100
+    // volume = 15
+    // 100 - 69 = 31
+    // 15 - 31 = 0 - final video volume
+    finalValue = otherSliderVolume - (tempVolume - sliderVolume);
+    finalValue = finalValue > 100 ? 100 : Math.max(finalValue, 0);
+
+    element.volume = finalValue / 100;
+  }
+
+  return finalValue
 }
 
 export { syncVolume };
