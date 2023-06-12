@@ -3,7 +3,7 @@
 // @name:ru [VOT Cloudflare] - Закадровый перевод видео
 // @description A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version 1.2.3
+// @version 1.2.2
 // @author sodapng, mynovelhost, Toil
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -70,6 +70,7 @@
 // @icon https://translate.yandex.ru/icons/favicon.ico
 // @inject-into page
 // @namespace vot-cloudflare
+// @require https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js
 // @require https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/protobuf.min.js
 // @updateURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js
 // ==/UserScript==
@@ -93,7 +94,7 @@
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\r\n  padding: 0.45rem !important;\r\n  width: max-content;\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  border-radius: 0.5rem !important;\r\n  left: 50%;\r\n  top: 5rem;\r\n  transform: translate(-50%);\r\n  text-align: center;\r\n  opacity: 0;\r\n  transition: opacity 1s;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n  user-select: none;\r\n  z-index: 100;\r\n}\r\n\r\n.translationBtn {\r\n  position: relative;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  color: #fff;\r\n  padding-right: 0.25rem !important;\r\n  cursor: pointer;\r\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\r\n}\r\n\r\n.translationBlock:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.translationMenu {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  border-left: 1px solid #424348;\r\n  max-height: 16px;\r\n  max-width: 24px;\r\n  cursor: pointer;\r\n}\r\n\r\n.translationMenuIcon {\r\n  padding: 0 10px !important;\r\n  width: 24px;\r\n}\r\n\r\n.translationIAlice {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 26px;\r\n  max-width: 50px;\r\n}\r\n\r\n.translationIconAlice {\r\n  height: 24px !important;\r\n  width: 24px !important;\r\n}\r\n\r\n.translationITranslate {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 20px;\r\n  max-width: 20px;\r\n}\r\n\r\n.translationMenuContent {\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  color: #fff;\r\n  display: none;\r\n  border-radius: 1rem !important;\r\n  left: 50%;\r\n  top: 9rem;\r\n  transform: translate(-50%);\r\n  text-align:left;\r\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n\r\n  width: 300px;\r\n  /* height: 375px; */\r\n  opacity: 0;\r\n  z-index: 100;\r\n  transition: opacity 0.5s ease;\r\n}\r\n\r\n.VOTMenuSlider {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 268px !important;\r\n  height: 8px !important;\r\n  outline: none !important;\r\n  margin-top: 0.5rem;\r\n  opacity: 0.7;\r\n  /* background: #3C3F4D !important; */\r\n  background: rgb(253, 222, 85, 0.6) !important;\r\n  border: none !important;\r\n  border-radius: 2rem !important;\r\n  -webkit-transition: 0.2s !important;\r\n  transition: opacity 0.2s ease !important;\r\n}\r\n\r\n.VOTMenuSlider:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.VOTMenuSlider::-webkit-slider-thumb {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-fill-lower {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-progress {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\r\n}\r\n\r\n.translationHeader {\r\n  padding-bottom: 0.5rem !important;\r\n}\r\n\r\n.translationMainHeader {\r\n  margin: 16px !important;\r\n  color: #FFF;\r\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n}\r\n\r\n.translationMenuContainer {\r\n  /* width: 100%; */\r\n  padding-left: 16px !important;\r\n  padding-top: 5px !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n.translationMenuContainer > input {\r\n  appearance: auto !important;\r\n}\r\n\r\n.translationMenuText {\r\n  color: #FFF;\r\n  display: inline-flex;\r\n  width: 80%;\r\n}\r\n\r\n.translationVolumeBox, .translationVideoVolumeBox {\r\n  padding-top: 0.5rem !important;\r\n}\r\n\r\n.translationDropDB {\r\n  border: none !important;\r\n  border-radius: 4px !important;\r\n  background: #5426FF !important;\r\n  color: #fff !important;\r\n  padding: 6px 16px !important;\r\n  margin-left: auto !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.translationDownload {\r\n  background: #5426FF !important;\r\n  color: #fff !important;\r\n  padding: 2px 10px !important;\r\n  border-radius: 4px !important;\r\n  cursor: pointer;\r\n  display: none;\r\n}\r\n\r\n.translationMenuFunctional {\r\n  display: flex;\r\n  margin: 16px !important;\r\n}\r\n\r\n.VOTMenuSelect {\r\n  width: 110px;\r\n  border-radius: 5px !important;\r\n  border: 1px solid #DADCE0 !important;\r\n  box-shadow: 0 1px 3px -2px #9098A9;\r\n  box-sizing: border-box !important;\r\n  color: #2e2f34 !important;\r\n  background: #fff !important;\r\n  padding: 5px !important;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n  border-color: #0077FF;\r\n  box-shadow: 0 0 0 2px rgba(#0077FF,.2)\r\n}\r\n\r\n#VOTSelectLanguages {\r\n  display: flex !important;\r\n  margin-left: 5px;\r\n}\r\n\r\n#VOTSelectLanguages svg {\r\n  margin: 0 5px;\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\r\n  padding: 0.45rem !important;\r\n  width: max-content;\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  border-radius: 0.5rem !important;\r\n  left: 50%;\r\n  top: 5rem;\r\n  transform: translate(-50%);\r\n  text-align: center;\r\n  opacity: 0;\r\n  transition: opacity 1s;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n  user-select: none;\r\n  z-index: 100;\r\n}\r\n\r\n.translationBtn {\r\n  position: relative;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  color: #fff;\r\n  padding-right: 0.25rem !important;\r\n  cursor: pointer;\r\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\r\n}\r\n\r\n.translationBlock:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.translationMenu {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  border-left: 1px solid #424348;\r\n  max-height: 16px;\r\n  max-width: 24px;\r\n  cursor: pointer;\r\n}\r\n\r\n.translationMenuIcon {\r\n  padding: 0 10px !important;\r\n  width: 24px;\r\n}\r\n\r\n.translationIAlice {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 26px;\r\n  max-width: 50px;\r\n}\r\n\r\n.translationIconAlice {\r\n  height: 24px !important;\r\n  width: 24px !important;\r\n}\r\n\r\n.translationITranslate {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 20px;\r\n  max-width: 20px;\r\n}\r\n\r\n.translationMenuContent {\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  color: #fff;\r\n  display: none;\r\n  border-radius: 1rem !important;\r\n  left: 50%;\r\n  top: 9rem;\r\n  transform: translate(-50%);\r\n  text-align:left;\r\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n\r\n  width: 300px;\r\n  /* height: 375px; */\r\n  opacity: 0;\r\n  z-index: 100;\r\n  transition: opacity 0.5s ease;\r\n}\r\n\r\n.VOTMenuSlider {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 268px !important;\r\n  height: 8px !important;\r\n  outline: none !important;\r\n  margin-top: 0.5rem;\r\n  opacity: 0.7;\r\n  /* background: #3C3F4D !important; */\r\n  background: rgb(253, 222, 85, 0.6) !important;\r\n  border: none !important;\r\n  border-radius: 2rem !important;\r\n  -webkit-transition: 0.2s !important;\r\n  transition: opacity 0.2s ease !important;\r\n}\r\n\r\n.VOTMenuSlider:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.VOTMenuSlider::-webkit-slider-thumb {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-fill-lower {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-progress {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(90.1deg, rgba(186, 153, 244, 0.85) -5.78%, rgba(236, 138, 202, 0.7) 56.46%, rgba(239, 168, 117, 0.6) 108.93%) !important;\r\n}\r\n\r\n.translationHeader {\r\n  padding-bottom: 0.5rem !important;\r\n}\r\n\r\n.translationMainHeader {\r\n  margin: 16px !important;\r\n  color: #FFF;\r\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n}\r\n\r\n.translationMenuContainer {\r\n  /* width: 100%; */\r\n  padding-left: 16px !important;\r\n  padding-top: 5px !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n.translationMenuContainer > input {\r\n  appearance: auto !important;\r\n}\r\n\r\n.translationMenuText {\r\n  color: #FFF;\r\n  display: inline-flex;\r\n  width: 80%;\r\n}\r\n\r\n.translationVolumeBox, .translationVideoVolumeBox {\r\n  padding-top: 0.5rem !important;\r\n}\r\n\r\n.translationDropDB {\r\n  border: none !important;\r\n  border-radius: 4px !important;\r\n  background: #5426FF !important;\r\n  color: #fff !important;\r\n  padding: 6px 16px !important;\r\n  margin-left: auto !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.translationDownload {\r\n  background: #5426FF !important;\r\n  color: #fff !important;\r\n  padding: 2px 10px !important;\r\n  border-radius: 4px !important;\r\n  cursor: pointer;\r\n  display: none;\r\n}\r\n\r\n.translationMenuFunctional {\r\n  display: flex;\r\n  margin: 16px !important;\r\n}\r\n\r\n.VOTMenuSelect {\r\n  width: 110px;\r\n  border-radius: 5px !important;\r\n  border: 1px solid #DADCE0 !important;\r\n  box-shadow: 0 1px 3px -2px #9098A9;\r\n  box-sizing: border-box !important;\r\n  color: #2e2f34 !important;\r\n  padding: 5px !important;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n  border-color: #0077FF;\r\n  box-shadow: 0 0 0 2px rgba(#0077FF,.2)\r\n}\r\n\r\n#VOTSelectLanguages {\r\n  display: flex !important;\r\n  margin-left: 5px;\r\n}\r\n\r\n#VOTSelectLanguages svg {\r\n  margin: 0 5px;\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -985,8 +986,9 @@ const getVideoId = (service) => {
         return url.searchParams.get("bvid");
       }
     case "mail.ru":
-      if (url.pathname.startsWith('/v/') || url.pathname.startsWith('/mail/')) {
-        return url.pathname;
+      if (url.pathname.includes('/v/')) {
+        const urlArray = url.pathname.split('/v/');
+        return urlArray[urlArray.length - 1];
       }
     default:
       return false;
@@ -1066,7 +1068,7 @@ const sitesPiped = [
 ;// CONCATENATED MODULE: ./src/config/constants.js
 const translateFuncParam = 0x40_75_50_00_00_00_00_00;
 const availableFromLangs = {'ru': 'Русский', 'en': 'Английский', 'zh': 'Китайский', 'fr': 'Французский', 'it': 'Итальянский', 'es': 'Испанский'}; // available languages for translation (from)
-const availableToLangs = {'ru': 'Русский', 'en': 'Английский', 'zh': 'Китайский', 'fr': 'Французский', 'it': 'Итальянский', 'es': 'Испанский'}; // available languages for translation (to)
+const availableToLangs = {'ru': 'Русский', 'en': 'Английский'}; // available languages for translation (to)
 const siteTranslates = {
   'youtube': 'https://youtu.be/',
   'twitch': 'https://twitch.tv/',
@@ -1080,7 +1082,7 @@ const siteTranslates = {
   'facebook': 'https://www.facebook.com/',
   'rutube': 'https://rutube.ru/video/',
   'bilibili.com': 'https://www.bilibili.com/video/',
-  'mail.ru': 'https://my.mail.ru/'
+  'mail.ru': 'https://my.mail.ru/v/'
 };
 
 
@@ -1832,7 +1834,7 @@ async function src_main() {
           const checkbox = createMenuCheckbox(
             'VOTAutoTranslate',
             dbAutoTranslate,
-            `Переводить при открытии${siteHostname === 'vk' || window.location.hostname.includes('m.twitch.tv') ? ' <strong>(рекомендуется)</strong>' : ''}`
+            `Переводить при открытие${siteHostname === 'vk' || window.location.hostname.includes('m.twitch.tv') ? ' <strong>(рекомендуется)</strong>' : ''}`
           );
 
           checkbox.querySelector('#VOTAutoTranslate').onclick = async (event) => {
@@ -1841,42 +1843,6 @@ async function src_main() {
             await updateDB({autoTranslate: value});
             dbAutoTranslate = value;
             debug/* default.log */.Z.log('autoTranslate value changed. New value: ', dbAutoTranslate)
-          }
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (window.location.hostname.includes('youtube.com') && dbDontTranslateRuVideos !== undefined && menuOptions && !menuOptions.querySelector('#VOTDontTranslateRu')) {
-          const checkbox = createMenuCheckbox(
-            'VOTDontTranslateRu',
-            dbDontTranslateRuVideos,
-            `Не переводить с русского (youtube)`
-          );
-
-          checkbox.querySelector('#VOTDontTranslateRu').onclick = async (event) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await updateDB({dontTranslateRuVideos: value});
-            dbDontTranslateRuVideos = value;
-            debug/* default.log */.Z.log('dontTranslateRuVideos value changed. New value: ', dbDontTranslateRuVideos);
-          }
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (dbAutoSetVolumeYandexStyle !== undefined && menuOptions && !menuOptions.querySelector('#VOTAutoSetVolume')) {
-          const checkbox = createMenuCheckbox(
-            'VOTAutoSetVolume',
-            dbAutoSetVolumeYandexStyle,
-            `Уменьшать громкость видео до ${config/* autoVolume */.IM * 100}%`
-          );
-
-          checkbox.querySelector('#VOTAutoSetVolume').onclick = async (event) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await updateDB({autoSetVolumeYandexStyle: value});
-            dbAutoSetVolumeYandexStyle = value;
-            debug/* default.log */.Z.log('autoSetVolumeYandexStyle value changed. New value: ', dbAutoSetVolumeYandexStyle);
           }
 
           menuOptions.appendChild(checkbox);
@@ -1905,6 +1871,24 @@ async function src_main() {
           menuOptions.appendChild(checkbox);
         }
 
+        if (dbAutoSetVolumeYandexStyle !== undefined && menuOptions && !menuOptions.querySelector('#VOTAutoSetVolume')) {
+          const checkbox = createMenuCheckbox(
+            'VOTAutoSetVolume',
+            dbAutoSetVolumeYandexStyle,
+            `Уменьшать громкость видео до ${config/* autoVolume */.IM * 100}%`
+          );
+
+          checkbox.querySelector('#VOTAutoSetVolume').onclick = async (event) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({autoSetVolumeYandexStyle: value});
+            dbAutoSetVolumeYandexStyle = value;
+            debug/* default.log */.Z.log('autoSetVolumeYandexStyle value changed. New value: ', dbAutoSetVolumeYandexStyle);
+          }
+
+          menuOptions.appendChild(checkbox);
+        }
+
         if ((window.location.hostname.includes('youtube.com') && !window.location.hostname.includes('m.youtube.com')) && dbSyncVolume !== undefined && menuOptions && !menuOptions.querySelector('#VOTSyncVolume')) {
           const checkbox = createMenuCheckbox(
             'VOTSyncVolume',
@@ -1918,6 +1902,24 @@ async function src_main() {
             await updateDB({syncVolume: value});
             dbSyncVolume = value;
             debug/* default.log */.Z.log('syncVolume value changed. New value: ', dbSyncVolume);
+          }
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        if (window.location.hostname.includes('youtube.com') && dbDontTranslateRuVideos !== undefined && menuOptions && !menuOptions.querySelector('#VOTDontTranslateRu')) {
+          const checkbox = createMenuCheckbox(
+            'VOTDontTranslateRu',
+            dbDontTranslateRuVideos,
+            `Не переводить с русского (youtube)`
+          );
+
+          checkbox.querySelector('#VOTDontTranslateRu').onclick = async (event) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({dontTranslateRuVideos: value});
+            dbDontTranslateRuVideos = value;
+            debug/* default.log */.Z.log('dontTranslateRuVideos value changed. New value: ', dbDontTranslateRuVideos);
           }
 
           menuOptions.appendChild(checkbox);
@@ -2003,7 +2005,7 @@ async function src_main() {
     function stopTraslate() {
       // Default actions on stop translate
       audio.pause();
-      document.querySelector('video').removeEventListener(".translate", stopTraslate, false);
+      $('video').off('.translate');
       deleteAudioSrc();
       document.querySelector('#VOTVideoSlider')?.parentElement.remove();
       document.querySelector('#VOTTranslationSlider')?.parentElement.remove();
@@ -2273,25 +2275,25 @@ async function src_main() {
         lipSync("play");
       }
 
-      // Define a function to handle common events
-      // Haram jquery delete method
-      function handleVideoEvent(event) {
-        debug/* default.log */.Z.log(`video ${event.type}`);
-        lipSync(event.type);
-      }
+      $("video").on("playing.translate ratechange.translate", () => {
+        debug/* default.log */.Z.log('video ratechange')
+        lipSync();
+      });
 
-      // Get all the video elements
-      const videos = document.querySelectorAll("video");
+      $("video").on("play.translate canplaythrough.translate", () => {
+        debug/* default.log */.Z.log('video canplaythrough')
+        lipSync();
 
-      // Loop through the videos and add event listeners
-      for (const v of videos) {
-        // Use an array of event types to avoid repetition
-        const events = ["playing", "ratechange", "play", "canplaythrough", "pause", "waiting"];
-        // Add a listener for each event type and call the handleVideoEvent function
-        for (const e of events) {
-          v.addEventListener(e, handleVideoEvent);
+        if (video && !video.paused) {
+          debug/* default.log */.Z.log('video is playing lipsync 2')
+          lipSync("play");
         }
-      }
+      });
+
+      $("video").on("pause.translate waiting.translate", () => {
+        debug/* default.log */.Z.log('video is waiting')
+        lipSync("pause");
+      });
 
       transformBtn('success', 'Выключить');
       addVideoSlider();
@@ -2431,9 +2433,7 @@ async function src_main() {
       document.addEventListener('spfrequest', ytPageLeave);
       document.addEventListener('yt-navigate-start', ytPageLeave);
 
-      if (window.location.hostname.includes('m.youtube.com')) {
-        ytPageEnter(null);
-      }
+      // ytPageEnter(null);
     } else if (window.location.hostname.includes('twitch.tv')) {
       debug/* default.log */.Z.log('[entered] Twitch');
       if (window.location.hostname.includes('m.twitch.tv') && (window.location.pathname.includes('/videos/') || window.location.pathname.includes('/clip/'))) {
