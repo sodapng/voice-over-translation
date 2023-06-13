@@ -26,6 +26,11 @@ import debug from "./utils/debug.js";
 
 const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 
+// translate properties
+let translateFromLang = "en"; // default language of video
+
+let translateToLang = "ru"; // default language of audio response
+
 async function main() {
   const rvt = await import(
     `./rvt${BUILD_MODE === "cloudflare" ? "-cloudflare" : ""}.js`
@@ -181,19 +186,12 @@ async function main() {
     let dbDontTranslateRuVideos;
     let dbSyncVolume;
     let firstPlay = true;
-    // translate properties
-    let translateFromLang = "en"; // default language of video
-    let translateToLang = "ru"; // default language of audio response
 
     debug.log("videoContainer", videoContainer);
 
-    if (siteHostname === "vimeo") {
-      video = videoContainer.querySelector(
-        ".vp-video-wrapper > .vp-video > .vp-telecine > video"
-      );
-    } else {
-      video = videoContainer.querySelector("video");
-    }
+    video = siteHostname === "vimeo" ? videoContainer.querySelector(
+      ".vp-video-wrapper > .vp-video > .vp-telecine > video"
+    ) : videoContainer.querySelector("video");
 
     debug.log("video", video);
 
@@ -489,11 +487,12 @@ async function main() {
     }
 
     function setSelectMenuValues(from, to) {
-      if (document.querySelector("#VOTSelectLanguages")) {
-        console.log(`Set translation from ${from} to ${to}`);
-        document.querySelector("#VOTTranslateFromLang").value = from;
-        document.querySelector("#VOTTranslateToLang").value = to;
+      if (!document.querySelector("#VOTSelectLanguages")) {
+        return;
       }
+      console.log(`Set translation from ${from} to ${to}`);
+      document.querySelector("#VOTTranslateFromLang").value = from;
+      document.querySelector("#VOTTranslateToLang").value = to;
     }
 
     // data - ytData or VideoData
@@ -568,18 +567,19 @@ async function main() {
 
       const videoSlider = document.querySelector("#VOTVideoSlider");
 
-      if (videoSlider) {
-        videoSlider.value = newSlidersVolume;
+      if (!videoSlider) {
+        return;
+      }
+      videoSlider.value = newSlidersVolume;
 
-        const videoVolumeLabel = document.querySelector("#VOTVideoVolume");
+      const videoVolumeLabel = document.querySelector("#VOTVideoVolume");
 
-        if (videoVolumeLabel) {
-          videoVolumeLabel.innerText = `${newSlidersVolume}%`;
-        }
+      if (videoVolumeLabel) {
+        videoVolumeLabel.innerText = `${newSlidersVolume}%`;
+      }
 
-        if (dbSyncVolume === 1) {
-          tempOriginalVolume = Number(newSlidersVolume);
-        }
+      if (dbSyncVolume === 1) {
+        tempOriginalVolume = Number(newSlidersVolume);
       }
     }
 
@@ -694,28 +694,29 @@ async function main() {
           "#VOTTranslationSlider"
         );
 
-        if (translateVolumeSlider) {
-          const translateVolume = Number(translateVolumeSlider.value);
-          let finalValue = syncVolume(
-            audio,
-            value,
-            translateVolume,
-            tempOriginalVolume
-          );
-
-          translateVolumeSlider.value = finalValue;
-
-          const translateVolumeLabel = document.querySelector(
-            "#VOTTranslationVolume"
-          );
-
-          if (translateVolumeLabel) {
-            translateVolumeLabel.innerText = `${finalValue}%`;
-          }
-
-          tempVolume = finalValue;
-          tempOriginalVolume = value;
+        if (!translateVolumeSlider) {
+          return;
         }
+        const translateVolume = Number(translateVolumeSlider.value);
+        let finalValue = syncVolume(
+          audio,
+          value,
+          translateVolume,
+          tempOriginalVolume
+        );
+
+        translateVolumeSlider.value = finalValue;
+
+        const translateVolumeLabel = document.querySelector(
+          "#VOTTranslationVolume"
+        );
+
+        if (translateVolumeLabel) {
+          translateVolumeLabel.innerText = `${finalValue}%`;
+        }
+
+        tempVolume = finalValue;
+        tempOriginalVolume = value;
       };
 
       const menuOptions = document.querySelector(".translationMenuOptions");
@@ -1062,20 +1063,21 @@ async function main() {
     video.addEventListener("progress", (event) => {
       event.stopPropagation();
 
-      if (firstPlay && dbAutoTranslate === 1) {
-        const VIDEO_ID = getVideoId(siteHostname);
+      if (!(firstPlay && dbAutoTranslate === 1)) {
+        return;
+      }
+      const VIDEO_ID = getVideoId(siteHostname);
 
-        if (!VIDEO_ID) {
-          throw "VOT: Не найдено ID видео";
-        }
+      if (!VIDEO_ID) {
+        throw "VOT: Не найдено ID видео";
+      }
 
-        try {
-          translateExecutor(VIDEO_ID);
-          firstPlay = false;
-        } catch (err) {
-          transformBtn("error", String(err).substring(4, err.length));
-          firstPlay = false;
-        }
+      try {
+        translateExecutor(VIDEO_ID);
+        firstPlay = false;
+      } catch (err) {
+        transformBtn("error", String(err).substring(4, err.length));
+        firstPlay = false;
       }
     });
   }
@@ -1087,10 +1089,7 @@ async function main() {
         const videoContainer = document.querySelectorAll(
           selectors.youtubeSelector
         )[0];
-        if (videoContainer != null) {
-          debug.log("[exec] translateProccessor youtube on page enter");
-          translateProccessor(videoContainer, "youtube", "yt-translate-stop");
-        } else {
+        if (videoContainer == null) {
           if (
             ytplayer == null ||
             ytplayer.config === undefined ||
@@ -1105,6 +1104,9 @@ async function main() {
             );
             translateProccessor(videoContainer, "youtube", "yt-translate-stop");
           };
+        } else {
+          debug.log("[exec] translateProccessor youtube on page enter");
+          translateProccessor(videoContainer, "youtube", "yt-translate-stop");
         }
       };
 
@@ -1121,7 +1123,9 @@ async function main() {
       if (window.location.hostname.includes("m.youtube.com")) {
         ytPageEnter(null);
       }
-    } else if (window.location.hostname.includes("twitch.tv")) {
+      return;
+    }
+    if (window.location.hostname.includes("twitch.tv")) {
       debug.log("[entered] Twitch");
       if (
         window.location.hostname.includes("m.twitch.tv") &&
