@@ -189,9 +189,12 @@ async function main() {
 
     debug.log("videoContainer", videoContainer);
 
-    video = siteHostname === "vimeo" ? videoContainer.querySelector(
-      ".vp-video-wrapper > .vp-video > .vp-telecine > video"
-    ) : videoContainer.querySelector("video");
+    video =
+      siteHostname === "vimeo"
+        ? videoContainer.querySelector(
+            ".vp-video-wrapper > .vp-video > .vp-telecine > video"
+          )
+        : videoContainer.querySelector("video");
 
     debug.log("video", video);
 
@@ -724,6 +727,7 @@ async function main() {
     }
 
     function addTranslationSlider() {
+      // Return early if slider already exists or translation is not successful
       if (
         document.querySelector(`#VOTTranslationSlider`) ||
         document.querySelector(".translationBtn").dataset.state !== "success"
@@ -731,52 +735,73 @@ async function main() {
         return;
       }
 
+      // Use dbDefaultVolume or 100 as the default translation volume
       const defaultTranslateVolume =
         typeof dbDefaultVolume === "number" ? dbDefaultVolume : 100;
       tempOriginalVolume = defaultTranslateVolume;
 
+      // Create a slider element with the default volume and label
       const slider = createMenuSlider(
         "VOTTranslationSlider",
         defaultTranslateVolume,
         `Громкость перевода: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
       );
 
+      // Add an input event listener to the slider
       slider.querySelector("#VOTTranslationSlider").oninput = async (event) => {
         let { value } = event.target;
 
+        // Set the audio volume to the slider value
         audio.volume = value / 100;
 
+        // Update the volume label
         document.querySelector("#VOTTranslationVolume").innerText = `${value}%`;
 
+        // Update the database with the new volume value
         await updateDB({ defaultVolume: Number(value) });
-
         dbDefaultVolume = Number(value);
 
+        // Sync translation volume with video volume if dbSyncVolume is 1
         if (dbSyncVolume === 1) {
-          // Sync translation volume slider with video volume slider
-          const videoVolumeSlider = document.querySelector("#VOTVideoSlider");
-
-          if (videoVolumeSlider) {
-            const videoVolume = Number(videoVolumeSlider.value);
-            let finalValue = syncVolume(video, value, videoVolume, tempVolume);
-
-            videoVolumeSlider.value = finalValue;
-
-            const videoVolumeLabel =
-              document.querySelector("#VOTOriginalVolume");
-
-            if (videoVolumeLabel) {
-              videoVolumeLabel.innerText = `${finalValue}%`;
-            }
-
-            tempOriginalVolume = finalValue;
-            tempVolume = value;
-          }
+          syncTranslationWithVideo(value);
         }
       };
 
+      // Append the slider to the menu options
       const menuOptions = document.querySelector(".translationMenuOptions");
       menuOptions.appendChild(slider);
+    }
+
+    // A helper function to sync translation volume with video volume
+    function syncTranslationWithVideo(translationValue) {
+      // Get the video volume slider element
+      const videoVolumeSlider = document.querySelector("#VOTVideoSlider");
+
+      if (videoVolumeSlider) {
+        // Get the video volume value
+        const videoVolume = Number(videoVolumeSlider.value);
+
+        // Calculate the synced video volume based on the translation volume
+        let finalValue = syncVolume(
+          video,
+          translationValue,
+          videoVolume,
+          tempVolume
+        );
+
+        // Set the video volume slider value to the synced value
+        videoVolumeSlider.value = finalValue;
+
+        // Update the video volume label
+        const videoVolumeLabel = document.querySelector("#VOTOriginalVolume");
+        if (videoVolumeLabel) {
+          videoVolumeLabel.innerText = `${finalValue}%`;
+        }
+
+        // Update the temp variables for future syncing
+        tempOriginalVolume = finalValue;
+        tempVolume = translationValue;
+      }
     }
 
     const videoValidator = () => {
@@ -817,20 +842,42 @@ async function main() {
       );
     };
 
-    const translateFunc = (VIDEO_ID, requestLang, responseLang) =>
+    // Define a function to handle common events
+    function handleVideoEvent(event) {
+      debug.log(`video ${event.type}`);
+      lipSync(event.type);
+    }
+
+    // Define a function to stop translation and clean up
+    function stopTranslation() {
+      stopTraslate();
+      syncVideoVolumeSlider();
+    }
+
+    // Define a function to translate a video and handle the callback
+    function translateFunc(VIDEO_ID, requestLang, responseLang) {
+      // Construct the video URL
+      const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
+
+      // Call the translateVideo function with the parameters and a callback function
       translateVideo(
-        `${siteTranslates[siteHostname]}${VIDEO_ID}`,
+        videoURL,
         translateFuncParam,
         requestLang,
         responseLang,
         (success, urlOrError) => {
           debug.log("[exec callback] translateVideo");
+
+          // Check if the video ID is still valid
           if (getVideoId(siteHostname) !== VIDEO_ID) {
             return;
           }
 
+          // Handle the success or error case
           if (!success) {
             transformBtn("error", urlOrError);
+
+            // If the error message indicates a delay, retry after 60 seconds
             if (urlOrError.includes("Перевод займёт")) {
               clearTimeout(autoRetry);
               autoRetry = setTimeout(() => {
@@ -841,28 +888,35 @@ async function main() {
             throw urlOrError;
           }
 
-          volumeOnStart = video?.volume;
+          // Set the audio source to the translated URL
           audio.src = urlOrError;
 
+          // Set the volume of the audio and video elements
+          volumeOnStart = video?.volume;
           if (typeof dbDefaultVolume === "number") {
             audio.volume = dbDefaultVolume / 100;
           }
+          if (
+            typeof dbAutoSetVolumeYandexStyle === "number" &&
+            dbAutoSetVolumeYandexStyle
+          ) {
+            video.volume = autoVolume;
+          }
 
+          // Add event listeners for some sites that require special handling
           if (siteHostname === "twitter") {
             document
               .querySelector('div[data-testid="app-bar-back"][role="button"]')
-              .addEventListener("click", stopTraslate);
+              .addEventListener("click", stopTranslation);
           } else if (
             siteEvent !== null &&
             siteEvent !== "invidious" &&
             siteEvent !== "piped"
           ) {
-            document.body.addEventListener(siteEvent, () => {
-              stopTraslate();
-              syncVideoVolumeSlider();
-            });
+            document.body.addEventListener(siteEvent, stopTranslation);
           }
 
+          // Add a mutation observer for some sites that change the video source dynamically
           if (
             [
               "twitch",
@@ -884,7 +938,7 @@ async function main() {
                   mutation.target === video &&
                   mutation.target.src !== ""
                 ) {
-                  stopTraslate();
+                  stopTranslation();
                   firstPlay = true;
                 }
               });
@@ -898,60 +952,41 @@ async function main() {
             });
           }
 
+          // Sync the audio and video playback state
           if (video && !video.paused) {
             debug.log("video is playing lipsync 1");
             lipSync("play");
           }
 
-          // Define a function to handle common events
-          // Haram jquery delete method
-          function handleVideoEvent(event) {
-            debug.log(`video ${event.type}`);
-            lipSync(event.type);
-          }
-
-          // Get all the video elements
+          // Get all the video elements and add event listeners for common events
           const videos = document.querySelectorAll("video");
-
-          // Loop through the videos and add event listeners
+          const events = [
+            "playing",
+            "ratechange",
+            "play",
+            "canplaythrough",
+            "pause",
+            "waiting",
+          ];
           for (const v of videos) {
-            // Use an array of event types to avoid repetition
-            const events = [
-              "playing",
-              "ratechange",
-              "play",
-              "canplaythrough",
-              "pause",
-              "waiting",
-            ];
-
-            // Add a listener for each event type and call the handleVideoEvent function
             for (const e of events) {
               v.addEventListener(e, handleVideoEvent);
             }
           }
 
+          // Update the UI elements
           transformBtn("success", "Выключить");
-
           addVideoSlider();
-
           addTranslationSlider();
 
-          if (
-            typeof dbAutoSetVolumeYandexStyle === "number" &&
-            dbAutoSetVolumeYandexStyle
-          ) {
-            video.volume = autoVolume;
-            if (document.querySelector("#VOTVideoSlider")) {
-              document.querySelector("#VOTVideoSlider").value =
-                autoVolume * 100;
-            }
+          if (document.querySelector("#VOTVideoSlider")) {
+            document.querySelector("#VOTVideoSlider").value = autoVolume * 100;
+          }
 
-            if (document.querySelector("#VOTOriginalVolume")) {
-              document.querySelector("#VOTOriginalVolume").innerText = `${
-                autoVolume * 100
-              }%`;
-            }
+          if (document.querySelector("#VOTOriginalVolume")) {
+            document.querySelector("#VOTOriginalVolume").innerText = `${
+              autoVolume * 100
+            }%`;
           }
 
           const downloadBtn = document.querySelector(".translationDownload");
@@ -959,6 +994,7 @@ async function main() {
           downloadBtn.style.display = "initial";
         }
       );
+    }
 
     document.addEventListener("click", (event) => {
       const block = document.querySelector(".translationBlock");
