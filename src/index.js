@@ -841,13 +841,14 @@ async function main() {
 
     const translateExecutor = (VIDEO_ID) => {
       debug.log("Run videoValidator");
-      videoValidator();
-      debug.log("Run translateFunc");
-      translateFunc(
-        VIDEO_ID,
-        videoData.detectedLanguage,
-        videoData.responseLanguage
-      );
+      if (videoValidator()) {
+        debug.log("Run translateFunc");
+        translateFunc(
+          VIDEO_ID,
+          videoData.detectedLanguage,
+          videoData.responseLanguage
+        );
+      }
     };
 
     // Define a function to handle common events

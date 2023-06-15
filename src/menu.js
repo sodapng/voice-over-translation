@@ -1,58 +1,58 @@
-import debug from './utils/debug.js';
+import debug from "./utils/debug.js";
 
 function changeBtnColor(n) {
-  document.querySelector('.translationBtn').style.color = n;
+  document.querySelector(".translationBtn").style.color = n;
 }
 
-function changeBtnState(newState = 'none') {
-  document.querySelector('.translationBtn').dataset.state = newState;
+function changeBtnState(newState = "none") {
+  document.querySelector(".translationBtn").dataset.state = newState;
 }
 
-function changeIconBackground(type = 'none') {
+function changeIconBackground(type = "none") {
   let iconBackgroundColor;
   switch (type) {
-    case 'error':
-      iconBackgroundColor = '#7A7A7D';
+    case "error":
+      iconBackgroundColor = "#7A7A7D";
       break;
-    case 'success':
-      iconBackgroundColor = '#A36EFF';
+    case "success":
+      iconBackgroundColor = "#A36EFF";
       break;
     default:
-      iconBackgroundColor = '#FFFFFF';
+      iconBackgroundColor = "#FFFFFF";
       break;
   }
 
-  document.querySelector('.translateIcon').style.fill = iconBackgroundColor;
+  document.querySelector(".translateIcon").style.fill = iconBackgroundColor;
 }
 
-function transformBtn(type = 'none', text) {
+function transformBtn(type = "none", text) {
   switch (type) {
-    case 'error':
+    case "error":
       changeIconBackground(type);
-      changeBtnColor('#7A7A7D');
+      changeBtnColor("#7A7A7D");
       changeBtnState(type);
       break;
-    case 'success':
+    case "success":
       changeIconBackground(type);
-      changeBtnColor('#A36EFF');
+      changeBtnColor("#A36EFF");
       changeBtnState(type);
       break;
     default:
-      changeIconBackground('none');
-      changeBtnColor('#FFFFFF');
-      changeBtnState('none');
+      changeIconBackground("none");
+      changeBtnColor("#FFFFFF");
+      changeBtnState("none");
       break;
   }
 
-  document.querySelector('.translationBtn').innerText = text;
+  document.querySelector(".translationBtn").innerText = text;
 }
 
 // Add translation buttton block
 function addTranslationBlock(element) {
-  if (!element || element.querySelector('.translationBlock')) return;
+  if (!element || element.querySelector(".translationBlock")) return;
 
-  const block = document.createElement('div');
-  block.classList.add('translationBlock');
+  const block = document.createElement("div");
+  block.classList.add("translationBlock");
   block.innerHTML = `
     <span class = "translationArea" role = "button">
       <span class = "translationITranslate" tabindex = "-1">
@@ -74,8 +74,8 @@ function addTranslationBlock(element) {
 }
 
 function createTranslationMenu() {
-  const container = document.createElement('div');
-  container.classList.add('translationMenuContent');
+  const container = document.createElement("div");
+  container.classList.add("translationMenuContent");
   container.innerHTML = `
     <p class = "translationMainHeader">Настройки перевода</p>
     <div class="translationMenuOptions"></div>
@@ -93,18 +93,18 @@ function createTranslationMenu() {
 
 // Create checkbox for menu
 function createMenuCheckbox(id, valueToCheck, content) {
-  const checkboxContainer = document.createElement('div');
-  const checkbox = document.createElement('input');
-  const checkboxLabel = document.createElement('label');
+  const checkboxContainer = document.createElement("div");
+  const checkbox = document.createElement("input");
+  const checkboxLabel = document.createElement("label");
 
-  checkbox.type = 'checkbox';
+  checkbox.type = "checkbox";
   checkbox.id = id;
   checkbox.checked = Boolean(valueToCheck);
 
   checkboxLabel.htmlFor = id;
   checkboxLabel.innerHTML = content;
 
-  checkboxContainer.classList.add('translationMenuContainer');
+  checkboxContainer.classList.add("translationMenuContainer");
   checkboxContainer.appendChild(checkbox);
   checkboxContainer.appendChild(checkboxLabel);
 
@@ -113,22 +113,22 @@ function createMenuCheckbox(id, valueToCheck, content) {
 
 // Create slider for menu
 function createMenuSlider(id, sliderValue, content) {
-  const sliderContainer = document.createElement('div');
-  const slider = document.createElement('input');
-  const sliderLabel = document.createElement('label');
+  const sliderContainer = document.createElement("div");
+  const slider = document.createElement("input");
+  const sliderLabel = document.createElement("label");
 
-  slider.type = 'range';
+  slider.type = "range";
   slider.id = id;
-  slider.classList.add('VOTMenuSlider');
+  slider.classList.add("VOTMenuSlider");
   slider.min = 0;
   slider.max = 100;
   slider.value = sliderValue;
 
   sliderLabel.htmlFor = id;
-  sliderLabel.classList.add('translationHeader');
+  sliderLabel.classList.add("translationHeader");
   sliderLabel.innerHTML = content;
 
-  sliderContainer.classList.add('translationMenuContainer');
+  sliderContainer.classList.add("translationMenuContainer");
   sliderContainer.appendChild(sliderLabel);
   sliderContainer.appendChild(slider);
 
@@ -146,31 +146,38 @@ function createMenuSelect(id, selectOptions) {
   //         disabled: boolean
   //     }
   // ]
-  const selectContainer = document.createElement('div');
-  const select = document.createElement('select');
+  const selectContainer = document.createElement("div");
+  const select = document.createElement("select");
 
   select.id = id;
-  select.classList.add('VOTMenuSelect');
+  select.classList.add("VOTMenuSelect");
 
   for (const option of selectOptions) {
-    const optionElement = document.createElement('option');
+    const optionElement = document.createElement("option");
     optionElement.innerText = option.label;
     optionElement.value = option.value;
-    if (option.hasOwnProperty('selected') && option.selected) {
-      optionElement.setAttribute('selected', 'selected');
+    if (option.hasOwnProperty("selected") && option.selected) {
+      optionElement.setAttribute("selected", "selected");
     }
 
-    if (option.hasOwnProperty('disabled')) {
+    if (option.hasOwnProperty("disabled")) {
       optionElement.disabled = option.disabled;
     }
 
     select.appendChild(optionElement);
   }
 
-  selectContainer.classList.add('translationMenuContainer');
+  selectContainer.classList.add("translationMenuContainer");
   selectContainer.appendChild(select);
 
   return selectContainer;
 }
 
-export { transformBtn, addTranslationBlock, createTranslationMenu, createMenuCheckbox, createMenuSlider, createMenuSelect };
+export {
+  transformBtn,
+  addTranslationBlock,
+  createTranslationMenu,
+  createMenuCheckbox,
+  createMenuSlider,
+  createMenuSelect,
+};
