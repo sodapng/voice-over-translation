@@ -748,9 +748,9 @@ async function main() {
       );
 
       // Add an input event listener to the slider
-      slider.querySelector("#VOTTranslationSlider").oninput = async (event) => {
-        let { value } = event.target;
-
+      slider.querySelector("#VOTTranslationSlider").oninput = async ({
+        target: { value },
+      }) => {
         // Set the audio volume to the slider value
         audio.volume = value / 100;
 
@@ -777,34 +777,34 @@ async function main() {
       // Get the video volume slider element
       const videoVolumeSlider = document.querySelector("#VOTVideoSlider");
 
-      if (videoVolumeSlider) {
-        // Get the video volume value
-        const videoVolume = Number(videoVolumeSlider.value);
-
-        // Calculate the synced video volume based on the translation volume
-        let finalValue = syncVolume(
-          video,
-          translationValue,
-          videoVolume,
-          tempVolume
-        );
-
-        // Set the video volume slider value to the synced value
-        videoVolumeSlider.value = finalValue;
-
-        // Update the video volume label
-        const videoVolumeLabel = document.querySelector("#VOTOriginalVolume");
-        if (videoVolumeLabel) {
-          videoVolumeLabel.innerText = `${finalValue}%`;
-        }
-
-        // Update the temp variables for future syncing
-        tempOriginalVolume = finalValue;
-        tempVolume = translationValue;
+      if (!videoVolumeSlider) {
+        return;
       }
+      // Get the video volume value
+      const videoVolume = Number(videoVolumeSlider.value);
+
+      // Calculate the synced video volume based on the translation volume
+      let finalValue = syncVolume(
+        video,
+        translationValue,
+        videoVolume,
+        tempVolume
+      );
+
+      // Set the video volume slider value to the synced value
+      videoVolumeSlider.value = finalValue;
+
+      // Update the video volume label
+      const videoVolumeLabel = document.querySelector("#VOTOriginalVolume");
+      if (videoVolumeLabel) videoVolumeLabel.innerText = `${finalValue}%`;
+
+      // Update the temp variables for future syncing
+      tempOriginalVolume = finalValue;
+      tempVolume = translationValue;
     }
 
     const videoValidator = () => {
+      // временная мера
       if (window.location.hostname.includes("youtube.com")) {
         debug.log("VideoValidator videoData: ", videoData);
         if (
@@ -812,19 +812,27 @@ async function main() {
           videoData.detectedLanguage === "ru"
         ) {
           firstPlay = false;
+          stopTraslate();
+          syncVideoVolumeSlider();
           throw "VOT: Вы отключили перевод русскоязычных видео";
         }
 
         if (videoData.isLive) {
+          stopTraslate();
+          syncVideoVolumeSlider();
           throw "VOT: Не поддерживается перевод трансляций в прямом эфире";
         }
 
         if (videoData.isPremiere) {
+          stopTraslate();
+          syncVideoVolumeSlider();
           throw "VOT: Дождитесь окончания премьеры перед переводом";
         }
       }
 
       if (videoData.duration > 14_400) {
+        stopTraslate();
+        syncVideoVolumeSlider();
         throw "VOT: Видео слишком длинное";
       }
 
@@ -856,10 +864,7 @@ async function main() {
 
     // Define a function to translate a video and handle the callback
     function translateFunc(VIDEO_ID, requestLang, responseLang) {
-      // Construct the video URL
       const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
-
-      // Call the translateVideo function with the parameters and a callback function
       translateVideo(
         videoURL,
         translateFuncParam,
@@ -867,98 +872,80 @@ async function main() {
         responseLang,
         (success, urlOrError) => {
           debug.log("[exec callback] translateVideo");
-
-          // Check if the video ID is still valid
-          if (getVideoId(siteHostname) !== VIDEO_ID) {
-            return;
-          }
-
-          // Handle the success or error case
+          if (getVideoId(siteHostname) !== VIDEO_ID) return;
           if (!success) {
             transformBtn("error", urlOrError);
-
-            // If the error message indicates a delay, retry after 60 seconds
             if (urlOrError.includes("Перевод займёт")) {
               clearTimeout(autoRetry);
-              autoRetry = setTimeout(() => {
-                translateFunc(VIDEO_ID, requestLang, responseLang);
-              }, 60_000);
+              autoRetry = setTimeout(
+                () => translateFunc(VIDEO_ID, requestLang, responseLang),
+                60_000
+              );
             }
-
             throw urlOrError;
           }
-
-          // Set the audio source to the translated URL
           audio.src = urlOrError;
-
-          // Set the volume of the audio and video elements
           volumeOnStart = video?.volume;
-          if (typeof dbDefaultVolume === "number") {
+          if (typeof dbDefaultVolume === "number")
             audio.volume = dbDefaultVolume / 100;
-          }
           if (
             typeof dbAutoSetVolumeYandexStyle === "number" &&
             dbAutoSetVolumeYandexStyle
-          ) {
+          )
             video.volume = autoVolume;
+
+          switch (siteHostname) {
+            case "twitter":
+              document
+                .querySelector('div[data-testid="app-bar-back"][role="button"]')
+                .addEventListener("click", stopTranslation);
+              break;
+            case "invidious":
+            case "piped":
+              break;
+            default:
+              if (siteEvent !== null)
+                document.body.addEventListener(siteEvent, stopTranslation);
+              break;
           }
 
-          // Add event listeners for some sites that require special handling
-          if (siteHostname === "twitter") {
-            document
-              .querySelector('div[data-testid="app-bar-back"][role="button"]')
-              .addEventListener("click", stopTranslation);
-          } else if (
-            siteEvent !== null &&
-            siteEvent !== "invidious" &&
-            siteEvent !== "piped"
-          ) {
-            document.body.addEventListener(siteEvent, stopTranslation);
-          }
-
-          // Add a mutation observer for some sites that change the video source dynamically
-          if (
-            [
-              "twitch",
-              "vimeo",
-              "facebook",
-              "rutube",
-              "twitter",
-              "bilibili.com",
-              "mail.ru",
-            ].includes(siteHostname)
-          ) {
-            const mutationObserver = new MutationObserver(async function (
-              mutations
-            ) {
-              mutations.forEach(async function (mutation) {
-                if (
-                  mutation.type === "attributes" &&
-                  mutation.attributeName === "src" &&
-                  mutation.target === video &&
-                  mutation.target.src !== ""
-                ) {
-                  stopTranslation();
-                  firstPlay = true;
+          const siteHostnames = [
+            "twitch",
+            "vimeo",
+            "facebook",
+            "rutube",
+            "twitter",
+            "bilibili.com",
+            "mail.ru",
+          ];
+          for (let i = 0; i < siteHostnames.length; i++) {
+            if (siteHostname === siteHostnames[i]) {
+              const mutationObserver = new MutationObserver(
+                async (mutations) => {
+                  mutations.forEach(async (mutation) => {
+                    if (
+                      mutation.type === "attributes" &&
+                      mutation.attributeName === "src" &&
+                      mutation.target === video &&
+                      mutation.target.src !== ""
+                    ) {
+                      stopTranslation();
+                      firstPlay = true;
+                    }
+                  });
                 }
+              );
+              mutationObserver.observe(videoContainer, {
+                attributes: true,
+                childList: false,
+                subtree: true,
+                attributeOldValue: true,
               });
-            });
-
-            mutationObserver.observe(videoContainer, {
-              attributes: true,
-              childList: false,
-              subtree: true,
-              attributeOldValue: true,
-            });
+              break;
+            }
           }
 
-          // Sync the audio and video playback state
-          if (video && !video.paused) {
-            debug.log("video is playing lipsync 1");
-            lipSync("play");
-          }
-
-          // Get all the video elements and add event listeners for common events
+          if (video && !video.paused) lipSync("play");
           const videos = document.querySelectorAll("video");
           const events = [
             "playing",
@@ -968,26 +955,20 @@ async function main() {
             "pause",
             "waiting",
           ];
-          for (const v of videos) {
-            for (const e of events) {
-              v.addEventListener(e, handleVideoEvent);
-            }
-          }
-
-          // Update the UI elements
+          videos.forEach((v) =>
+            events.forEach((e) => v.addEventListener(e, handleVideoEvent))
+          );
           transformBtn("success", "Выключить");
           addVideoSlider();
           addTranslationSlider();
 
-          if (document.querySelector("#VOTVideoSlider")) {
-            document.querySelector("#VOTVideoSlider").value = autoVolume * 100;
-          }
+          const VOTVideoSlider = document.querySelector("#VOTVideoSlider");
+          if (VOTVideoSlider) VOTVideoSlider.value = autoVolume * 100;
 
-          if (document.querySelector("#VOTOriginalVolume")) {
-            document.querySelector("#VOTOriginalVolume").innerText = `${
-              autoVolume * 100
-            }%`;
-          }
+          const VOTOriginalVolume =
+            document.querySelector("#VOTOriginalVolume");
+          if (VOTOriginalVolume)
+            VOTOriginalVolume.innerText = `${autoVolume * 100}%`;
 
           const downloadBtn = document.querySelector(".translationDownload");
           downloadBtn.href = urlOrError;
@@ -1018,32 +999,31 @@ async function main() {
       openedMenu = false;
     });
 
+    const addEventListeners = (element, events, handler) => {
+      events.forEach((event) => element.addEventListener(event, handler));
+    };
+
     if (siteHostname === "pornhub") {
       if (window.location.pathname.includes("view_video.php")) {
-        document
-          .querySelector(".original.mainPlayerDiv > video-element > div")
-          .addEventListener("mousemove", resetTimer);
-        document
-          .querySelector(".original.mainPlayerDiv > video-element > div")
-          .addEventListener("mouseout", () => logout(0));
+        const videoElement = document.querySelector(
+          ".original.mainPlayerDiv > video-element > div"
+        );
+        addEventListeners(videoElement, ["mousemove", "mouseout"], resetTimer);
       } else if (window.location.pathname.includes("embed/")) {
-        document
-          .querySelector("#player")
-          .addEventListener("mousemove", resetTimer);
-        document
-          .querySelector("#player")
-          .addEventListener("mouseout", () => logout(0));
+        const playerElement = document.querySelector("#player");
+        addEventListeners(playerElement, ["mousemove", "mouseout"], resetTimer);
       }
     } else if (siteHostname === "twitter") {
-      document
-        .querySelector('div[data-testid="videoPlayer"')
-        .addEventListener("mousemove", () => resetTimer());
-      document
-        .querySelector('div[data-testid="videoPlayer"')
-        .addEventListener("mouseout", () => logout(0));
+      const videoPlayerElement = document.querySelector(
+        'div[data-testid="videoPlayer"'
+      );
+      addEventListeners(
+        videoPlayerElement,
+        ["mousemove", "mouseout"],
+        resetTimer
+      );
     } else {
-      videoContainer.addEventListener("mousemove", resetTimer);
-      videoContainer.addEventListener("mouseout", () => logout(0));
+      addEventListeners(videoContainer, ["mousemove", "mouseout"], resetTimer);
     }
 
     document
@@ -1121,28 +1101,24 @@ async function main() {
   async function initWebsite() {
     if (regexes.youtubeRegex.test(window.location.hostname)) {
       debug.log("[entered] YT Regex Passed", regexes.youtubeRegex);
-      const ytPageEnter = (event) => {
-        const videoContainer = document.querySelectorAll(
+      const ytPageEnter = () => {
+        const videoContainer = document.querySelector(
           selectors.youtubeSelector
-        )[0];
-        if (videoContainer == null) {
-          if (
-            ytplayer == null ||
-            ytplayer.config === undefined ||
-            ytplayer.config === null
-          ) {
+        );
+        if (videoContainer) {
+          debug.log("[exec] translateProccessor youtube on page enter");
+          translateProccessor(videoContainer, "youtube", "yt-translate-stop");
+        } else {
+          if (!ytplayer || !ytplayer.config) {
             debug.log("[exec] ytplayer is null");
             return;
           }
-          ytplayer.config.args.jsapicallback = (jsApi) => {
+          ytplayer.config.args.jsapicallback = () => {
             debug.log(
               "[exec] translateProccessor youtube on page enter (ytplayer.config.args.jsapicallback)"
             );
             translateProccessor(videoContainer, "youtube", "yt-translate-stop");
           };
-        } else {
-          debug.log("[exec] translateProccessor youtube on page enter");
-          translateProccessor(videoContainer, "youtube", "yt-translate-stop");
         }
       };
 
@@ -1159,56 +1135,48 @@ async function main() {
       if (window.location.hostname.includes("m.youtube.com")) {
         ytPageEnter(null);
       }
-      return;
-    }
-    if (window.location.hostname.includes("twitch.tv")) {
-      debug.log("[entered] Twitch");
-      if (
-        window.location.hostname.includes("m.twitch.tv") &&
-        (window.location.pathname.includes("/videos/") ||
-          window.location.pathname.includes("/clip/"))
-      ) {
-        debug.log("[entered] twitch mobile");
-        const el = await waitForElm(selectors.twitchMobileSelector);
-        if (el) {
-          await sleep(200);
-          await translateProccessor(
-            document.querySelector(selectors.twitchMobileSelector),
-            "twitch",
-            null
-          );
-          // Тоже самое, что и вариант снизу, но по идеи должен быть более производительным (так же требует дабл клика)
-          const mutationObserver = new MutationObserver(async function (
-            mutations
-          ) {
-            mutations.forEach(async function (mutation) {
-              if (
-                mutation.type === "attributes" &&
-                mutation.attributeName === "src" &&
-                mutation.target ===
-                  document
-                    .querySelector(selectors.twitchMobileSelector)
-                    ?.querySelector("video")
-              ) {
-                await sleep(1000);
-                await translateProccessor(
-                  document.querySelector(selectors.twitchMobileSelector),
-                  "twitch",
-                  null
-                );
+
+      if (window.location.hostname.includes("twitch.tv")) {
+        debug.log("[entered] Twitch");
+        if (
+          window.location.hostname.includes("m.twitch.tv") &&
+          (window.location.pathname.includes("/videos/") ||
+            window.location.pathname.includes("/clip/"))
+        ) {
+          debug.log("[entered] twitch mobile");
+          const el = await waitForElm(selectors.twitchMobileSelector);
+          if (el) {
+            await sleep(200);
+            const twitchMobileSelector = document.querySelector(
+              selectors.twitchMobileSelector
+            );
+            await translateProccessor(twitchMobileSelector, "twitch", null);
+
+            const mutationObserver = new MutationObserver(async (mutations) => {
+              for (const mutation of mutations) {
+                if (
+                  mutation.type === "attributes" &&
+                  mutation.attributeName === "src" &&
+                  mutation.target ===
+                    twitchMobileSelector?.querySelector("video")
+                ) {
+                  await sleep(1000);
+                  await translateProccessor(
+                    twitchMobileSelector,
+                    "twitch",
+                    null
+                  );
+                }
               }
             });
-          });
 
-          mutationObserver.observe(
-            document.querySelector(selectors.twitchMobileSelector),
-            {
+            mutationObserver.observe(twitchMobileSelector, {
               attributes: true,
               childList: true,
               subtree: true,
               attributeOldValue: true,
-            }
-          );
+            });
+          }
         }
       } else if (
         window.location.hostname.includes("player.twitch.tv") ||
@@ -1222,7 +1190,9 @@ async function main() {
           await translateProccessor(el, "twitch", null);
         }
       }
-    } else if (window.location.hostname.includes("xvideos.com")) {
+      return;
+    }
+    if (window.location.hostname.includes("xvideos.com")) {
       debug.log("[entered] xvideos");
       await sleep(1000);
       await translateProccessor(
@@ -1230,7 +1200,9 @@ async function main() {
         "xvideos",
         null
       );
-    } else if (window.location.hostname.includes("pornhub.com")) {
+      return;
+    }
+    if (window.location.hostname.includes("pornhub.com")) {
       debug.log("[entered] pornhub");
       await sleep(1000);
       await translateProccessor(
@@ -1238,7 +1210,9 @@ async function main() {
         "pornhub",
         null
       );
-    } else if (sitesInvidious.includes(window.location.hostname)) {
+      return;
+    }
+    if (sitesInvidious.includes(window.location.hostname)) {
       // Need an additional extension to work in chrome-like browsers
       debug.log("[entered] invidious");
       await translateProccessor(
