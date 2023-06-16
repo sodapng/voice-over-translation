@@ -17,7 +17,7 @@ function getLanguage(response, title, description, author) {
   }
 
   // Detect the language of the text using the tinyld library
-  return detect(`${title} ${description} ${author}`);
+  return detect([title, description, author].join(" "));
 }
 
 // Get the video data from the player
@@ -25,21 +25,20 @@ function getYTVideoData() {
   const player = document.querySelector("#movie_player");
   const data = player.getVideoData();
   const response = player.getPlayerResponse();
+  const { isLive, isPremiere, title, author } = data;
+  const { shortDescription: description } =
+    response?.videoDetails ?? {};
   const videoData = {
-    isLive: data?.isLive,
-    isPremiere: data?.isPremiere,
-    title: data?.title,
-    description: response?.videoDetails?.shortDescription,
-    author: data?.author,
-    detectedLanguage: getLanguage(
-      response,
-      data.title,
-      response?.videoDetails?.shortDescription,
-      data.author
-    ),
+    isLive,
+    isPremiere,
+    title,
+    description,
+    author,
+    detectedLanguage: getLanguage(response, title, description, author),
   };
   console.log("VOT Detected language: ", videoData.detectedLanguage);
   return videoData;
 }
+
 
 export { getYTVideoData };
