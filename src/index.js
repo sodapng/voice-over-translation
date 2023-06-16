@@ -812,27 +812,19 @@ async function main() {
           videoData.detectedLanguage === "ru"
         ) {
           firstPlay = false;
-          stopTraslate();
-          syncVideoVolumeSlider();
           throw "VOT: Вы отключили перевод русскоязычных видео";
         }
 
         if (videoData.isLive) {
-          stopTraslate();
-          syncVideoVolumeSlider();
           throw "VOT: Не поддерживается перевод трансляций в прямом эфире";
         }
 
         if (videoData.isPremiere) {
-          stopTraslate();
-          syncVideoVolumeSlider();
           throw "VOT: Дождитесь окончания премьеры перед переводом";
         }
       }
 
       if (videoData.duration > 14_400) {
-        stopTraslate();
-        syncVideoVolumeSlider();
         throw "VOT: Видео слишком длинное";
       }
 
