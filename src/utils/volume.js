@@ -23,7 +23,7 @@ function syncVolume(element, sliderVolume, otherSliderVolume, tempVolume) {
     element.volume = finalValue / 100;
   }
 
-  return finalValue
+  return finalValue;
 }
 
 export { syncVolume };

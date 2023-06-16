@@ -1,6 +1,4 @@
-import { checkCyrillic } from "./regex.js";
-
-// Тут я попытался пофиксить баг с определением языка. (Считаю что можно использовать node-cld для этого или что-то подобное в будующем)
+import { detect } from "tinyld/light";
 
 // Get the language code from the response or the text
 function getLanguage(response, title, description, author) {
@@ -18,14 +16,8 @@ function getLanguage(response, title, description, author) {
     }
   }
 
-  // Check if the text contains cyrillic characters
-  const hasCyrillic = (text) => checkCyrillic(text);
-  const isRussian = [title, description, author].some(hasCyrillic);
-  if (isRussian) {
-    return "ru";
-  }
-
-  return "en";
+  // Detect the language of the text using the tinyld library
+  return detect(`${title} ${description} ${author}`);
 }
 
 // Get the video data from the player
