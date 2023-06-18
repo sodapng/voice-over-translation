@@ -13,7 +13,9 @@ function getLanguage(response, title, description, author) {
   }
   // If there is no caption track, use detect to get the language code from the text
   const text = [title, description, author].join(" ");
-  return detect(text);
+  // Remove anything that is not a letter or a space in any language
+  const cleanText = text.replace(/[^\p{L}\s]/gu, "");
+  return detect(cleanText);
 }
 
 // Get the video data from the player
