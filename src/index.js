@@ -600,8 +600,7 @@ async function main() {
       if (window.location.hostname.includes("youtube.com")) {
         let ytData = getYTVideoData();
         ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
-
-        return { ...videoData, ...ytData };
+        videoData.detectedLanguage = ytData.detectedLanguage
       } else if (
         window.location.hostname.includes("rutube") ||
         window.location.hostname.includes("my.mail.ru")
@@ -630,22 +629,30 @@ async function main() {
 
       if (mode === "play") {
         debug.log("lipsync mode is play");
-        audio.play().catch((e) => {
-          console.error(e);
-          let errorMessage;
-          if (e.name === "NotAllowedError") {
-            errorMessage = "Предоставьте разрешение на автовоспроизведение";
-          } else if (e.name === "NotSupportedError") {
-            errorMessage = sitesChromiumBlocked.includes(
-              window.location.hostname
-            )
-              ? "Для поддержки этого сайта необходимо дополнительное расширение"
-              : "Формат аудио не поддерживается";
-          }
-          transformBtn("error", errorMessage);
-          throw `VOT: ${errorMessage}`;
-        });
-      } else if (mode === "pause") {
+        const audioPromise = audio.play();
+        if (audioPromise !== undefined) {
+          audioPromise.catch((e) => {
+            console.error(e);
+            if (e.name === "NotAllowedError") {
+              transformBtn(
+                "error",
+                "Предоставьте разрешение на автовоспроизведение"
+              );
+              throw "VOT: Предоставьте разрешение на автовоспроизведение";
+            } else if (e.name === "NotSupportedError") {
+              const errorMessage = sitesChromiumBlocked.includes(
+                window.location.hostname
+              )
+                ? "Для поддержки этого сайта необходимо дополнительное расширение"
+                : "Формат аудио не поддерживается";
+              transformBtn("error", errorMessage);
+              throw `VOT: ${errorMessage}`;
+            }
+          });
+        }
+        return;
+      }
+      if (mode === "pause") {
         debug.log("lipsync mode is pause");
         audio.pause();
       }
@@ -796,7 +803,6 @@ async function main() {
     }
 
     const videoValidator = () => {
-      // временная мера
       if (window.location.hostname.includes("youtube.com")) {
         debug.log("VideoValidator videoData: ", videoData);
         if (
@@ -814,10 +820,9 @@ async function main() {
         if (videoData.isPremiere) {
           throw "VOT: Дождитесь окончания премьеры перед переводом";
         }
-      }
-
-      if (videoData.duration > 14_400) {
-        throw "VOT: Видео слишком длинное";
+        if (videoData.duration > 14_400) {
+          throw "VOT: Видео слишком длинное";
+        }
       }
 
       return true;
@@ -825,7 +830,7 @@ async function main() {
 
     const translateExecutor = (VIDEO_ID) => {
       debug.log("Run videoValidator");
-      if (typeof videoValidator() === "boolean") {
+      if (videoValidator()) {
         debug.log("Run translateFunc");
         translateFunc(
           VIDEO_ID,
@@ -1086,23 +1091,19 @@ async function main() {
   async function initWebsite() {
     if (regexes.youtubeRegex.test(window.location.hostname)) {
       debug.log("[entered] YT Regex Passed", regexes.youtubeRegex);
-      const ytPageEnter = (event) => {
-        const videoContainer = document.querySelectorAll(
+      const ytPageEnter = () => {
+        const videoContainer = document.querySelector(
           selectors.youtubeSelector
-        )[0];
-        if (videoContainer != null) {
+        );
+        if (videoContainer) {
           debug.log("[exec] translateProccessor youtube on page enter");
           translateProccessor(videoContainer, "youtube", "yt-translate-stop");
         } else {
-          if (
-            ytplayer == null ||
-            ytplayer.config === undefined ||
-            ytplayer.config === null
-          ) {
+          if (!ytplayer || !ytplayer.config) {
             debug.log("[exec] ytplayer is null");
             return;
           }
-          ytplayer.config.args.jsapicallback = (jsApi) => {
+          ytplayer.config.args.jsapicallback = () => {
             debug.log(
               "[exec] translateProccessor youtube on page enter (ytplayer.config.args.jsapicallback)"
             );
@@ -1124,54 +1125,48 @@ async function main() {
       if (window.location.hostname.includes("m.youtube.com")) {
         ytPageEnter(null);
       }
-    } else if (window.location.hostname.includes("twitch.tv")) {
-      debug.log("[entered] Twitch");
-      if (
-        window.location.hostname.includes("m.twitch.tv") &&
-        (window.location.pathname.includes("/videos/") ||
-          window.location.pathname.includes("/clip/"))
-      ) {
-        debug.log("[entered] twitch mobile");
-        const el = await waitForElm(selectors.twitchMobileSelector);
-        if (el) {
-          await sleep(200);
-          await translateProccessor(
-            document.querySelector(selectors.twitchMobileSelector),
-            "twitch",
-            null
-          );
-          // Тоже самое, что и вариант снизу, но по идеи должен быть более производительным (так же требует дабл клика)
-          const mutationObserver = new MutationObserver(async function (
-            mutations
-          ) {
-            mutations.forEach(async function (mutation) {
-              if (
-                mutation.type === "attributes" &&
-                mutation.attributeName === "src" &&
-                mutation.target ===
-                  document
-                    .querySelector(selectors.twitchMobileSelector)
-                    ?.querySelector("video")
-              ) {
-                await sleep(1000);
-                await translateProccessor(
-                  document.querySelector(selectors.twitchMobileSelector),
-                  "twitch",
-                  null
-                );
+
+      if (window.location.hostname.includes("twitch.tv")) {
+        debug.log("[entered] Twitch");
+        if (
+          window.location.hostname.includes("m.twitch.tv") &&
+          (window.location.pathname.includes("/videos/") ||
+            window.location.pathname.includes("/clip/"))
+        ) {
+          debug.log("[entered] twitch mobile");
+          const el = await waitForElm(selectors.twitchMobileSelector);
+          if (el) {
+            await sleep(200);
+            const twitchMobileSelector = document.querySelector(
+              selectors.twitchMobileSelector
+            );
+            await translateProccessor(twitchMobileSelector, "twitch", null);
+
+            const mutationObserver = new MutationObserver(async (mutations) => {
+              for (const mutation of mutations) {
+                if (
+                  mutation.type === "attributes" &&
+                  mutation.attributeName === "src" &&
+                  mutation.target ===
+                    twitchMobileSelector?.querySelector("video")
+                ) {
+                  await sleep(1000);
+                  await translateProccessor(
+                    twitchMobileSelector,
+                    "twitch",
+                    null
+                  );
+                }
               }
             });
-          });
 
-          mutationObserver.observe(
-            document.querySelector(selectors.twitchMobileSelector),
-            {
+            mutationObserver.observe(twitchMobileSelector, {
               attributes: true,
               childList: true,
               subtree: true,
               attributeOldValue: true,
-            }
-          );
+            });
+          }
         }
       } else if (
         window.location.hostname.includes("player.twitch.tv") ||
@@ -1185,7 +1180,9 @@ async function main() {
           await translateProccessor(el, "twitch", null);
         }
       }
-    } else if (window.location.hostname.includes("xvideos.com")) {
+      return;
+    }
+    if (window.location.hostname.includes("xvideos.com")) {
       debug.log("[entered] xvideos");
       await sleep(1000);
       await translateProccessor(
@@ -1193,7 +1190,9 @@ async function main() {
         "xvideos",
         null
       );
-    } else if (window.location.hostname.includes("pornhub.com")) {
+      return;
+    }
+    if (window.location.hostname.includes("pornhub.com")) {
       debug.log("[entered] pornhub");
       await sleep(1000);
       await translateProccessor(
@@ -1201,7 +1200,9 @@ async function main() {
         "pornhub",
         null
       );
-    } else if (sitesInvidious.includes(window.location.hostname)) {
+      return;
+    }
+    if (sitesInvidious.includes(window.location.hostname)) {
       // Need an additional extension to work in chrome-like browsers
       debug.log("[entered] invidious");
       await translateProccessor(

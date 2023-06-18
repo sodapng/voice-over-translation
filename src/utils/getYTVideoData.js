@@ -2,10 +2,6 @@ import { detect } from "tinyld/light";
 
 // Get the language code from the response or the text
 function getLanguage(response, title, description, author) {
-  if (!response) {
-    return "en";
-  }
-
   // Check if there is an automatic caption track in the response
   const captionTracks =
     response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
@@ -15,9 +11,9 @@ function getLanguage(response, title, description, author) {
       return autoCaption.languageCode;
     }
   }
-
-  // Detect the language of the text using the tinyld library
-  return detect([title, description, author].join(" "));
+  // If there is no caption track, use detect to get the language code from the text
+  const text = [title, description, author].join(" ");
+  return detect(text);
 }
 
 // Get the video data from the player
@@ -26,8 +22,7 @@ function getYTVideoData() {
   const data = player.getVideoData();
   const response = player.getPlayerResponse();
   const { isLive, isPremiere, title, author } = data;
-  const { shortDescription: description } =
-    response?.videoDetails ?? {};
+  const { shortDescription: description } = response?.videoDetails ?? {};
   const videoData = {
     isLive,
     isPremiere,
@@ -39,6 +34,5 @@ function getYTVideoData() {
   console.log("VOT Detected language: ", videoData.detectedLanguage);
   return videoData;
 }
-
 
 export { getYTVideoData };
