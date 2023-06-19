@@ -27,9 +27,9 @@ import debug from "./utils/debug.js";
 const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 
 // translate properties
-let translateFromLang = "en"; // default language of video
+const translateFromLang = "en"; // default language of video
 
-let translateToLang = "ru"; // default language of audio response
+const translateToLang = "ru"; // default language of audio response
 
 async function main() {
   const rvt = await import(
@@ -110,7 +110,7 @@ async function main() {
         location.reload();
       });
 
-    debug.log(`VOT: Added translation menu to `, element);
+    debug.log("VOT: Added translation menu to ", element);
   }
 
   function translateVideo(url, unknown1, requestLang, responseLang, callback) {
@@ -172,7 +172,7 @@ async function main() {
   }
 
   async function translateProccessor(videoContainer, siteHostname, siteEvent) {
-    debug.log(`[translateProccessor] execute `, videoContainer);
+    debug.log("[translateProccessor] execute ", videoContainer);
 
     let video;
     let autoRetry;
@@ -353,7 +353,7 @@ async function main() {
           const checkbox = createMenuCheckbox(
             "VOTDontTranslateRu",
             dbDontTranslateRuVideos,
-            `Не переводить с русского (youtube)`
+            "Не переводить с русского (youtube)"
           );
 
           checkbox.querySelector("#VOTDontTranslateRu").onclick = async (
@@ -661,7 +661,7 @@ async function main() {
     function addVideoSlider() {
       if (
         dbShowVideoSlider !== 1 ||
-        document.querySelector(`#VOTVideoSlider`) ||
+        document.querySelector("#VOTVideoSlider") ||
         document.querySelector(".translationBtn").dataset.state !== "success"
       ) {
         return;
@@ -700,7 +700,7 @@ async function main() {
           return;
         }
         const translateVolume = Number(translateVolumeSlider.value);
-        let finalValue = syncVolume(
+        const finalValue = syncVolume(
           audio,
           value,
           translateVolume,
@@ -728,7 +728,7 @@ async function main() {
     function addTranslationSlider() {
       // Return early if slider already exists or translation is not successful
       if (
-        document.querySelector(`#VOTTranslationSlider`) ||
+        document.querySelector("#VOTTranslationSlider") ||
         document.querySelector(".translationBtn").dataset.state !== "success"
       ) {
         return;
@@ -783,7 +783,7 @@ async function main() {
       const videoVolume = Number(videoVolumeSlider.value);
 
       // Calculate the synced video volume based on the translation volume
-      let finalValue = syncVolume(
+      const finalValue = syncVolume(
         video,
         translationValue,
         videoVolume,
@@ -802,13 +802,15 @@ async function main() {
       tempVolume = translationValue;
     }
 
-    const videoValidator = () => {
+    function videoValidator() {
+      // Костыль, но работает. тупой баг свзян с тем что функция videoValidator может считать videoData.detectedLanguage неверно, когда с ytData.detectedLanguage всё работает отлично
+      // Иногда код может начать перевод русского видео из-за этого бага
+      // Прошу тебя доразбирись за меня
       if (window.location.hostname.includes("youtube.com")) {
+        let ytData = getYTVideoData();
+        ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
         debug.log("VideoValidator videoData: ", videoData);
-        if (
-          dbDontTranslateRuVideos === 1 &&
-          videoData.detectedLanguage === "ru"
-        ) {
+        if (dbDontTranslateRuVideos === 1 && ytData.detectedLanguage === "ru") {
           firstPlay = false;
           throw "VOT: Вы отключили перевод русскоязычных видео";
         }
@@ -824,20 +826,18 @@ async function main() {
           throw "VOT: Видео слишком длинное";
         }
       }
-
       return true;
-    };
+    }
 
     const translateExecutor = (VIDEO_ID) => {
       debug.log("Run videoValidator");
-      if (videoValidator()) {
-        debug.log("Run translateFunc");
-        translateFunc(
-          VIDEO_ID,
-          videoData.detectedLanguage,
-          videoData.responseLanguage
-        );
-      }
+      videoValidator();
+      debug.log("Run translateFunc");
+      translateFunc(
+        VIDEO_ID,
+        videoData.detectedLanguage,
+        videoData.responseLanguage
+      );
     };
 
     // Define a function to handle common events
@@ -876,13 +876,15 @@ async function main() {
           }
           audio.src = urlOrError;
           volumeOnStart = video?.volume;
-          if (typeof dbDefaultVolume === "number")
+          if (typeof dbDefaultVolume === "number") {
             audio.volume = dbDefaultVolume / 100;
+          }
           if (
             typeof dbAutoSetVolumeYandexStyle === "number" &&
             dbAutoSetVolumeYandexStyle
-          )
+          ) {
             video.volume = autoVolume;
+          }
 
           switch (siteHostname) {
             case "twitter":
@@ -894,8 +896,9 @@ async function main() {
             case "piped":
               break;
             default:
-              if (siteEvent !== null)
+              if (siteEvent !== null) {
                 document.body.addEventListener(siteEvent, stopTranslation);
+              }
               break;
           }
 
@@ -957,8 +960,9 @@ async function main() {
 
           const VOTOriginalVolume =
             document.querySelector("#VOTOriginalVolume");
-          if (VOTOriginalVolume)
+          if (VOTOriginalVolume) {
             VOTOriginalVolume.innerText = `${autoVolume * 100}%`;
+          }
 
           const downloadBtn = document.querySelector(".translationDownload");
           downloadBtn.href = urlOrError;

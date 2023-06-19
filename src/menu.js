@@ -70,7 +70,7 @@ function addTranslationBlock(element) {
   `;
 
   element.appendChild(block);
-  debug.log(`VOT: Added translation button to `, element);
+  debug.log("VOT: Added translation button to ", element);
 }
 
 function createTranslationMenu() {
@@ -156,11 +156,14 @@ function createMenuSelect(id, selectOptions) {
     const optionElement = document.createElement("option");
     optionElement.innerText = option.label;
     optionElement.value = option.value;
-    if (option.hasOwnProperty("selected") && option.selected) {
+    if (
+      Object.prototype.hasOwnProperty.call(option, "selected") &&
+      option.selected
+    ) {
       optionElement.setAttribute("selected", "selected");
     }
 
-    if (option.hasOwnProperty("disabled")) {
+    if (Object.prototype.hasOwnProperty.call(option, "disabled")) {
       optionElement.disabled = option.disabled;
     }
 
