@@ -27,9 +27,9 @@ import debug from "./utils/debug.js";
 const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 
 // translate properties
-const translateFromLang = "en"; // default language of video
+let translateFromLang = "en"; // default language of video
 
-const translateToLang = "ru"; // default language of audio response
+let translateToLang = "ru"; // default language of audio response
 
 async function main() {
   const rvt = await import(
@@ -815,11 +815,11 @@ async function main() {
           throw "VOT: Вы отключили перевод русскоязычных видео";
         }
 
-        if (videoData.isLive) {
+        if (ytData.isLive) {
           throw "VOT: Не поддерживается перевод трансляций в прямом эфире";
         }
 
-        if (videoData.isPremiere) {
+        if (ytData.isPremiere) {
           throw "VOT: Дождитесь окончания премьеры перед переводом";
         }
         if (videoData.duration > 14_400) {
