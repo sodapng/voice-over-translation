@@ -13,12 +13,12 @@ function waitForElm(selector) {
         observer.disconnect();
       }
     });
-    
+
     observer.observe(document.body, {
       childList: true,
       subtree: true,
-      once: true
-    });    
+      once: true,
+    });
   });
 }
 
@@ -29,16 +29,24 @@ const getVideoId = (service) => {
 
   switch (service) {
     case "youtube":
-      return url.pathname.match(/(?:watch|embed)\/([^/]+)/)?.[1] || url.searchParams.get("v");
+      return (
+        url.pathname.match(/(?:watch|embed)\/([^/]+)/)?.[1] ||
+        url.searchParams.get("v")
+      );
     case "vk":
-      return url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)?.[0].slice(1) || url.searchParams.get("z")?.split("/")[0];
+      return (
+        url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)?.[0].slice(1) ||
+        url.searchParams.get("z")?.split("/")[0]
+      );
     case "9gag":
     case "gag":
       return url.pathname.match(/gag\/([^/]+)/)?.[1];
     case "twitch":
       if (/^m\.twitch\.tv$/.test(window.location.hostname)) {
         const linkUrl = document.head.querySelector('link[rel="canonical"]');
-        return linkUrl?.href.match(/videos\/([^/]+)/)?.[0] || url.pathname.slice(1);
+        return (
+          linkUrl?.href.match(/videos\/([^/]+)/)?.[0] || url.pathname.slice(1)
+        );
       } else if (/^player\.twitch\.tv$/.test(window.location.hostname)) {
         return `videos/${url.searchParams.get("video")}`;
       } else {
@@ -51,7 +59,10 @@ const getVideoId = (service) => {
     case "xvideos":
       return url.pathname.match(/[^/]+\/[^/]+$/)?.[0];
     case "pornhub":
-      return url.searchParams.get("viewkey") || url.pathname.match(/embed\/([^/]+)/)?.[1];
+      return (
+        url.searchParams.get("viewkey") ||
+        url.pathname.match(/embed\/([^/]+)/)?.[1]
+      );
     case "twitter":
       return url.pathname.match(/status\/([^/]+)/)?.[1];
     case "udemy":
@@ -80,7 +91,6 @@ const getVideoId = (service) => {
   }
 };
 
-
 function secsToStrTime(secs) {
   const minutes = Math.floor(secs / 60);
   const seconds = Math.floor(secs % 60);
@@ -94,6 +104,5 @@ function secsToStrTime(secs) {
     return `Перевод займёт примерно ${minutes} минуты`;
   }
 }
-
 
 export { waitForElm, sleep, getVideoId, secsToStrTime };

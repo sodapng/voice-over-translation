@@ -201,33 +201,17 @@ async function main() {
     let videoData = getVideoData();
     console.log("VOT Video Data: ", videoData);
 
-    const container = window.location.hostname.includes("m.youtube.com")
-      ? document.querySelector(".slim-video-information-title-and-badges")
-      : siteHostname === "pornhub" &&
-        window.location.pathname.includes("view_video.php")
-      ? document.querySelector(".original.mainPlayerDiv")
-      : siteHostname === "pornhub" &&
-        window.location.pathname.includes("embed/")
-      ? document.querySelector("body")
-      : videoContainer;
+    const container =
+      siteHostname === "pornhub" &&
+      window.location.pathname.includes("view_video.php")
+        ? document.querySelector(".original.mainPlayerDiv")
+        : siteHostname === "pornhub" &&
+          window.location.pathname.includes("embed/")
+        ? document.querySelector("body")
+        : videoContainer;
 
-    addTranslationBlock(
-      container,
-      window.location.hostname.includes("m.youtube.com")
-        ? "yt-mobile"
-        : undefined
-    );
-    addTranslationMenu(
-      container,
-      window.location.hostname.includes("m.youtube.com")
-        ? "yt-mobile"
-        : undefined
-    );
-
-    if (window.location.hostname.includes("m.youtube.com")) {
-      await sleep(1000);
-      opacityRatio = 1;
-    }
+    addTranslationBlock(container);
+    addTranslationMenu(container);
 
     const isDBInited = await initDB();
 
@@ -1127,7 +1111,35 @@ async function main() {
       document.addEventListener("yt-navigate-start", ytPageLeave);
 
       if (window.location.hostname.includes("m.youtube.com")) {
-        ytPageEnter(null);
+        const observer = new MutationObserver((mutations) => {
+          for (const mutation of mutations) {
+            if (mutation.type === "attributes") {
+              const videoContainer = mutation.target;
+              translateProccessor(
+                videoContainer,
+                "youtube",
+                "yt-translate-stop"
+              );
+            }
+          }
+        });
+
+        const options = {
+          attributes: true,
+          childList: false,
+          subtree: false,
+        };
+
+        const videoContainer = document.querySelector("#player");
+
+        observer.observe(videoContainer, options);
+
+        const ytPageLeave = () => {
+          observer.disconnect();
+          document.body.dispatchEvent(new Event("yt-translate-stop"));
+        };
+        document.addEventListener("spfrequest", ytPageLeave);
+        document.addEventListener("yt-navigate-start", ytPageLeave);
       }
 
       if (window.location.hostname.includes("twitch.tv")) {

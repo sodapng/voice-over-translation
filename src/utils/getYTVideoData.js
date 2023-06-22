@@ -14,7 +14,10 @@ function getLanguage(response, title, description, author) {
   // If there is no caption track, use detect to get the language code from the text
   const text = [title, description, author].join(" ");
   // Remove anything that is not a letter or a space in any language
-  const cleanText = text.replace(/https?:\/\/\S+/g, "").replace(/[^\p{L}\s]/gu, "").slice(0, 500);
+  const cleanText = text
+    .replace(/https?:\/\/\S+/g, "")
+    .replace(/[^\p{L}\s]/gu, "")
+    .slice(0, 250);
   return detect(cleanText);
 }
 
