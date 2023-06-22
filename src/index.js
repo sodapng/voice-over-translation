@@ -202,16 +202,19 @@ async function main() {
     console.log("VOT Video Data: ", videoData);
 
     const container =
-      siteHostname === "pornhub" &&
-      window.location.pathname.includes("view_video.php")
-        ? document.querySelector(".original.mainPlayerDiv")
-        : siteHostname === "pornhub" &&
-          window.location.pathname.includes("embed/")
-        ? document.querySelector("body")
-        : videoContainer;
-
+    siteHostname === "pornhub" &&
+    window.location.pathname.includes("view_video.php")
+    ? document.querySelector(".original.mainPlayerDiv")
+    : siteHostname === "pornhub" &&
+    window.location.pathname.includes("embed/")
+    ? document.querySelector("body")
+    : window.location.hostname.includes("m.youtube.com")
+    ? document.querySelector("#player-control-container")
+    : videoContainer;
+   
     addTranslationBlock(container);
-    addTranslationMenu(container);
+    addTranslationMenu(container);   
+   
 
     const isDBInited = await initDB();
 
