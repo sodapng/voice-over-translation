@@ -25,8 +25,8 @@ const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
   .add(new protobuf.Field("remainingTime", 5, "int32")) // secs before translation
   .add(new protobuf.Field("language", 8, "string")) // detected language (if the wrong one is set)
   .add(new protobuf.Field("message", 9, "string"));
-  // 6 - unknown 0 (1st request) -> 10 (2nd, 3th and etc requests)
-  // 7 - unknown array
+// 6 - unknown 0 (1st request) -> 10 (2nd, 3th and etc requests)
+// 7 - unknown array
 
 // const VideoWhitelistStreamResponse = new protobuf.Type("VideoWhitelistStreamResponse")
 //   .add(new protobuf.Field("inWhitelist", 1, "bool"))
@@ -52,7 +52,6 @@ const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
 //   }
 // };
 
-
 // // Create a root namespace and add the types
 // const root = new protobuf.Root().define("yandex").add(VideoTranslationStreamRequest).add(VideoTranslationStreamResponse);
 
@@ -70,9 +69,11 @@ const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
 //   }
 // };
 
-
 // Create a root namespace and add the types
-const root = new protobuf.Root().define("yandex").add(VideoTranslationRequest).add(VideoTranslationResponse);
+const root = new protobuf.Root()
+  .define("yandex")
+  .add(VideoTranslationRequest)
+  .add(VideoTranslationResponse);
 
 // Export the encoding and decoding functions
 export const yandexRequests = {
@@ -86,10 +87,10 @@ export const yandexRequests = {
       language: requestLang,
       unknown3: 0,
       unknown4: 0,
-      responseLanguage: responseLang
+      responseLanguage: responseLang,
     }).finish();
   },
   decodeResponse(response) {
     return root.VideoTranslationResponse.decode(new Uint8Array(response));
-  }
+  },
 };
