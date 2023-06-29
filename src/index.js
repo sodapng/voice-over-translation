@@ -32,11 +32,15 @@ let translateFromLang = "en"; // default language of video
 let translateToLang = "ru"; // default language of audio response
 
 async function main() {
+  debug.log("Loading extension...");
+
   const rvt = await import(
     `./rvt${BUILD_MODE === "cloudflare" ? "-cloudflare" : ""}.js`
   );
 
   const requestVideoTranslation = rvt.default;
+
+  debug.log("Inited requestVideoTranslation...");
 
   if (
     BUILD_MODE !== "cloudflare" &&
@@ -46,9 +50,11 @@ async function main() {
     )
   ) {
     const errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
-    console.log(errorText);
+    console.error(errorText);
     return alert(errorText);
   }
+
+  debug.log("Extension compatibility passed...");
 
   let timer;
   const audio = new Audio();
@@ -160,10 +166,11 @@ async function main() {
                 : "Перевод займет несколько минут"
             );
             break;
-          case 3 /*
-          Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода. В конечном итоге, это занимает слишком много времени,
-          как-будто сервер не понимает, что данное видео уже недавно было переведено и заместо возвращения готовой ссылки на перевод начинает переводить видео заново при чём у него это получается за очень длительное время
-        */:
+          case 3:
+            /*
+              Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода. В конечном итоге, это занимает слишком много времени,
+              как-будто сервер не понимает, что данное видео уже недавно было переведено и заместо возвращения готовой ссылки на перевод начинает переводить видео заново при чём у него это получается за очень длительное время
+            */
             callback(false, "Видео переводится");
             break;
         }
@@ -172,7 +179,7 @@ async function main() {
   }
 
   async function translateProccessor(videoContainer, siteHostname, siteEvent) {
-    debug.log("[translateProccessor] execute ", videoContainer);
+    debug.log("[translateProccessor] execute on element: ", videoContainer);
 
     let video;
     let autoRetry;
@@ -186,6 +193,7 @@ async function main() {
     let dbDontTranslateRuVideos;
     let dbSyncVolume;
     let firstPlay = true;
+    let isDBInited;
 
     debug.log("videoContainer", videoContainer);
 
@@ -211,12 +219,88 @@ async function main() {
     : window.location.hostname.includes("m.youtube.com")
     ? document.querySelector("#player-control-container")
     : videoContainer;
-   
-    addTranslationBlock(container);
-    addTranslationMenu(container);   
-   
 
-    const isDBInited = await initDB();
+    addTranslationBlock(container);
+    addTranslationMenu(container);
+
+
+    try {
+      isDBInited = await initDB();
+    } catch (err) {
+      console.error(
+        "[VOT] Не удалось инициализировать настройки базы данных. Все внесенные изменения не будут сохранены",
+        err
+      );
+    }
+
+    const menuOptions = document.querySelector(".translationMenuOptions");
+    if (
+      menuOptions &&
+      !menuOptions.querySelector("#VOTTranslateFromLang")
+    ) {
+      const selectFromLangOptions = [
+        {
+          label: "Язык видео",
+          value: "default",
+          disabled: true,
+        },
+        ...Object.entries(availableFromLangs).map(([key, value]) => ({
+          label: value,
+          value: key,
+          selected: videoData.detectedLanguage === key,
+        })),
+      ];
+
+      const selectToLangOptions = [
+        {
+          label: "Язык перевода",
+          value: "default",
+          disabled: true,
+        },
+      ];
+
+      for (const [key, value] of Object.entries(availableToLangs)) {
+        selectToLangOptions.push({
+          label: value,
+          value: key,
+          selected: videoData.responseLanguage === key,
+        });
+      }
+
+      const selectFromLang = createMenuSelect(
+        "VOTTranslateFromLang",
+        selectFromLangOptions
+      );
+
+      const selectToLang = createMenuSelect(
+        "VOTTranslateToLang",
+        selectToLangOptions
+      ).firstElementChild;
+
+      selectFromLang.id = "VOTSelectLanguages";
+      selectFromLang.innerHTML += `
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16m0 0l-6 6m6-6l-6-6"/>
+        </svg>
+      `;
+
+      selectFromLang.appendChild(selectToLang);
+      menuOptions.appendChild(selectFromLang);
+
+      menuOptions
+        .querySelector("#VOTTranslateFromLang")
+        .addEventListener("change", (event) => {
+          debug.log("[onchange] select from language", event.target.value);
+          videoData = setDetectedLangauge(videoData, event.target.value);
+        });
+
+      menuOptions
+        .querySelector("#VOTTranslateToLang")
+        .addEventListener("change", (event) => {
+          debug.log("[onchange] select to language", event.target.value);
+          videoData = setResponseLangauge(videoData, event.target.value);
+        });
+    }
 
     if (isDBInited) {
       const dbData = await readDB();
@@ -230,74 +314,6 @@ async function main() {
         dbSyncVolume = dbData.syncVolume;
 
         debug.log("[db] data from db: ", dbData);
-        const menuOptions = document.querySelector(".translationMenuOptions");
-        if (
-          menuOptions &&
-          !menuOptions.querySelector("#VOTTranslateFromLang")
-        ) {
-          const selectFromLangOptions = [
-            {
-              label: "Язык видео",
-              value: "default",
-              disabled: true,
-            },
-            ...Object.entries(availableFromLangs).map(([key, value]) => ({
-              label: value,
-              value: key,
-              selected: videoData.detectedLanguage === key,
-            })),
-          ];
-
-          const selectToLangOptions = [
-            {
-              label: "Язык перевода",
-              value: "default",
-              disabled: true,
-            },
-          ];
-
-          for (const [key, value] of Object.entries(availableToLangs)) {
-            selectToLangOptions.push({
-              label: value,
-              value: key,
-              selected: videoData.responseLanguage === key,
-            });
-          }
-
-          const selectFromLang = createMenuSelect(
-            "VOTTranslateFromLang",
-            selectFromLangOptions
-          );
-
-          const selectToLang = createMenuSelect(
-            "VOTTranslateToLang",
-            selectToLangOptions
-          ).firstElementChild;
-
-          selectFromLang.id = "VOTSelectLanguages";
-          selectFromLang.innerHTML += `
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16m0 0l-6 6m6-6l-6-6"/>
-            </svg>
-          `;
-
-          selectFromLang.appendChild(selectToLang);
-          menuOptions.appendChild(selectFromLang);
-
-          menuOptions
-            .querySelector("#VOTTranslateFromLang")
-            .addEventListener("change", (event) => {
-              debug.log("[onchange] select from language", event.target.value);
-              videoData = setDetectedLangauge(videoData, event.target.value);
-            });
-
-          menuOptions
-            .querySelector("#VOTTranslateToLang")
-            .addEventListener("change", (event) => {
-              debug.log("[onchange] select to language", event.target.value);
-              videoData = setResponseLangauge(videoData, event.target.value);
-            });
-        }
 
         if (
           dbAutoTranslate !== undefined &&
@@ -1080,8 +1096,9 @@ async function main() {
   }
 
   async function initWebsite() {
+    debug.log("Runned initWebsite function");
     if (regexes.youtubeRegex.test(window.location.hostname)) {
-      debug.log("[entered] YT Regex Passed", regexes.youtubeRegex);
+      debug.log("[initWebsite] Found a match with youtube hostname");
       const ytPageEnter = () => {
         const videoContainer = document.querySelector(
           selectors.youtubeSelector
@@ -1144,61 +1161,62 @@ async function main() {
         document.addEventListener("spfrequest", ytPageLeave);
         document.addEventListener("yt-navigate-start", ytPageLeave);
       }
+      return;
+    }
+    if (window.location.hostname.includes("twitch.tv")) {
+      debug.log("[initWebsite] Found a match with twitch.tv");
+      if (
+        window.location.hostname.includes("m.twitch.tv") &&
+        (window.location.pathname.includes("/videos/") ||
+          window.location.pathname.includes("/clip/"))
+      ) {
+        debug.log("[initWebsite] Matched Twitch Mobile");
+        const el = await waitForElm(selectors.twitchMobileSelector);
+        if (el) {
+          await sleep(200);
+          const twitchMobileSelector = document.querySelector(
+            selectors.twitchMobileSelector
+          );
+          await translateProccessor(twitchMobileSelector, "twitch", null);
 
-      if (window.location.hostname.includes("twitch.tv")) {
-        debug.log("[entered] Twitch");
-        if (
-          window.location.hostname.includes("m.twitch.tv") &&
-          (window.location.pathname.includes("/videos/") ||
-            window.location.pathname.includes("/clip/"))
-        ) {
-          debug.log("[entered] twitch mobile");
-          const el = await waitForElm(selectors.twitchMobileSelector);
-          if (el) {
-            await sleep(200);
-            const twitchMobileSelector = document.querySelector(
-              selectors.twitchMobileSelector
-            );
-            await translateProccessor(twitchMobileSelector, "twitch", null);
-
-            const mutationObserver = new MutationObserver(async (mutations) => {
-              for (const mutation of mutations) {
-                if (
-                  mutation.type === "attributes" &&
-                  mutation.attributeName === "src" &&
-                  mutation.target ===
-                    twitchMobileSelector?.querySelector("video")
-                ) {
-                  await sleep(1000);
-                  await translateProccessor(
-                    twitchMobileSelector,
-                    "twitch",
-                    null
-                  );
-                }
+          const mutationObserver = new MutationObserver(async (mutations) => {
+            for (const mutation of mutations) {
+              if (
+                mutation.type === "attributes" &&
+                mutation.attributeName === "src" &&
+                mutation.target ===
+                  twitchMobileSelector?.querySelector("video")
+              ) {
+                await sleep(1000);
+                await translateProccessor(
+                  twitchMobileSelector,
+                  "twitch",
+                  null
+                );
               }
-            });
+            }
+          });
 
-            mutationObserver.observe(twitchMobileSelector, {
-              attributes: true,
-              childList: true,
-              subtree: true,
-              attributeOldValue: true,
-            });
-          }
+          mutationObserver.observe(twitchMobileSelector, {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            attributeOldValue: true,
+          });
         }
       } else if (
         window.location.hostname.includes("player.twitch.tv") ||
         window.location.pathname.includes("/videos/") ||
         window.location.pathname.includes("/clip/")
       ) {
-        debug.log("[entered] twitch");
+        debug.log("[initWebsite] Matched Twitch Desktop");
         const el = await waitForElm(selectors.twitchSelector);
         if (el) {
           await sleep(200);
           await translateProccessor(el, "twitch", null);
         }
       }
+      debug.log("[initWebsite] Exit function in the twitch section");
       return;
     }
     if (window.location.hostname.includes("xvideos.com")) {
