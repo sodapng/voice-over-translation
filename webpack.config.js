@@ -85,7 +85,7 @@ export default (env) => {
         },
         proxyScript: {
           filename: "[basename].proxy.user.js",
-          baseURL: "http://localhost:11944/",
+          baseURL: "http://localhost:11945/",
         },
         i18n: {
           'ru': (headers) => ({
