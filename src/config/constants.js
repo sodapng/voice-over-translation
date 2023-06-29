@@ -6,6 +6,7 @@ const availableFromLangs = {
   fr: "Французский",
   it: "Итальянский",
   es: "Испанский",
+  de: "Немецкий",
 }; // available languages for translation (from)
 const availableToLangs = {
   ru: "Русский",
@@ -14,6 +15,7 @@ const availableToLangs = {
   fr: "Французский",
   it: "Итальянский",
   es: "Испанский",
+  de: "Немецкий",
 }; // available languages for translation (to)
 const siteTranslates = {
   youtube: "https://youtu.be/",
