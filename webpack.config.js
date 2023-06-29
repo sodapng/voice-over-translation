@@ -21,7 +21,23 @@ const ru_headers = getHeaders('locales/ru/headers.json');
 
 export default (env) => {
   const build_mode = env.build_mode;
+  const build_type = env.build_type;
   console.log('build mode: ', build_mode);
+  console.log('build type: ', build_type);
+
+  function get_filename() {
+    let name = 'vot'
+    if (build_mode === 'cloudflare') {
+      name += '-cloudflare'
+    }
+
+    if (build_type === 'minify') {
+      name += '-min'
+    }
+
+    return name + '.js'
+  }
+
   return {
     mode: dev ? 'development' : 'production',
     resolve: {
@@ -35,7 +51,7 @@ export default (env) => {
     entry: path.resolve(__dirname, 'src', 'index.js'),
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: build_mode === 'cloudflare' ? 'vot-cloudflare.js' : 'vot.js',
+      filename: get_filename(),
       publicPath: "/",
     },
     devServer: {
@@ -111,7 +127,7 @@ export default (env) => {
     optimization: {
       emitOnErrors: true,
       moduleIds: "named",
-      minimize: false
+      minimize: build_type === 'minify' ? true : false,
     },
   }
 }
