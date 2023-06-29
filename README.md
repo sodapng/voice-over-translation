@@ -50,14 +50,29 @@ npm i
    npm run build
    ```
 
-   3.1. Только обычная версии:
+   3.1. Все минифицированные версии сразу:
+   ```bash
+   npm run build:min
+   ```
+
+   3.2. Только обычная версии:
    ```bash
    npm run build:default
    ```
 
-   3.2. Только Cloudflare версии:
+   3.3. Только Cloudflare версии:
    ```bash
    npm run build:cloudflare
+   ```
+
+   3.2. Только обычная мин. версии:
+   ```bash
+   npm run build:default-min
+   ```
+
+   3.3. Только мин. Cloudflare версии:
+   ```bash
+   npm run build:cloudflare-min
    ```
 
 
