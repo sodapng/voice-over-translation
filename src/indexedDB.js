@@ -9,7 +9,7 @@ async function initDB() {
 
     openRequest.onerror = () => {
       console.error(
-        `VOT: Ошибка инициализации Базы Данных: ${openRequest.errorCode}`
+        `VOT: Ошибка инициализации Базы Данных: ${openRequest.error.message}`
       );
       reject(false);
     };
@@ -132,7 +132,7 @@ async function updateDB({
 
       openRequest.onerror = () => {
         alert("VOT: Произошла ошибка");
-        console.error(`VOT: Ошибка Базы Данных: ${openRequest.errorCode}`);
+        console.error(`VOT: Ошибка Базы Данных: ${openRequest.error.message}`);
         reject(false);
       };
 
@@ -233,7 +233,7 @@ async function readDB() {
 
     openRequest.onerror = () => {
       alert("VOT: Произошла ошибка");
-      console.error(`VOT: Ошибка Базы Данных: ${openRequest.errorCode}`);
+      console.error(`VOT: Ошибка Базы Данных: ${openRequest.error.message}`);
       reject(false);
     };
 
