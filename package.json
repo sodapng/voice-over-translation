@@ -30,8 +30,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:cloudflare": "webpack build -c webpack.config.js --env build_mode=cloudflare",
     "build:default": "webpack build -c webpack.config.js",
+    "build:cloudflare-min": "webpack build -c webpack.config.js --env build_mode=cloudflare --env build_type=minify",
+    "build:default-min": "webpack build -c webpack.config.js --env build_type=minify",
     "build": "npm run build:default && npm run build:cloudflare",
-	"format": "prettier --write --ignore-unknown \"{web-server,src}/**/*.{html,css,js,ts,json}\"",
+    "build:min": "npm run build:default-min && npm run build:cloudflare-min",
+    "format": "prettier --write --ignore-unknown \"{web-server,src}/**/*.{html,css,js,ts,json}\"",
     "dev": "webpack serve --node-env development"
   }
 }
