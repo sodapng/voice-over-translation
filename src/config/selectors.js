@@ -3,7 +3,7 @@ const selectors = () => {
     youtubeSelector: ".html5-video-container",
     twitchSelector: ".video-ref",
     twitchMobileSelector: "main > div > section > div > div > div",
-    pipedSelector: ".player-container",
+    pipedSelector: ".shaka-video-container",
     vkSelector: ".videoplayer_media",
     twitterSelector:
       'div[data-testid="videoComponent"] > div:nth-child(1) > div',
