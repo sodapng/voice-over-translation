@@ -34,10 +34,17 @@ const getVideoId = (service) => {
         url.searchParams.get("v")
       );
     case "vk":
-      return (
-        url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)?.[0].slice(1) ||
-        url.searchParams.get("z")?.split("/")[0]
-      );
+      if (url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)) {
+        return url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)[0].slice(1);
+      } else if (url.searchParams.get("z")) {
+        return url.searchParams.get("z").split("/")[0];
+      } else if (url.searchParams.get("oid") && url.searchParams.get("id")) {
+        return `video-${
+          Math.abs(url.searchParams.get("oid"))
+        }_${url.searchParams.get("id")}`;
+      } else {
+        return false;
+      }
     case "9gag":
     case "gag":
       return url.pathname.match(/gag\/([^/]+)/)?.[1];
@@ -49,13 +56,29 @@ const getVideoId = (service) => {
         );
       } else if (/^player\.twitch\.tv$/.test(window.location.hostname)) {
         return `videos/${url.searchParams.get("video")}`;
+      } else if (/^clips\.twitch\.tv$/.test(window.location.hostname)) {
+        // get link to twitch channel (ex.: https://www.twitch.tv/xqc)
+        const channelLink = document.querySelector(
+          ".tw-link[data-test-selector='stream-info-card-component__stream-avatar-link']"
+        );
+        if (!channelLink) {
+          return false;
+        }
+
+        const channelName = channelLink.href.replace('https://www.twitch.tv/', '');
+        return `${channelName}/clip/${url.searchParams.get("clip")}`;
+      } else if (url.pathname.match(/([^/]+)\/(?:clip)\/([^/]+)/)) {
+        return url.pathname.match(/([^/]+)\/(?:clip)\/([^/]+)/)[0];
       } else {
-        return url.pathname.match(/(?:videos|clip)\/([^/]+)/)?.[0];
+        return url.pathname.match(/(?:videos)\/([^/]+)/)?.[0];
       }
     case "tiktok":
       return url.pathname.match(/video\/([^/]+)/)?.[1];
     case "vimeo":
-      return url.pathname.match(/[^/]+$/)?.[0];
+      return (
+        url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||
+        url.pathname.match(/[^/]+$/)?.[0]
+      )
     case "xvideos":
       return url.pathname.match(/[^/]+\/[^/]+$/)?.[0];
     case "pornhub":
