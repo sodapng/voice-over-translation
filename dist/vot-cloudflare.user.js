@@ -3,7 +3,7 @@
 // @name:ru [VOT Cloudflare] - Закадровый перевод видео
 // @description A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version 1.3.0
+// @version 1.3.1
 // @author sodapng, mynovelhost, Toil
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -93,7 +93,7 @@
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\r\n  padding: 0.45rem !important;\r\n  width: max-content;\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  border-radius: 0.5rem !important;\r\n  left: 50%;\r\n  top: 5rem;\r\n  transform: translate(-50%);\r\n  text-align: center;\r\n  opacity: 0;\r\n  transition: opacity 1s;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n  user-select: none;\r\n  z-index: 100;\r\n}\r\n\r\n.translationBtn {\r\n  position: relative;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  color: #fff;\r\n  padding-right: 0.25rem !important;\r\n  cursor: pointer;\r\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\r\n}\r\n\r\n.translationBlock:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.translationMenu {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  border-left: 1px solid #424348;\r\n  max-height: 16px;\r\n  max-width: 24px;\r\n  cursor: pointer;\r\n}\r\n\r\n.translationMenuIcon {\r\n  padding: 0 10px !important;\r\n  width: 24px;\r\n}\r\n\r\n.translationIAlice {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 26px;\r\n  max-width: 50px;\r\n}\r\n\r\n.translationIconAlice {\r\n  height: 24px !important;\r\n  width: 24px !important;\r\n}\r\n\r\n.translationITranslate {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 20px;\r\n  max-width: 20px;\r\n}\r\n\r\n.translationMenuContent {\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  color: #fff;\r\n  display: none;\r\n  border-radius: 1rem !important;\r\n  left: 50%;\r\n  top: 9rem;\r\n  transform: translate(-50%);\r\n  text-align: left;\r\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n\r\n  width: 300px;\r\n  /* height: 375px; */\r\n  opacity: 0;\r\n  z-index: 100;\r\n  transition: opacity 0.5s ease;\r\n}\r\n\r\n.VOTMenuSlider {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 268px !important;\r\n  height: 8px !important;\r\n  outline: none !important;\r\n  margin-top: 0.5rem;\r\n  opacity: 0.7;\r\n  /* background: #3C3F4D !important; */\r\n  background: rgb(253, 222, 85, 0.6) !important;\r\n  border: none !important;\r\n  border-radius: 2rem !important;\r\n  -webkit-transition: 0.2s !important;\r\n  transition: opacity 0.2s ease !important;\r\n}\r\n\r\n.VOTMenuSlider:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.VOTMenuSlider::-webkit-slider-thumb {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-fill-lower {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(\r\n    90.1deg,\r\n    rgba(186, 153, 244, 0.85) -5.78%,\r\n    rgba(236, 138, 202, 0.7) 56.46%,\r\n    rgba(239, 168, 117, 0.6) 108.93%\r\n  ) !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-progress {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(\r\n    90.1deg,\r\n    rgba(186, 153, 244, 0.85) -5.78%,\r\n    rgba(236, 138, 202, 0.7) 56.46%,\r\n    rgba(239, 168, 117, 0.6) 108.93%\r\n  ) !important;\r\n}\r\n\r\n.translationHeader {\r\n  padding-bottom: 0.5rem !important;\r\n}\r\n\r\n.translationMainHeader {\r\n  margin: 16px !important;\r\n  color: #fff;\r\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n}\r\n\r\n.translationMenuContainer {\r\n  /* width: 100%; */\r\n  padding-left: 16px !important;\r\n  padding-top: 5px !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n.translationMenuContainer > input {\r\n  appearance: auto !important;\r\n}\r\n\r\n.translationMenuText {\r\n  color: #fff;\r\n  display: inline-flex;\r\n  width: 80%;\r\n}\r\n\r\n.translationVolumeBox,\r\n.translationVideoVolumeBox {\r\n  padding-top: 0.5rem !important;\r\n}\r\n\r\n.translationDropDB {\r\n  border: none !important;\r\n  border-radius: 4px !important;\r\n  background: #5426ff !important;\r\n  color: #fff !important;\r\n  padding: 6px 16px !important;\r\n  margin-left: auto !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.translationDownload {\r\n  background: #5426ff !important;\r\n  color: #fff !important;\r\n  padding: 2px 10px !important;\r\n  border-radius: 4px !important;\r\n  cursor: pointer;\r\n  display: none;\r\n}\r\n\r\n.translationMenuFunctional {\r\n  display: flex;\r\n  margin: 16px !important;\r\n}\r\n\r\n.VOTMenuSelect {\r\n  width: 110px;\r\n  border-radius: 5px !important;\r\n  border: 1px solid #dadce0 !important;\r\n  box-shadow: 0 1px 3px -2px #9098a9;\r\n  box-sizing: border-box !important;\r\n  color: #2e2f34 !important;\r\n  background: #fff !important;\r\n  padding: 5px !important;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n  border-color: #0077ff;\r\n  box-shadow: 0 0 0 2px rgba(#0077ff, 0.2);\r\n}\r\n\r\n#VOTSelectLanguages {\r\n  display: flex !important;\r\n  margin-left: 5px;\r\n}\r\n\r\n#VOTSelectLanguages svg {\r\n  margin: 0 5px;\r\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\r\n  padding: 0.45rem !important;\r\n  width: max-content;\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  border-radius: 0.5rem !important;\r\n  left: 50%;\r\n  top: 3rem;\r\n  transform: translate(-50%);\r\n  text-align: center;\r\n  opacity: 0;\r\n  transition: opacity 1s;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n  user-select: none;\r\n  z-index: 100;\r\n}\r\n\r\n.translationBtn {\r\n  position: relative;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  color: #fff;\r\n  padding-right: 0.25rem !important;\r\n  cursor: pointer;\r\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\r\n}\r\n\r\n.translationBlock:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.translationMenu {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  border-left: 1px solid #424348;\r\n  max-height: 16px;\r\n  max-width: 24px;\r\n  cursor: pointer;\r\n}\r\n\r\n.translationMenuIcon {\r\n  padding: 0 10px !important;\r\n  width: 24px;\r\n}\r\n\r\n.translationIAlice {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 26px;\r\n  max-width: 50px;\r\n}\r\n\r\n.translationIconAlice {\r\n  height: 24px !important;\r\n  width: 24px !important;\r\n}\r\n\r\n.translationITranslate {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 20px;\r\n  max-width: 20px;\r\n}\r\n\r\n.translationMenuContent {\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  color: #fff;\r\n  display: none;\r\n  border-radius: 1rem !important;\r\n  left: 50%;\r\n  top: 8rem;\r\n  transform: translate(-50%);\r\n  text-align: left;\r\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n\r\n  width: 300px;\r\n  /* height: 375px; */\r\n  opacity: 0;\r\n  z-index: 100;\r\n  transition: opacity 0.5s ease;\r\n}\r\n\r\n.VOTMenuSlider {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 268px !important;\r\n  height: 8px !important;\r\n  outline: none !important;\r\n  margin-top: 0.5rem;\r\n  opacity: 0.7;\r\n  /* background: #3C3F4D !important; */\r\n  background: rgb(253, 222, 85, 0.6) !important;\r\n  border: none !important;\r\n  border-radius: 2rem !important;\r\n  -webkit-transition: 0.2s !important;\r\n  transition: opacity 0.2s ease !important;\r\n}\r\n\r\n.VOTMenuSlider:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.VOTMenuSlider::-webkit-slider-thumb {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-fill-lower {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(\r\n    90.1deg,\r\n    rgba(186, 153, 244, 0.85) -5.78%,\r\n    rgba(236, 138, 202, 0.7) 56.46%,\r\n    rgba(239, 168, 117, 0.6) 108.93%\r\n  ) !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-progress {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(\r\n    90.1deg,\r\n    rgba(186, 153, 244, 0.85) -5.78%,\r\n    rgba(236, 138, 202, 0.7) 56.46%,\r\n    rgba(239, 168, 117, 0.6) 108.93%\r\n  ) !important;\r\n}\r\n\r\n.translationHeader {\r\n  padding-bottom: 0.5rem !important;\r\n}\r\n\r\n.translationMainHeader {\r\n  margin: 16px !important;\r\n  color: #fff;\r\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n}\r\n\r\n.translationMenuContainer {\r\n  /* width: 100%; */\r\n  padding-left: 16px !important;\r\n  padding-top: 5px !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n.translationMenuContainer > input {\r\n  appearance: auto !important;\r\n  vertical-align: text-bottom;\r\n}\r\n\r\n.translationMenuText {\r\n  color: #fff;\r\n  display: inline-flex;\r\n  width: 80%;\r\n}\r\n\r\n.translationVolumeBox,\r\n.translationVideoVolumeBox {\r\n  padding-top: 0.5rem !important;\r\n}\r\n\r\n.translationDropDB {\r\n  border: none !important;\r\n  border-radius: 4px !important;\r\n  background: #5426ff !important;\r\n  color: #fff !important;\r\n  padding: 6px 16px !important;\r\n  margin-left: auto !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.translationDownload {\r\n  background: #5426ff !important;\r\n  color: #fff !important;\r\n  padding: 2px 10px !important;\r\n  border-radius: 4px !important;\r\n  cursor: pointer;\r\n  display: none;\r\n}\r\n\r\n.translationMenuFunctional {\r\n  display: flex;\r\n  margin: 16px !important;\r\n}\r\n\r\n.VOTMenuSelect {\r\n  width: 110px;\r\n  border-radius: 5px !important;\r\n  border: 1px solid #dadce0 !important;\r\n  box-shadow: 0 1px 3px -2px #9098a9;\r\n  box-sizing: border-box !important;\r\n  color: #2e2f34 !important;\r\n  background: #fff !important;\r\n  padding: 5px !important;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n  border-color: #0077ff;\r\n  box-shadow: 0 0 0 2px rgba(#0077ff, 0.2);\r\n}\r\n\r\n#VOTSelectLanguages {\r\n  display: flex !important;\r\n  margin-left: 5px;\r\n}\r\n\r\n#VOTSelectLanguages svg {\r\n  margin: 0 5px;\r\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -942,10 +942,17 @@ const getVideoId = (service) => {
         url.searchParams.get("v")
       );
     case "vk":
-      return (
-        url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)?.[0].slice(1) ||
-        url.searchParams.get("z")?.split("/")[0]
-      );
+      if (url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)) {
+        return url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)[0].slice(1);
+      } else if (url.searchParams.get("z")) {
+        return url.searchParams.get("z").split("/")[0];
+      } else if (url.searchParams.get("oid") && url.searchParams.get("id")) {
+        return `video-${
+          Math.abs(url.searchParams.get("oid"))
+        }_${url.searchParams.get("id")}`;
+      } else {
+        return false;
+      }
     case "9gag":
     case "gag":
       return url.pathname.match(/gag\/([^/]+)/)?.[1];
@@ -957,13 +964,29 @@ const getVideoId = (service) => {
         );
       } else if (/^player\.twitch\.tv$/.test(window.location.hostname)) {
         return `videos/${url.searchParams.get("video")}`;
+      } else if (/^clips\.twitch\.tv$/.test(window.location.hostname)) {
+        // get link to twitch channel (ex.: https://www.twitch.tv/xqc)
+        const channelLink = document.querySelector(
+          ".tw-link[data-test-selector='stream-info-card-component__stream-avatar-link']"
+        );
+        if (!channelLink) {
+          return false;
+        }
+
+        const channelName = channelLink.href.replace('https://www.twitch.tv/', '');
+        return `${channelName}/clip/${url.searchParams.get("clip")}`;
+      } else if (url.pathname.match(/([^/]+)\/(?:clip)\/([^/]+)/)) {
+        return url.pathname.match(/([^/]+)\/(?:clip)\/([^/]+)/)[0];
       } else {
-        return url.pathname.match(/(?:videos|clip)\/([^/]+)/)?.[0];
+        return url.pathname.match(/(?:videos)\/([^/]+)/)?.[0];
       }
     case "tiktok":
       return url.pathname.match(/video\/([^/]+)/)?.[1];
     case "vimeo":
-      return url.pathname.match(/[^/]+$/)?.[0];
+      return (
+        url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||
+        url.pathname.match(/[^/]+$/)?.[0]
+      )
     case "xvideos":
       return url.pathname.match(/[^/]+\/[^/]+$/)?.[0];
     case "pornhub":
@@ -1637,7 +1660,7 @@ const selectors = () => {
     youtubeSelector: ".html5-video-container",
     twitchSelector: ".video-ref",
     twitchMobileSelector: "main > div > section > div > div > div",
-    pipedSelector: ".player-container",
+    pipedSelector: ".shaka-video-container",
     vkSelector: ".videoplayer_media",
     twitterSelector:
       'div[data-testid="videoComponent"] > div:nth-child(1) > div',
@@ -2729,6 +2752,12 @@ async function src_main() {
   async function initWebsite() {
     debug/* default.log */.Z.log("Runned initWebsite function");
     if (config_regexes.youtubeRegex.test(window.location.hostname)) {
+      if (window.location.pathname.includes("embed")) {
+        const videoContainer = document.querySelector(".html5-video-container");
+        await translateProccessor(videoContainer, "youtube", null);
+        return;
+      }
+
       debug/* default.log */.Z.log("[initWebsite] Found a match with youtube hostname");
       const ytPageEnter = () => {
         const videoContainer = document.querySelector(
@@ -2837,6 +2866,7 @@ async function src_main() {
         }
       } else if (
         window.location.hostname.includes("player.twitch.tv") ||
+        window.location.hostname.includes("clips.twitch.tv") ||
         window.location.pathname.includes("/videos/") ||
         window.location.pathname.includes("/clip/")
       ) {
