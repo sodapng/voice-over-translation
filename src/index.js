@@ -1098,6 +1098,12 @@ async function main() {
   async function initWebsite() {
     debug.log("Runned initWebsite function");
     if (regexes.youtubeRegex.test(window.location.hostname)) {
+      if (window.location.pathname.includes("embed")) {
+        const videoContainer = document.querySelector(".html5-video-container");
+        await translateProccessor(videoContainer, "youtube", null);
+        return;
+      }
+
       debug.log("[initWebsite] Found a match with youtube hostname");
       const ytPageEnter = () => {
         const videoContainer = document.querySelector(
@@ -1206,6 +1212,7 @@ async function main() {
         }
       } else if (
         window.location.hostname.includes("player.twitch.tv") ||
+        window.location.hostname.includes("clips.twitch.tv") ||
         window.location.pathname.includes("/videos/") ||
         window.location.pathname.includes("/clip/")
       ) {
