@@ -20,6 +20,7 @@ import {
   createMenuSelect,
 } from "./menu.js";
 import { syncVolume } from "./utils/volume.js";
+import { workerHost } from "./config/config-cloudflare.js";
 import regexes from "./config/regexes.js";
 import selectors from "./config/selectors.js";
 import debug from "./utils/debug.js";
@@ -192,6 +193,7 @@ async function main() {
     let dbAutoSetVolumeYandexStyle;
     let dbDontTranslateRuVideos;
     let dbSyncVolume;
+    let dbAudioProxy; // cf version only
     let firstPlay = true;
     let isDBInited;
 
@@ -310,6 +312,7 @@ async function main() {
         dbShowVideoSlider = dbData.showVideoSlider;
         dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
         dbDontTranslateRuVideos = dbData.dontTranslateRuVideos;
+        dbAudioProxy = dbData.audioProxy; // cf version only
         // only youtube:
         dbSyncVolume = dbData.syncVolume;
 
@@ -356,7 +359,7 @@ async function main() {
           const checkbox = createMenuCheckbox(
             "VOTDontTranslateRu",
             dbDontTranslateRuVideos,
-            "Не переводить с русского (youtube)"
+            "Не переводить с русского"
           );
 
           checkbox.querySelector("#VOTDontTranslateRu").onclick = async (
@@ -448,7 +451,7 @@ async function main() {
           const checkbox = createMenuCheckbox(
             "VOTSyncVolume",
             dbSyncVolume,
-            "Связать громкость перевода и видео (youtube)"
+            "Связать громкость перевода и видео"
           );
 
           checkbox.querySelector("#VOTSyncVolume").onclick = async (event) => {
@@ -457,6 +460,30 @@ async function main() {
             await updateDB({ syncVolume: value });
             dbSyncVolume = value;
             debug.log("syncVolume value changed. New value: ", dbSyncVolume);
+          };
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        // cf version only
+        if (
+          BUILD_MODE === "cloudflare" &&
+          dbAudioProxy !== undefined &&
+          menuOptions &&
+          !menuOptions.querySelector("#VOTAudioProxy")
+        ) {
+          const checkbox = createMenuCheckbox(
+            "VOTAudioProxy",
+            dbAudioProxy,
+            "Проксировать полученное аудио"
+          );
+
+          checkbox.querySelector("#VOTAudioProxy").onclick = async (event) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({ audioProxy: value });
+            dbAudioProxy = value;
+            debug.log("audioProxy value changed. New value: ", dbAudioProxy);
           };
 
           menuOptions.appendChild(checkbox);
@@ -863,7 +890,7 @@ async function main() {
         translateFuncParam,
         requestLang,
         responseLang,
-        (success, urlOrError) => {
+        async (success, urlOrError) => {
           debug.log("[exec callback] translateVideo");
           if (getVideoId(siteHostname) !== VIDEO_ID) return;
           if (!success) {
@@ -877,7 +904,17 @@ async function main() {
             }
             throw urlOrError;
           }
+
           audio.src = urlOrError;
+
+          // cf version only
+          if (BUILD_MODE === "cloudflare" && dbAudioProxy === 1 && urlOrError.startsWith("https://")) {
+            const audioPath = urlOrError.replace("https://vtrans.s3-private.mds.yandex.net/tts/prod/", "");
+            const proxiedAudioUrl = `https://${workerHost}/video-translation/audio-proxy/${audioPath}`;
+            console.log(`VOT Audio proxied via ${proxiedAudioUrl}`);
+            audio.src = proxiedAudioUrl;
+          }
+
           volumeOnStart = video?.volume;
           if (typeof dbDefaultVolume === "number") {
             audio.volume = dbDefaultVolume / 100;
