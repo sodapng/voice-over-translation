@@ -4,11 +4,9 @@ import { detect } from "tinyld/light";
 function getLanguage(player, response, title, description, author) {
   // ! Experimental ! get lang from selected audio track if availabled
   const audioTracks = player.getAudioTrack();
-  if (audioTracks?.length) {
-    const trackInfo = audioTracks?.Nc; // get selected track info (id === "und" if tracks are not available)
-    if (trackInfo?.id !== "und") {
-      return trackInfo.id.split(".")[0];
-    }
+  const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
+  if (trackInfo?.id !== "und") {
+    return trackInfo.id.split(".")[0];
   }
 
   // TODO: If the audio tracks will work fine, transfer the receipt of captions to the audioTracks variable
