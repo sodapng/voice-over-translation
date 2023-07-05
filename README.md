@@ -8,9 +8,9 @@
 2. **[«Установите Скрипт»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js)**
 
 ### Полезные ссылки:
-1. Версия для VM, FM, GM, AdGuard, UserScripts и некоторых браузеров: **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
+1. Версия для VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, UserScripts и некоторых браузеров: **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
 2. Версия для терминала: **[Ссылка](https://github.com/ilyhalight/voice-over-translation/tree/master/vot-cli)**
-3. Подробнее о создание воркера для VM, FM, GM, AdGuard, UserScripts: **[Ссылка](https://github.com/mynovelhost/voice-over-translation/)**
+3. Подробнее о создание воркера для VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, UserScripts: **[Ссылка](https://github.com/mynovelhost/voice-over-translation/)**
 
 ## Список поддерживаемых сайтов:
 - **[YouTube](https://www.youtube.com)** (Полная поддержка **www.youtube.com/watch**, **www.youtube.com/embed**, **m.youtube.com**. Включая **[YouTube NoCookie](https://www.youtube-nocookie.com/)**)
@@ -75,6 +75,20 @@ npm i
    npm run build:cloudflare-min
    ```
 
+## Как задеплоить свой Cloudflare Worker?
+Видео инструкция: [**видео от mynovelhost**](https://raw.githubusercontent.com/mynovelhost/voice-over-translation/master/how_to_create_custom_worker.mp4)
+
+Текстовая инструкция:
+1. Зарегистрируйтесь в [Cloudflare Dashboard](https://dash.cloudflare.com) и войдите в панель управления
+2. В большом левом меню выберите пункт "Workers & Pages"
+3. Пройдите регистрацию в "Workers & Pages" выбрав Free тариф
+4. Если вы всё сделаете верно, то вас перекинет на страницу, где вы сможете нажать на синию кнопку "Create application"
+5. На появившейся странице нажмите синию кнопку "Create worker"
+6. Введите желаемое название для поддомена и нажмите синию кнопку "Deploy"
+7. Если всё прошло успешно, то у вас будет на выбор две кнопки "Configure worker" и "Edit code", вам нужно выбрать "Edit code"
+8. В открывшемся браузерном текстовом редакторе замените все содержимое файла worker.js на содержимое файла [CloudWorker.js](https://github.com/ilyhalight/voice-over-translation/blob/master/package.json)
+9. Сохраните код с помощью комбинации Ctrl + S и нажмите на синию кнопку "Save and deploy"
+10. Готово, теперь, вам осталось всего лишь поменять в коде "vot.toil-dump.workers.dev" на домен вашего воркера
 
 ## Примечание:
 1. Рекомендую разрешить автовоспроизведение "аудио и видео", чтобы избежать ошибок при работе расширения
