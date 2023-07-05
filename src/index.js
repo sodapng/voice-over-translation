@@ -631,6 +631,7 @@ async function main() {
         let ytData = getYTVideoData();
         ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
         videoData.detectedLanguage = ytData.detectedLanguage;
+        videoData.responseLanguage = ytData.responseLanguage;
       } else if (
         window.location.hostname.includes("rutube") ||
         window.location.hostname.includes("my.mail.ru")
