@@ -451,6 +451,22 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
+/***/ "./src/config/config-cloudflare.js":
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "I": () => (/* binding */ yandexHmacKey),
+/* harmony export */   "i": () => (/* binding */ workerHost)
+/* harmony export */ });
+// CLOUDFLARE CONFIGURATION
+const workerHost = "vot.toil-dump.workers.dev";
+const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
+
+
+
+
+/***/ }),
+
 /***/ "./src/config/config.js":
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
@@ -497,13 +513,8 @@ function getUUID(isLower) {
 
 // EXTERNAL MODULE: ./src/yandexRequests.js
 var yandexRequests = __webpack_require__("./src/yandexRequests.js");
-;// CONCATENATED MODULE: ./src/config/config-cloudflare.js
-// CLOUDFLARE CONFIGURATION
-const workerHost = "cors.yandexproxy.workers.dev";
-const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
-
-
-
+// EXTERNAL MODULE: ./src/config/config-cloudflare.js
+var config_cloudflare = __webpack_require__("./src/config/config-cloudflare.js");
 // EXTERNAL MODULE: ./src/config/config.js
 var config = __webpack_require__("./src/config/config.js");
 // EXTERNAL MODULE: ./src/utils/debug.js
@@ -541,7 +552,7 @@ async function requestVideoTranslation(
     const utf8Encoder = new TextEncoder("utf-8");
     const key = await window.crypto.subtle.importKey(
       "raw",
-      utf8Encoder.encode(yandexHmacKey),
+      utf8Encoder.encode(config_cloudflare/* yandexHmacKey */.I),
       { name: "HMAC", hash: { name: "SHA-256" } },
       false,
       ["sign", "verify"]
@@ -579,7 +590,7 @@ async function requestVideoTranslation(
     };
     // Fetch the translation from the worker host
     response = await fetch(
-      `https://${workerHost}/video-translation/translate`,
+      `https://${config_cloudflare/* workerHost */.i}/video-translation/translate`,
       options
     );
     // Get the response body as an array buffer
@@ -862,7 +873,15 @@ var D={TINYLD_CONFIG:"light"};var v=/[,.。，、#%&/\\+*¡!¿?[\]！？;:…„
 
 
 // Get the language code from the response or the text
-function getLanguage(response, title, description, author) {
+function getLanguage(player, response, title, description, author) {
+  // ! Experimental ! get lang from selected audio track if availabled
+  const audioTracks = player.getAudioTrack();
+  const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
+  if (trackInfo?.id !== "und") {
+    return trackInfo.id.split(".")[0];
+  }
+
+  // TODO: If the audio tracks will work fine, transfer the receipt of captions to the audioTracks variable
   // Check if there is an automatic caption track in the response
   const captionTracks =
     response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
@@ -895,7 +914,7 @@ function getYTVideoData() {
     title,
     description,
     author,
-    detectedLanguage: getLanguage(response, title, description, author),
+    detectedLanguage: getLanguage(player, response, title, description, author),
   };
   console.log("VOT Detected language: ", videoData.detectedLanguage);
   return videoData;
@@ -1134,8 +1153,19 @@ const siteTranslates = {
 
 ;// CONCATENATED MODULE: ./src/indexedDB.js
 // --- IndexedDB functions start:
+const dbVersion = 2; // current db version
+const settingsDefault = {
+  key: "settings",
+  autoTranslate: 0,
+  defaultVolume: 100,
+  showVideoSlider: 0,
+  syncVolume: 0,
+  autoSetVolumeYandexStyle: 1,
+  dontTranslateRuVideos: 0,
+}; // default settings for db v1
+
 function openDB(name) {
-  return indexedDB.open(name, 1);
+  return indexedDB.open(name, dbVersion);
 }
 
 async function initDB() {
@@ -1153,67 +1183,106 @@ async function initDB() {
       const db = openRequest.result;
 
       db.onerror = () => {
-        alert("VOT: Не удалось загрузить базу данных");
+        alert("VOT: Не удалось получить объект базы данных");
         console.error(
           `VOT: Не удалось загрузить базу данных: ${openRequest.error}`
         );
         reject(false);
       };
 
-      const objectStore = db.createObjectStore("settings", { keyPath: "key" });
+      if (event.oldVersion < 1) {
+        // db not found
+        const objectStore = db.createObjectStore("settings", { keyPath: "key" });
 
-      objectStore.createIndex("autoTranslate", "autoTranslate", {
-        unique: false,
-      });
-      objectStore.createIndex("defaultVolume", "defaultVolume", {
-        unique: false,
-      });
-      objectStore.createIndex("showVideoSlider", "showVideoSlider", {
-        unique: false,
-      });
-      objectStore.createIndex("syncVolume", "syncVolume", { unique: false });
-      objectStore.createIndex(
-        "autoSetVolumeYandexStyle",
-        "autoSetVolumeYandexStyle",
-        { unique: false }
-      );
-      objectStore.createIndex(
-        "dontTranslateRuVideos",
-        "dontTranslateRuVideos",
-        { unique: false }
-      );
-      console.log("VOT: База Данных создана");
+        objectStore.createIndex("autoTranslate", "autoTranslate", {
+          unique: false,
+        });
+        objectStore.createIndex("defaultVolume", "defaultVolume", {
+          unique: false,
+        });
+        objectStore.createIndex("showVideoSlider", "showVideoSlider", {
+          unique: false,
+        });
+        objectStore.createIndex("syncVolume", "syncVolume", { unique: false });
+        objectStore.createIndex(
+          "autoSetVolumeYandexStyle",
+          "autoSetVolumeYandexStyle",
+          { unique: false }
+        );
+        objectStore.createIndex(
+          "dontTranslateRuVideos",
+          "dontTranslateRuVideos",
+          { unique: false }
+        );
 
-      objectStore.transaction.oncomplete = (event) => {
-        const objectStore = db
-          .transaction("settings", "readwrite")
-          .objectStore("settings");
-        const settingsDefault = {
-          key: "settings",
-          autoTranslate: 0,
-          defaultVolume: 100,
-          showVideoSlider: 0,
-          syncVolume: 0,
-          autoSetVolumeYandexStyle: 1,
-          dontTranslateRuVideos: 0,
-        };
-        const request = objectStore.add(settingsDefault);
+        console.log("VOT: База Данных создана");
 
-        request.onsuccess = () => {
-          console.log(
-            "VOT: Стандартные настройки добавлены в Базу Данных: ",
-            request.result
-          );
-          resolve(true);
+        objectStore.transaction.oncomplete = (event) => {
+          const objectStore = db
+            .transaction("settings", "readwrite")
+            .objectStore("settings");
+          const request = objectStore.add(settingsDefault);
+
+          request.onsuccess = () => {
+            console.log(
+              "VOT: Стандартные настройки добавлены в Базу Данных: ",
+              request.result
+            );
+            resolve(true);
+          };
+
+          request.onerror = () => {
+            console.log(
+              "VOT: Ошибка при добавление стандартных настроек в Базу Данных: ",
+              request.error
+            );
+            reject(false);
+          };
         };
-        request.onerror = () => {
-          console.log(
-            "VOT: Ошибка при добавление стандартных настроек в Базу Данных: ",
-            request.error
-          );
-          reject(false);
+      }
+
+      if (event.oldVersion < 2) {
+        // db is outdated (db version is 1)
+        const transaction = openRequest.transaction;
+        const objectStore = transaction.objectStore("settings");
+        objectStore.createIndex("audioProxy", "audioProxy", { unique: false });
+        console.log("VOT: База Данных обновлена до 2-й версии");
+
+        objectStore.transaction.oncomplete = (event) => {
+          const objectStore = db
+            .transaction("settings", "readwrite")
+            .objectStore("settings");
+          const request = objectStore.get("settings");
+
+          request.onerror = (event) => {
+            console.error(
+              "VOT: Не удалось получить данные из Базы Данных: ",
+              event.error
+            );
+            reject(false);
+          };
+
+          request.onsuccess = () => {
+            const data = request.result || settingsDefault; // use data from db or reset all data
+            data.audioProxy = 0; // add default value for new index
+
+            const requestUpdate = objectStore.put(data);
+
+            requestUpdate.onerror = (event) => {
+              console.error(
+                "VOT: Не удалось обновить Базу Данных до 2 версии: ",
+                event.error
+              );
+              reject(false);
+            };
+
+            requestUpdate.onsuccess = () => {
+              console.log("VOT: Стандартные настройки 2-й версии добавлены в Базу Данных.");
+              resolve(true);
+            };
+          };
         };
-      };
+      }
     };
 
     openRequest.onsuccess = () => {
@@ -1253,6 +1322,7 @@ async function updateDB({
   syncVolume,
   autoSetVolumeYandexStyle,
   dontTranslateRuVideos,
+  audioProxy,
 }) {
   return new Promise((resolve, reject) => {
     if (
@@ -1261,7 +1331,8 @@ async function updateDB({
       typeof showVideoSlider === "number" ||
       typeof syncVolume === "number" ||
       typeof autoSetVolumeYandexStyle === "number" ||
-      typeof dontTranslateRuVideos === "number"
+      typeof dontTranslateRuVideos === "number" ||
+      typeof audioProxy === "number"
     ) {
       const openRequest = openDB("VOT");
 
@@ -1328,6 +1399,10 @@ async function updateDB({
 
           if (typeof dontTranslateRuVideos === "number") {
             data.dontTranslateRuVideos = dontTranslateRuVideos;
+          }
+
+          if (typeof audioProxy === "number") {
+            data.audioProxy = audioProxy;
           }
 
           const requestUpdate = objectStore.put(data);
@@ -1645,6 +1720,8 @@ function syncVolume(element, sliderVolume, otherSliderVolume, tempVolume) {
 
 
 
+// EXTERNAL MODULE: ./src/config/config-cloudflare.js
+var config_cloudflare = __webpack_require__("./src/config/config-cloudflare.js");
 ;// CONCATENATED MODULE: ./src/config/regexes.js
 const regexes = () => {
   return {
@@ -1674,6 +1751,7 @@ const selectors = () => {
 /* harmony default export */ const config_selectors = (selectors());
 
 ;// CONCATENATED MODULE: ./src/index.js
+
 
 
 
@@ -1846,6 +1924,7 @@ async function src_main() {
     let dbAutoSetVolumeYandexStyle;
     let dbDontTranslateRuVideos;
     let dbSyncVolume;
+    let dbAudioProxy; // cf version only
     let firstPlay = true;
     let isDBInited;
 
@@ -1964,6 +2043,7 @@ async function src_main() {
         dbShowVideoSlider = dbData.showVideoSlider;
         dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
         dbDontTranslateRuVideos = dbData.dontTranslateRuVideos;
+        dbAudioProxy = dbData.audioProxy; // cf version only
         // only youtube:
         dbSyncVolume = dbData.syncVolume;
 
@@ -2010,7 +2090,7 @@ async function src_main() {
           const checkbox = createMenuCheckbox(
             "VOTDontTranslateRu",
             dbDontTranslateRuVideos,
-            "Не переводить с русского (youtube)"
+            "Не переводить с русского"
           );
 
           checkbox.querySelector("#VOTDontTranslateRu").onclick = async (
@@ -2102,7 +2182,7 @@ async function src_main() {
           const checkbox = createMenuCheckbox(
             "VOTSyncVolume",
             dbSyncVolume,
-            "Связать громкость перевода и видео (youtube)"
+            "Связать громкость перевода и видео"
           );
 
           checkbox.querySelector("#VOTSyncVolume").onclick = async (event) => {
@@ -2111,6 +2191,30 @@ async function src_main() {
             await updateDB({ syncVolume: value });
             dbSyncVolume = value;
             debug/* default.log */.Z.log("syncVolume value changed. New value: ", dbSyncVolume);
+          };
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        // cf version only
+        if (
+           true &&
+          dbAudioProxy !== undefined &&
+          menuOptions &&
+          !menuOptions.querySelector("#VOTAudioProxy")
+        ) {
+          const checkbox = createMenuCheckbox(
+            "VOTAudioProxy",
+            dbAudioProxy,
+            "Проксировать полученное аудио"
+          );
+
+          checkbox.querySelector("#VOTAudioProxy").onclick = async (event) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({ audioProxy: value });
+            dbAudioProxy = value;
+            debug/* default.log */.Z.log("audioProxy value changed. New value: ", dbAudioProxy);
           };
 
           menuOptions.appendChild(checkbox);
@@ -2258,6 +2362,7 @@ async function src_main() {
         let ytData = getYTVideoData();
         ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
         videoData.detectedLanguage = ytData.detectedLanguage;
+        videoData.responseLanguage = ytData.responseLanguage;
       } else if (
         window.location.hostname.includes("rutube") ||
         window.location.hostname.includes("my.mail.ru")
@@ -2517,7 +2622,7 @@ async function src_main() {
         translateFuncParam,
         requestLang,
         responseLang,
-        (success, urlOrError) => {
+        async (success, urlOrError) => {
           debug/* default.log */.Z.log("[exec callback] translateVideo");
           if (getVideoId(siteHostname) !== VIDEO_ID) return;
           if (!success) {
@@ -2531,7 +2636,17 @@ async function src_main() {
             }
             throw urlOrError;
           }
+
           audio.src = urlOrError;
+
+          // cf version only
+          if ( true && dbAudioProxy === 1 && urlOrError.startsWith("https://")) {
+            const audioPath = urlOrError.replace("https://vtrans.s3-private.mds.yandex.net/tts/prod/", "");
+            const proxiedAudioUrl = `https://${config_cloudflare/* workerHost */.i}/video-translation/audio-proxy/${audioPath}`;
+            console.log(`VOT Audio proxied via ${proxiedAudioUrl}`);
+            audio.src = proxiedAudioUrl;
+          }
+
           volumeOnStart = video?.volume;
           if (typeof dbDefaultVolume === "number") {
             audio.volume = dbDefaultVolume / 100;
