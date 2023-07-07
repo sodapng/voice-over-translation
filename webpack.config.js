@@ -18,6 +18,11 @@ function getHeaders(file) {
 }
 
 const ru_headers = getHeaders('locales/ru/headers.json');
+const zh_headers = getHeaders('locales/zh/headers.json');
+const de_headers = getHeaders('locales/de/headers.json');
+const es_headers = getHeaders('locales/es/headers.json');
+const fr_headers = getHeaders('locales/fr/headers.json');
+const it_headers = getHeaders('locales/it/headers.json');
 
 export default (env) => {
   const build_mode = env.build_mode;
@@ -36,6 +41,10 @@ export default (env) => {
     }
 
     return name + '.js'
+  }
+
+  function get_name_by_build_mode(name) {
+    return build_mode === 'cloudflare' ? name.replace('[VOT]', '[VOT Cloudflare]') : name;
   }
 
   return {
@@ -106,8 +115,33 @@ export default (env) => {
         i18n: {
           'ru': (headers) => ({
             ...headers,
-            name: build_mode === 'cloudflare' ? '[VOT Cloudflare] - Закадровый перевод видео' : ru_headers['name'],
+            name: get_name_by_build_mode(ru_headers['name']),
             description: ru_headers['description']
+          }),
+          'zh': (headers) => ({
+            ...headers,
+            name: get_name_by_build_mode(zh_headers['name']),
+            description: zh_headers['description']
+          }),
+          'de': (headers) => ({
+            ...headers,
+            name: get_name_by_build_mode(de_headers['name']),
+            description: de_headers['description']
+          }),
+          'es': (headers) => ({
+            ...headers,
+            name: get_name_by_build_mode(es_headers['name']),
+            description: es_headers['description']
+          }),
+          'fr': (headers) => ({
+            ...headers,
+            name: get_name_by_build_mode(fr_headers['name']),
+            description: fr_headers['description']
+          }),
+          'it': (headers) => ({
+            ...headers,
+            name: get_name_by_build_mode(it_headers['name']),
+            description: it_headers['description']
           }),
         },
         strict: true,
