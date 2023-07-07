@@ -35,6 +35,7 @@ const siteTranslates = {
 const translations = {
   ru: {
     translateVideo: "Перевести видео",
+    disableTranslate: "Выключить",
     translationSettings: "Настройки перевода",
     resetSettings: "Сбросить настройки",
     VOTAutoTranslate: "Переводить при открытии",
@@ -51,6 +52,7 @@ const translations = {
   },
   en: {
     translateVideo: "Translate video",
+    disableTranslate: "Turn off",
     translationSettings: "Translation settings",
     resetSettings: "Reset settings",
     VOTAutoTranslate: "Translate on open",
@@ -67,6 +69,7 @@ const translations = {
   },
   zh: {
     translateVideo: "翻译视频",
+    disableTranslate: "关掉",
     translationSettings: "翻译设置",
     resetSettings: "重置设置",
     VOTAutoTranslate: "打开时翻译",
@@ -82,6 +85,7 @@ const translations = {
   },
   de: {
     translateVideo: "Video übersetzen",
+    disableTranslate: "Ausschalten",
     translationSettings: "Übersetzungseinstellungen",
     resetSettings: "Einstellungen zurücksetzen",
     VOTAutoTranslate: "Beim Öffnen übersetzen",
@@ -100,6 +104,7 @@ const translations = {
   },
   es: {
     translateVideo: "Traducir video",
+    disableTranslate: "Apagar",
     translationSettings: "Ajustes de traducción",
     resetSettings: "Restablecer ajustes",
     VOTAutoTranslate: "Traducir al abrir",
@@ -116,6 +121,7 @@ const translations = {
   },
   fr: {
     translateVideo: "Traduire la vidéo",
+    disableTranslate: "Désactiver",
     translationSettings: "Paramètres de traduction",
     resetSettings: "Réinitialiser les paramètres",
     VOTAutoTranslate: "Traduire à l'ouverture",
@@ -133,6 +139,7 @@ const translations = {
   },
   it: {
     translateVideo: "Traduci il video",
+    disableTranslate: "Spegnere",
     translationSettings: "Impostazioni di traduzione",
     resetSettings: "Ripristina impostazioni",
     VOTAutoTranslate: "Traduci all'apertura",

@@ -19,6 +19,7 @@ import {
   createMenuCheckbox,
   createMenuSlider,
   createMenuSelect,
+  lang,
 } from "./menu.js";
 import { syncVolume } from "./utils/volume.js";
 import { workerHost } from "./config/config-cloudflare.js";
@@ -32,12 +33,6 @@ const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 let translateFromLang = "en"; // default language of video
 
 let translateToLang = "ru"; // default language of audio response
-
-const userlang = navigator.language || navigator.userLanguage;
-let lang = userlang.substr(0, 2).toLowerCase();
-if (!(lang in translations)) {
-  lang = "en";
-}
 
 async function main() {
   debug.log("Loading extension...");
@@ -588,7 +583,7 @@ async function main() {
       const downloadBtn = document.querySelector(".translationDownload");
       downloadBtn.href = "";
       downloadBtn.style.display = "none";
-      transformBtn("none", "Перевести видео");
+      transformBtn("none", translations[lang].translateVideo);
       if (volumeOnStart) {
         video.volume = volumeOnStart;
       }
@@ -776,7 +771,7 @@ async function main() {
       const slider = createMenuSlider(
         "VOTTranslationSlider",
         defaultTranslateVolume,
-        `Громкость перевода: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
+        `${translations[lang].resetSettings}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
       );
 
       // Add an input event listener to the slider
@@ -998,7 +993,7 @@ async function main() {
           videos.forEach((v) =>
             events.forEach((e) => v.addEventListener(e, handleVideoEvent))
           );
-          transformBtn("success", "Выключить");
+          transformBtn("success", translations[lang].disableTranslate);
           addVideoSlider();
           addTranslationSlider();
 
