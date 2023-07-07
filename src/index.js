@@ -771,7 +771,7 @@ async function main() {
       const slider = createMenuSlider(
         "VOTTranslationSlider",
         defaultTranslateVolume,
-        `${translations[lang].resetSettings}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
+        `${translations[lang].VOTVolumeTranslation}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
       );
 
       // Add an input event listener to the slider

@@ -1350,6 +1350,7 @@ const translations = {
     VOTAutoTranslate: "Переводить при открытии",
     VOTDontTranslateRu: "Не переводить с русского",
     VOTVolume: "Громкость видео",
+    VOTVolumeTranslation: "Громкость перевода",
     VOTAutoSetVolume: "Уменьшать громкость видео до ",
     VOTShowVideoSlider: "Слайдер громкости видео",
     VOTSyncVolume: "Связать громкость перевода и видео",
@@ -1368,6 +1369,7 @@ const translations = {
     VOTAutoTranslate: "Translate on open",
     VOTDontTranslateRu: "Do not translate from Russian",
     VOTVolume: "Video volume",
+    VOTVolumeTranslation: "Translation Volume",
     VOTAutoSetVolume: "Reduce video volume to ",
     VOTShowVideoSlider: "Video volume slider",
     VOTSyncVolume: "Link translation and video volume",
@@ -1386,6 +1388,7 @@ const translations = {
     VOTAutoTranslate: "打开时翻译",
     VOTDontTranslateRu: "不要从俄语翻译",
     VOTVolume: "视频量",
+    VOTVolumeTranslation: "翻译量",
     VOTAutoSetVolume: "将视频音量降低到",
     VOTShowVideoSlider: "视频音量滑块",
     VOTSyncVolume: "链接翻译和视频音量",
@@ -1403,7 +1406,8 @@ const translations = {
     VOTAutoTranslate: "Beim Öffnen übersetzen",
     VOTDontTranslateRu: "Nicht aus dem Russischen übersetzen",
     VOTVolume: "Video Lautstärke",
-    VOTAutoSetVolume: "Video-Lautstärke auf  reduzieren",
+    VOTVolumeTranslation: "Übersetzungsvolumen",
+    VOTAutoSetVolume: "Video-Lautstärke auf reduzieren ",
     VOTShowVideoSlider: "Video-Lautstärkeregler",
     VOTSyncVolume: "Übersetzungs- und Videolautstärke verknüpfen",
     VOTAudioProxy: "Empfangenes Audio proxyen",
@@ -1423,6 +1427,7 @@ const translations = {
     VOTAutoTranslate: "Traducir al abrir",
     VOTDontTranslateRu: "No traducir del ruso",
     VOTVolume: "Volumen de vídeo",
+    VOTVolumeTranslation: "Volumen de traducción",
     VOTAutoSetVolume: "Reducir el volumen del video al ",
     VOTShowVideoSlider: "Deslizador de volumen de video",
     VOTSyncVolume: "Vincular el volumen de traducción y video",
@@ -1441,6 +1446,7 @@ const translations = {
     VOTAutoTranslate: "Traduire à l'ouverture",
     VOTDontTranslateRu: "Ne pas traduire du russe",
     VOTVolume: "Volume de la vidéo",
+    VOTVolumeTranslation: "Volume de traduction",
     VOTAutoSetVolume: "Réduire le volume de la vidéo à ",
     VOTShowVideoSlider: "Curseur de volume vidéo",
     VOTSyncVolume: "Lier le volume de la traduction et de la vidéo",
@@ -1460,6 +1466,7 @@ const translations = {
     VOTAutoTranslate: "Traduci all'apertura",
     VOTDontTranslateRu: "Non tradurre dal russo",
     VOTVolume: "Volume video",
+    VOTVolumeTranslation: "Volume di traduzione",
     VOTAutoSetVolume: "Riduci il volume del video al ",
     VOTShowVideoSlider: "Cursore del volume del video",
     VOTSyncVolume: "Collega il volume della traduzione e del video",
@@ -2830,7 +2837,7 @@ async function src_main() {
       const slider = createMenuSlider(
         "VOTTranslationSlider",
         defaultTranslateVolume,
-        `${translations[lang].resetSettings}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
+        `${translations[lang].VOTVolumeTranslation}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
       );
 
       // Add an input event listener to the slider
