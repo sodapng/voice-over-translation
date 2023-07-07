@@ -6,8 +6,7 @@ import { autoVolume } from "./config/config.js";
 import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
 import {
   translateFuncParam,
-  availableFromLangs,
-  availableToLangs,
+  availableLangs,
   siteTranslates,
   translations,
 } from "./config/constants.js";
@@ -36,6 +35,15 @@ let translateToLang = "ru"; // default language of audio response
 
 async function main() {
   debug.log("Loading extension...");
+  debug.log(`Selected menu language: ${lang}`);
+  // test all translations in console
+  // debug.translations('ru');
+  // debug.translations('en');
+  // debug.translations('de');
+  // debug.translations('zh');
+  // debug.translations('es');
+  // debug.translations('fr');
+  // debug.translations('it');
 
   const rvt = await import(
     `./rvt${BUILD_MODE === "cloudflare" ? "-cloudflare" : ""}.js`
@@ -52,7 +60,7 @@ async function main() {
       GM_info.scriptHandler
     )
   ) {
-    const errorText = `VOT Ошибка!\n${GM_info.scriptHandler} не поддерживается этой версией расширения!\nПожалуйста, используйте спец. версию расширения.`;
+    const errorText = translations[lang].unSupportedExtensionError;
     console.error(errorText);
     return alert(errorText);
   }
@@ -144,7 +152,7 @@ async function main() {
 
         debug.log("[exec callback] Requesting video translation");
         if (!success) {
-          callback(false, "Не удалось запросить перевод видео");
+          callback(false, translations[lang].requestTranslationFailed);
           return;
         }
 
@@ -158,7 +166,7 @@ async function main() {
           case 1:
             callback(
               !!translateResponse.url,
-              translateResponse.url || "Не получена ссылка на аудио"
+              translateResponse.url || translations[lang].audioNotReceived
             );
             break;
           case 2:
@@ -166,7 +174,7 @@ async function main() {
               false,
               translateResponse.remainingTime
                 ? secsToStrTime(translateResponse.remainingTime)
-                : "Перевод займет несколько минут"
+                : translations[lang].translationTakeFewMinutes
             );
             break;
           case 3:
@@ -174,7 +182,7 @@ async function main() {
               Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода. В конечном итоге, это занимает слишком много времени,
               как-будто сервер не понимает, что данное видео уже недавно было переведено и заместо возвращения готовой ссылки на перевод начинает переводить видео заново при чём у него это получается за очень длительное время
             */
-            callback(false, "Видео переводится");
+            callback(false, translations[lang].videoBeingTranslated);
             break;
         }
       }
@@ -231,7 +239,7 @@ async function main() {
       isDBInited = await initDB();
     } catch (err) {
       console.error(
-        "[VOT] Не удалось инициализировать настройки базы данных. Все внесенные изменения не будут сохранены",
+        "[VOT] Failed to initialize database settings. All changes made will not be saved",
         err
       );
     }
@@ -240,12 +248,12 @@ async function main() {
     if (menuOptions && !menuOptions.querySelector("#VOTTranslateFromLang")) {
       const selectFromLangOptions = [
         {
-          label: "Язык видео",
+          label: translations[lang].videoLanguage,
           value: "default",
           disabled: true,
         },
-        ...Object.entries(availableFromLangs).map(([key, value]) => ({
-          label: value,
+        ...Object.entries(availableLangs).map(([key, value]) => ({
+          label: translations[lang][value],
           value: key,
           selected: videoData.detectedLanguage === key,
         })),
@@ -253,19 +261,16 @@ async function main() {
 
       const selectToLangOptions = [
         {
-          label: "Язык перевода",
+          label: translations[lang].translationLanguage,
           value: "default",
           disabled: true,
         },
-      ];
-
-      for (const [key, value] of Object.entries(availableToLangs)) {
-        selectToLangOptions.push({
-          label: value,
+        ...Object.entries(availableLangs).map(([key, value]) => ({
+          label: translations[lang][value],
           value: key,
           selected: videoData.responseLanguage === key,
-        });
-      }
+        })),
+      ];
 
       const selectFromLang = createMenuSelect(
         "VOTTranslateFromLang",
@@ -311,8 +316,7 @@ async function main() {
         dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
         dbDontTranslateRuVideos = dbData.dontTranslateRuVideos;
         dbAudioProxy = dbData.audioProxy; // cf version only
-        // only youtube:
-        dbSyncVolume = dbData.syncVolume;
+        dbSyncVolume = dbData.syncVolume; // youtube only
 
         debug.log("[db] data from db: ", dbData);
 
@@ -327,7 +331,7 @@ async function main() {
             translations[lang].VOTAutoTranslate +
               (siteHostname === "vk" ||
               window.location.hostname.includes("m.twitch.tv")
-                ? " <strong>(рекомендуется)</strong>"
+                ? ` <strong>(${translations[lang].recommended})</strong>`
                 : "")
           );
 
@@ -537,7 +541,7 @@ async function main() {
           data.responseLanguage = "en";
           break;
         default:
-          if (!Object.keys(availableFromLangs).includes(lang)) {
+          if (!Object.keys(availableLangs).includes(lang)) {
             return setDetectedLangauge(data, "en");
           }
 
@@ -557,7 +561,7 @@ async function main() {
           data.detectedLanguage = "ru";
           break;
         default:
-          if (!Object.keys(availableToLangs).includes(lang)) {
+          if (!Object.keys(availableLangs).includes(lang)) {
             return setResponseLangauge(data, "ru");
           }
 
@@ -662,17 +666,15 @@ async function main() {
           audioPromise.catch((e) => {
             console.error(e);
             if (e.name === "NotAllowedError") {
-              transformBtn(
-                "error",
-                "Предоставьте разрешение на автовоспроизведение"
-              );
-              throw "VOT: Предоставьте разрешение на автовоспроизведение";
+              const errorMessage = translations[lang].grantPermissionToAutoPlay;
+              transformBtn("error", errorMessage);
+              throw `VOT: ${errorMessage}`;
             } else if (e.name === "NotSupportedError") {
               const errorMessage = sitesChromiumBlocked.includes(
                 window.location.hostname
               )
-                ? "Для поддержки этого сайта необходимо дополнительное расширение"
-                : "Формат аудио не поддерживается";
+                ? translations[lang].neededAdditionalExtension
+                : translations[lang].audioFormatNotSupported;
               transformBtn("error", errorMessage);
               throw `VOT: ${errorMessage}`;
             }
@@ -890,7 +892,8 @@ async function main() {
           if (getVideoId(siteHostname) !== VIDEO_ID) return;
           if (!success) {
             transformBtn("error", urlOrError);
-            if (urlOrError.includes("Перевод займёт")) {
+            // if the error line contains information that the translation is being performed, then we wait
+            if (urlOrError.includes(translations[lang].translationTake)) {
               clearTimeout(autoRetry);
               autoRetry = setTimeout(
                 () => translateFunc(VIDEO_ID, requestLang, responseLang),
@@ -1102,7 +1105,7 @@ async function main() {
           const VIDEO_ID = getVideoId(siteHostname);
 
           if (!VIDEO_ID) {
-            throw "VOT: Не найдено ID видео"; // not found video id
+            throw translations[lang].VOTNoVideoIDFound;
           }
 
           translateExecutor(VIDEO_ID);
@@ -1121,7 +1124,7 @@ async function main() {
       const VIDEO_ID = getVideoId(siteHostname);
 
       if (!VIDEO_ID) {
-        throw "VOT: Не найдено ID видео";
+        throw translations[lang].VOTNoVideoIDFound;
       }
 
       try {
