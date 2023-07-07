@@ -3,7 +3,7 @@
 // @name:ru [VOT Cloudflare] - Закадровый перевод видео
 // @description A small extension that adds a Yandex Browser video translation to other browsers
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
-// @version 1.3.2
+// @version 1.3.3
 // @author sodapng, mynovelhost, Toil
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -93,7 +93,7 @@
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\r\n  padding: 0.45rem !important;\r\n  width: max-content;\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  border-radius: 0.5rem !important;\r\n  left: 50%;\r\n  top: 3rem;\r\n  transform: translate(-50%);\r\n  text-align: center;\r\n  opacity: 0;\r\n  transition: opacity 1s;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n  user-select: none;\r\n  z-index: 100;\r\n}\r\n\r\n.translationBtn {\r\n  position: relative;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  color: #fff;\r\n  padding-right: 0.25rem !important;\r\n  cursor: pointer;\r\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\r\n}\r\n\r\n.translationBlock:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.translationMenu {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  border-left: 1px solid #424348;\r\n  max-height: 16px;\r\n  max-width: 24px;\r\n  cursor: pointer;\r\n}\r\n\r\n.translationMenuIcon {\r\n  padding: 0 10px !important;\r\n  width: 24px;\r\n}\r\n\r\n.translationIAlice {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 26px;\r\n  max-width: 50px;\r\n}\r\n\r\n.translationIconAlice {\r\n  height: 24px !important;\r\n  width: 24px !important;\r\n}\r\n\r\n.translationITranslate {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 20px;\r\n  max-width: 20px;\r\n}\r\n\r\n.translationMenuContent {\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  color: #fff;\r\n  display: none;\r\n  border-radius: 1rem !important;\r\n  left: 50%;\r\n  top: 8rem;\r\n  transform: translate(-50%);\r\n  text-align: left;\r\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n\r\n  width: 300px;\r\n  /* height: 375px; */\r\n  opacity: 0;\r\n  z-index: 100;\r\n  transition: opacity 0.5s ease;\r\n}\r\n\r\n.VOTMenuSlider {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 268px !important;\r\n  height: 8px !important;\r\n  outline: none !important;\r\n  margin-top: 0.5rem;\r\n  opacity: 0.7;\r\n  /* background: #3C3F4D !important; */\r\n  background: rgb(253, 222, 85, 0.6) !important;\r\n  border: none !important;\r\n  border-radius: 2rem !important;\r\n  -webkit-transition: 0.2s !important;\r\n  transition: opacity 0.2s ease !important;\r\n}\r\n\r\n.VOTMenuSlider:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.VOTMenuSlider::-webkit-slider-thumb {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-fill-lower {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(\r\n    90.1deg,\r\n    rgba(186, 153, 244, 0.85) -5.78%,\r\n    rgba(236, 138, 202, 0.7) 56.46%,\r\n    rgba(239, 168, 117, 0.6) 108.93%\r\n  ) !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-progress {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(\r\n    90.1deg,\r\n    rgba(186, 153, 244, 0.85) -5.78%,\r\n    rgba(236, 138, 202, 0.7) 56.46%,\r\n    rgba(239, 168, 117, 0.6) 108.93%\r\n  ) !important;\r\n}\r\n\r\n.translationHeader {\r\n  padding-bottom: 0.5rem !important;\r\n}\r\n\r\n.translationMainHeader {\r\n  margin: 16px !important;\r\n  color: #fff;\r\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n}\r\n\r\n.translationMenuContainer {\r\n  /* width: 100%; */\r\n  padding-left: 16px !important;\r\n  padding-top: 5px !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n.translationMenuContainer > input {\r\n  appearance: auto !important;\r\n  vertical-align: text-bottom;\r\n}\r\n\r\n.translationMenuText {\r\n  color: #fff;\r\n  display: inline-flex;\r\n  width: 80%;\r\n}\r\n\r\n.translationVolumeBox,\r\n.translationVideoVolumeBox {\r\n  padding-top: 0.5rem !important;\r\n}\r\n\r\n.translationDropDB {\r\n  border: none !important;\r\n  border-radius: 4px !important;\r\n  background: #5426ff !important;\r\n  color: #fff !important;\r\n  padding: 6px 16px !important;\r\n  margin-left: auto !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.translationDownload {\r\n  background: #5426ff !important;\r\n  color: #fff !important;\r\n  padding: 2px 10px !important;\r\n  border-radius: 4px !important;\r\n  cursor: pointer;\r\n  display: none;\r\n}\r\n\r\n.translationMenuFunctional {\r\n  display: flex;\r\n  margin: 16px !important;\r\n}\r\n\r\n.VOTMenuSelect {\r\n  width: 110px;\r\n  border-radius: 5px !important;\r\n  border: 1px solid #dadce0 !important;\r\n  box-shadow: 0 1px 3px -2px #9098a9;\r\n  box-sizing: border-box !important;\r\n  color: #2e2f34 !important;\r\n  background: #fff !important;\r\n  padding: 5px !important;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n  border-color: #0077ff;\r\n  box-shadow: 0 0 0 2px rgba(#0077ff, 0.2);\r\n}\r\n\r\n#VOTSelectLanguages {\r\n  display: flex !important;\r\n  margin-left: 5px;\r\n}\r\n\r\n#VOTSelectLanguages svg {\r\n  margin: 0 5px;\r\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\n  padding: 0.45rem !important;\n  width: max-content;\n  position: absolute;\n  background: #2e2f34;\n  border-radius: 0.5rem !important;\n  left: 50%;\n  top: 3rem;\n  transform: translate(-50%);\n  text-align: center;\n  opacity: 0;\n  transition: opacity 1s;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  z-index: 100;\n}\n\n.translationBtn {\n  position: relative;\n  display: inline-block;\n  vertical-align: middle;\n  color: #fff;\n  padding-right: 0.25rem !important;\n  cursor: pointer;\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\n}\n\n.translationBlock:hover {\n  opacity: 1;\n}\n\n.translationMenu {\n  display: inline-block;\n  vertical-align: middle;\n  border-left: 1px solid #424348;\n  max-height: 16px;\n  max-width: 24px;\n  cursor: pointer;\n}\n\n.translationMenuIcon {\n  padding: 0 10px !important;\n  width: 24px;\n}\n\n.translationIAlice {\n  display: inline-block;\n  vertical-align: middle;\n  max-height: 26px;\n  max-width: 50px;\n}\n\n.translationIconAlice {\n  height: 24px !important;\n  width: 24px !important;\n}\n\n.translationITranslate {\n  display: inline-block;\n  vertical-align: middle;\n  max-height: 20px;\n  max-width: 20px;\n}\n\n.translationMenuContent {\n  position: absolute;\n  background: #2e2f34;\n  color: #fff;\n  display: none;\n  border-radius: 1rem !important;\n  left: 50%;\n  top: 8rem;\n  transform: translate(-50%);\n  text-align: left;\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\n\n  width: 300px;\n  /* height: 375px; */\n  opacity: 0;\n  z-index: 100;\n  transition: opacity 0.5s ease;\n}\n\n.VOTMenuSlider {\n  -webkit-appearance: none !important;\n  appearance: none !important;\n  width: 268px !important;\n  height: 8px !important;\n  outline: none !important;\n  margin-top: 0.5rem;\n  opacity: 0.7;\n  /* background: #3C3F4D !important; */\n  background: rgb(253, 222, 85, 0.6) !important;\n  border: none !important;\n  border-radius: 2rem !important;\n  -webkit-transition: 0.2s !important;\n  transition: opacity 0.2s ease !important;\n}\n\n.VOTMenuSlider:hover {\n  opacity: 1;\n}\n\n.VOTMenuSlider::-webkit-slider-thumb {\n  -webkit-appearance: none !important;\n  appearance: none !important;\n  width: 10px !important;\n  height: 10px !important;\n  border-radius: 50% !important;\n  border: none !important;\n  background: #fff !important;\n  cursor: pointer !important;\n}\n\n.VOTMenuSlider::-moz-range-thumb {\n  width: 10px !important;\n  height: 10px !important;\n  border-radius: 50% !important;\n  border: none !important;\n  background: #fff !important;\n  cursor: pointer !important;\n}\n\n.VOTMenuSlider::-ms-thumb {\n  width: 10px !important;\n  height: 10px !important;\n  border-radius: 50% !important;\n  border: none !important;\n  background: #fff !important;\n  cursor: pointer !important;\n}\n\n.VOTMenuSlider::-ms-fill-lower {\n  height: 8px !important;\n  border-radius: 2rem !important;\n  background: linear-gradient(\n    90.1deg,\n    rgba(186, 153, 244, 0.85) -5.78%,\n    rgba(236, 138, 202, 0.7) 56.46%,\n    rgba(239, 168, 117, 0.6) 108.93%\n  ) !important;\n}\n\n.VOTMenuSlider::-moz-range-progress {\n  height: 8px !important;\n  border-radius: 2rem !important;\n  background: linear-gradient(\n    90.1deg,\n    rgba(186, 153, 244, 0.85) -5.78%,\n    rgba(236, 138, 202, 0.7) 56.46%,\n    rgba(239, 168, 117, 0.6) 108.93%\n  ) !important;\n}\n\n.translationHeader {\n  padding-bottom: 0.5rem !important;\n}\n\n.translationMainHeader {\n  margin: 16px !important;\n  color: #fff;\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\n}\n\n.translationMenuOptions {\n  display: flex;\n  flex-flow: column wrap;\n}\n\n.translationMenuContainer {\n  /* width: 100%; */\n  padding-left: 16px !important;\n  padding-top: 5px !important;\n  display: inline-block !important;\n}\n\n.translationMenuContainer > input {\n  appearance: auto !important;\n  vertical-align: text-bottom;\n}\n\n.translationMenuText {\n  color: #fff;\n  display: inline-flex;\n  width: 80%;\n}\n\n.translationVolumeBox,\n.translationVideoVolumeBox {\n  padding-top: 0.5rem !important;\n}\n\n.translationDropDB {\n  border: none !important;\n  border-radius: 4px !important;\n  background: #5426ff !important;\n  color: #fff !important;\n  padding: 6px 16px !important;\n  margin-left: auto !important;\n  cursor: pointer !important;\n}\n\n.translationDownload {\n  background: #5426ff !important;\n  color: #fff !important;\n  padding: 2px 10px !important;\n  border-radius: 4px !important;\n  cursor: pointer;\n  display: none;\n}\n\n.translationMenuFunctional {\n  display: flex;\n  margin: 16px !important;\n}\n\n.VOTMenuSelect {\n  width: 110px;\n  border-radius: 5px !important;\n  border: 1px solid #dadce0 !important;\n  box-shadow: 0 1px 3px -2px #9098a9;\n  box-sizing: border-box !important;\n  color: #2e2f34 !important;\n  background: #fff !important;\n  padding: 5px !important;\n}\n\n.VOTMenuSelect:focus {\n  outline: none;\n}\n\n.VOTMenuSelect:focus {\n  outline: none;\n  border-color: #0077ff;\n  box-shadow: 0 0 0 2px rgba(#0077ff, 0.2);\n}\n\n#VOTSelectLanguages {\n  display: flex !important;\n  margin-left: 5px;\n}\n\n#VOTSelectLanguages svg {\n  margin: 0 5px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -487,6 +487,416 @@ const autoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video 
 
 /***/ }),
 
+/***/ "./src/config/constants.js":
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Iz": () => (/* binding */ translations),
+/* harmony export */   "ey": () => (/* binding */ translateFuncParam),
+/* harmony export */   "g$": () => (/* binding */ siteTranslates),
+/* harmony export */   "tW": () => (/* binding */ availableLangs)
+/* harmony export */ });
+const translateFuncParam = 0x40_75_50_00_00_00_00_00;
+const availableLangs = {
+  ru: "Russian",
+  en: "English",
+  zh: "Chinese",
+  fr: "French",
+  it: "Italian",
+  es: "Spanish",
+  de: "German",
+}; // available languages for translation
+const siteTranslates = {
+  youtube: "https://youtu.be/",
+  twitch: "https://twitch.tv/",
+  vimeo: "https://vimeo.com/",
+  "9gag": "https://9gag.com/gag/",
+  vk: "https://vk.com/video?z=",
+  xvideos: "https://www.xvideos.com/",
+  pornhub: "https://rt.pornhub.com/view_video.php?viewkey=",
+  udemy: "https://www.udemy.com",
+  twitter: "https://twitter.com/i/status/",
+  facebook: "https://www.facebook.com/",
+  rutube: "https://rutube.ru/video/",
+  "bilibili.com": "https://www.bilibili.com/video/",
+  "mail.ru": "https://my.mail.ru/",
+};
+const translations = {
+  ru: {
+    recommended: "рекомендуется",
+    translateVideo: "Перевести видео",
+    disableTranslate: "Выключить",
+    translationSettings: "Настройки перевода",
+    resetSettings: "Сбросить настройки",
+    videoBeingTranslated: "Видео переводится",
+    videoLanguage: "Язык видео",
+    translationLanguage: "Язык перевода",
+    translationTake: "Перевод займёт",
+    translationTakeMoreThanHour: "Перевод займёт больше часа",
+    translationTakeAboutMinute: "Перевод займёт около минуты",
+    translationTakeFewMinutes: "Перевод займёт несколько минут",
+    translationTakeApproximatelyMinutes: "Перевод займёт примерно {0} минут",
+    translationTakeApproximatelyMinute: "Перевод займёт примерно {0} минуты",
+    unSupportedExtensionError: `Ошибка! ${GM_info.scriptHandler} не поддерживается этой версией расширения!\n\nПожалуйста, используйте cloudflare-версию расширения VOT.`,
+    requestTranslationFailed: "Не удалось запросить перевод видео",
+    audioNotReceived: "Не получена ссылка на аудио",
+    grantPermissionToAutoPlay: "Предоставьте разрешение на автовоспроизведение",
+    neededAdditionalExtension:
+      "Для поддержки этого сайта необходимо дополнительное расширение",
+    audioFormatNotSupported: "Формат аудио не поддерживается",
+    VOTAutoTranslate: "Переводить при открытии",
+    VOTDontTranslateRu: "Не переводить с русского",
+    VOTVolume: "Громкость видео",
+    VOTVolumeTranslation: "Громкость перевода",
+    VOTAutoSetVolume: "Уменьшать громкость видео до ",
+    VOTShowVideoSlider: "Слайдер громкости видео",
+    VOTSyncVolume: "Связать громкость перевода и видео",
+    VOTAudioProxy: "Проксировать полученное аудио",
+    VOTDisableRussian: "VOT: Вы отключили перевод русскоязычных видео",
+    VOTLiveNotSupported:
+      "VOT: Не поддерживается перевод трансляций в прямом эфире",
+    VOTPremiere: "VOT: Дождитесь окончания премьеры перед переводом",
+    VOTVideoIsTooLong: "VOT: Видео слишком длинное",
+    VOTNoVideoIDFound: "VOT: Не найдено ID видео",
+    VOTFailedInitDB: "VOT: Не удалось инициализовать базу данных",
+    VOTDBNeedUpdate:
+      "VOT: Базе данных нужно обновление, пожалуйста, перезагрузите страницу",
+    VOTDisabledForDBUpdating: `VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с ${window.location.hostname} и попробуйте снова`,
+    VOTFailedWriteToDB: "VOT: Не удалось записать данные в базу данных",
+    VOTFailedReadFromDB: "VOT: Не удалось получить данные из базы данных",
+    Russian: "Русский",
+    English: "Английский",
+    Chinese: "Китайский",
+    French: "Французский",
+    Italian: "Итальянский",
+    Spanish: "Испанский",
+    German: "Немецкий",
+  },
+  en: {
+    recommended: "recommended",
+    translateVideo: "Translate video",
+    disableTranslate: "Turn off",
+    translationSettings: "Translation settings",
+    resetSettings: "Reset settings",
+    videoBeingTranslated: "The video is being translated",
+    videoLanguage: "Video language",
+    translationLanguage: "Translation language",
+    translationTake: "The translation will take",
+    translationTakeMoreThanHour: "The translation will take more than an hour",
+    translationTakeAboutMinute: "The translation will take about a minute",
+    translationTakeFewMinutes: "The translation will take a few minutes",
+    translationTakeApproximatelyMinutes:
+      "The translation will take approximately {0} minutes",
+    translationTakeApproximatelyMinute:
+      "The translation will take approximately {0} minutes",
+    unSupportedExtensionError: `Error! ${GM_info.scriptHandler} is not supported by this version of the extension!\n\nPlease use the cloudflare version of the VOT extension.`,
+    requestTranslationFailed: "Failed to request video translation",
+    audioNotReceived: "Audio link not received",
+    grantPermissionToAutoPlay: "Grant permission to autoplay",
+    neededAdditionalExtension:
+      "An additional extension is needed to support this site",
+    audioFormatNotSupported: "The audio format is not supported",
+    VOTAutoTranslate: "Translate on open",
+    VOTDontTranslateRu: "Don't translate from Russian",
+    VOTVolume: "Video volume",
+    VOTVolumeTranslation: "Translation Volume",
+    VOTAutoSetVolume: "Reduce video volume to ",
+    VOTShowVideoSlider: "Video volume slider",
+    VOTSyncVolume: "Link translation and video volume",
+    VOTAudioProxy: "Proxy received audio",
+    VOTDisableRussian:
+      "VOT: You have disabled the translation of Russian videos",
+    VOTLiveNotSupported: "VOT: Translation of live streams is not supported",
+    VOTPremiere: "VOT: Wait for the premiere to end before translating",
+    VOTVideoIsTooLong: "VOT: Video is too long",
+    VOTNoVideoIDFound: "VOT: No video ID found",
+    VOTFailedInitDB: "VOT: Failed to initialize database",
+    VOTDBNeedUpdate:
+      "VOT: The database needs an update, please reload the page",
+    VOTDisabledForDBUpdating: `VOT is disabled due to an error when updating the Database. Close all open tabs with ${window.location.hostname} and try again`,
+    VOTFailedWriteToDB: "VOT: Data could not be written to the database",
+    VOTFailedReadFromDB: "VOT: Data could not be retrieved from the database",
+    Russian: "Russian",
+    English: "English",
+    Chinese: "Chinese",
+    French: "French",
+    Italian: "Italian",
+    Spanish: "Spanish",
+    German: "German",
+  },
+  zh: {
+    recommended: "推荐使用",
+    translateVideo: "翻译视频",
+    disableTranslate: "关掉",
+    translationSettings: "翻译需要一个多小时",
+    resetSettings: "重置设置",
+    videoBeingTranslated: "视频正在翻译中",
+    videoLanguage: "视频语言",
+    translationLanguage: "翻译语言",
+    translationTake: "翻译将采取",
+    translationTakeMoreThanHour: "翻译将采取一个多小时",
+    translationTakeAboutMinute: "翻译将采取一分钟",
+    translationTakeFewMinutes: "翻译将采取几分钟",
+    translationTakeApproximatelyMinutes: "翻译将采取大约需要{0}分钟",
+    translationTakeApproximatelyMinute: "翻译将采取大约需要{0}分钟",
+    unSupportedExtensionError: `错误! 此版本的扩展不支持 ${GM_info.scriptHandler}!\n\n请使用cloudflare版本的VOT扩展.`,
+    requestTranslationFailed: "请求视频翻译失败",
+    audioNotReceived: "未收到音频链接",
+    grantPermissionToAutoPlay: "授予自动播放权限",
+    neededAdditionalExtension: "需要一个额外的扩展来支持这个网站",
+    audioFormatNotSupported: "不支持音频格式",
+    VOTAutoTranslate: "打开时翻译",
+    VOTDontTranslateRu: "不要从俄语翻译",
+    VOTVolume: "视频量",
+    VOTVolumeTranslation: "翻译量",
+    VOTAutoSetVolume: "将视频音量降低到",
+    VOTShowVideoSlider: "视频音量滑块",
+    VOTSyncVolume: "链接翻译和视频音量",
+    VOTAudioProxy: "代理接收的音频",
+    VOTDisableRussian: "VOT：您已禁用俄语视频的翻译",
+    VOTLiveNotSupported: "VOT：不支持直播流的翻译",
+    VOTPremiere: "VOT：等待首映结束后再翻译",
+    VOTVideoIsTooLong: "VOT：视频太长",
+    VOTNoVideoIDFound: "VOT: 没有找到视频ID",
+    VOTFailedInitDB: "VOT: 初始化数据库失败",
+    VOTDBNeedUpdate: "VOT: 数据库需要更新,请重新加载页面",
+    VOTDisabledForDBUpdating: `VOT由于更新数据库时出错而被禁用。 关闭所有打开的选项卡${window.location.hostname} 再试一次`,
+    VOTFailedWriteToDB: "VOT: 无法将数据写入数据库",
+    VOTFailedReadFromDB: "VOT: 无法从数据库中检索数据",
+    Russian: "俄语",
+    English: "英语",
+    Chinese: "中文",
+    French: "法语",
+    Italian: "意大利语",
+    Spanish: "西班牙语",
+    German: "德语",
+  },
+  de: {
+    recommended: "es wird empfohlen",
+    translateVideo: "Video übersetzen",
+    disableTranslate: "Ausschalten",
+    translationSettings: "Übersetzungseinstellungen",
+    resetSettings: "Einstellungen zurücksetzen",
+    videoBeingTranslated: "Das Video wird übersetzt",
+    videoLanguage: "Sprache Video",
+    translationLanguage: "Zielsprache",
+    translationTake: "Die Übersetzung dauert",
+    translationTakeMoreThanHour: "Die Übersetzung dauert mehr als eine Stunde",
+    translationTakeAboutMinute: "Die Übersetzung dauert ungefähr eine Minute",
+    translationTakeFewMinutes: "Die Übersetzung dauert einige Minuten",
+    translationTakeApproximatelyMinutes:
+      "Die Übersetzung dauert ungefähr {0} Minuten",
+    translationTakeApproximatelyMinute:
+      "Die Übersetzung dauert ungefähr {0} Minuten",
+    unSupportedExtensionError: `Fehler! ${GM_info.scriptHandler} wird von dieser Version der Erweiterung nicht unterstützt!\n\nBitte verwenden Sie die Cloudflare-Version der VOT-Erweiterung.`,
+    requestTranslationFailed:
+      "Videoübersetzung konnte nicht angefordert werden",
+    audioNotReceived: "Audiolink nicht empfangen",
+    grantPermissionToAutoPlay:
+      "Erteilen Sie die Berechtigung zur automatischen Wiedergabe",
+    neededAdditionalExtension:
+      "Eine zusätzliche Erweiterung ist erforderlich, um diese Website zu unterstützen",
+    audioFormatNotSupported: "Das Audioformat wird nicht unterstützt",
+    VOTAutoTranslate: "Beim Öffnen übersetzen",
+    VOTDontTranslateRu: "Nicht aus dem Russischen übersetzen",
+    VOTVolume: "Video Lautstärke",
+    VOTVolumeTranslation: "Übersetzungsvolumen",
+    VOTAutoSetVolume: "Video-Lautstärke auf reduzieren ",
+    VOTShowVideoSlider: "Video-Lautstärkeregler",
+    VOTSyncVolume: "Übersetzungs- und Videolautstärke verknüpfen",
+    VOTAudioProxy: "Empfangenes Audio proxyen",
+    VOTDisableRussian:
+      "VOT: Sie haben die Übersetzung von russischen Videos deaktiviert",
+    VOTLiveNotSupported:
+      "VOT: Übersetzung von Live-Streams wird nicht unterstützt",
+    VOTPremiere:
+      "VOT: Warten Sie, bis die Premiere beendet ist, bevor Sie übersetzen",
+    VOTVideoIsTooLong: "VOT: Video ist zu lang",
+    VOTNoVideoIDFound: "VOT: Keine Video-ID gefunden",
+    VOTFailedInitDB: "VOT: Datenbank konnte nicht initialisiert werden",
+    VOTDBNeedUpdate:
+      "VOT: Die Datenbank muss aktualisiert werden, bitte laden Sie die Seite neu",
+    VOTDisabledForDBUpdating: `VOT wurde aufgrund eines Fehlers beim Aktualisieren der Datenbank deaktiviert. Schließen Sie alle geöffneten Tabs mit ${window.location.hostname} und versuchen Sie es erneut`,
+    VOTFailedWriteToDB:
+      "VOT: Daten konnten nicht in die Datenbank geschrieben werden",
+    VOTFailedReadFromDB: "VOT: Konnte keine Daten aus der Datenbank abrufen",
+    Russian: "Russisch",
+    English: "Englisch",
+    Chinese: "Chinesisch",
+    French: "Französisch",
+    Italian: "Italienisch",
+    Spanish: "Spanisch",
+    German: "Deutsch",
+  },
+  es: {
+    recommended: "es recomendable",
+    translateVideo: "Traducir video",
+    disableTranslate: "Apagar",
+    translationSettings: "Ajustes de traducción",
+    resetSettings: "Restablecer ajustes",
+    videoBeingTranslated: "El video está siendo traducido",
+    videoLanguage: "Idioma del video",
+    translationLanguage: "Idioma de la traducción",
+    translationTake: "La traducción tardará",
+    translationTakeMoreThanHour: "La traducción tardará más de una hora",
+    translationTakeAboutMinute:
+      "La traducción tardará aproximadamente un minuto",
+    translationTakeFewMinutes: "La traducción tardará unos minutos",
+    translationTakeApproximatelyMinutes:
+      "La traducción tardará aproximadamente {0} minutos",
+    translationTakeApproximatelyMinute:
+      "La traducción tardará aproximadamente {0} minutos",
+    unSupportedExtensionError: `Error! ${GM_info.scriptHandler} no es compatible con esta versión de la extensión!\n\nUtilice la versión cloudflare de la extensión VOT.`,
+    requestTranslationFailed: "Error al solicitar la traducción de vídeo",
+    audioNotReceived: "Audiolink nicht empfangen",
+    grantPermissionToAutoPlay: "Conceder permiso de reproducción automática",
+    neededAdditionalExtension:
+      "Se necesita una extensión adicional para admitir este sitio",
+    audioFormatNotSupported: "El formato de audio no es compatible",
+    VOTAutoTranslate: "Traducir al abrir",
+    VOTDontTranslateRu: "No traducir del ruso",
+    VOTVolume: "Volumen de vídeo",
+    VOTVolumeTranslation: "Volumen de traducción",
+    VOTAutoSetVolume: "Reducir el volumen del video al ",
+    VOTShowVideoSlider: "Deslizador de volumen de video",
+    VOTSyncVolume: "Vincular el volumen de traducción y video",
+    VOTAudioProxy: "Proxificar el audio recibido",
+    VOTDisableRussian: "VOT: Has desactivado la traducción de videos en ruso",
+    VOTLiveNotSupported:
+      "VOT: No se admite la traducción de transmisiones en vivo",
+    VOTPremiere: "VOT: Espere a que termine el estreno antes de traducir",
+    VOTVideoIsTooLong: "VOT: El video es demasiado largo",
+    VOTNoVideoIDFound: "VOT: No se encontró id de video",
+    VOTFailedInitDB: "VOT: No se pudo inicializar la base de datos",
+    VOTDBNeedUpdate:
+      "VOT: la Base de datos necesita una actualización, por favor vuelva a cargar la página",
+    VOTDisabledForDBUpdating: `VOT está deshabilitado debido a un error al actualizar la Base de Datos. Cierre todas las pestañas abiertas con ${window.location.hostname} y vuelve a intentarlo`,
+    VOTFailedWriteToDB: "VOT: No se pudo escribir datos en la base de datos",
+    VOTFailedReadFromDB: "VOT: No se pudo recuperar datos de la base de datos",
+    Russian: "Ruso",
+    English: "Inglés",
+    Chinese: "Chino",
+    French: "Francés",
+    Italian: "Italiano",
+    Spanish: "Español",
+    German: "Alemán",
+  },
+  fr: {
+    recommended: "recommande",
+    translateVideo: "Traduire la vidéo",
+    disableTranslate: "Désactiver",
+    translationSettings: "Paramètres de traduction",
+    resetSettings: "Réinitialiser les paramètres",
+    videoBeingTranslated: "La vidéo est en cours de traduction",
+    videoLanguage: "Langue vidéo",
+    translationLanguage: "Langue cible",
+    translationTake: "La traduction prendra",
+    translationTakeMoreThanHour: "La traduction prendra plus d'une heure",
+    translationTakeAboutMinute: "La traduction prendra environ une minute",
+    translationTakeFewMinutes: "La traduction prendra quelques minutes",
+    translationTakeApproximatelyMinutes:
+      "La traduction prendra environ {0} minutes",
+    translationTakeApproximatelyMinute:
+      "La traduction prendra environ {0} minutes",
+    unSupportedExtensionError: `Erreur! ${GM_info.scriptHandler} n'est pas supporté par cette version de l'extension!!\n\nVeuillez utiliser la version cloudflare de l'extension VOT.`,
+    requestTranslationFailed:
+      "Impossible de demander la traduction de la vidéo",
+    audioNotReceived: "Lien audio non reçu",
+    grantPermissionToAutoPlay: "Accorder l'autorisation de lecture automatique",
+    neededAdditionalExtension:
+      "Une extension supplémentaire est nécessaire pour prendre en charge ce site",
+    audioFormatNotSupported: "Format audio non pris en charge",
+    VOTAutoTranslate: "Traduire à l'ouverture",
+    VOTDontTranslateRu: "Ne pas traduire du russe",
+    VOTVolume: "Volume de la vidéo",
+    VOTVolumeTranslation: "Volume de traduction",
+    VOTAutoSetVolume: "Réduire le volume de la vidéo à ",
+    VOTShowVideoSlider: "Curseur de volume vidéo",
+    VOTSyncVolume: "Lier le volume de la traduction et de la vidéo",
+    VOTAudioProxy: "Proxy audio reçu",
+    VOTDisableRussian:
+      "VOT: Vous avez désactivé la traduction des vidéos en russe",
+    VOTLiveNotSupported:
+      "VOT: La traduction des flux en direct n'est pas prise en charge",
+    VOTPremiere: "VOT: Attendez la fin de la première avant de traduire",
+    VOTVideoIsTooLong: "VOT: La vidéo est trop longue",
+    VOTNoVideoIDFound: "VOT: ID vidéo introuvable",
+    VOTFailedInitDB: "VOT: Impossible d'initialiser la base de données",
+    VOTDBNeedUpdate:
+      "VOT: la Base de données a besoin d'une mise à jour, veuillez recharger la page",
+    VOTDisabledForDBUpdating: `VOT est désactivé en raison d'une erreur lors de la mise à jour de la Base de Données. Fermez tous les onglets ouverts avec ${window.location.hostname} et essayez à nouveau`,
+    VOTFailedWriteToDB:
+      "VOT: Impossible d'écrire les données dans la base de données",
+    VOTFailedReadFromDB:
+      "VOT: Impossible de récupérer les données de la base de données",
+    Russian: "Russe",
+    English: "Anglais",
+    Chinese: "Chinois",
+    French: "Français",
+    Italian: "Italien",
+    Spanish: "Espagnol",
+    German: "Allemand",
+  },
+  it: {
+    recommended: "è consigliabile",
+    translateVideo: "Traduci il video",
+    disableTranslate: "Spegnere",
+    translationSettings: "Impostazioni di traduzione",
+    resetSettings: "Ripristina impostazioni",
+    videoBeingTranslated: "Il video è in fase di traduzione",
+    videoLanguage: "Lingua Video",
+    translationLanguage: "Lingua di traduzione",
+    translationTake: "La traduzione richiederà",
+    translationTakeMoreThanHour: "La traduzione richiederà più di un'ora",
+    translationTakeAboutMinute: "La traduzione richiederà circa un minuto",
+    translationTakeFewMinutes: "La traduzione richiederà alcuni minuti",
+    translationTakeApproximatelyMinutes:
+      "La traduzione richiederà circa {0} minuti",
+    translationTakeApproximatelyMinute:
+      "La traduzione richiederà circa {0} minuti",
+    unSupportedExtensionError: `Errore! ${GM_info.scriptHandler} non è supportato da questa versione dell'estensione!\n\nUtilizzare la versione cloudflare dell'estensione VOT.`,
+    requestTranslationFailed: "Richiesta di traduzione video non riuscita",
+    audioNotReceived: "Collegamento audio non ricevuto",
+    grantPermissionToAutoPlay:
+      "Concedere l'Autorizzazione per la riproduzione automatica",
+    neededAdditionalExtension:
+      "Per supportare questo sito è necessaria un'estensione aggiuntiva",
+    audioFormatNotSupported: "Il formato audio non è supportato",
+    VOTAutoTranslate: "Traduci all'apertura",
+    VOTDontTranslateRu: "Non tradurre dal russo",
+    VOTVolume: "Volume video",
+    VOTVolumeTranslation: "Volume di traduzione",
+    VOTAutoSetVolume: "Riduci il volume del video al ",
+    VOTShowVideoSlider: "Cursore del volume del video",
+    VOTSyncVolume: "Collega il volume della traduzione e del video",
+    VOTAudioProxy: "Proxy audio ricevuto",
+    VOTDisableRussian: "VOT: Hai disabilitato la traduzione dei video in russo",
+    VOTLiveNotSupported:
+      "VOT: La traduzione dei flussi dal vivo non è supportata",
+    VOTPremiere: "VOT: Aspetta che la prima finisca prima di tradurre",
+    VOTVideoIsTooLong: "VOT: Il video è troppo lungo",
+    VOTNoVideoIDFound: "VOT: ID video non trovato",
+    VOTFailedInitDB: "VOT: Impossibile inizializzare il database",
+    VOTDBNeedUpdate:
+      "VOT: Il database ha bisogno di aggiornamento, si prega di ricaricare la pagina",
+    VOTDisabledForDBUpdating: `VOT è disabilitato a causa di un errore durante l'aggiornamento del database. CHIUDI tutte le schede aperte con ${window.location.hostname} e riprova`,
+    VOTFailedWriteToDB: "VOT: Impossibile scrivere dati nel database",
+    VOTFailedReadFromDB: "VOT: Impossibile recuperare i dati dal database",
+    Russian: "Russo",
+    English: "Inglese",
+    Chinese: "Cinese",
+    French: "Francese",
+    Italian: "Italiano",
+    Spanish: "Spagnolo",
+    German: "Tedesco",
+  },
+};
+
+
+
+
+/***/ }),
+
 /***/ "./src/rvt-cloudflare.js":
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
@@ -617,6 +1027,9 @@ async function requestVideoTranslation(
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _config_constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./src/config/constants.js");
+
+
 const debug = {};
 debug.log = (...text) => {
   if (true) {
@@ -627,6 +1040,24 @@ debug.log = (...text) => {
     "background: #F2452D; color: #fff; padding: 5px;",
     ...text
   );
+};
+
+debug.translations = (testLang) => {
+  if (true) {
+    return;
+  }
+  // for add indexes
+  const testedTranslations = Object.entries(_config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[testLang]).map(
+    ([key, value]) => ({
+      phrase: key,
+      translated: value,
+    })
+  );
+  testedTranslations.unshift({
+    phrase: "language_code (debug only)",
+    translated: testLang,
+  });
+  return console.table(testedTranslations);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (debug);
@@ -924,592 +1355,19 @@ function getYTVideoData() {
 
 // EXTERNAL MODULE: ./src/yandexRequests.js
 var yandexRequests = __webpack_require__("./src/yandexRequests.js");
-;// CONCATENATED MODULE: ./src/utils/utils.js
-function waitForElm(selector) {
-  // https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
-  return new Promise((resolve) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      return resolve(element);
-    }
-
-    const observer = new MutationObserver(() => {
-      const element = document.querySelector(selector);
-      if (element) {
-        resolve(element);
-        observer.disconnect();
-      }
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      once: true,
-    });
-  });
-}
-
-const sleep = (m) => new Promise((r) => setTimeout(r, m));
-
-const getVideoId = (service) => {
-  const url = new URL(window.location.href);
-
-  switch (service) {
-    case "youtube":
-      return (
-        url.pathname.match(/(?:watch|embed)\/([^/]+)/)?.[1] ||
-        url.searchParams.get("v")
-      );
-    case "vk":
-      if (url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)) {
-        return url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)[0].slice(1);
-      } else if (url.searchParams.get("z")) {
-        return url.searchParams.get("z").split("/")[0];
-      } else if (url.searchParams.get("oid") && url.searchParams.get("id")) {
-        return `video-${
-          Math.abs(url.searchParams.get("oid"))
-        }_${url.searchParams.get("id")}`;
-      } else {
-        return false;
-      }
-    case "9gag":
-    case "gag":
-      return url.pathname.match(/gag\/([^/]+)/)?.[1];
-    case "twitch":
-      if (/^m\.twitch\.tv$/.test(window.location.hostname)) {
-        const linkUrl = document.head.querySelector('link[rel="canonical"]');
-        return (
-          linkUrl?.href.match(/videos\/([^/]+)/)?.[0] || url.pathname.slice(1)
-        );
-      } else if (/^player\.twitch\.tv$/.test(window.location.hostname)) {
-        return `videos/${url.searchParams.get("video")}`;
-      } else if (/^clips\.twitch\.tv$/.test(window.location.hostname)) {
-        // get link to twitch channel (ex.: https://www.twitch.tv/xqc)
-        const channelLink = document.querySelector(
-          ".tw-link[data-test-selector='stream-info-card-component__stream-avatar-link']"
-        );
-        if (!channelLink) {
-          return false;
-        }
-
-        const channelName = channelLink.href.replace('https://www.twitch.tv/', '');
-        return `${channelName}/clip/${url.searchParams.get("clip")}`;
-      } else if (url.pathname.match(/([^/]+)\/(?:clip)\/([^/]+)/)) {
-        return url.pathname.match(/([^/]+)\/(?:clip)\/([^/]+)/)[0];
-      } else {
-        return url.pathname.match(/(?:videos)\/([^/]+)/)?.[0];
-      }
-    case "tiktok":
-      return url.pathname.match(/video\/([^/]+)/)?.[1];
-    case "vimeo":
-      return (
-        url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||
-        url.pathname.match(/[^/]+$/)?.[0]
-      )
-    case "xvideos":
-      return url.pathname.match(/[^/]+\/[^/]+$/)?.[0];
-    case "pornhub":
-      return (
-        url.searchParams.get("viewkey") ||
-        url.pathname.match(/embed\/([^/]+)/)?.[1]
-      );
-    case "twitter":
-      return url.pathname.match(/status\/([^/]+)/)?.[1];
-    case "udemy":
-      return url.pathname;
-    case "facebook":
-      return url.pathname;
-    case "rutube":
-      return url.pathname.match(/(?:video|embed)\/([^/]+)/)?.[1];
-    case "bilibili.com":
-      const bvid = url.searchParams.get("bvid");
-      if (bvid) {
-        return bvid;
-      } else {
-        let vid = url.pathname.match(/video\/([^/]+)/)?.[1];
-        if (vid && url.search && url.searchParams.get("p") !== null) {
-          vid += `/?p=${url.searchParams.get("p")}`;
-        }
-        return vid;
-      }
-    case "mail.ru":
-      if (url.pathname.startsWith("/v/") || url.pathname.startsWith("/mail/")) {
-        return url.pathname;
-      }
-    default:
-      return false;
-  }
-};
-
-function secsToStrTime(secs) {
-  const minutes = Math.floor(secs / 60);
-  const seconds = Math.floor(secs % 60);
-  if (minutes >= 60) {
-    return "Перевод займёт больше часа";
-  } else if (minutes >= 10 && minutes % 10) {
-    return `Перевод займёт примерно ${minutes} минут`;
-  } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
-    return "Перевод займёт около минуты";
-  } else {
-    return `Перевод займёт примерно ${minutes} минуты`;
-  }
-}
-
-
-
-// EXTERNAL MODULE: ./src/config/config.js
-var config = __webpack_require__("./src/config/config.js");
-;// CONCATENATED MODULE: ./src/config/alternativeUrls.js
-// Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
-const sitesInvidious = [
-  "invidious.snopyta.org",
-  "yewtu.be",
-  "invidious.kavin.rocks",
-  "vid.puffyan.us",
-  "invidious.namazso.eu",
-  "inv.riverside.rocks",
-  "yt.artemislena.eu",
-  "invidious.flokinet.to",
-  "invidious.esmailelbob.xyz",
-  "y.com.sb",
-  "invidious.nerdvpn.de",
-  "inv.vern.cc",
-  "invidious.slipfox.xyz",
-  "invidio.xamh.de",
-  "invidious.dhusch.de",
-];
-
-// Sites host Piped. I tested the performance only on piped.video
-const sitesPiped = [
-  "piped.video",
-  "piped.tokhmi.xyz",
-  "piped.moomoo.me",
-  "piped.syncpundit.io",
-  "piped.mha.fi",
-  "watch.whatever.social",
-  "piped.garudalinux.org",
-  "efy.piped.pages.dev",
-  "watch.leptons.xyz",
-  "piped.lunar.icu",
-  "yt.dc09.ru",
-  "piped.mint.lgbt",
-  "il.ax",
-  "piped.privacy.com.de",
-  "piped.esmailelbob.xyz",
-  "piped.projectsegfau.lt",
-  "piped.in.projectsegfau.lt",
-  "piped.us.projectsegfau.lt",
-  "piped.privacydev.net",
-  "piped.palveluntarjoaja.eu",
-  "piped.smnz.de",
-  "piped.adminforge.de",
-  "piped.qdi.fi",
-  "piped.hostux.net",
-  "piped.chauvet.pro",
-  "piped.jotoma.de",
-  "piped.pfcd.me",
-  "piped.frontendfriendly.xyz",
-];
-
-
-
-;// CONCATENATED MODULE: ./src/config/constants.js
-const translateFuncParam = 0x40_75_50_00_00_00_00_00;
-const availableFromLangs = {
-  ru: "Русский",
-  en: "Английский",
-  zh: "Китайский",
-  fr: "Французский",
-  it: "Итальянский",
-  es: "Испанский",
-  de: "Немецкий",
-}; // available languages for translation (from)
-const availableToLangs = {
-  ru: "Русский",
-  en: "Английский",
-  zh: "Китайский",
-  fr: "Французский",
-  it: "Итальянский",
-  es: "Испанский",
-  de: "Немецкий",
-}; // available languages for translation (to)
-const siteTranslates = {
-  youtube: "https://youtu.be/",
-  twitch: "https://twitch.tv/",
-  vimeo: "https://vimeo.com/",
-  "9gag": "https://9gag.com/gag/",
-  vk: "https://vk.com/video?z=",
-  xvideos: "https://www.xvideos.com/",
-  pornhub: "https://rt.pornhub.com/view_video.php?viewkey=",
-  udemy: "https://www.udemy.com",
-  twitter: "https://twitter.com/i/status/",
-  facebook: "https://www.facebook.com/",
-  rutube: "https://rutube.ru/video/",
-  "bilibili.com": "https://www.bilibili.com/video/",
-  "mail.ru": "https://my.mail.ru/",
-};
-
-
-
-;// CONCATENATED MODULE: ./src/indexedDB.js
-// --- IndexedDB functions start:
-const dbVersion = 2; // current db version
-const settingsDefault = {
-  key: "settings",
-  autoTranslate: 0,
-  defaultVolume: 100,
-  showVideoSlider: 0,
-  syncVolume: 0,
-  autoSetVolumeYandexStyle: 1,
-  dontTranslateRuVideos: 0,
-}; // default settings for db v1
-
-function openDB(name) {
-  return indexedDB.open(name, dbVersion);
-}
-
-async function initDB() {
-  return new Promise((resolve, reject) => {
-    const openRequest = openDB("VOT");
-
-    openRequest.onerror = () => {
-      console.error(
-        `VOT: Ошибка инициализации Базы Данных: ${openRequest.error.message}`
-      );
-      reject(false);
-    };
-
-    openRequest.onupgradeneeded = (event) => {
-      const db = openRequest.result;
-
-      db.onerror = () => {
-        alert("VOT: Не удалось получить объект базы данных");
-        console.error(
-          `VOT: Не удалось загрузить базу данных: ${openRequest.error}`
-        );
-        reject(false);
-      };
-
-      if (event.oldVersion < 1) {
-        // db not found
-        const objectStore = db.createObjectStore("settings", { keyPath: "key" });
-
-        objectStore.createIndex("autoTranslate", "autoTranslate", {
-          unique: false,
-        });
-        objectStore.createIndex("defaultVolume", "defaultVolume", {
-          unique: false,
-        });
-        objectStore.createIndex("showVideoSlider", "showVideoSlider", {
-          unique: false,
-        });
-        objectStore.createIndex("syncVolume", "syncVolume", { unique: false });
-        objectStore.createIndex(
-          "autoSetVolumeYandexStyle",
-          "autoSetVolumeYandexStyle",
-          { unique: false }
-        );
-        objectStore.createIndex(
-          "dontTranslateRuVideos",
-          "dontTranslateRuVideos",
-          { unique: false }
-        );
-
-        console.log("VOT: База Данных создана");
-
-        objectStore.transaction.oncomplete = (event) => {
-          const objectStore = db
-            .transaction("settings", "readwrite")
-            .objectStore("settings");
-          const request = objectStore.add(settingsDefault);
-
-          request.onsuccess = () => {
-            console.log(
-              "VOT: Стандартные настройки добавлены в Базу Данных: ",
-              request.result
-            );
-            resolve(true);
-          };
-
-          request.onerror = () => {
-            console.log(
-              "VOT: Ошибка при добавление стандартных настроек в Базу Данных: ",
-              request.error
-            );
-            reject(false);
-          };
-        };
-      }
-
-      if (event.oldVersion < 2) {
-        // db is outdated (db version is 1)
-        const transaction = openRequest.transaction;
-        const objectStore = transaction.objectStore("settings");
-        objectStore.createIndex("audioProxy", "audioProxy", { unique: false });
-        console.log("VOT: База Данных обновлена до 2-й версии");
-
-        objectStore.transaction.oncomplete = (event) => {
-          const objectStore = db
-            .transaction("settings", "readwrite")
-            .objectStore("settings");
-          const request = objectStore.get("settings");
-
-          request.onerror = (event) => {
-            console.error(
-              "VOT: Не удалось получить данные из Базы Данных: ",
-              event.error
-            );
-            reject(false);
-          };
-
-          request.onsuccess = () => {
-            const data = request.result || settingsDefault; // use data from db or reset all data
-            data.audioProxy = 0; // add default value for new index
-
-            const requestUpdate = objectStore.put(data);
-
-            requestUpdate.onerror = (event) => {
-              console.error(
-                "VOT: Не удалось обновить Базу Данных до 2 версии: ",
-                event.error
-              );
-              reject(false);
-            };
-
-            requestUpdate.onsuccess = () => {
-              console.log("VOT: Стандартные настройки 2-й версии добавлены в Базу Данных.");
-              resolve(true);
-            };
-          };
-        };
-      }
-    };
-
-    openRequest.onsuccess = () => {
-      const db = openRequest.result;
-      db.onversionchange = () => {
-        db.close();
-        alert(
-          "Базе данных нужно обновление, пожалуйста, перезагрузите страницу."
-        );
-        console.log(
-          "VOT: Базе данных нужно обновление, пожалуйста, перезагрузите страницу"
-        );
-        window.location.reload();
-        reject(false);
-      };
-      resolve(true);
-    };
-
-    openRequest.onblocked = () => {
-      const db = openRequest.result;
-      console.error(
-        "VOT: База Данных временно заблокирована из-за ошибки: ",
-        db
-      );
-      alert(
-        "VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова."
-      );
-      reject(false);
-    };
-  });
-}
-
-async function updateDB({
-  autoTranslate,
-  defaultVolume,
-  showVideoSlider,
-  syncVolume,
-  autoSetVolumeYandexStyle,
-  dontTranslateRuVideos,
-  audioProxy,
-}) {
-  return new Promise((resolve, reject) => {
-    if (
-      typeof autoTranslate === "number" ||
-      typeof defaultVolume === "number" ||
-      typeof showVideoSlider === "number" ||
-      typeof syncVolume === "number" ||
-      typeof autoSetVolumeYandexStyle === "number" ||
-      typeof dontTranslateRuVideos === "number" ||
-      typeof audioProxy === "number"
-    ) {
-      const openRequest = openDB("VOT");
-
-      openRequest.onerror = () => {
-        alert("VOT: Произошла ошибка");
-        console.error(`VOT: Ошибка Базы Данных: ${openRequest.error.message}`);
-        reject(false);
-      };
-
-      openRequest.onupgradeneeded = async () => {
-        const db = openRequest.result;
-        db.close();
-        await initDB();
-        resolve(true);
-      };
-
-      openRequest.onsuccess = () => {
-        const db = openRequest.result;
-        db.onversionchange = () => {
-          db.close();
-          console.log(
-            "VOT: Базе данных нужно обновление, пожалуЙста, перезагрузите страницу"
-          );
-          window.location.reload();
-          reject(false);
-        };
-
-        const objectStore = db
-          .transaction("settings", "readwrite")
-          .objectStore("settings");
-        const request = objectStore.get("settings");
-
-        request.onerror = (event) => {
-          console.error(
-            "VOT: Не удалось получить данные из Базы Данных: ",
-            event.error
-          );
-          reject(false);
-        };
-
-        request.onsuccess = () => {
-          // console.log('VOT: Получены данные из Базы Данных: ', request.result);
-          const data = request.result;
-
-          if (typeof autoTranslate === "number") {
-            data.autoTranslate = autoTranslate;
-          }
-
-          if (typeof defaultVolume === "number") {
-            data.defaultVolume = defaultVolume;
-          }
-
-          if (typeof showVideoSlider === "number") {
-            data.showVideoSlider = showVideoSlider;
-          }
-
-          if (typeof syncVolume === "number") {
-            data.syncVolume = syncVolume;
-          }
-
-          if (typeof autoSetVolumeYandexStyle === "number") {
-            data.autoSetVolumeYandexStyle = autoSetVolumeYandexStyle;
-          }
-
-          if (typeof dontTranslateRuVideos === "number") {
-            data.dontTranslateRuVideos = dontTranslateRuVideos;
-          }
-
-          if (typeof audioProxy === "number") {
-            data.audioProxy = audioProxy;
-          }
-
-          const requestUpdate = objectStore.put(data);
-
-          requestUpdate.onerror = (event) => {
-            console.error(
-              "VOT: Не удалось обновить данные в Базе Данных: ",
-              event.error
-            );
-            reject(false);
-          };
-
-          requestUpdate.onsuccess = () => {
-            // console.log('VOT: Данные в Базе Данных обновлены, вы великолепны!');
-            resolve(true);
-          };
-        };
-      };
-
-      openRequest.onblocked = () => {
-        const db = openRequest.result;
-        console.error(
-          "VOT: База Данных временно заблокирована из-за ошибки: ",
-          db
-        );
-        alert(
-          "VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова."
-        );
-        reject(false);
-      };
-    }
-  });
-}
-
-async function readDB() {
-  return new Promise((resolve, reject) => {
-    const openRequest = openDB("VOT");
-
-    openRequest.onerror = () => {
-      alert("VOT: Произошла ошибка");
-      console.error(`VOT: Ошибка Базы Данных: ${openRequest.error.message}`);
-      reject(false);
-    };
-
-    openRequest.onupgradeneeded = async () => {
-      const db = openRequest.result;
-      db.close();
-      await initDB();
-      resolve(true);
-    };
-
-    openRequest.onsuccess = () => {
-      const db = openRequest.result;
-      db.onversionchange = () => {
-        db.close();
-        alert("VOT: База данных устарела, пожалуЙста, перезагрузите страницу.");
-        reject(false);
-      };
-
-      const objectStore = db.transaction("settings").objectStore("settings");
-      const request = objectStore.get("settings");
-
-      request.onerror = (event) => {
-        console.error(
-          "VOT: Не удалось получить данные из Базы Данных: ",
-          event.error
-        );
-        console.error(event);
-        reject(false);
-      };
-
-      request.onsuccess = () => {
-        // console.log('VOT: Получены данные из Базы Данных: ', request.result);
-        if (request.result === undefined) {
-          db.close();
-          deleteDB();
-          reject(false);
-        }
-        const data = request.result;
-        resolve(data);
-      };
-    };
-
-    openRequest.onblocked = () => {
-      const db = openRequest.result;
-      console.error(
-        "VOT: База Данных временно заблокирована из-за ошибки: ",
-        db
-      );
-      alert(
-        "VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова."
-      );
-      reject(false);
-    };
-  });
-}
-
-function deleteDB() {
-  indexedDB.deleteDatabase("VOT");
-}
-
-
-
+// EXTERNAL MODULE: ./src/config/constants.js
+var constants = __webpack_require__("./src/config/constants.js");
 // EXTERNAL MODULE: ./src/utils/debug.js
 var debug = __webpack_require__("./src/utils/debug.js");
 ;// CONCATENATED MODULE: ./src/menu.js
 
+
+
+const userlang = navigator.language || navigator.userLanguage;
+let lang = userlang.substr(0, 2).toLowerCase();
+if (!(lang in constants/* translations */.Iz)) {
+  lang = "en";
+}
 
 function changeBtnColor(n) {
   document.querySelector(".translationBtn").style.color = n;
@@ -1571,7 +1429,7 @@ function addTranslationBlock(element) {
           <path fill-rule="evenodd" clip-rule="evenodd" d="M17.605 19.703c.794-.13 1.647-.476 2.47-.983.695 1.013 1.255 1.546 1.306 1.593l1.166-1.207c-.011-.01-.504-.48-1.124-1.401.277-.25.547-.512.797-.798a12.1 12.1 0 0 0 2.268-3.826c.383.216.761.541.96 1.027.68 1.649-.301 3.557-1.215 4.385l1.152 1.22c1.52-1.378 2.571-3.959 1.638-6.227-.368-.892-1.077-1.59-2.064-2.037.162-.763.216-1.38.233-1.785h-1.698c-.017.307-.06.762-.173 1.323-1.325-.187-2.818-.006-4.248.508a25.994 25.994 0 0 1-.313-2.547c5.092-.287 8.098-1.488 8.237-1.546l-.654-1.533c-.03.013-2.875 1.14-7.65 1.418-.001-.405-.008-.666-.012-.85-.008-.339-.01-.423.03-.67L17.01 5.75c-.026.283-.024.573-.018 1.278l.002.318c-.026 0-.051 0-.077.002l-.08.001a39.286 39.286 0 0 1-3.27-.14L13.25 8.89c.5.043 2.023.122 3.397.122h.1a19.457 19.457 0 0 1 .208-.003l.106-.002c.067.948.196 2.034.421 3.22a8.05 8.05 0 0 0-2.267 1.963l.811 1.871c.327-.732.995-1.51 1.856-2.111a16.762 16.762 0 0 0 1.33 3.346c-.811.514-1.64.818-2.301.804l.694 1.603Zm2.953-3.488a8.18 8.18 0 0 0 .374-.389 10.465 10.465 0 0 0 1.927-3.224c-.198-.021-.4-.031-.606-.031-.907 0-1.885.199-2.834.574.31 1.209.718 2.23 1.14 3.07ZM9.769 11.688 4.25 24.438h2.259l1.357-3.407h5.582l1.357 3.407h2.258l-5.52-12.75H9.77Zm.887 2.624 2.056 5H8.6l2.056-5Z"></path>
         </svg>
       </span>
-      <span class = "translationBtn" tabindex = "0">Перевести видео</span>
+      <span class = "translationBtn" tabindex = "0">${constants/* translations */.Iz[lang].translateVideo}</span>
     </span>
     <span class = "translationMenu" tabindex = "0" role = "button">
       <svg class = "translationMenuIcon" height="15" width="5" fill="#fff" xmlns="http://www.w3.org/2000/svg">
@@ -1588,13 +1446,15 @@ function createTranslationMenu() {
   const container = document.createElement("div");
   container.classList.add("translationMenuContent");
   container.innerHTML = `
-    <p class = "translationMainHeader">Настройки перевода</p>
+    <p class = "translationMainHeader">${constants/* translations */.Iz[lang].translationSettings}</p>
     <div class="translationMenuOptions"></div>
     <div class="translationMenuFunctional">
       <a class = "translationDownload">
-        <svg width="24px" height="24px" data-darkreader-inline-stroke="" fill="none" stroke="currentColor" style="--darkreader-inline-stroke: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+        <svg width="24px" height="24px" data-darkreader-inline-stroke="" fill="none" stroke="currentColor" style="--darkreader-inline-stroke: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+        </svg>
       </a>
-      <button class = "translationDropDB">Сбросить настройки</button>
+      <button class = "translationDropDB">${constants/* translations */.Iz[lang].resetSettings}</button>
     </div>
   `;
 
@@ -1689,6 +1549,565 @@ function createMenuSelect(id, selectOptions) {
 
 
 
+;// CONCATENATED MODULE: ./src/utils/utils.js
+
+
+
+if (!String.prototype.format) {
+  // https://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format
+  // syntax example: "is {0} function".format("format")
+  String.prototype.format = function () {
+    // store arguments in an array
+    var args = arguments;
+    // use replace to iterate over the string
+    // select the match and check if the related argument is present
+    // if yes, replace the match with the argument
+    return this.replace(/{(\d+)}/g, function (match, index) {
+      // check if the argument is present
+      return typeof args[index] != "undefined" ? args[index] : match;
+    });
+  };
+}
+
+function waitForElm(selector) {
+  // https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
+  return new Promise((resolve) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      return resolve(element);
+    }
+
+    const observer = new MutationObserver(() => {
+      const element = document.querySelector(selector);
+      if (element) {
+        resolve(element);
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      once: true,
+    });
+  });
+}
+
+const sleep = (m) => new Promise((r) => setTimeout(r, m));
+
+const getVideoId = (service) => {
+  const url = new URL(window.location.href);
+
+  switch (service) {
+    case "youtube":
+      return (
+        url.pathname.match(/(?:watch|embed)\/([^/]+)/)?.[1] ||
+        url.searchParams.get("v")
+      );
+    case "vk":
+      if (url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)) {
+        return url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)[0].slice(1);
+      } else if (url.searchParams.get("z")) {
+        return url.searchParams.get("z").split("/")[0];
+      } else if (url.searchParams.get("oid") && url.searchParams.get("id")) {
+        return `video-${Math.abs(
+          url.searchParams.get("oid")
+        )}_${url.searchParams.get("id")}`;
+      } else {
+        return false;
+      }
+    case "9gag":
+    case "gag":
+      return url.pathname.match(/gag\/([^/]+)/)?.[1];
+    case "twitch":
+      if (/^m\.twitch\.tv$/.test(window.location.hostname)) {
+        const linkUrl = document.head.querySelector('link[rel="canonical"]');
+        return (
+          linkUrl?.href.match(/videos\/([^/]+)/)?.[0] || url.pathname.slice(1)
+        );
+      } else if (/^player\.twitch\.tv$/.test(window.location.hostname)) {
+        return `videos/${url.searchParams.get("video")}`;
+      } else if (/^clips\.twitch\.tv$/.test(window.location.hostname)) {
+        // get link to twitch channel (ex.: https://www.twitch.tv/xqc)
+        const channelLink = document.querySelector(
+          ".tw-link[data-test-selector='stream-info-card-component__stream-avatar-link']"
+        );
+        if (!channelLink) {
+          return false;
+        }
+
+        const channelName = channelLink.href.replace(
+          "https://www.twitch.tv/",
+          ""
+        );
+        return `${channelName}/clip/${url.searchParams.get("clip")}`;
+      } else if (url.pathname.match(/([^/]+)\/(?:clip)\/([^/]+)/)) {
+        return url.pathname.match(/([^/]+)\/(?:clip)\/([^/]+)/)[0];
+      } else {
+        return url.pathname.match(/(?:videos)\/([^/]+)/)?.[0];
+      }
+    case "tiktok":
+      return url.pathname.match(/video\/([^/]+)/)?.[1];
+    case "vimeo":
+      return (
+        url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||
+        url.pathname.match(/[^/]+$/)?.[0]
+      );
+    case "xvideos":
+      return url.pathname.match(/[^/]+\/[^/]+$/)?.[0];
+    case "pornhub":
+      return (
+        url.searchParams.get("viewkey") ||
+        url.pathname.match(/embed\/([^/]+)/)?.[1]
+      );
+    case "twitter":
+      return url.pathname.match(/status\/([^/]+)/)?.[1];
+    case "udemy":
+      return url.pathname;
+    case "facebook":
+      return url.pathname;
+    case "rutube":
+      return url.pathname.match(/(?:video|embed)\/([^/]+)/)?.[1];
+    case "bilibili.com":
+      const bvid = url.searchParams.get("bvid");
+      if (bvid) {
+        return bvid;
+      } else {
+        let vid = url.pathname.match(/video\/([^/]+)/)?.[1];
+        if (vid && url.search && url.searchParams.get("p") !== null) {
+          vid += `/?p=${url.searchParams.get("p")}`;
+        }
+        return vid;
+      }
+    case "mail.ru":
+      if (url.pathname.startsWith("/v/") || url.pathname.startsWith("/mail/")) {
+        return url.pathname;
+      }
+    default:
+      return false;
+  }
+};
+
+function secsToStrTime(secs) {
+  const minutes = Math.floor(secs / 60);
+  const seconds = Math.floor(secs % 60);
+  if (minutes >= 60) {
+    return constants/* translations */.Iz[lang].translationTakeMoreThanHour;
+  } else if (minutes >= 10 && minutes % 10) {
+    return constants/* translations */.Iz[lang].translationTakeApproximatelyMinutes.format(
+      minutes
+    );
+  } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
+    return constants/* translations */.Iz[lang].translationTakeAboutMinute;
+  } else {
+    return constants/* translations */.Iz[lang].translationTakeApproximatelyMinute.format(
+      minutes
+    );
+  }
+}
+
+
+
+// EXTERNAL MODULE: ./src/config/config.js
+var config = __webpack_require__("./src/config/config.js");
+;// CONCATENATED MODULE: ./src/config/alternativeUrls.js
+// Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
+const sitesInvidious = [
+  "invidious.snopyta.org",
+  "yewtu.be",
+  "invidious.kavin.rocks",
+  "vid.puffyan.us",
+  "invidious.namazso.eu",
+  "inv.riverside.rocks",
+  "yt.artemislena.eu",
+  "invidious.flokinet.to",
+  "invidious.esmailelbob.xyz",
+  "y.com.sb",
+  "invidious.nerdvpn.de",
+  "inv.vern.cc",
+  "invidious.slipfox.xyz",
+  "invidio.xamh.de",
+  "invidious.dhusch.de",
+];
+
+// Sites host Piped. I tested the performance only on piped.video
+const sitesPiped = [
+  "piped.video",
+  "piped.tokhmi.xyz",
+  "piped.moomoo.me",
+  "piped.syncpundit.io",
+  "piped.mha.fi",
+  "watch.whatever.social",
+  "piped.garudalinux.org",
+  "efy.piped.pages.dev",
+  "watch.leptons.xyz",
+  "piped.lunar.icu",
+  "yt.dc09.ru",
+  "piped.mint.lgbt",
+  "il.ax",
+  "piped.privacy.com.de",
+  "piped.esmailelbob.xyz",
+  "piped.projectsegfau.lt",
+  "piped.in.projectsegfau.lt",
+  "piped.us.projectsegfau.lt",
+  "piped.privacydev.net",
+  "piped.palveluntarjoaja.eu",
+  "piped.smnz.de",
+  "piped.adminforge.de",
+  "piped.qdi.fi",
+  "piped.hostux.net",
+  "piped.chauvet.pro",
+  "piped.jotoma.de",
+  "piped.pfcd.me",
+  "piped.frontendfriendly.xyz",
+];
+
+
+
+;// CONCATENATED MODULE: ./src/indexedDB.js
+
+
+
+// --- IndexedDB functions start:
+const dbVersion = 2; // current db version
+const settingsDefault = {
+  key: "settings",
+  autoTranslate: 0,
+  defaultVolume: 100,
+  showVideoSlider: 0,
+  syncVolume: 0,
+  autoSetVolumeYandexStyle: 1,
+  dontTranslateRuVideos: 0,
+}; // default settings for db v1
+
+function openDB(name) {
+  return indexedDB.open(name, dbVersion);
+}
+
+async function initDB() {
+  return new Promise((resolve, reject) => {
+    const openRequest = openDB("VOT");
+
+    openRequest.onerror = () => {
+      console.error(
+        `${constants/* translations */.Iz[lang].VOTFailedInitDB}: ${openRequest.error.message}`
+      );
+      reject(false);
+    };
+
+    openRequest.onupgradeneeded = (event) => {
+      const db = openRequest.result;
+
+      db.onerror = () => {
+        const errorMessage = constants/* translations */.Iz[lang].VOTFailedInitDB;
+        alert(errorMessage);
+        console.error(errorMessage, openRequest.error);
+        reject(false);
+      };
+
+      if (event.oldVersion < 1) {
+        // db not found
+        const objectStore = db.createObjectStore("settings", {
+          keyPath: "key",
+        });
+
+        objectStore.createIndex("autoTranslate", "autoTranslate", {
+          unique: false,
+        });
+        objectStore.createIndex("defaultVolume", "defaultVolume", {
+          unique: false,
+        });
+        objectStore.createIndex("showVideoSlider", "showVideoSlider", {
+          unique: false,
+        });
+        objectStore.createIndex("syncVolume", "syncVolume", { unique: false });
+        objectStore.createIndex(
+          "autoSetVolumeYandexStyle",
+          "autoSetVolumeYandexStyle",
+          { unique: false }
+        );
+        objectStore.createIndex(
+          "dontTranslateRuVideos",
+          "dontTranslateRuVideos",
+          { unique: false }
+        );
+
+        console.log("VOT: Database Created");
+
+        objectStore.transaction.oncomplete = (event) => {
+          const objectStore = db
+            .transaction("settings", "readwrite")
+            .objectStore("settings");
+          const request = objectStore.add(settingsDefault);
+
+          request.onsuccess = () => {
+            console.log(
+              "VOT: Standard settings added to the Database: ",
+              request.result
+            );
+            resolve(true);
+          };
+
+          request.onerror = () => {
+            console.log(
+              "VOT: Error when adding standard settings to the Database: ",
+              request.error
+            );
+            reject(false);
+          };
+        };
+      }
+
+      if (event.oldVersion < 2) {
+        // db is outdated (db version is 1)
+        const transaction = openRequest.transaction;
+        const objectStore = transaction.objectStore("settings");
+        objectStore.createIndex("audioProxy", "audioProxy", { unique: false });
+        console.log("VOT: The database has been updated to the 2nd version");
+
+        objectStore.transaction.oncomplete = (event) => {
+          const objectStore = db
+            .transaction("settings", "readwrite")
+            .objectStore("settings");
+          const request = objectStore.get("settings");
+
+          request.onerror = (event) => {
+            console.error(
+              "VOT: Data could not be retrieved from the Database: ",
+              event.error
+            );
+            reject(false);
+          };
+
+          request.onsuccess = () => {
+            const data = request.result || settingsDefault; // use data from db or reset all data
+            data.audioProxy = 0; // add default value for new index
+
+            const requestUpdate = objectStore.put(data);
+
+            requestUpdate.onerror = (event) => {
+              console.error(
+                "VOT: Failed to update the Database to version 2: ",
+                event.error
+              );
+              reject(false);
+            };
+
+            requestUpdate.onsuccess = () => {
+              console.log(
+                "VOT: Standard settings of the 2nd version have been added to the Database."
+              );
+              resolve(true);
+            };
+          };
+        };
+      }
+    };
+
+    openRequest.onsuccess = () => {
+      const db = openRequest.result;
+      db.onversionchange = () => {
+        db.close();
+        const errorMessage = constants/* translations */.Iz[lang].VOTDBNeedUpdate;
+        alert(errorMessage);
+        console.log(errorMessage);
+        window.location.reload();
+        reject(false);
+      };
+      resolve(true);
+    };
+
+    openRequest.onblocked = () => {
+      const db = openRequest.result;
+      const errorMessage = constants/* translations */.Iz[lang].VOTDisabledForDBUpdating;
+      console.error(errorMessage, db);
+      alert(errorMessage);
+      reject(false);
+    };
+  });
+}
+
+async function updateDB({
+  autoTranslate,
+  defaultVolume,
+  showVideoSlider,
+  syncVolume,
+  autoSetVolumeYandexStyle,
+  dontTranslateRuVideos,
+  audioProxy,
+}) {
+  return new Promise((resolve, reject) => {
+    if (
+      typeof autoTranslate === "number" ||
+      typeof defaultVolume === "number" ||
+      typeof showVideoSlider === "number" ||
+      typeof syncVolume === "number" ||
+      typeof autoSetVolumeYandexStyle === "number" ||
+      typeof dontTranslateRuVideos === "number" ||
+      typeof audioProxy === "number"
+    ) {
+      const openRequest = openDB("VOT");
+
+      openRequest.onerror = () => {
+        const errorMessage = constants/* translations */.Iz[lang].VOTFailedWriteToDB;
+        alert(errorMessage);
+        console.error(errorMessage, openRequest.error.message);
+        reject(false);
+      };
+
+      openRequest.onupgradeneeded = async () => {
+        const db = openRequest.result;
+        db.close();
+        await initDB();
+        resolve(true);
+      };
+
+      openRequest.onsuccess = () => {
+        const db = openRequest.result;
+        db.onversionchange = () => {
+          db.close();
+          console.log(
+            "VOT: The database needs an update, please reload the page if it didn't happen automatically"
+          );
+          window.location.reload();
+          reject(false);
+        };
+
+        const objectStore = db
+          .transaction("settings", "readwrite")
+          .objectStore("settings");
+        const request = objectStore.get("settings");
+
+        request.onerror = (event) => {
+          console.error(
+            "VOT: Data could not be retrieved from the Database: ",
+            event.error
+          );
+          reject(false);
+        };
+
+        request.onsuccess = () => {
+          const data = request.result;
+
+          if (typeof autoTranslate === "number") {
+            data.autoTranslate = autoTranslate;
+          }
+
+          if (typeof defaultVolume === "number") {
+            data.defaultVolume = defaultVolume;
+          }
+
+          if (typeof showVideoSlider === "number") {
+            data.showVideoSlider = showVideoSlider;
+          }
+
+          if (typeof syncVolume === "number") {
+            data.syncVolume = syncVolume;
+          }
+
+          if (typeof autoSetVolumeYandexStyle === "number") {
+            data.autoSetVolumeYandexStyle = autoSetVolumeYandexStyle;
+          }
+
+          if (typeof dontTranslateRuVideos === "number") {
+            data.dontTranslateRuVideos = dontTranslateRuVideos;
+          }
+
+          if (typeof audioProxy === "number") {
+            data.audioProxy = audioProxy;
+          }
+
+          const requestUpdate = objectStore.put(data);
+
+          requestUpdate.onerror = (event) => {
+            console.error(
+              "VOT: Не удалось обновить данные в Базе Данных: ",
+              event.error
+            );
+            reject(false);
+          };
+
+          requestUpdate.onsuccess = () => {
+            resolve(true);
+          };
+        };
+      };
+
+      openRequest.onblocked = () => {
+        const db = openRequest.result;
+        const errorMessage = constants/* translations */.Iz[lang].VOTDisabledForDBUpdating;
+        console.error(errorMessage, db);
+        alert(errorMessage);
+        reject(false);
+      };
+    }
+  });
+}
+
+async function readDB() {
+  return new Promise((resolve, reject) => {
+    const openRequest = openDB("VOT");
+
+    openRequest.onerror = () => {
+      const errorMessage = constants/* translations */.Iz[lang].VOTFailedReadFromDB;
+      alert(errorMessage);
+      console.error(errorMessage, openRequest.error.message);
+      reject(false);
+    };
+
+    openRequest.onupgradeneeded = async () => {
+      const db = openRequest.result;
+      db.close();
+      await initDB();
+      resolve(true);
+    };
+
+    openRequest.onsuccess = () => {
+      const db = openRequest.result;
+      db.onversionchange = () => {
+        db.close();
+        const errorMessage = constants/* translations */.Iz[lang].VOTDBNeedUpdate;
+        alert(errorMessage);
+        console.error(errorMessage);
+        reject(false);
+      };
+
+      const objectStore = db.transaction("settings").objectStore("settings");
+      const request = objectStore.get("settings");
+
+      request.onerror = (event) => {
+        console.error(constants/* translations */.Iz[lang].VOTFailedReadFromDB, event.error);
+        console.error(event);
+        reject(false);
+      };
+
+      request.onsuccess = () => {
+        if (request.result === undefined) {
+          db.close();
+          deleteDB();
+          reject(false);
+        }
+        const data = request.result;
+        resolve(data);
+      };
+    };
+
+    openRequest.onblocked = () => {
+      const db = openRequest.result;
+      const errorMessage = constants/* translations */.Iz[lang].VOTDisabledForDBUpdating;
+      console.error(errorMessage, db);
+      alert(errorMessage);
+      reject(false);
+    };
+  });
+}
+
+function deleteDB() {
+  indexedDB.deleteDatabase("VOT");
+}
+
+
+
 ;// CONCATENATED MODULE: ./src/utils/volume.js
 // element - audio / video element
 function syncVolume(element, sliderVolume, otherSliderVolume, tempVolume) {
@@ -1775,6 +2194,15 @@ let translateToLang = "ru"; // default language of audio response
 
 async function src_main() {
   debug/* default.log */.Z.log("Loading extension...");
+  debug/* default.log */.Z.log(`Selected menu language: ${lang}`);
+  // test all translations in console
+  // debug.translations('ru');
+  // debug.translations('en');
+  // debug.translations('de');
+  // debug.translations('zh');
+  // debug.translations('es');
+  // debug.translations('fr');
+  // debug.translations('it');
 
   const rvt = await Promise.resolve(/* import() */).then(__webpack_require__.bind(__webpack_require__, "./src/rvt-cloudflare.js"));
 
@@ -1873,7 +2301,7 @@ async function src_main() {
 
         debug/* default.log */.Z.log("[exec callback] Requesting video translation");
         if (!success) {
-          callback(false, "Не удалось запросить перевод видео");
+          callback(false, constants/* translations */.Iz[lang].requestTranslationFailed);
           return;
         }
 
@@ -1887,7 +2315,7 @@ async function src_main() {
           case 1:
             callback(
               !!translateResponse.url,
-              translateResponse.url || "Не получена ссылка на аудио"
+              translateResponse.url || constants/* translations */.Iz[lang].audioNotReceived
             );
             break;
           case 2:
@@ -1895,7 +2323,7 @@ async function src_main() {
               false,
               translateResponse.remainingTime
                 ? secsToStrTime(translateResponse.remainingTime)
-                : "Перевод займет несколько минут"
+                : constants/* translations */.Iz[lang].translationTakeFewMinutes
             );
             break;
           case 3:
@@ -1903,7 +2331,7 @@ async function src_main() {
               Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода. В конечном итоге, это занимает слишком много времени,
               как-будто сервер не понимает, что данное видео уже недавно было переведено и заместо возвращения готовой ссылки на перевод начинает переводить видео заново при чём у него это получается за очень длительное время
             */
-            callback(false, "Видео переводится");
+            callback(false, constants/* translations */.Iz[lang].videoBeingTranslated);
             break;
         }
       }
@@ -1943,42 +2371,38 @@ async function src_main() {
     console.log("VOT Video Data: ", videoData);
 
     const container =
-    siteHostname === "pornhub" &&
-    window.location.pathname.includes("view_video.php")
-    ? document.querySelector(".original.mainPlayerDiv")
-    : siteHostname === "pornhub" &&
-    window.location.pathname.includes("embed/")
-    ? document.querySelector("body")
-    : window.location.hostname.includes("m.youtube.com")
-    ? document.querySelector("#player-control-container")
-    : videoContainer;
+      siteHostname === "pornhub" &&
+      window.location.pathname.includes("view_video.php")
+        ? document.querySelector(".original.mainPlayerDiv")
+        : siteHostname === "pornhub" &&
+          window.location.pathname.includes("embed/")
+        ? document.querySelector("body")
+        : window.location.hostname.includes("m.youtube.com")
+        ? document.querySelector("#player-control-container")
+        : videoContainer;
 
     addTranslationBlock(container);
     addTranslationMenu(container);
-
 
     try {
       isDBInited = await initDB();
     } catch (err) {
       console.error(
-        "[VOT] Не удалось инициализировать настройки базы данных. Все внесенные изменения не будут сохранены",
+        "[VOT] Failed to initialize database settings. All changes made will not be saved",
         err
       );
     }
 
     const menuOptions = document.querySelector(".translationMenuOptions");
-    if (
-      menuOptions &&
-      !menuOptions.querySelector("#VOTTranslateFromLang")
-    ) {
+    if (menuOptions && !menuOptions.querySelector("#VOTTranslateFromLang")) {
       const selectFromLangOptions = [
         {
-          label: "Язык видео",
+          label: constants/* translations */.Iz[lang].videoLanguage,
           value: "default",
           disabled: true,
         },
-        ...Object.entries(availableFromLangs).map(([key, value]) => ({
-          label: value,
+        ...Object.entries(constants/* availableLangs */.tW).map(([key, value]) => ({
+          label: constants/* translations */.Iz[lang][value],
           value: key,
           selected: videoData.detectedLanguage === key,
         })),
@@ -1986,19 +2410,16 @@ async function src_main() {
 
       const selectToLangOptions = [
         {
-          label: "Язык перевода",
+          label: constants/* translations */.Iz[lang].translationLanguage,
           value: "default",
           disabled: true,
         },
-      ];
-
-      for (const [key, value] of Object.entries(availableToLangs)) {
-        selectToLangOptions.push({
-          label: value,
+        ...Object.entries(constants/* availableLangs */.tW).map(([key, value]) => ({
+          label: constants/* translations */.Iz[lang][value],
           value: key,
           selected: videoData.responseLanguage === key,
-        });
-      }
+        })),
+      ];
 
       const selectFromLang = createMenuSelect(
         "VOTTranslateFromLang",
@@ -2044,8 +2465,7 @@ async function src_main() {
         dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
         dbDontTranslateRuVideos = dbData.dontTranslateRuVideos;
         dbAudioProxy = dbData.audioProxy; // cf version only
-        // only youtube:
-        dbSyncVolume = dbData.syncVolume;
+        dbSyncVolume = dbData.syncVolume; // youtube only
 
         debug/* default.log */.Z.log("[db] data from db: ", dbData);
 
@@ -2057,12 +2477,11 @@ async function src_main() {
           const checkbox = createMenuCheckbox(
             "VOTAutoTranslate",
             dbAutoTranslate,
-            `Переводить при открытии${
-              siteHostname === "vk" ||
+            constants/* translations */.Iz[lang].VOTAutoTranslate +
+              (siteHostname === "vk" ||
               window.location.hostname.includes("m.twitch.tv")
-                ? " <strong>(рекомендуется)</strong>"
-                : ""
-            }`
+                ? ` <strong>(${constants/* translations */.Iz[lang].recommended})</strong>`
+                : "")
           );
 
           checkbox.querySelector("#VOTAutoTranslate").onclick = async (
@@ -2090,7 +2509,7 @@ async function src_main() {
           const checkbox = createMenuCheckbox(
             "VOTDontTranslateRu",
             dbDontTranslateRuVideos,
-            "Не переводить с русского"
+            constants/* translations */.Iz[lang].VOTDontTranslateRu
           );
 
           checkbox.querySelector("#VOTDontTranslateRu").onclick = async (
@@ -2117,7 +2536,7 @@ async function src_main() {
           const checkbox = createMenuCheckbox(
             "VOTAutoSetVolume",
             dbAutoSetVolumeYandexStyle,
-            `Уменьшать громкость видео до ${config/* autoVolume */.IM * 100}%`
+            constants/* translations */.Iz[lang].VOTAutoSetVolume + `${config/* autoVolume */.IM * 100}%`
           );
 
           checkbox.querySelector("#VOTAutoSetVolume").onclick = async (
@@ -2144,7 +2563,7 @@ async function src_main() {
           const checkbox = createMenuCheckbox(
             "VOTShowVideoSlider",
             dbShowVideoSlider,
-            "Слайдер громкости видео"
+            constants/* translations */.Iz[lang].VOTShowVideoSlider
           );
 
           checkbox.querySelector("#VOTShowVideoSlider").onclick = async (
@@ -2182,7 +2601,7 @@ async function src_main() {
           const checkbox = createMenuCheckbox(
             "VOTSyncVolume",
             dbSyncVolume,
-            "Связать громкость перевода и видео"
+            constants/* translations */.Iz[lang].VOTSyncVolume
           );
 
           checkbox.querySelector("#VOTSyncVolume").onclick = async (event) => {
@@ -2206,7 +2625,7 @@ async function src_main() {
           const checkbox = createMenuCheckbox(
             "VOTAudioProxy",
             dbAudioProxy,
-            "Проксировать полученное аудио"
+            constants/* translations */.Iz[lang].VOTAudioProxy
           );
 
           checkbox.querySelector("#VOTAudioProxy").onclick = async (event) => {
@@ -2222,7 +2641,7 @@ async function src_main() {
       }
     }
 
-    transformBtn("none", "Перевести видео");
+    transformBtn("none", constants/* translations */.Iz[lang].translateVideo);
 
     if (
       window.location.hostname.includes("youtube.com") &&
@@ -2271,7 +2690,7 @@ async function src_main() {
           data.responseLanguage = "en";
           break;
         default:
-          if (!Object.keys(availableFromLangs).includes(lang)) {
+          if (!Object.keys(constants/* availableLangs */.tW).includes(lang)) {
             return setDetectedLangauge(data, "en");
           }
 
@@ -2291,7 +2710,7 @@ async function src_main() {
           data.detectedLanguage = "ru";
           break;
         default:
-          if (!Object.keys(availableToLangs).includes(lang)) {
+          if (!Object.keys(constants/* availableLangs */.tW).includes(lang)) {
             return setResponseLangauge(data, "ru");
           }
 
@@ -2317,7 +2736,7 @@ async function src_main() {
       const downloadBtn = document.querySelector(".translationDownload");
       downloadBtn.href = "";
       downloadBtn.style.display = "none";
-      transformBtn("none", "Перевести видео");
+      transformBtn("none", constants/* translations */.Iz[lang].translateVideo);
       if (volumeOnStart) {
         video.volume = volumeOnStart;
       }
@@ -2396,17 +2815,15 @@ async function src_main() {
           audioPromise.catch((e) => {
             console.error(e);
             if (e.name === "NotAllowedError") {
-              transformBtn(
-                "error",
-                "Предоставьте разрешение на автовоспроизведение"
-              );
-              throw "VOT: Предоставьте разрешение на автовоспроизведение";
+              const errorMessage = constants/* translations */.Iz[lang].grantPermissionToAutoPlay;
+              transformBtn("error", errorMessage);
+              throw `VOT: ${errorMessage}`;
             } else if (e.name === "NotSupportedError") {
               const errorMessage = sitesChromiumBlocked.includes(
                 window.location.hostname
               )
-                ? "Для поддержки этого сайта необходимо дополнительное расширение"
-                : "Формат аудио не поддерживается";
+                ? constants/* translations */.Iz[lang].neededAdditionalExtension
+                : constants/* translations */.Iz[lang].audioFormatNotSupported;
               transformBtn("error", errorMessage);
               throw `VOT: ${errorMessage}`;
             }
@@ -2441,7 +2858,7 @@ async function src_main() {
       const slider = createMenuSlider(
         "VOTVideoSlider",
         newVolume,
-        `Громкость видео: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
+        `${constants/* translations */.Iz[lang].VOTVolume}: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
       );
 
       slider.querySelector("#VOTVideoSlider").oninput = (event) => {
@@ -2505,7 +2922,7 @@ async function src_main() {
       const slider = createMenuSlider(
         "VOTTranslationSlider",
         defaultTranslateVolume,
-        `Громкость перевода: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
+        `${constants/* translations */.Iz[lang].VOTVolumeTranslation}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
       );
 
       // Add an input event listener to the slider
@@ -2565,27 +2982,24 @@ async function src_main() {
     }
 
     function videoValidator() {
-      // Костыль, но работает. тупой баг свзян с тем что функция videoValidator может считать videoData.detectedLanguage неверно, когда с ytData.detectedLanguage всё работает отлично
-      // Иногда код может начать перевод русского видео из-за этого бага
-      // Прошу тебя доразбирись за меня
       if (window.location.hostname.includes("youtube.com")) {
         let ytData = getYTVideoData();
         ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
         debug/* default.log */.Z.log("VideoValidator videoData: ", videoData);
         if (dbDontTranslateRuVideos === 1 && ytData.detectedLanguage === "ru") {
           firstPlay = false;
-          throw "VOT: Вы отключили перевод русскоязычных видео";
+          throw constants/* translations */.Iz[lang].VOTDisableRussian;
         }
 
         if (ytData.isLive) {
-          throw "VOT: Не поддерживается перевод трансляций в прямом эфире";
+          throw constants/* translations */.Iz[lang].VOTLiveNotSupported;
         }
 
         if (ytData.isPremiere) {
-          throw "VOT: Дождитесь окончания премьеры перед переводом";
+          throw constants/* translations */.Iz[lang].VOTPremiere;
         }
         if (videoData.duration > 14_400) {
-          throw "VOT: Видео слишком длинное";
+          throw constants/* translations */.Iz[lang].VOTVideoIsTooLong;
         }
       }
       return true;
@@ -2616,10 +3030,10 @@ async function src_main() {
 
     // Define a function to translate a video and handle the callback
     function translateFunc(VIDEO_ID, requestLang, responseLang) {
-      const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
+      const videoURL = `${constants/* siteTranslates */.g$[siteHostname]}${VIDEO_ID}`;
       translateVideo(
         videoURL,
-        translateFuncParam,
+        constants/* translateFuncParam */.ey,
         requestLang,
         responseLang,
         async (success, urlOrError) => {
@@ -2627,7 +3041,8 @@ async function src_main() {
           if (getVideoId(siteHostname) !== VIDEO_ID) return;
           if (!success) {
             transformBtn("error", urlOrError);
-            if (urlOrError.includes("Перевод займёт")) {
+            // if the error line contains information that the translation is being performed, then we wait
+            if (urlOrError.includes(constants/* translations */.Iz[lang].translationTake)) {
               clearTimeout(autoRetry);
               autoRetry = setTimeout(
                 () => translateFunc(VIDEO_ID, requestLang, responseLang),
@@ -2640,8 +3055,15 @@ async function src_main() {
           audio.src = urlOrError;
 
           // cf version only
-          if ( true && dbAudioProxy === 1 && urlOrError.startsWith("https://")) {
-            const audioPath = urlOrError.replace("https://vtrans.s3-private.mds.yandex.net/tts/prod/", "");
+          if (
+             true &&
+            dbAudioProxy === 1 &&
+            urlOrError.startsWith("https://")
+          ) {
+            const audioPath = urlOrError.replace(
+              "https://vtrans.s3-private.mds.yandex.net/tts/prod/",
+              ""
+            );
             const proxiedAudioUrl = `https://${config_cloudflare/* workerHost */.i}/video-translation/audio-proxy/${audioPath}`;
             console.log(`VOT Audio proxied via ${proxiedAudioUrl}`);
             audio.src = proxiedAudioUrl;
@@ -2723,7 +3145,7 @@ async function src_main() {
           videos.forEach((v) =>
             events.forEach((e) => v.addEventListener(e, handleVideoEvent))
           );
-          transformBtn("success", "Выключить");
+          transformBtn("success", constants/* translations */.Iz[lang].disableTranslate);
           addVideoSlider();
           addTranslationSlider();
 
@@ -2832,7 +3254,7 @@ async function src_main() {
           const VIDEO_ID = getVideoId(siteHostname);
 
           if (!VIDEO_ID) {
-            throw "VOT: Не найдено ID видео"; // not found video id
+            throw constants/* translations */.Iz[lang].VOTNoVideoIDFound;
           }
 
           translateExecutor(VIDEO_ID);
@@ -2851,7 +3273,7 @@ async function src_main() {
       const VIDEO_ID = getVideoId(siteHostname);
 
       if (!VIDEO_ID) {
-        throw "VOT: Не найдено ID видео";
+        throw constants/* translations */.Iz[lang].VOTNoVideoIDFound;
       }
 
       try {
@@ -2959,15 +3381,10 @@ async function src_main() {
               if (
                 mutation.type === "attributes" &&
                 mutation.attributeName === "src" &&
-                mutation.target ===
-                  twitchMobileSelector?.querySelector("video")
+                mutation.target === twitchMobileSelector?.querySelector("video")
               ) {
                 await sleep(1000);
-                await translateProccessor(
-                  twitchMobileSelector,
-                  "twitch",
-                  null
-                );
+                await translateProccessor(twitchMobileSelector, "twitch", null);
               }
             }
           });

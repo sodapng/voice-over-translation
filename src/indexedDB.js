@@ -1,3 +1,6 @@
+import { lang } from "./menu.js";
+import { translations } from "./config/constants.js";
+
 // --- IndexedDB functions start:
 const dbVersion = 2; // current db version
 const settingsDefault = {
@@ -20,7 +23,7 @@ async function initDB() {
 
     openRequest.onerror = () => {
       console.error(
-        `VOT: Ошибка инициализации Базы Данных: ${openRequest.error.message}`
+        `${translations[lang].VOTFailedInitDB}: ${openRequest.error.message}`
       );
       reject(false);
     };
@@ -29,16 +32,17 @@ async function initDB() {
       const db = openRequest.result;
 
       db.onerror = () => {
-        alert("VOT: Не удалось получить объект базы данных");
-        console.error(
-          `VOT: Не удалось загрузить базу данных: ${openRequest.error}`
-        );
+        const errorMessage = translations[lang].VOTFailedInitDB;
+        alert(errorMessage);
+        console.error(errorMessage, openRequest.error);
         reject(false);
       };
 
       if (event.oldVersion < 1) {
         // db not found
-        const objectStore = db.createObjectStore("settings", { keyPath: "key" });
+        const objectStore = db.createObjectStore("settings", {
+          keyPath: "key",
+        });
 
         objectStore.createIndex("autoTranslate", "autoTranslate", {
           unique: false,
@@ -61,7 +65,7 @@ async function initDB() {
           { unique: false }
         );
 
-        console.log("VOT: База Данных создана");
+        console.log("VOT: Database Created");
 
         objectStore.transaction.oncomplete = (event) => {
           const objectStore = db
@@ -71,7 +75,7 @@ async function initDB() {
 
           request.onsuccess = () => {
             console.log(
-              "VOT: Стандартные настройки добавлены в Базу Данных: ",
+              "VOT: Standard settings added to the Database: ",
               request.result
             );
             resolve(true);
@@ -79,7 +83,7 @@ async function initDB() {
 
           request.onerror = () => {
             console.log(
-              "VOT: Ошибка при добавление стандартных настроек в Базу Данных: ",
+              "VOT: Error when adding standard settings to the Database: ",
               request.error
             );
             reject(false);
@@ -92,7 +96,7 @@ async function initDB() {
         const transaction = openRequest.transaction;
         const objectStore = transaction.objectStore("settings");
         objectStore.createIndex("audioProxy", "audioProxy", { unique: false });
-        console.log("VOT: База Данных обновлена до 2-й версии");
+        console.log("VOT: The database has been updated to the 2nd version");
 
         objectStore.transaction.oncomplete = (event) => {
           const objectStore = db
@@ -102,7 +106,7 @@ async function initDB() {
 
           request.onerror = (event) => {
             console.error(
-              "VOT: Не удалось получить данные из Базы Данных: ",
+              "VOT: Data could not be retrieved from the Database: ",
               event.error
             );
             reject(false);
@@ -116,14 +120,16 @@ async function initDB() {
 
             requestUpdate.onerror = (event) => {
               console.error(
-                "VOT: Не удалось обновить Базу Данных до 2 версии: ",
+                "VOT: Failed to update the Database to version 2: ",
                 event.error
               );
               reject(false);
             };
 
             requestUpdate.onsuccess = () => {
-              console.log("VOT: Стандартные настройки 2-й версии добавлены в Базу Данных.");
+              console.log(
+                "VOT: Standard settings of the 2nd version have been added to the Database."
+              );
               resolve(true);
             };
           };
@@ -135,12 +141,9 @@ async function initDB() {
       const db = openRequest.result;
       db.onversionchange = () => {
         db.close();
-        alert(
-          "Базе данных нужно обновление, пожалуйста, перезагрузите страницу."
-        );
-        console.log(
-          "VOT: Базе данных нужно обновление, пожалуйста, перезагрузите страницу"
-        );
+        const errorMessage = translations[lang].VOTDBNeedUpdate;
+        alert(errorMessage);
+        console.log(errorMessage);
         window.location.reload();
         reject(false);
       };
@@ -149,13 +152,9 @@ async function initDB() {
 
     openRequest.onblocked = () => {
       const db = openRequest.result;
-      console.error(
-        "VOT: База Данных временно заблокирована из-за ошибки: ",
-        db
-      );
-      alert(
-        "VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова."
-      );
+      const errorMessage = translations[lang].VOTDisabledForDBUpdating;
+      console.error(errorMessage, db);
+      alert(errorMessage);
       reject(false);
     };
   });
@@ -183,8 +182,9 @@ async function updateDB({
       const openRequest = openDB("VOT");
 
       openRequest.onerror = () => {
-        alert("VOT: Произошла ошибка");
-        console.error(`VOT: Ошибка Базы Данных: ${openRequest.error.message}`);
+        const errorMessage = translations[lang].VOTFailedWriteToDB;
+        alert(errorMessage);
+        console.error(errorMessage, openRequest.error.message);
         reject(false);
       };
 
@@ -200,7 +200,7 @@ async function updateDB({
         db.onversionchange = () => {
           db.close();
           console.log(
-            "VOT: Базе данных нужно обновление, пожалуЙста, перезагрузите страницу"
+            "VOT: The database needs an update, please reload the page if it didn't happen automatically"
           );
           window.location.reload();
           reject(false);
@@ -213,14 +213,13 @@ async function updateDB({
 
         request.onerror = (event) => {
           console.error(
-            "VOT: Не удалось получить данные из Базы Данных: ",
+            "VOT: Data could not be retrieved from the Database: ",
             event.error
           );
           reject(false);
         };
 
         request.onsuccess = () => {
-          // console.log('VOT: Получены данные из Базы Данных: ', request.result);
           const data = request.result;
 
           if (typeof autoTranslate === "number") {
@@ -262,7 +261,6 @@ async function updateDB({
           };
 
           requestUpdate.onsuccess = () => {
-            // console.log('VOT: Данные в Базе Данных обновлены, вы великолепны!');
             resolve(true);
           };
         };
@@ -270,13 +268,9 @@ async function updateDB({
 
       openRequest.onblocked = () => {
         const db = openRequest.result;
-        console.error(
-          "VOT: База Данных временно заблокирована из-за ошибки: ",
-          db
-        );
-        alert(
-          "VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова."
-        );
+        const errorMessage = translations[lang].VOTDisabledForDBUpdating;
+        console.error(errorMessage, db);
+        alert(errorMessage);
         reject(false);
       };
     }
@@ -288,8 +282,9 @@ async function readDB() {
     const openRequest = openDB("VOT");
 
     openRequest.onerror = () => {
-      alert("VOT: Произошла ошибка");
-      console.error(`VOT: Ошибка Базы Данных: ${openRequest.error.message}`);
+      const errorMessage = translations[lang].VOTFailedReadFromDB;
+      alert(errorMessage);
+      console.error(errorMessage, openRequest.error.message);
       reject(false);
     };
 
@@ -304,7 +299,9 @@ async function readDB() {
       const db = openRequest.result;
       db.onversionchange = () => {
         db.close();
-        alert("VOT: База данных устарела, пожалуЙста, перезагрузите страницу.");
+        const errorMessage = translations[lang].VOTDBNeedUpdate;
+        alert(errorMessage);
+        console.error(errorMessage);
         reject(false);
       };
 
@@ -312,16 +309,12 @@ async function readDB() {
       const request = objectStore.get("settings");
 
       request.onerror = (event) => {
-        console.error(
-          "VOT: Не удалось получить данные из Базы Данных: ",
-          event.error
-        );
+        console.error(translations[lang].VOTFailedReadFromDB, event.error);
         console.error(event);
         reject(false);
       };
 
       request.onsuccess = () => {
-        // console.log('VOT: Получены данные из Базы Данных: ', request.result);
         if (request.result === undefined) {
           db.close();
           deleteDB();
@@ -334,13 +327,9 @@ async function readDB() {
 
     openRequest.onblocked = () => {
       const db = openRequest.result;
-      console.error(
-        "VOT: База Данных временно заблокирована из-за ошибки: ",
-        db
-      );
-      alert(
-        "VOT отключен из-за ошибки при обновление Базы Данных. Закройте все открытые вкладки с youtube.com и попробуйте снова."
-      );
+      const errorMessage = translations[lang].VOTDisabledForDBUpdating;
+      console.error(errorMessage, db);
+      alert(errorMessage);
       reject(false);
     };
   });

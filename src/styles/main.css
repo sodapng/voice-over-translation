@@ -164,6 +164,11 @@
   font: 900 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif !important;
 }
 
+.translationMenuOptions {
+  display: flex;
+  flex-flow: column wrap;
+}
+
 .translationMenuContainer {
   /* width: 100%; */
   padding-left: 16px !important;
