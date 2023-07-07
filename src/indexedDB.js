@@ -38,7 +38,9 @@ async function initDB() {
 
       if (event.oldVersion < 1) {
         // db not found
-        const objectStore = db.createObjectStore("settings", { keyPath: "key" });
+        const objectStore = db.createObjectStore("settings", {
+          keyPath: "key",
+        });
 
         objectStore.createIndex("autoTranslate", "autoTranslate", {
           unique: false,
@@ -123,7 +125,9 @@ async function initDB() {
             };
 
             requestUpdate.onsuccess = () => {
-              console.log("VOT: Стандартные настройки 2-й версии добавлены в Базу Данных.");
+              console.log(
+                "VOT: Стандартные настройки 2-й версии добавлены в Базу Данных."
+              );
               resolve(true);
             };
           };

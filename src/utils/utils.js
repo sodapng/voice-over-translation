@@ -39,9 +39,9 @@ const getVideoId = (service) => {
       } else if (url.searchParams.get("z")) {
         return url.searchParams.get("z").split("/")[0];
       } else if (url.searchParams.get("oid") && url.searchParams.get("id")) {
-        return `video-${
-          Math.abs(url.searchParams.get("oid"))
-        }_${url.searchParams.get("id")}`;
+        return `video-${Math.abs(
+          url.searchParams.get("oid")
+        )}_${url.searchParams.get("id")}`;
       } else {
         return false;
       }
@@ -65,7 +65,10 @@ const getVideoId = (service) => {
           return false;
         }
 
-        const channelName = channelLink.href.replace('https://www.twitch.tv/', '');
+        const channelName = channelLink.href.replace(
+          "https://www.twitch.tv/",
+          ""
+        );
         return `${channelName}/clip/${url.searchParams.get("clip")}`;
       } else if (url.pathname.match(/([^/]+)\/(?:clip)\/([^/]+)/)) {
         return url.pathname.match(/([^/]+)\/(?:clip)\/([^/]+)/)[0];
@@ -78,7 +81,7 @@ const getVideoId = (service) => {
       return (
         url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||
         url.pathname.match(/[^/]+$/)?.[0]
-      )
+      );
     case "xvideos":
       return url.pathname.match(/[^/]+\/[^/]+$/)?.[0];
     case "pornhub":

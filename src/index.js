@@ -9,6 +9,7 @@ import {
   availableFromLangs,
   availableToLangs,
   siteTranslates,
+  translations,
 } from "./config/constants.js";
 import { initDB, readDB, updateDB, deleteDB } from "./indexedDB.js";
 import {
@@ -31,6 +32,12 @@ const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 let translateFromLang = "en"; // default language of video
 
 let translateToLang = "ru"; // default language of audio response
+
+const userlang = navigator.language || navigator.userLanguage;
+let lang = userlang.substr(0, 2).toLowerCase();
+if (!(lang in translations)) {
+  lang = "en";
+}
 
 async function main() {
   debug.log("Loading extension...");
@@ -212,19 +219,18 @@ async function main() {
     console.log("VOT Video Data: ", videoData);
 
     const container =
-    siteHostname === "pornhub" &&
-    window.location.pathname.includes("view_video.php")
-    ? document.querySelector(".original.mainPlayerDiv")
-    : siteHostname === "pornhub" &&
-    window.location.pathname.includes("embed/")
-    ? document.querySelector("body")
-    : window.location.hostname.includes("m.youtube.com")
-    ? document.querySelector("#player-control-container")
-    : videoContainer;
+      siteHostname === "pornhub" &&
+      window.location.pathname.includes("view_video.php")
+        ? document.querySelector(".original.mainPlayerDiv")
+        : siteHostname === "pornhub" &&
+          window.location.pathname.includes("embed/")
+        ? document.querySelector("body")
+        : window.location.hostname.includes("m.youtube.com")
+        ? document.querySelector("#player-control-container")
+        : videoContainer;
 
     addTranslationBlock(container);
     addTranslationMenu(container);
-
 
     try {
       isDBInited = await initDB();
@@ -236,10 +242,7 @@ async function main() {
     }
 
     const menuOptions = document.querySelector(".translationMenuOptions");
-    if (
-      menuOptions &&
-      !menuOptions.querySelector("#VOTTranslateFromLang")
-    ) {
+    if (menuOptions && !menuOptions.querySelector("#VOTTranslateFromLang")) {
       const selectFromLangOptions = [
         {
           label: "Язык видео",
@@ -326,12 +329,11 @@ async function main() {
           const checkbox = createMenuCheckbox(
             "VOTAutoTranslate",
             dbAutoTranslate,
-            `Переводить при открытии${
-              siteHostname === "vk" ||
+            translations[lang].VOTAutoTranslate +
+              (siteHostname === "vk" ||
               window.location.hostname.includes("m.twitch.tv")
                 ? " <strong>(рекомендуется)</strong>"
-                : ""
-            }`
+                : "")
           );
 
           checkbox.querySelector("#VOTAutoTranslate").onclick = async (
@@ -359,7 +361,7 @@ async function main() {
           const checkbox = createMenuCheckbox(
             "VOTDontTranslateRu",
             dbDontTranslateRuVideos,
-            "Не переводить с русского"
+            translations[lang].VOTDontTranslateRu
           );
 
           checkbox.querySelector("#VOTDontTranslateRu").onclick = async (
@@ -386,7 +388,7 @@ async function main() {
           const checkbox = createMenuCheckbox(
             "VOTAutoSetVolume",
             dbAutoSetVolumeYandexStyle,
-            `Уменьшать громкость видео до ${autoVolume * 100}%`
+            translations[lang].VOTAutoSetVolume + `${autoVolume * 100}%`
           );
 
           checkbox.querySelector("#VOTAutoSetVolume").onclick = async (
@@ -413,7 +415,7 @@ async function main() {
           const checkbox = createMenuCheckbox(
             "VOTShowVideoSlider",
             dbShowVideoSlider,
-            "Слайдер громкости видео"
+            translations[lang].VOTShowVideoSlider
           );
 
           checkbox.querySelector("#VOTShowVideoSlider").onclick = async (
@@ -451,7 +453,7 @@ async function main() {
           const checkbox = createMenuCheckbox(
             "VOTSyncVolume",
             dbSyncVolume,
-            "Связать громкость перевода и видео"
+            translations[lang].VOTSyncVolume
           );
 
           checkbox.querySelector("#VOTSyncVolume").onclick = async (event) => {
@@ -475,7 +477,7 @@ async function main() {
           const checkbox = createMenuCheckbox(
             "VOTAudioProxy",
             dbAudioProxy,
-            "Проксировать полученное аудио"
+            translations[lang].VOTAudioProxy
           );
 
           checkbox.querySelector("#VOTAudioProxy").onclick = async (event) => {
@@ -491,7 +493,7 @@ async function main() {
       }
     }
 
-    transformBtn("none", "Перевести видео");
+    transformBtn("none", translations[lang].translateVideo);
 
     if (
       window.location.hostname.includes("youtube.com") &&
@@ -834,27 +836,24 @@ async function main() {
     }
 
     function videoValidator() {
-      // Костыль, но работает. тупой баг свзян с тем что функция videoValidator может считать videoData.detectedLanguage неверно, когда с ytData.detectedLanguage всё работает отлично
-      // Иногда код может начать перевод русского видео из-за этого бага
-      // Прошу тебя доразбирись за меня
       if (window.location.hostname.includes("youtube.com")) {
         let ytData = getYTVideoData();
         ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
         debug.log("VideoValidator videoData: ", videoData);
         if (dbDontTranslateRuVideos === 1 && ytData.detectedLanguage === "ru") {
           firstPlay = false;
-          throw "VOT: Вы отключили перевод русскоязычных видео";
+          throw translations[lang].VOTDisableRussian;
         }
 
         if (ytData.isLive) {
-          throw "VOT: Не поддерживается перевод трансляций в прямом эфире";
+          throw translations[lang].VOTLiveNotSupported;
         }
 
         if (ytData.isPremiere) {
-          throw "VOT: Дождитесь окончания премьеры перед переводом";
+          throw translations[lang].VOTPremiere;
         }
         if (videoData.duration > 14_400) {
-          throw "VOT: Видео слишком длинное";
+          throw translations[lang].VOTVideoIsTooLong;
         }
       }
       return true;
@@ -909,8 +908,15 @@ async function main() {
           audio.src = urlOrError;
 
           // cf version only
-          if (BUILD_MODE === "cloudflare" && dbAudioProxy === 1 && urlOrError.startsWith("https://")) {
-            const audioPath = urlOrError.replace("https://vtrans.s3-private.mds.yandex.net/tts/prod/", "");
+          if (
+            BUILD_MODE === "cloudflare" &&
+            dbAudioProxy === 1 &&
+            urlOrError.startsWith("https://")
+          ) {
+            const audioPath = urlOrError.replace(
+              "https://vtrans.s3-private.mds.yandex.net/tts/prod/",
+              ""
+            );
             const proxiedAudioUrl = `https://${workerHost}/video-translation/audio-proxy/${audioPath}`;
             console.log(`VOT Audio proxied via ${proxiedAudioUrl}`);
             audio.src = proxiedAudioUrl;
@@ -1228,15 +1234,10 @@ async function main() {
               if (
                 mutation.type === "attributes" &&
                 mutation.attributeName === "src" &&
-                mutation.target ===
-                  twitchMobileSelector?.querySelector("video")
+                mutation.target === twitchMobileSelector?.querySelector("video")
               ) {
                 await sleep(1000);
-                await translateProccessor(
-                  twitchMobileSelector,
-                  "twitch",
-                  null
-                );
+                await translateProccessor(twitchMobileSelector, "twitch", null);
               }
             }
           });
