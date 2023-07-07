@@ -1,3 +1,22 @@
+import { translations } from "../config/constants.js";
+import { lang } from "../menu.js";
+
+if (!String.prototype.format) {
+  // https://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format
+  // syntax example: "is {0} function".format("format")
+  String.prototype.format = function () {
+    // store arguments in an array
+    var args = arguments;
+    // use replace to iterate over the string
+    // select the match and check if the related argument is present
+    // if yes, replace the match with the argument
+    return this.replace(/{(\d+)}/g, function (match, index) {
+      // check if the argument is present
+      return typeof args[index] != "undefined" ? args[index] : match;
+    });
+  };
+}
+
 function waitForElm(selector) {
   // https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
   return new Promise((resolve) => {
@@ -121,13 +140,17 @@ function secsToStrTime(secs) {
   const minutes = Math.floor(secs / 60);
   const seconds = Math.floor(secs % 60);
   if (minutes >= 60) {
-    return "Перевод займёт больше часа";
+    return translations[lang].translationTakeMoreThanHour;
   } else if (minutes >= 10 && minutes % 10) {
-    return `Перевод займёт примерно ${minutes} минут`;
+    return translations[lang].translationTakeApproximatelyMinutes.format(
+      minutes
+    );
   } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
-    return "Перевод займёт около минуты";
+    return translations[lang].translationTakeAboutMinute;
   } else {
-    return `Перевод займёт примерно ${minutes} минуты`;
+    return translations[lang].translationTakeApproximatelyMinute.format(
+      minutes
+    );
   }
 }
 
