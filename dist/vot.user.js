@@ -1349,6 +1349,7 @@ const translations = {
     resetSettings: "Сбросить настройки",
     VOTAutoTranslate: "Переводить при открытии",
     VOTDontTranslateRu: "Не переводить с русского",
+    VOTVolume: "Громкость видео",
     VOTAutoSetVolume: "Уменьшать громкость видео до ",
     VOTShowVideoSlider: "Слайдер громкости видео",
     VOTSyncVolume: "Связать громкость перевода и видео",
@@ -1366,6 +1367,7 @@ const translations = {
     resetSettings: "Reset settings",
     VOTAutoTranslate: "Translate on open",
     VOTDontTranslateRu: "Do not translate from Russian",
+    VOTVolume: "Video volume",
     VOTAutoSetVolume: "Reduce video volume to ",
     VOTShowVideoSlider: "Video volume slider",
     VOTSyncVolume: "Link translation and video volume",
@@ -1383,6 +1385,7 @@ const translations = {
     resetSettings: "重置设置",
     VOTAutoTranslate: "打开时翻译",
     VOTDontTranslateRu: "不要从俄语翻译",
+    VOTVolume: "视频量",
     VOTAutoSetVolume: "将视频音量降低到",
     VOTShowVideoSlider: "视频音量滑块",
     VOTSyncVolume: "链接翻译和视频音量",
@@ -1399,6 +1402,7 @@ const translations = {
     resetSettings: "Einstellungen zurücksetzen",
     VOTAutoTranslate: "Beim Öffnen übersetzen",
     VOTDontTranslateRu: "Nicht aus dem Russischen übersetzen",
+    VOTVolume: "Video Lautstärke",
     VOTAutoSetVolume: "Video-Lautstärke auf  reduzieren",
     VOTShowVideoSlider: "Video-Lautstärkeregler",
     VOTSyncVolume: "Übersetzungs- und Videolautstärke verknüpfen",
@@ -1418,6 +1422,7 @@ const translations = {
     resetSettings: "Restablecer ajustes",
     VOTAutoTranslate: "Traducir al abrir",
     VOTDontTranslateRu: "No traducir del ruso",
+    VOTVolume: "Volumen de vídeo",
     VOTAutoSetVolume: "Reducir el volumen del video al ",
     VOTShowVideoSlider: "Deslizador de volumen de video",
     VOTSyncVolume: "Vincular el volumen de traducción y video",
@@ -1435,6 +1440,7 @@ const translations = {
     resetSettings: "Réinitialiser les paramètres",
     VOTAutoTranslate: "Traduire à l'ouverture",
     VOTDontTranslateRu: "Ne pas traduire du russe",
+    VOTVolume: "Volume de la vidéo",
     VOTAutoSetVolume: "Réduire le volume de la vidéo à ",
     VOTShowVideoSlider: "Curseur de volume vidéo",
     VOTSyncVolume: "Lier le volume de la traduction et de la vidéo",
@@ -1453,6 +1459,7 @@ const translations = {
     resetSettings: "Ripristina impostazioni",
     VOTAutoTranslate: "Traduci all'apertura",
     VOTDontTranslateRu: "Non tradurre dal russo",
+    VOTVolume: "Volume video",
     VOTAutoSetVolume: "Riduci il volume del video al ",
     VOTShowVideoSlider: "Cursore del volume del video",
     VOTSyncVolume: "Collega il volume della traduzione e del video",
@@ -2759,7 +2766,7 @@ async function src_main() {
       const slider = createMenuSlider(
         "VOTVideoSlider",
         newVolume,
-        `Громкость видео: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
+        `${translations[lang].VOTVolume}: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
       );
 
       slider.querySelector("#VOTVideoSlider").oninput = (event) => {

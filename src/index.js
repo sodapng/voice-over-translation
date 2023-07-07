@@ -707,7 +707,7 @@ async function main() {
       const slider = createMenuSlider(
         "VOTVideoSlider",
         newVolume,
-        `Громкость видео: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
+        `${translations[lang].VOTVolume}: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
       );
 
       slider.querySelector("#VOTVideoSlider").oninput = (event) => {
