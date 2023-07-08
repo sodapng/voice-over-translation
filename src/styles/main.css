@@ -5,7 +5,7 @@
   background: #2e2f34;
   border-radius: 0.5rem !important;
   left: 50%;
-  top: 3rem;
+  top: 5rem;
   transform: translate(-50%);
   text-align: center;
   opacity: 0;
@@ -71,7 +71,7 @@
   display: none;
   border-radius: 1rem !important;
   left: 50%;
-  top: 8rem;
+  top: 10rem;
   transform: translate(-50%);
   text-align: left;
   font: 600 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif !important;
