@@ -1,7 +1,7 @@
 # Закадровый перевод видео
 
-Закадровый перевод видео не только в YandexBrowser.
-Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)**. Спасиб <3
+Закадровый перевод видео, теперь, доступен не только в YandexBrowser.
+Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)** & **[SashaXser](https://github.com/SashaXser)**.. Спасиб <3
 
 ## Установка расширения:
 1. Установите расширение **[Tampermonkey](https://www.tampermonkey.net/)** (Альтернатива для Safari: **[UserScripts](https://apps.apple.com/app/userscripts/id1463298887 )**)
@@ -38,7 +38,7 @@
 7. [YouTube Only] Ограничить перевод русскоязычных видео
 
 ## Как собрать расширение?
-1. Установите NodeJS 16+
+1. Установите NodeJS 18+
 2. Установите зависимости:
 ```bash
 npm i
@@ -82,12 +82,12 @@ npm i
 1. Зарегистрируйтесь в [Cloudflare Dashboard](https://dash.cloudflare.com) и войдите в панель управления
 2. В большом левом меню выберите пункт "Workers & Pages"
 3. Пройдите регистрацию в "Workers & Pages" выбрав Free тариф
-4. Если вы всё сделаете верно, то вас перекинет на страницу, где вы сможете нажать на синию кнопку "Create application"
-5. На появившейся странице нажмите синию кнопку "Create worker"
-6. Введите желаемое название для поддомена и нажмите синию кнопку "Deploy"
+4. Если вы всё сделаете верно, то вас перекинет на страницу, где вы сможете нажать на синюю кнопку "Create application"
+5. На появившейся странице нажмите синюю кнопку "Create worker"
+6. Введите желаемое название для поддомена и нажмите синюю кнопку "Deploy"
 7. Если всё прошло успешно, то у вас будет на выбор две кнопки "Configure worker" и "Edit code", вам нужно выбрать "Edit code"
-8. В открывшемся браузерном текстовом редакторе замените все содержимое файла worker.js на содержимое файла [CloudWorker.js](https://github.com/ilyhalight/voice-over-translation/blob/master/package.json)
-9. Сохраните код с помощью комбинации Ctrl + S и нажмите на синию кнопку "Save and deploy"
+8. В открывшемся браузерном текстовом редакторе замените все содержимое файла worker.js на содержимое файла [CloudWorker.js](https://github.com/ilyhalight/voice-over-translation/blob/master/CloudWorker.js)
+9. Сохраните код с помощью комбинации Ctrl + S и нажмите на синюю кнопку "Save and deploy"
 10. Готово, теперь, вам осталось всего лишь поменять в коде "vot.toil-dump.workers.dev" на домен вашего воркера
 
 ## Примечание:
