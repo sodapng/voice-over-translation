@@ -127,6 +127,6 @@ Text instructions:
 | ⠀[Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Firefox | Firemonkey
 | ⠀[Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Any | Greasemonkey
 
-![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.jpg "btn")
+![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example_en.jpg "btn")
 
 *: Banned on the territory of the Russian Federation
