@@ -14,7 +14,7 @@
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
 // @version 1.3.3
-// @author sodapng, mynovelhost, Toil
+// @author sodapng, mynovelhost, Toil, SashaXser
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
 // @match *://*.youtube-nocookie.com/*
