@@ -47,7 +47,7 @@ const translations = {
       "Для поддержки этого сайта необходимо дополнительное расширение",
     audioFormatNotSupported: "Формат аудио не поддерживается",
     VOTAutoTranslate: "Переводить при открытии",
-    VOTDontTranslateYourLang: "Не переводите с родного языка",
+    VOTDontTranslateYourLang: "Не переводить с родного языка",
     VOTVolume: "Громкость видео",
     VOTVolumeTranslation: "Громкость перевода",
     VOTAutoSetVolume: "Уменьшать громкость видео до ",
@@ -99,7 +99,7 @@ const translations = {
       "An additional extension is needed to support this site",
     audioFormatNotSupported: "The audio format is not supported",
     VOTAutoTranslate: "Translate on open",
-    VOTDontTranslateYourLang: "Do not translate from your language",
+    VOTDontTranslateYourLang: "Do not translate from my language",
     VOTVolume: "Video volume",
     VOTVolumeTranslation: "Translation Volume",
     VOTAutoSetVolume: "Reduce video volume to ",
@@ -155,7 +155,7 @@ const translations = {
     VOTShowVideoSlider: "视频音量滑块",
     VOTSyncVolume: "链接翻译和视频音量",
     VOTAudioProxy: "代理接收的音频",
-    VOTDisableFromYourLang: "VOT：你已经禁用了你的语言的视频翻译",
+    VOTDisableFromYourLang: "VOT：不要用我的语言来翻译",
     VOTLiveNotSupported: "VOT：不支持直播流的翻译",
     VOTPremiere: "VOT：等待首映结束后再翻译",
     VOTVideoIsTooLong: "VOT：视频太长",
@@ -207,8 +207,7 @@ const translations = {
     VOTShowVideoSlider: "Video-Lautstärkeregler",
     VOTSyncVolume: "Übersetzungs- und Videolautstärke verknüpfen",
     VOTAudioProxy: "Empfangenes Audio proxyen",
-    VOTDisableFromYourLang:
-      "VOT: Sie haben die Übersetzung des Videos in Ihrer Sprache deaktiviert",
+    VOTDisableFromYourLang: "VOT: Nicht aus meiner Sprache übersetzen",
     VOTLiveNotSupported:
       "VOT: Übersetzung von Live-Streams wird nicht unterstützt",
     VOTPremiere:
@@ -263,8 +262,7 @@ const translations = {
     VOTShowVideoSlider: "Deslizador de volumen de video",
     VOTSyncVolume: "Vincular el volumen de traducción y video",
     VOTAudioProxy: "Proxificar el audio recibido",
-    VOTDisableFromYourLang:
-      "VOT: Ha desactivado la traducción del vídeo en su idioma",
+    VOTDisableFromYourLang: "VOT: No traducir de mi idioma",
     VOTLiveNotSupported:
       "VOT: No se admite la traducción de transmisiones en vivo",
     VOTPremiere: "VOT: Espere a que termine el estreno antes de traducir",
@@ -317,8 +315,7 @@ const translations = {
     VOTShowVideoSlider: "Curseur de volume vidéo",
     VOTSyncVolume: "Lier le volume de la traduction et de la vidéo",
     VOTAudioProxy: "Proxy audio reçu",
-    VOTDisableFromYourLang:
-      "VOT: Vous avez désactivé la traduction de la vidéo dans votre langue",
+    VOTDisableFromYourLang: "VOT: Ne pas traduire à partir de ma langue",
     VOTLiveNotSupported:
       "VOT: La traduction des flux en direct n'est pas prise en charge",
     VOTPremiere: "VOT: Attendez la fin de la première avant de traduire",
@@ -373,8 +370,7 @@ const translations = {
     VOTShowVideoSlider: "Cursore del volume del video",
     VOTSyncVolume: "Collega il volume della traduzione e del video",
     VOTAudioProxy: "Proxy audio ricevuto",
-    VOTDisableFromYourLang:
-      "VOT: Avete disabilitato la traduzione del video nella vostra lingua",
+    VOTDisableFromYourLang: "VOT: Non tradurre dalla mia lingua",
     VOTLiveNotSupported:
       "VOT: La traduzione dei flussi dal vivo non è supportata",
     VOTPremiere: "VOT: Aspetta che la prima finisca prima di tradurre",
