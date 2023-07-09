@@ -10,6 +10,7 @@ The voice-over translation of the video is now available not only in YandexBrows
 1. Version for VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, UserScripts and some browsers: **[Link](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
 2. Terminal version: **[Link](https://github.com/ilyhalight/voice-over-translation/tree/master/vot-cli)**
 3. Learn more about creating a worker for VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, UserScripts: **[Link](https://github.com/mynovelhost/voice-over-translation/)**
+4. Wiki: **[Link](https://github.com/ilyhalight/voice-over-translation/wiki)**
 
 ## List of supported sites:
 - **[YouTube](https://www.youtube.com)** (Full support **www.youtube.com/watch**, **www.youtube.com/embed**, **m.youtube.com**. Including **[YouTube NoCookie](https://www.youtube-nocookie.com/)**)
@@ -74,32 +75,9 @@ npm i
    npm run build:cloudflare-min
    ```
 
-## How to deploy your Cloudflare Worker?
-Video instructions: [**video by mynovelhost**](https://raw.githubusercontent.com/mynovelhost/voice-over-translation/master/how_to_create_custom_worker.mp4)
-
-Text instructions:
-1. Register in [Cloudflare Dashboard](https://dash.cloudflare.com) and log in to the control panel
-2. In the large left menu, select "Workers & Pages"
-3. Register in "Workers & Pages" by choosing a Free tariff
-4. If you do everything right, you will be redirected to a page where you can click on the blue "Create application" button
-5. On the page that appears, click the blue "Create worker" button
-6. Enter the desired name for the subdomain and click the blue "Deploy" button
-7. If everything went well, then you will have a choice of two buttons "Configure worker" and "Edit code", you need to select "Edit code"
-8. In the browser text editor that opens, replace the entire contents of the worker file.js on the contents of the file [CloudWorker.js](https://github.com/ilyhalight/voice-over-translation/blob/master/CloudWorker.js)
-9. Save the code using Ctrl +S and click on the blue "Save and deploy" button
-10. That's it, now all you have to do is change the code "vot.toil-dump.workers.dev" to your worker's domain
-
 ## Note:
 1. I recommend allowing autoplay of "audio and video" to avoid errors when working with the extension
 2. The extension cannot translate videos longer than 4 hours (translator API limitation)
-3. If the translation button doesn't work, then try the following:
-   1. Go to Developer Tools (F12 или Ctrl+Shift+I)
-   2. Go to  Application P.S. Some browsers do not have this option. In them, you must immediately go to Storage.
-   3. Select Storage
-   4. Select IndexedDB
-   5. Click LMB on the line labeled  VOT (in Firefox you need to click RMB)
-   6. Click Delete Database
-   7. Reload the page
 
 ## The extension has been tested in the following browsers:
 | Status | Browser | Browser Version | Platform | Extension
