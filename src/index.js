@@ -201,7 +201,7 @@ async function main() {
     let dbDefaultVolume;
     let dbShowVideoSlider;
     let dbAutoSetVolumeYandexStyle;
-    let dbDontTranslateRuVideos;
+    let dontTranslateYourLang;
     let dbSyncVolume;
     let dbAudioProxy; // cf version only
     let firstPlay = true;
@@ -314,7 +314,7 @@ async function main() {
         dbDefaultVolume = dbData.defaultVolume;
         dbShowVideoSlider = dbData.showVideoSlider;
         dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
-        dbDontTranslateRuVideos = dbData.dontTranslateRuVideos;
+        dontTranslateYourLang = dbData.dontTranslateYourLang;
         dbAudioProxy = dbData.audioProxy; // cf version only
         dbSyncVolume = dbData.syncVolume; // youtube only
 
@@ -353,26 +353,26 @@ async function main() {
 
         if (
           window.location.hostname.includes("youtube.com") &&
-          dbDontTranslateRuVideos !== undefined &&
+          dontTranslateYourLang !== undefined &&
           menuOptions &&
-          !menuOptions.querySelector("#VOTDontTranslateRu")
+          !menuOptions.querySelector("#VOTDontTranslateYourLang")
         ) {
           const checkbox = createMenuCheckbox(
-            "VOTDontTranslateRu",
-            dbDontTranslateRuVideos,
-            translations[lang].VOTDontTranslateRu
+            "VOTDontTranslateYourLang",
+            dontTranslateYourLang,
+            translations[lang].VOTDontTranslateYourLang
           );
 
-          checkbox.querySelector("#VOTDontTranslateRu").onclick = async (
+          checkbox.querySelector("#VOTDontTranslateYourLang").onclick = async (
             event
           ) => {
             event.stopPropagation();
             const value = Number(event.target.checked);
-            await updateDB({ dontTranslateRuVideos: value });
-            dbDontTranslateRuVideos = value;
+            await updateDB({ dontTranslateYourLang: value });
+            dontTranslateYourLang = value;
             debug.log(
-              "dontTranslateRuVideos value changed. New value: ",
-              dbDontTranslateRuVideos
+              "dontTranslateYourLang value changed. New value: ",
+              dontTranslateYourLang
             );
           };
 
@@ -520,7 +520,7 @@ async function main() {
       });
     }
 
-    function setSelectMenuValues(from, to) {
+    function setSelectMenuValues(from, to = lang) {
       if (!document.querySelector("#VOTSelectLanguages")) {
         return;
       }
@@ -530,22 +530,23 @@ async function main() {
     }
 
     // data - ytData or VideoData
-    function setDetectedLangauge(data, lang) {
-      switch (lang) {
+    function setDetectedLangauge(data, videolang) {
+      switch (videolang) {
         case "en":
-          data.detectedLanguage = lang;
-          data.responseLanguage = "ru";
+          data.detectedLanguage = videolang;
+          data.responseLanguage = lang;
           break;
         case "ru":
-          data.detectedLanguage = lang;
-          data.responseLanguage = "en";
+          data.detectedLanguage = videolang;
+          data.responseLanguage = lang;
+          if (lang == "ru") data.responseLanguage = "en";
           break;
         default:
-          if (!Object.keys(availableLangs).includes(lang)) {
+          if (!Object.keys(availableLangs).includes(videolang)) {
             return setDetectedLangauge(data, "en");
           }
 
-          data.detectedLanguage = lang;
+          data.detectedLanguage = videolang;
       }
 
       setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
@@ -554,22 +555,22 @@ async function main() {
     }
 
     // data - ytData or VideoData
-    function setResponseLangauge(data, lang) {
-      switch (lang) {
+    function setResponseLangauge(data, videolang) {
+      switch (videolang) {
         case "en":
-          data.responseLanguage = lang;
+          data.responseLanguage = videolang;
           data.detectedLanguage = "ru";
           break;
         default:
-          if (!Object.keys(availableLangs).includes(lang)) {
+          if (!Object.keys(availableLangs).includes(videolang)) {
             return setResponseLangauge(data, "ru");
           }
 
-          if (data.detectedLanguage === "ru" && lang === "ru") {
+          if (data.detectedLanguage === "ru" && videolang === "ru") {
             data.detectedLanguage = "en";
           }
 
-          data.responseLanguage = lang;
+          data.responseLanguage = videolang;
       }
 
       setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
@@ -837,9 +838,9 @@ async function main() {
         let ytData = getYTVideoData();
         ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
         debug.log("VideoValidator videoData: ", videoData);
-        if (dbDontTranslateRuVideos === 1 && ytData.detectedLanguage === "ru") {
+        if (dontTranslateYourLang === 1 && ytData.detectedLanguage === lang) {
           firstPlay = false;
-          throw translations[lang].VOTDisableRussian;
+          throw translations[lang].VOTDisableFromYourLang;
         }
 
         if (ytData.isLive) {

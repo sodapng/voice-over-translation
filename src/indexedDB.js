@@ -10,7 +10,7 @@ const settingsDefault = {
   showVideoSlider: 0,
   syncVolume: 0,
   autoSetVolumeYandexStyle: 1,
-  dontTranslateRuVideos: 0,
+  dontTranslateYourLang: 0,
 }; // default settings for db v1
 
 function openDB(name) {
@@ -60,8 +60,8 @@ async function initDB() {
           { unique: false }
         );
         objectStore.createIndex(
-          "dontTranslateRuVideos",
-          "dontTranslateRuVideos",
+          "dontTranslateYourLang",
+          "dontTranslateYourLang",
           { unique: false }
         );
 
@@ -166,7 +166,7 @@ async function updateDB({
   showVideoSlider,
   syncVolume,
   autoSetVolumeYandexStyle,
-  dontTranslateRuVideos,
+  dontTranslateYourLang,
   audioProxy,
 }) {
   return new Promise((resolve, reject) => {
@@ -176,7 +176,7 @@ async function updateDB({
       typeof showVideoSlider === "number" ||
       typeof syncVolume === "number" ||
       typeof autoSetVolumeYandexStyle === "number" ||
-      typeof dontTranslateRuVideos === "number" ||
+      typeof dontTranslateYourLang === "number" ||
       typeof audioProxy === "number"
     ) {
       const openRequest = openDB("VOT");
@@ -242,8 +242,8 @@ async function updateDB({
             data.autoSetVolumeYandexStyle = autoSetVolumeYandexStyle;
           }
 
-          if (typeof dontTranslateRuVideos === "number") {
-            data.dontTranslateRuVideos = dontTranslateRuVideos;
+          if (typeof dontTranslateYourLang === "number") {
+            data.dontTranslateYourLang = dontTranslateYourLang;
           }
 
           if (typeof audioProxy === "number") {
