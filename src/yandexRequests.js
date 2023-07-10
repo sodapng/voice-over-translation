@@ -7,6 +7,7 @@ const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
   .add(new protobuf.Field("language", 8, "string")) // source language code
   .add(new protobuf.Field("unknown3", 9, "int32")) // 0 0
   .add(new protobuf.Field("unknown4", 10, "int32")) // 0 0
+  .add(new protobuf.Field("translationHelp", 11, "int32")) // array for translation assistance ([0] -> {2: link to video, 1: "video_file_url"}, [1] -> {2: link to subtitles, 1: "subtitles_file_url"})
   .add(new protobuf.Field("responseLanguage", 14, "string")); // target language code
 
 // const VideoWhitelistStreamRequest = new protobuf.Type("VideoWhitelistStreamRequest")
