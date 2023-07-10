@@ -1,5 +1,7 @@
 # Закадровый перевод видео
 
+English version: [Link](https://github.com/ilyhalight/voice-over-translation/blob/master/README-EN.md)
+
 Закадровый перевод видео, теперь, доступен не только в YandexBrowser.
 Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)** & **[SashaXser](https://github.com/SashaXser)**.. Спасиб <3
 
@@ -13,21 +15,22 @@
 3. Вики: **[Link](https://github.com/ilyhalight/voice-over-translation/wiki)**
 
 ## Список поддерживаемых сайтов:
-Все ограничения, связанные с поддержкой сайтов вы можете увидеть в [нашем вики](https://github.com/ilyhalight/voice-over-translation/wiki).
-- **[YouTube](https://www.youtube.com)** (Полная поддержка **www.youtube.com/watch**, **www.youtube.com/embed**, **m.youtube.com**. Включая **[YouTube NoCookie](https://www.youtube-nocookie.com/)**)
-- **[Invidious (vern.cc)](https://inv.vern.cc)**, **[Invidious (yewtu.be)](https://yewtu.be)** и некоторые другие (Альтернативный фронтенд для YouTube, без привязки к Google Services. Для работы в хромоподобных браузерах необходимо дополнительное **[расширение](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden/related)**)
-- **[Piped (piped.video)](https://piped.video)** и некоторые другие (Альтернативный фронтенд для YouTube, без привязки к Google Services. Для работы в хромоподобных браузерах необходимо дополнительное **[расширение](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden/related)**)
-- **[Twitch](https://www.twitch.tv)** (Поддерживается **www.twitch.tv/videos**, **m.twitch.tv/videos**, **player.twitch.tv**, **clips.twitch.tv**, **www.twitch.tv/NICKNAME/clip/**)
-- **[XVideos](https://xvideos.com/)** (Для работы в хромоподобных браузерах необходимо дополнительное **[расширение](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden/related)**)
-- **[PornHub](https://rt.pornhub.com/)**
-- **[VK](https://vk.com)** (Поддерживаются **vk.com|ru/video**, **vk.com|ru/video_ext.php**, **vk.com|ru/video-xxxxxxxxx_xxxxxxxxx** и **vk.com|ru/im?z=video-xxxxxxxxx_xxxxxxxxx** (+ другие страницы, на которых видео открывается через z параметр ссылки). Рекомендую использовать только совместно с автопереводом, ибо без него кнопка перевода требует 2-ого нажатия, и звук перевода пропадает при переходе на другое видео. Не знаю как это исправить :с)
+Все ограничения, связанные с поддержкой сайтов вы можете увидеть в [вики](https://github.com/ilyhalight/voice-over-translation/wiki/%5BRU%5D-Supported-sites).
+- **[YouTube](https://www.youtube.com)**
+- **[Twitch](https://www.twitch.tv)**
+- **[VK](https://vk.com)**
+- **[Twitter](https://twitter.com/)**
+- **[9GAG](https://9gag.com/gag/)**
+- **[Rutube](https://rutube.ru/)**
+- **[Bilibili](https://bilibili.com/)**
+- **[Видео Mail.ru](https://my.mail.ru/video)**
 - **[Vimeo](https://vimeo.com/)**
-- **[9GAG](https://9gag.com/gag/)** (Работает только в открытых видео. В ленте не работает.)
-- **[Twitter](https://twitter.com/)** (Работает только в открытых видео. В ленте не работает.)
-- **[Facebook*](https://facebook.com/)** (❌ Не работает)
-- **[Rutube](https://rutube.ru/)** (Полная поддержка **rutube.ru/video/** и **rutube.ru/play/embed/**)
-- **[Bilibili](https://bilibili.com/)** (Поддерживаются **bilibili.com/video/** и **bilibili.com/blackboard/webplayer/embed-old.html**)
-- **[Видео Mail.ru](https://my.mail.ru/video)** (Работает только в открытых видео. В ленте не работает.)
+- **[XVideos](https://xvideos.com/)**
+- **[PornHub](https://rt.pornhub.com/)**
+- **[[❌] Facebook*](https://facebook.com/)**
+- **[[❌] TikTok](https://tiktok.com/)**
+- **[Invidious](https://yewtu.be)**
+- **[Piped](https://piped.video)**
 
 ## Список функционала:
 1. Перевод с одного из доступных языков на русский. Язык определяется автоматически, если языка нету в списке или не удалось его определить, то используется перевод с английского.

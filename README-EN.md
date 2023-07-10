@@ -1,5 +1,7 @@
 # Voice-over-translation
 
+Русская версия: [Link](https://github.com/ilyhalight/voice-over-translation/blob/master/README.md)
+
 The voice-over translation of the video is now available not only in YandexBrowser. Very grateful, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)** & **[SashaXser](https://github.com/SashaXser)**. Thanks <3
 
 ## Installing the extension:
@@ -9,24 +11,25 @@ The voice-over translation of the video is now available not only in YandexBrows
 ### Useful links:
 1. Version for VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, UserScripts and some browsers: **[Link](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
 2. Terminal version: **[Link](https://github.com/ilyhalight/voice-over-translation/tree/master/vot-cli)**
-3. Learn more about creating a worker for VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, UserScripts: **[Link](https://github.com/mynovelhost/voice-over-translation/)**
-4. Wiki: **[Link](https://github.com/ilyhalight/voice-over-translation/wiki)**
+3. Wiki: **[Link](https://github.com/ilyhalight/voice-over-translation/wiki)**
 
 ## List of supported sites:
-- **[YouTube](https://www.youtube.com)** (Full support **www.youtube.com/watch**, **www.youtube.com/embed**, **m.youtube.com**. Including **[YouTube NoCookie](https://www.youtube-nocookie.com/)**)
-- **[Invidious (vern.cc)](https://inv.vern.cc)**, **[Invidious (yewtu.be)](https://yewtu.be)** and some others (An alternative frontend for YouTube, without linking to Google Services. To work in chrome-like browsers, additional **[extension](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden/related)**)
-- **[Piped (piped.video)](https://piped.video)** and some others (An alternative frontend for YouTube, without linking to Google Services. To work in chrome-like browsers, additional **[extension](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden/related)**)
-- **[Twitch](https://www.twitch.tv)** (Supported **www.twitch.tv/videos**, **m.twitch.tv/videos**, **player.twitch.tv**, **clips.twitch.tv**, **www.twitch.tv/NICKNAME/clip/**)
-- **[XVideos](https://xvideos.com/)** (To work in chrome-like browsers, additional **[extension](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden/related)**)
-- **[PornHub](https://rt.pornhub.com/)**
-- **[VK](https://vk.com)** (Supported **vk.com|ru/video**, **vk.com|ru/video_ext.php**, **vk.com|ru/video-xxxxxxxxx_xxxxxxxxx** and **vk.com|ru/im?z=video-xxxxxxxxx_xxxxxxxxx** (+ other pages where the video opens via the z link parameter). I recommend using it only in conjunction with auto-translation, because without it, the translation button requires the 2nd press, and the translation sound disappears when switching to another video. I don't know how to fix it :c)
+You can see all the restrictions related to site support in [wiki](https://github.com/ilyhalight/voice-over-translation/wiki/%5BEN%5D-Supported-sites).
+- **[YouTube](https://www.youtube.com)**
+- **[Twitch](https://www.twitch.tv)**
+- **[VK](https://vk.com)**
+- **[Twitter](https://twitter.com/)**
+- **[9GAG](https://9gag.com/gag/)**
+- **[Rutube](https://rutube.ru/)**
+- **[Bilibili](https://bilibili.com/)**
+- **[Видео Mail.ru](https://my.mail.ru/video)**
 - **[Vimeo](https://vimeo.com/)**
-- **[9GAG](https://9gag.com/gag/)** (Works only in open videos. It doesn't work in the feed.)
-- **[Twitter](https://twitter.com/)** (Works only in open videos. It doesn't work in the feed.)
-- **[Facebook*](https://facebook.com/)** (❌ Doesn't work)
-- **[Rutube](https://rutube.ru/)** (Full support **rutube.ru/video/** и **rutube.ru/play/embed/**)
-- **[Bilibili](https://bilibili.com/)** (Supported **bilibili.com/video/** и **bilibili.com/blackboard/webplayer/embed-old.html**)
-- **[Видео Mail.ru](https://my.mail.ru/video)** (Works only in open videos. It doesn't work in the feed.)
+- **[XVideos](https://xvideos.com/)**
+- **[PornHub](https://rt.pornhub.com/)**
+- **[[❌] Facebook*](https://facebook.com/)**
+- **[[❌] TikTok](https://tiktok.com/)**
+- **[Invidious](https://yewtu.be)**
+- **[Piped](https://piped.video)**
 
 ## List of functionality:
 1. Translation from one of the available languages into Russian. The language is detected automatically, if the language is not in the list or it was not possible to determine it, then a translation from English is used.
