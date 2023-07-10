@@ -1355,6 +1355,13 @@ async function main() {
         "9gag",
         null
       );
+    } else if (window.location.hostname.includes("coub.com")) {
+      await sleep(1000);
+      await translateProccessor(
+        document.querySelector('.viewer__player'),
+        "coub",
+        null
+      );
     } else if (window.location.hostname.includes("rutube.ru")) {
       const elementSelector = window.location.pathname.includes("/play/embed")
         ? "#app > div > div"

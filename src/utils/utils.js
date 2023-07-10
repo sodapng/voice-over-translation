@@ -116,6 +116,8 @@ const getVideoId = (service) => {
       return url.pathname;
     case "rutube":
       return url.pathname.match(/(?:video|embed)\/([^/]+)/)?.[1];
+    case "coub":
+      return url.pathname.match(/view\/([^/]+)/)?.[1];
     case "bilibili.com":
       const bvid = url.searchParams.get("bvid");
       if (bvid) {

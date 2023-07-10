@@ -22,6 +22,7 @@ const siteTranslates = {
   rutube: "https://rutube.ru/video/",
   "bilibili.com": "https://www.bilibili.com/video/",
   "mail.ru": "https://my.mail.ru/",
+  coub: "https://coub.com/view/"
 };
 const translations = {
   ru: {
