@@ -1985,7 +1985,7 @@ const settingsDefault = {
   showVideoSlider: 0,
   syncVolume: 0,
   autoSetVolumeYandexStyle: 1,
-  dontTranslateYourLang: 0
+  dontTranslateRuVideos: 0
 }; // default settings for db v1
 
 const valuesV2 = {
@@ -3024,6 +3024,22 @@ async function src_main() {
         utils_debug.log("lipsync mode is pause");
         audio.pause();
       }
+      if (mode === "stop") {
+        utils_debug.log("lipsync mode is stop");
+        audio.pause();
+      }
+      if (mode === "seeking") {
+        utils_debug.log("lipsync mode is seeking");
+        audio.pause();
+      }
+      if (mode === "seeked") {
+        utils_debug.log("lipsync mode is seeked");
+        audio.play();
+      }
+      if (mode === "abort") {
+        utils_debug.log("lipsync mode is abort");
+        audio.pause();
+      }
     };
 
     function addVideoSlider() {
@@ -3317,9 +3333,10 @@ async function src_main() {
             "playing",
             "ratechange",
             "play",
-            "canplaythrough",
+            "abort",
+            "seeking",
             "pause",
-            "waiting",
+            "seeked",
           ];
           videos.forEach((v) =>
             events.forEach((e) => v.addEventListener(e, handleVideoEvent))
@@ -3520,7 +3537,11 @@ async function src_main() {
               ) {
                 ytmobile = await waitForElm("#player");
                 await sleep(1000);
-                await translateProccessor(ytmobile, "youtube", "yt-translate-stop");
+                await translateProccessor(
+                  ytmobile,
+                  "youtube",
+                  "yt-translate-stop"
+                );
               }
             }
           });

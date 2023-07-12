@@ -687,6 +687,22 @@ async function main() {
         debug.log("lipsync mode is pause");
         audio.pause();
       }
+      if (mode === "stop") {
+        debug.log("lipsync mode is stop");
+        audio.pause();
+      }
+      if (mode === "seeking") {
+        debug.log("lipsync mode is seeking");
+        audio.pause();
+      }
+      if (mode === "seeked") {
+        debug.log("lipsync mode is seeked");
+        audio.play();
+      }
+      if (mode === "abort") {
+        debug.log("lipsync mode is abort");
+        audio.pause();
+      }
     };
 
     function addVideoSlider() {
@@ -990,9 +1006,10 @@ async function main() {
             "playing",
             "ratechange",
             "play",
-            "canplaythrough",
+            "abort",
+            "seeking",
             "pause",
-            "waiting",
+            "seeked",
           ];
           videos.forEach((v) =>
             events.forEach((e) => v.addEventListener(e, handleVideoEvent))
