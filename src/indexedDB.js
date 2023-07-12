@@ -10,12 +10,12 @@ const settingsDefault = {
   showVideoSlider: 0,
   syncVolume: 0,
   autoSetVolumeYandexStyle: 1,
-  dontTranslateYourLang: 0,
+  dontTranslateRuVideos: 0
 }; // default settings for db v1
 
 const valuesV2 = {
-  audioProxy: 0,
-};
+  audioProxy: 0
+}
 
 function openDB(name) {
   return indexedDB.open(name, dbVersion);
@@ -23,12 +23,7 @@ function openDB(name) {
 
 async function initDB() {
   return new Promise((resolve, reject) => {
-    function updateVersionProccessor(
-      transaction,
-      db,
-      indexes,
-      previousIndexes = {}
-    ) {
+    function updateVersionProccessor(transaction, db, indexes, previousIndexes = {}) {
       // openRequest is transaction object
       // indexes is object of strings with default values (used for createIndex) ex. {"name": 0}
       // previousIndexes is indexes for previous version
@@ -54,8 +49,7 @@ async function initDB() {
         };
 
         request.onsuccess = () => {
-          const data =
-            request.result || Object.assign(settingsDefault, previousIndexes); // use data from db or reset all data
+          const data = request.result || Object.assign(settingsDefault, previousIndexes); // use data from db or reset all data
           for (const key in indexes) {
             data[key] = indexes[key];
           }
@@ -106,9 +100,7 @@ async function initDB() {
         });
 
         // add indexes for 1 version (without key index)
-        for (const key of Object.keys(settingsDefault).filter(
-          (k) => k !== "key"
-        )) {
+        for (const key of Object.keys(settingsDefault).filter(k => k !== "key")) {
           objectStore.createIndex(key, key, { unique: false });
         }
 
