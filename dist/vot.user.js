@@ -1079,11 +1079,13 @@ var D={TINYLD_CONFIG:"light"};var v=/[,.。，、#%&/\\+*¡!¿?[\]！？;:…„
 
 // Get the language code from the response or the text
 function getLanguage(player, response, title, description, author) {
-  // ! Experimental ! get lang from selected audio track if availabled
-  const audioTracks = player.getAudioTrack();
-  const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
-  if (trackInfo?.id !== "und") {
-    return trackInfo.id.split(".")[0];
+  if (!window.location.hostname.includes("m.youtube.com")) {
+    // ! Experimental ! get lang from selected audio track if availabled
+    const audioTracks = player.getAudioTrack();
+    const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
+    if (trackInfo?.id !== "und") {
+      return trackInfo.id.split(".")[0];
+    }
   }
 
   // TODO: If the audio tracks will work fine, transfer the receipt of captions to the audioTracks variable
@@ -1983,8 +1985,12 @@ const settingsDefault = {
   showVideoSlider: 0,
   syncVolume: 0,
   autoSetVolumeYandexStyle: 1,
-  dontTranslateYourLang: 0,
+  dontTranslateYourLang: 0
 }; // default settings for db v1
+
+const valuesV2 = {
+  audioProxy: 0
+}
 
 function openDB(name) {
   return indexedDB.open(name, dbVersion);
@@ -1992,6 +1998,57 @@ function openDB(name) {
 
 async function initDB() {
   return new Promise((resolve, reject) => {
+    function updateVersionProccessor(transaction, db, indexes, previousIndexes = {}) {
+      // openRequest is transaction object
+      // indexes is object of strings with default values (used for createIndex) ex. {"name": 0}
+      // previousIndexes is indexes for previous version
+      const objectStore = transaction.objectStore("settings");
+
+      for (const key of Object.keys(indexes)) {
+        objectStore.createIndex(key, key, { unique: false });
+      }
+
+      console.log("VOT: The database has been updated");
+      objectStore.transaction.oncomplete = (event) => {
+        const objectStore = db
+          .transaction("settings", "readwrite")
+          .objectStore("settings");
+        const request = objectStore.get("settings");
+
+        request.onerror = (event) => {
+          console.error(
+            "VOT: Data could not be retrieved from the Database: ",
+            event.error
+          );
+          reject(false);
+        };
+
+        request.onsuccess = () => {
+          const data = request.result || Object.assign(settingsDefault, previousIndexes); // use data from db or reset all data
+          for (const key in indexes) {
+            data[key] = indexes[key];
+          }
+
+          const requestUpdate = objectStore.put(data);
+
+          requestUpdate.onerror = (event) => {
+            console.error(
+              "VOT: Failed to update the Database to new version",
+              event.error
+            );
+            reject(false);
+          };
+
+          requestUpdate.onsuccess = () => {
+            console.log(
+              "VOT: Standard settings of the new version have been added to the Database."
+            );
+            resolve(true);
+          };
+        };
+      };
+    }
+
     const openRequest = openDB("VOT");
 
     openRequest.onerror = () => {
@@ -2017,26 +2074,10 @@ async function initDB() {
           keyPath: "key",
         });
 
-        objectStore.createIndex("autoTranslate", "autoTranslate", {
-          unique: false,
-        });
-        objectStore.createIndex("defaultVolume", "defaultVolume", {
-          unique: false,
-        });
-        objectStore.createIndex("showVideoSlider", "showVideoSlider", {
-          unique: false,
-        });
-        objectStore.createIndex("syncVolume", "syncVolume", { unique: false });
-        objectStore.createIndex(
-          "autoSetVolumeYandexStyle",
-          "autoSetVolumeYandexStyle",
-          { unique: false }
-        );
-        objectStore.createIndex(
-          "dontTranslateYourLang",
-          "dontTranslateYourLang",
-          { unique: false }
-        );
+        // add indexes for 1 version (without key index)
+        for (const key of Object.keys(settingsDefault).filter(k => k !== "key")) {
+          objectStore.createIndex(key, key, { unique: false });
+        }
 
         console.log("VOT: Database Created");
 
@@ -2066,47 +2107,7 @@ async function initDB() {
 
       if (event.oldVersion < 2) {
         // db is outdated (db version is 1)
-        const transaction = openRequest.transaction;
-        const objectStore = transaction.objectStore("settings");
-        objectStore.createIndex("audioProxy", "audioProxy", { unique: false });
-        console.log("VOT: The database has been updated to the 2nd version");
-
-        objectStore.transaction.oncomplete = (event) => {
-          const objectStore = db
-            .transaction("settings", "readwrite")
-            .objectStore("settings");
-          const request = objectStore.get("settings");
-
-          request.onerror = (event) => {
-            console.error(
-              "VOT: Data could not be retrieved from the Database: ",
-              event.error
-            );
-            reject(false);
-          };
-
-          request.onsuccess = () => {
-            const data = request.result || settingsDefault; // use data from db or reset all data
-            data.audioProxy = 0; // add default value for new index
-
-            const requestUpdate = objectStore.put(data);
-
-            requestUpdate.onerror = (event) => {
-              console.error(
-                "VOT: Failed to update the Database to version 2: ",
-                event.error
-              );
-              reject(false);
-            };
-
-            requestUpdate.onsuccess = () => {
-              console.log(
-                "VOT: Standard settings of the 2nd version have been added to the Database."
-              );
-              resolve(true);
-            };
-          };
-        };
+        updateVersionProccessor(openRequest.transaction, db, valuesV2);
       }
     };
 
@@ -2311,7 +2312,6 @@ async function readDB() {
 function deleteDB() {
   indexedDB.deleteDatabase("VOT");
 }
-
 
 
 ;// CONCATENATED MODULE: ./src/utils/volume.js
@@ -2903,7 +2903,7 @@ async function src_main() {
             return setResponseLangauge(data, "ru");
           }
 
-          if (data.detectedLanguage === "ru" && videolang === "ru") {
+          if (data.detectedLanguage && data.responseLanguage === lang) {
             data.detectedLanguage = "en";
           }
 
@@ -3507,33 +3507,36 @@ async function src_main() {
       document.addEventListener("yt-navigate-start", ytPageLeave);
 
       if (window.location.hostname.includes("m.youtube.com")) {
-        const observer = new MutationObserver((mutations) => {
-          for (const mutation of mutations) {
-            if (mutation.type === "attributes") {
-              const videoContainer = mutation.target;
-              translateProccessor(
-                videoContainer,
-                "youtube",
-                "yt-translate-stop"
-              );
+        let ytmobile = await waitForElm("#player");
+        if (ytmobile) {
+          await sleep(1000);
+          await translateProccessor(ytmobile, "youtube", "yt-translate-stop");
+
+          const mutationObserver = new MutationObserver(async (mutations) => {
+            for (const mutation of mutations) {
+              if (
+                mutation.type === "attributes" &&
+                mutation.attributeName === "src"
+              ) {
+                ytmobile = await waitForElm("#player");
+                await sleep(1000);
+                await translateProccessor(ytmobile, "youtube", "yt-translate-stop");
+              }
             }
-          }
-        });
+          });
 
-        const options = {
-          attributes: true,
-          childList: false,
-          subtree: false,
-        };
-
-        const videoContainer = document.querySelector("#player");
-
-        observer.observe(videoContainer, options);
-
+          mutationObserver.observe(ytmobile, {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            attributeOldValue: true,
+          });
+        }
         const ytPageLeave = () => {
-          observer.disconnect();
           document.body.dispatchEvent(new Event("yt-translate-stop"));
         };
+        document.addEventListener("spfdone", ytPageLeave);
+        document.addEventListener("yt-navigate-finish", ytPageLeave);
         document.addEventListener("spfrequest", ytPageLeave);
         document.addEventListener("yt-navigate-start", ytPageLeave);
       }

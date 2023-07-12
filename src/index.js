@@ -566,7 +566,7 @@ async function main() {
             return setResponseLangauge(data, "ru");
           }
 
-          if (data.detectedLanguage === "ru" && videolang === "ru") {
+          if (data.detectedLanguage && data.responseLanguage === lang) {
             data.detectedLanguage = "en";
           }
 
@@ -1180,33 +1180,40 @@ async function main() {
       document.addEventListener("yt-navigate-start", ytPageLeave);
 
       if (window.location.hostname.includes("m.youtube.com")) {
-        const observer = new MutationObserver((mutations) => {
-          for (const mutation of mutations) {
-            if (mutation.type === "attributes") {
-              const videoContainer = mutation.target;
-              translateProccessor(
-                videoContainer,
-                "youtube",
-                "yt-translate-stop"
-              );
+        let ytmobile = await waitForElm("#player");
+        if (ytmobile) {
+          await sleep(1000);
+          await translateProccessor(ytmobile, "youtube", "yt-translate-stop");
+
+          const mutationObserver = new MutationObserver(async (mutations) => {
+            for (const mutation of mutations) {
+              if (
+                mutation.type === "attributes" &&
+                mutation.attributeName === "src"
+              ) {
+                ytmobile = await waitForElm("#player");
+                await sleep(1000);
+                await translateProccessor(
+                  ytmobile,
+                  "youtube",
+                  "yt-translate-stop"
+                );
+              }
             }
-          }
-        });
+          });
 
-        const options = {
-          attributes: true,
-          childList: false,
-          subtree: false,
-        };
-
-        const videoContainer = document.querySelector("#player");
-
-        observer.observe(videoContainer, options);
-
+          mutationObserver.observe(ytmobile, {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            attributeOldValue: true,
+          });
+        }
         const ytPageLeave = () => {
-          observer.disconnect();
           document.body.dispatchEvent(new Event("yt-translate-stop"));
         };
+        document.addEventListener("spfdone", ytPageLeave);
+        document.addEventListener("yt-navigate-finish", ytPageLeave);
         document.addEventListener("spfrequest", ytPageLeave);
         document.addEventListener("yt-navigate-start", ytPageLeave);
       }
