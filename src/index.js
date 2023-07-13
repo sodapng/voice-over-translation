@@ -691,7 +691,7 @@ async function main() {
         debug.log("lipsync mode is stop");
         audio.pause();
       }
-      if (mode === "seeking" && !video.paused) {
+      if (mode === "seeking") {
         debug.log("lipsync mode is seeking");
         audio.pause();
       }

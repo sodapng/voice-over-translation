@@ -3099,7 +3099,7 @@ async function src_main() {
         debug/* default */.Z.log("lipsync mode is stop");
         audio.pause();
       }
-      if (mode === "seeking" && !video.paused) {
+      if (mode === "seeking") {
         debug/* default */.Z.log("lipsync mode is seeking");
         audio.pause();
       }
