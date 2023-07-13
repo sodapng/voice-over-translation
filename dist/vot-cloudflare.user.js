@@ -3099,12 +3099,12 @@ async function src_main() {
         debug/* default */.Z.log("lipsync mode is stop");
         audio.pause();
       }
-      if (mode === "seeking") {
-        debug/* default */.Z.log("lipsync mode is seeking");
+      if (mode === "waiting") {
+        debug/* default */.Z.log("lipsync mode is waiting");
         audio.pause();
       }
-      if (mode === "seeked" && !video.paused) {
-        debug/* default */.Z.log("lipsync mode is seeked");
+      if (mode === "playing") {
+        debug/* default */.Z.log("lipsync mode is playing");
         audio.play();
       }
       if (mode === "abort") {
@@ -3415,9 +3415,8 @@ async function src_main() {
             "ratechange",
             "play",
             "abort",
-            "seeking",
+            "waiting",
             "pause",
-            "seeked",
           ];
           videos.forEach((v) =>
             events.forEach((e) => v.addEventListener(e, handleVideoEvent))

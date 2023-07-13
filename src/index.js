@@ -691,12 +691,12 @@ async function main() {
         debug.log("lipsync mode is stop");
         audio.pause();
       }
-      if (mode === "seeking") {
-        debug.log("lipsync mode is seeking");
+      if (mode === "waiting") {
+        debug.log("lipsync mode is waiting");
         audio.pause();
       }
-      if (mode === "seeked" && !video.paused) {
-        debug.log("lipsync mode is seeked");
+      if (mode === "playing") {
+        debug.log("lipsync mode is playing");
         audio.play();
       }
       if (mode === "abort") {
@@ -1007,9 +1007,8 @@ async function main() {
             "ratechange",
             "play",
             "abort",
-            "seeking",
+            "waiting",
             "pause",
-            "seeked",
           ];
           videos.forEach((v) =>
             events.forEach((e) => v.addEventListener(e, handleVideoEvent))
