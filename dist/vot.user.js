@@ -3028,11 +3028,11 @@ async function src_main() {
         utils_debug.log("lipsync mode is stop");
         audio.pause();
       }
-      if (mode === "seeking") {
+      if (mode === "seeking" && !video.paused) {
         utils_debug.log("lipsync mode is seeking");
         audio.pause();
       }
-      if (mode === "seeked") {
+      if (mode === "seeked" && !video.paused) {
         utils_debug.log("lipsync mode is seeked");
         audio.play();
       }
