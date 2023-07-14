@@ -10,7 +10,7 @@ const settingsDefault = {
   showVideoSlider: 0,
   syncVolume: 0,
   autoSetVolumeYandexStyle: 1,
-  dontTranslateRuVideos: 0
+  dontTranslateYourLang: 1,
 }; // default settings for db v1
 
 const valuesV2 = {
