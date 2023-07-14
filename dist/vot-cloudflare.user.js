@@ -2928,33 +2928,33 @@ async function src_main() {
       });
     }
 
-    function setSelectMenuValues(from, tolang) {
+    function setSelectMenuValues(from, to = lang) {
       if (!document.querySelector("#VOTSelectLanguages")) {
         return;
       }
-      console.log(`Set translation from ${from} to ${tolang}`);
+      console.log(`Set translation from ${from} to ${to}`);
       document.querySelector("#VOTTranslateFromLang").value = from;
-      tolang = document.querySelector("#VOTTranslateToLang").value;
+      document.querySelector("#VOTTranslateToLang").value = to;
     }
 
     // data - ytData or VideoData
-    // Нужна доработать логику
     function setDetectedLangauge(data, videolang) {
       switch (videolang) {
         case "en":
-          data.detectedLanguage = lang;
-          data.responseLanguage = "ru";
+          data.detectedLanguage = videolang;
+          data.responseLanguage = lang;
           break;
         case "ru":
-          data.detectedLanguage = lang;
-          data.responseLanguage = "en";
+          data.detectedLanguage = videolang;
+          data.responseLanguage = lang;
+          if (lang == "ru") data.responseLanguage = "en";
           break;
         default:
-          if (!Object.keys(constants/* availableLangs */.tW).includes(lang)) {
+          if (!Object.keys(constants/* availableLangs */.tW).includes(videolang)) {
             return setDetectedLangauge(data, "en");
           }
 
-          data.detectedLanguage = lang;
+          data.detectedLanguage = videolang;
       }
 
       setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
@@ -2963,30 +2963,28 @@ async function src_main() {
     }
 
     // data - ytData or VideoData
-    function setResponseLangauge(data, lang) {
-      switch (lang) {
+    function setResponseLangauge(data, videolang) {
+      switch (videolang) {
         case "en":
-          data.responseLanguage = lang;
+          data.responseLanguage = videolang;
           data.detectedLanguage = "ru";
           break;
         default:
-          if (!Object.keys(constants/* availableLangs */.tW).includes(lang)) {
+          if (!Object.keys(constants/* availableLangs */.tW).includes(videolang)) {
             return setResponseLangauge(data, "ru");
           }
 
-          if (data.detectedLanguage === "ru" && lang === "ru") {
+          if (data.detectedLanguage && data.responseLanguage === lang) {
             data.detectedLanguage = "en";
           }
 
-          data.responseLanguage = lang;
+          data.responseLanguage = videolang;
       }
 
       setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
 
       return data;
     }
-
-
 
     function stopTraslate() {
       // Default actions on stop translate
