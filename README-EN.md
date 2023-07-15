@@ -1,5 +1,7 @@
 # Voice-over-translation
 
+Русская версия: [Link](https://github.com/ilyhalight/voice-over-translation/blob/master/README.md)
+
 The voice-over translation of the video is now available not only in YandexBrowser. Very grateful, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)** & **[SashaXser](https://github.com/SashaXser)**. Thanks <3
 
 ## Installing the extension:
@@ -9,23 +11,25 @@ The voice-over translation of the video is now available not only in YandexBrows
 ### Useful links:
 1. Version for VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, UserScripts and some browsers: **[Link](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
 2. Terminal version: **[Link](https://github.com/ilyhalight/voice-over-translation/tree/master/vot-cli)**
-3. Learn more about creating a worker for VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, UserScripts: **[Link](https://github.com/mynovelhost/voice-over-translation/)**
+3. Wiki: **[Link](https://github.com/ilyhalight/voice-over-translation/wiki)**
 
 ## List of supported sites:
-- **[YouTube](https://www.youtube.com)** (Full support **www.youtube.com/watch**, **www.youtube.com/embed**, **m.youtube.com**. Including **[YouTube NoCookie](https://www.youtube-nocookie.com/)**)
-- **[Invidious (vern.cc)](https://inv.vern.cc)**, **[Invidious (yewtu.be)](https://yewtu.be)** and some others (An alternative frontend for YouTube, without linking to Google Services. To work in chrome-like browsers, additional **[extension](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden/related)**)
-- **[Piped (piped.video)](https://piped.video)** and some others (An alternative frontend for YouTube, without linking to Google Services. To work in chrome-like browsers, additional **[extension](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden/related)**)
-- **[Twitch](https://www.twitch.tv)** (Supported **www.twitch.tv/videos**, **m.twitch.tv/videos**, **player.twitch.tv**, **clips.twitch.tv**, **www.twitch.tv/NICKNAME/clip/**)
-- **[XVideos](https://xvideos.com/)** (To work in chrome-like browsers, additional **[extension](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden/related)**)
-- **[PornHub](https://rt.pornhub.com/)**
-- **[VK](https://vk.com)** (Supported **vk.com|ru/video**, **vk.com|ru/video_ext.php**, **vk.com|ru/video-xxxxxxxxx_xxxxxxxxx** and **vk.com|ru/im?z=video-xxxxxxxxx_xxxxxxxxx** (+ other pages where the video opens via the z link parameter). I recommend using it only in conjunction with auto-translation, because without it, the translation button requires the 2nd press, and the translation sound disappears when switching to another video. I don't know how to fix it :c)
+You can see all the restrictions related to site support in [wiki](https://github.com/ilyhalight/voice-over-translation/wiki/%5BEN%5D-Supported-sites).
+- **[YouTube](https://www.youtube.com)**
+- **[Twitch](https://www.twitch.tv)**
+- **[VK](https://vk.com)**
+- **[Twitter](https://twitter.com/)**
+- **[9GAG](https://9gag.com/gag/)**
+- **[Rutube](https://rutube.ru/)**
+- **[Bilibili](https://bilibili.com/)**
+- **[Видео Mail.ru](https://my.mail.ru/video)**
 - **[Vimeo](https://vimeo.com/)**
-- **[9GAG](https://9gag.com/gag/)** (Works only in open videos. It doesn't work in the feed.)
-- **[Twitter](https://twitter.com/)** (Works only in open videos. It doesn't work in the feed.)
-- **[Facebook*](https://facebook.com/)** (❌ Doesn't work)
-- **[Rutube](https://rutube.ru/)** (Full support **rutube.ru/video/** и **rutube.ru/play/embed/**)
-- **[Bilibili](https://bilibili.com/)** (Supported **bilibili.com/video/** и **bilibili.com/blackboard/webplayer/embed-old.html**)
-- **[Видео Mail.ru](https://my.mail.ru/video)** (Works only in open videos. It doesn't work in the feed.)
+- **[XVideos](https://xvideos.com/)**
+- **[PornHub](https://rt.pornhub.com/)**
+- **[[❌] Facebook*](https://facebook.com/)**
+- **[[❌] TikTok](https://tiktok.com/)**
+- **[Invidious](https://yewtu.be)**
+- **[Piped](https://piped.video)**
 
 ## List of functionality:
 1. Translation from one of the available languages into Russian. The language is detected automatically, if the language is not in the list or it was not possible to determine it, then a translation from English is used.
@@ -74,32 +78,9 @@ npm i
    npm run build:cloudflare-min
    ```
 
-## How to deploy your Cloudflare Worker?
-Video instructions: [**video by mynovelhost**](https://raw.githubusercontent.com/mynovelhost/voice-over-translation/master/how_to_create_custom_worker.mp4)
-
-Text instructions:
-1. Register in [Cloudflare Dashboard](https://dash.cloudflare.com) and log in to the control panel
-2. In the large left menu, select "Workers & Pages"
-3. Register in "Workers & Pages" by choosing a Free tariff
-4. If you do everything right, you will be redirected to a page where you can click on the blue "Create application" button
-5. On the page that appears, click the blue "Create worker" button
-6. Enter the desired name for the subdomain and click the blue "Deploy" button
-7. If everything went well, then you will have a choice of two buttons "Configure worker" and "Edit code", you need to select "Edit code"
-8. In the browser text editor that opens, replace the entire contents of the worker file.js on the contents of the file [CloudWorker.js](https://github.com/ilyhalight/voice-over-translation/blob/master/CloudWorker.js)
-9. Save the code using Ctrl +S and click on the blue "Save and deploy" button
-10. That's it, now all you have to do is change the code "vot.toil-dump.workers.dev" to your worker's domain
-
 ## Note:
 1. I recommend allowing autoplay of "audio and video" to avoid errors when working with the extension
 2. The extension cannot translate videos longer than 4 hours (translator API limitation)
-3. If the translation button doesn't work, then try the following:
-   1. Go to Developer Tools (F12 или Ctrl+Shift+I)
-   2. Go to  Application P.S. Some browsers do not have this option. In them, you must immediately go to Storage.
-   3. Select Storage
-   4. Select IndexedDB
-   5. Click LMB on the line labeled  VOT (in Firefox you need to click RMB)
-   6. Click Delete Database
-   7. Reload the page
 
 ## The extension has been tested in the following browsers:
 | Status | Browser | Browser Version | Platform | Extension
