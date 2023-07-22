@@ -777,7 +777,7 @@ const siteTranslates = {
   rutube: "https://rutube.ru/video/",
   "bilibili.com": "https://www.bilibili.com/video/",
   "mail.ru": "https://my.mail.ru/",
-  coub: "https://coub.com/view/"
+  coub: "https://coub.com/view/",
 };
 const translations = {
   ru: {
@@ -1560,22 +1560,26 @@ var update = injectStylesIntoStyleTag_default()(main/* default */.Z, options);
 
 ;// CONCATENATED MODULE: ./src/utils/getYTVideoData.js
 async function detect(cleanText) {
-  const response = await fetch('https://rust-server-531j.onrender.com/detect', {
-    method: 'POST',
-    body: cleanText
+  const response = await fetch("https://rust-server-531j.onrender.com/detect", {
+    method: "POST",
+    body: cleanText,
   });
   return await response.text();
 }
 
+// Get the language code from the response or the text
 async function getLanguage(player, response, title, description, author) {
   if (!window.location.hostname.includes("m.youtube.com")) {
+    // ! Experimental ! get lang from selected audio track if availabled
     const audioTracks = player.getAudioTrack();
-    const trackInfo = audioTracks?.getLanguageInfo();
+    const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
     if (trackInfo?.id !== "und") {
       return trackInfo.id.split(".")[0];
     }
   }
 
+  // TODO: If the audio tracks will work fine, transfer the receipt of captions to the audioTracks variable
+  // Check if there is an automatic caption track in the response
   const captionTracks =
     response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
   if (captionTracks?.length) {
@@ -1584,7 +1588,9 @@ async function getLanguage(player, response, title, description, author) {
       return autoCaption.languageCode;
     }
   }
+  // If there is no caption track, use detect to get the language code from the text
   const text = [title, description, author].join(" ");
+  // Remove anything that is not a letter or a space in any language
   const cleanText = text
     .replace(/https?:\/\/\S+/g, "")
     .replace(/[^\p{L}\s]/gu, "")
@@ -1593,6 +1599,7 @@ async function getLanguage(player, response, title, description, author) {
   return await detect(cleanText);
 }
 
+// Get the video data from the player
 async function getYTVideoData() {
   const player = document.querySelector("#movie_player");
   const data = player.getVideoData();
@@ -1605,7 +1612,13 @@ async function getYTVideoData() {
     title,
     description,
     author,
-    detectedLanguage: await getLanguage(player, response, title, description, author),
+    detectedLanguage: await getLanguage(
+      player,
+      response,
+      title,
+      description,
+      author
+    ),
   };
   console.log("VOT Detected language: ", videoData.detectedLanguage);
   return videoData;
@@ -1945,12 +1958,14 @@ const getVideoId = (service) => {
       if (url.pathname.startsWith("/v/") || url.pathname.startsWith("/mail/")) {
         return url.pathname;
       } else if (url.pathname.match(/video\/embed\/([^/]+)/)) {
-        const referer = document.querySelector('.b-video-controls__mymail-link');
+        const referer = document.querySelector(
+          ".b-video-controls__mymail-link"
+        );
         if (!referer) {
           return false;
         }
 
-        return referer?.href.split('my.mail.ru')?.[1];
+        return referer?.href.split("my.mail.ru")?.[1];
       }
     default:
       return false;
@@ -2050,8 +2065,8 @@ const settingsDefault = {
 }; // default settings for db v1
 
 const valuesV2 = {
-  audioProxy: 0
-}
+  audioProxy: 0,
+};
 
 function openDB(name) {
   return indexedDB.open(name, dbVersion);
@@ -2059,7 +2074,12 @@ function openDB(name) {
 
 async function initDB() {
   return new Promise((resolve, reject) => {
-    function updateVersionProccessor(transaction, db, indexes, previousIndexes = {}) {
+    function updateVersionProccessor(
+      transaction,
+      db,
+      indexes,
+      previousIndexes = {}
+    ) {
       // openRequest is transaction object
       // indexes is object of strings with default values (used for createIndex) ex. {"name": 0}
       // previousIndexes is indexes for previous version
@@ -2085,7 +2105,8 @@ async function initDB() {
         };
 
         request.onsuccess = () => {
-          const data = request.result || Object.assign(settingsDefault, previousIndexes); // use data from db or reset all data
+          const data =
+            request.result || Object.assign(settingsDefault, previousIndexes); // use data from db or reset all data
           for (const key in indexes) {
             data[key] = indexes[key];
           }
@@ -2136,7 +2157,9 @@ async function initDB() {
         });
 
         // add indexes for 1 version (without key index)
-        for (const key of Object.keys(settingsDefault).filter(k => k !== "key")) {
+        for (const key of Object.keys(settingsDefault).filter(
+          (k) => k !== "key"
+        )) {
           objectStore.createIndex(key, key, { unique: false });
         }
 
@@ -2373,6 +2396,7 @@ async function readDB() {
 function deleteDB() {
   indexedDB.deleteDatabase("VOT");
 }
+
 
 
 ;// CONCATENATED MODULE: ./src/utils/volume.js
@@ -3101,7 +3125,7 @@ async function src_main() {
         }
         return;
       }
-      if (mode === "pause" || "stop" || 0|| 0) {
+      if (mode === "pause" || "stop" || 0 || 0) {
         debug/* default */.Z.log(`lipsync mode is ${mode}`);
         audio.pause();
       }
@@ -3288,7 +3312,6 @@ async function src_main() {
         videoData.responseLanguage
       );
     };
-    
 
     // Define a function to handle common events
     function handleVideoEvent(event) {
@@ -3788,7 +3811,7 @@ async function src_main() {
     } else if (window.location.hostname.includes("coub.com")) {
       await sleep(1000);
       await translateProccessor(
-        document.querySelector('.viewer__player'),
+        document.querySelector(".viewer__player"),
         "coub",
         null
       );
@@ -3866,6 +3889,7 @@ async function src_main() {
 src_main().catch((e) => {
   console.error(e);
 });
+
 })();
 
 /******/ })()
