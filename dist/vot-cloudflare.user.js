@@ -2736,16 +2736,16 @@ async function src_main() {
 
       menuOptions
         .querySelector("#VOTTranslateFromLang")
-        .addEventListener("change", (event) => {
+        .addEventListener("change", async (event) => {
           debug/* default */.Z.log("[onchange] select from language", event.target.value);
-          videoData = setDetectedLangauge(videoData, event.target.value);
+          videoData = await setDetectedLangauge(videoData, event.target.value);
         });
 
       menuOptions
         .querySelector("#VOTTranslateToLang")
-        .addEventListener("change", (event) => {
+        .addEventListener("change", async (event) => {
           debug/* default */.Z.log("[onchange] select to language", event.target.value);
-          videoData = setResponseLangauge(videoData, event.target.value);
+          videoData = await setResponseLangauge(videoData, event.target.value);
         });
     }
 
@@ -2972,7 +2972,7 @@ async function src_main() {
     }
 
     // data - ytData or VideoData
-    function setDetectedLangauge(data, videolang) {
+    async function setDetectedLangauge(data, videolang) {
       switch (videolang) {
         case "en":
           data.detectedLanguage = videolang;
@@ -2997,7 +2997,7 @@ async function src_main() {
     }
 
     // data - ytData or VideoData
-    function setResponseLangauge(data, videolang) {
+    async function setResponseLangauge(data, videolang) {
       switch (videolang) {
         case "en":
           data.responseLanguage = videolang;
@@ -3073,7 +3073,7 @@ async function src_main() {
 
       if (window.location.hostname.includes("youtube.com")) {
         ytData = await getYTVideoData();
-        ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
+        ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
         videoData.detectedLanguage = ytData.detectedLanguage;
         videoData.responseLanguage = ytData.responseLanguage;
       } else if (
