@@ -133,12 +133,14 @@ const getVideoId = (service) => {
       if (url.pathname.startsWith("/v/") || url.pathname.startsWith("/mail/")) {
         return url.pathname;
       } else if (url.pathname.match(/video\/embed\/([^/]+)/)) {
-        const referer = document.querySelector('.b-video-controls__mymail-link');
+        const referer = document.querySelector(
+          ".b-video-controls__mymail-link"
+        );
         if (!referer) {
           return false;
         }
 
-        return referer?.href.split('my.mail.ru')?.[1];
+        return referer?.href.split("my.mail.ru")?.[1];
       }
     default:
       return false;

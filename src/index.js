@@ -33,6 +33,8 @@ let translateFromLang = "en"; // default language of video
 
 let translateToLang = "ru"; // default language of audio response
 
+let ytData = "";
+
 async function main() {
   debug.log("Loading extension...");
   debug.log(`Selected menu language: ${lang}`);
@@ -218,7 +220,7 @@ async function main() {
 
     debug.log("video", video);
 
-    let videoData = getVideoData();
+    let videoData = await getVideoData();
     console.log("VOT Video Data: ", videoData);
 
     const container =
@@ -618,7 +620,7 @@ async function main() {
       }
     }
 
-    function getVideoData() {
+    async function getVideoData() {
       const videoData = {};
 
       videoData.duration = video?.duration || 0;
@@ -630,7 +632,7 @@ async function main() {
       videoData.responseLanguage = translateToLang;
 
       if (window.location.hostname.includes("youtube.com")) {
-        let ytData = getYTVideoData();
+        ytData = await getYTVideoData();
         ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
         videoData.detectedLanguage = ytData.detectedLanguage;
         videoData.responseLanguage = ytData.responseLanguage;
@@ -683,25 +685,13 @@ async function main() {
         }
         return;
       }
-      if (mode === "pause") {
-        debug.log("lipsync mode is pause");
-        audio.pause();
-      }
-      if (mode === "stop") {
-        debug.log("lipsync mode is stop");
-        audio.pause();
-      }
-      if (mode === "waiting") {
-        debug.log("lipsync mode is waiting");
+      if (mode === "pause" || "stop" || "waiting" || "abort") {
+        debug.log(`lipsync mode is ${mode}`);
         audio.pause();
       }
       if (mode === "playing") {
         debug.log("lipsync mode is playing");
         audio.play();
-      }
-      if (mode === "abort") {
-        debug.log("lipsync mode is abort");
-        audio.pause();
       }
     };
 
@@ -849,9 +839,8 @@ async function main() {
       tempVolume = translationValue;
     }
 
-    function videoValidator() {
+    async function videoValidator() {
       if (window.location.hostname.includes("youtube.com")) {
-        let ytData = getYTVideoData();
         ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
         debug.log("VideoValidator videoData: ", videoData);
         if (dontTranslateYourLang === 1 && ytData.detectedLanguage === lang) {
@@ -873,11 +862,11 @@ async function main() {
       return true;
     }
 
-    const translateExecutor = (VIDEO_ID) => {
+    const translateExecutor = async (VIDEO_ID) => {
       debug.log("Run videoValidator");
-      videoValidator();
+      await videoValidator();
       debug.log("Run translateFunc");
-      translateFunc(
+      await translateFunc(
         VIDEO_ID,
         videoData.detectedLanguage,
         videoData.responseLanguage
@@ -1125,14 +1114,14 @@ async function main() {
             throw translations[lang].VOTNoVideoIDFound;
           }
 
-          translateExecutor(VIDEO_ID);
+          await translateExecutor(VIDEO_ID);
         } catch (err) {
           transformBtn("error", String(err).substring(4, err.length));
           console.error(err);
         }
       });
 
-    video.addEventListener("progress", (event) => {
+    video.addEventListener("progress", async (event) => {
       event.stopPropagation();
 
       if (!(firstPlay && dbAutoTranslate === 1)) {
@@ -1145,7 +1134,7 @@ async function main() {
       }
 
       try {
-        translateExecutor(VIDEO_ID);
+        await translateExecutor(VIDEO_ID);
         firstPlay = false;
       } catch (err) {
         transformBtn("error", String(err).substring(4, err.length));
@@ -1382,7 +1371,7 @@ async function main() {
     } else if (window.location.hostname.includes("coub.com")) {
       await sleep(1000);
       await translateProccessor(
-        document.querySelector('.viewer__player'),
+        document.querySelector(".viewer__player"),
         "coub",
         null
       );
