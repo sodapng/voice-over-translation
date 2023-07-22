@@ -3210,7 +3210,7 @@ async function src_main() {
 
     async function videoValidator() {
       if (window.location.hostname.includes("youtube.com")) {
-        ytData = setDetectedLangauge(ytData, ytData.detectedLanguage);
+        ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
         utils_debug.log("VideoValidator videoData: ", videoData);
         if (dontTranslateYourLang === 1 && ytData.detectedLanguage === lang) {
           firstPlay = false;
