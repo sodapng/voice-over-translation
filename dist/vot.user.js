@@ -79,7 +79,7 @@
 // @homepageURL https://github.com/ilyhalight/voice-over-translation/issues
 // @icon https://translate.yandex.ru/icons/favicon.ico
 // @namespace vot
-// @require https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/protobuf.min.js
+// @require https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/light/protobuf.min.js
 // @updateURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js
 // ==/UserScript==
 
@@ -2489,7 +2489,7 @@ async function src_main() {
     event.stopPropagation();
   }
 
-  const deleteAudioSrc = () => {
+  const deleteAudioSrc = async () => {
     audio.src = "";
     audio.removeAttribute("src");
   };
@@ -2949,11 +2949,11 @@ async function src_main() {
       return data;
     }
 
-    function stopTraslate() {
+    async function stopTraslate() {
       // Default actions on stop translate
       audio.pause();
       video.removeEventListener(".translate", stopTraslate, false);
-      deleteAudioSrc();
+      await deleteAudioSrc();
       document.querySelector("#VOTVideoSlider")?.parentElement.remove();
       document.querySelector("#VOTTranslationSlider")?.parentElement.remove();
       const downloadBtn = document.querySelector(".translationDownload");
@@ -2965,7 +2965,7 @@ async function src_main() {
       }
     }
 
-    function syncVideoVolumeSlider() {
+    async function syncVideoVolumeSlider() {
       // Sync volume slider with original video (youtube only)
       const newSlidersVolume = document
         .querySelector(".ytp-volume-panel")
@@ -3018,7 +3018,7 @@ async function src_main() {
       return videoData;
     }
 
-    const lipSync = (mode = false) => {
+    const lipSync = async (mode = false) => {
       utils_debug.log("lipsync video", video);
       if (!video) {
         return;
@@ -3064,7 +3064,7 @@ async function src_main() {
       }
     };
 
-    function addVideoSlider() {
+    async function addVideoSlider() {
       if (
         dbShowVideoSlider !== 1 ||
         document.querySelector("#VOTVideoSlider") ||
@@ -3088,7 +3088,7 @@ async function src_main() {
         `${translations[lang].VOTVolume}: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
       );
 
-      slider.querySelector("#VOTVideoSlider").oninput = (event) => {
+      slider.querySelector("#VOTVideoSlider").oninput = async (event) => {
         const { value } = event.target;
         video.volume = value / 100;
         slider.querySelector("#VOTOriginalVolume").innerText = `${value}%`;
@@ -3131,7 +3131,7 @@ async function src_main() {
       menuOptions.appendChild(slider);
     }
 
-    function addTranslationSlider() {
+    async function addTranslationSlider() {
       // Return early if slider already exists or translation is not successful
       if (
         document.querySelector("#VOTTranslationSlider") ||
@@ -3235,7 +3235,7 @@ async function src_main() {
       utils_debug.log("Run videoValidator");
       await videoValidator();
       utils_debug.log("Run translateFunc");
-      await translateFunc(
+      translateFunc(
         VIDEO_ID,
         videoData.detectedLanguage,
         videoData.responseLanguage
@@ -3243,15 +3243,15 @@ async function src_main() {
     };
 
     // Define a function to handle common events
-    function handleVideoEvent(event) {
+    async function handleVideoEvent(event) {
       utils_debug.log(`video ${event.type}`);
-      lipSync(event.type);
+      await lipSync(event.type);
     }
 
     // Define a function to stop translation and clean up
-    function stopTranslation() {
-      stopTraslate();
-      syncVideoVolumeSlider();
+    async function stopTranslation() {
+      await stopTraslate();
+      await syncVideoVolumeSlider();
     }
 
     // Define a function to translate a video and handle the callback
@@ -3362,8 +3362,8 @@ async function src_main() {
             events.forEach((e) => v.addEventListener(e, handleVideoEvent))
           );
           transformBtn("success", translations[lang].disableTranslate);
-          addVideoSlider();
-          addTranslationSlider();
+          await addVideoSlider();
+          await addTranslationSlider();
 
           const VOTVideoSlider = document.querySelector("#VOTVideoSlider");
           if (VOTVideoSlider) VOTVideoSlider.value = config/* autoVolume */.IM * 100;
@@ -3381,7 +3381,7 @@ async function src_main() {
       );
     }
 
-    document.addEventListener("click", (event) => {
+    document.addEventListener("click", async (event) => {
       const block = document.querySelector(".translationBlock");
       const menuContainer = document.querySelector(".translationMenuContent");
       const isBlock =
@@ -3404,7 +3404,11 @@ async function src_main() {
     });
 
     const addEventListeners = (element, events, handler) => {
-      events.forEach((event) => element.addEventListener(event, handler));
+      events.forEach((event) =>
+        element.addEventListener(event, async (event) => {
+          await handler(event);
+        })
+      );
     };
 
     if (siteHostname === "pornhub") {
@@ -3461,7 +3465,7 @@ async function src_main() {
         // check if the audio source is not empty
         if (audio.src) {
           utils_debug.log("[click translationBtn] audio.src is not empty");
-          stopTraslate();
+          await stopTraslate();
           return;
         }
 
