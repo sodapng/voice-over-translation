@@ -2523,7 +2523,7 @@ async function src_main() {
     utils_debug.log("VOT: Added translation menu to ", element);
   }
 
-  function translateVideo(url, unknown1, requestLang, responseLang, callback) {
+  async function translateVideo(url, unknown1, requestLang, responseLang, callback) {
     utils_debug.log(
       `Translate video (url: ${url}, unknown1: ${unknown1}, requestLang: ${requestLang}, responseLang: ${responseLang})`
     );
@@ -3054,9 +3054,13 @@ async function src_main() {
         }
         return;
       }
-      if (mode === "pause" || "stop" || 0 || 0) {
+      if (mode === "pause" || "waiting" || 0) {
         utils_debug.log(`lipsync mode is ${mode}`);
         audio.pause();
+      }
+      if (mode === "abort") {
+        utils_debug.log("lipsync mode is abort");
+        await stopTranslation();
       }
       if (mode === "playing") {
         utils_debug.log("lipsync mode is playing");
@@ -3168,7 +3172,7 @@ async function src_main() {
 
         // Sync translation volume with video volume if dbSyncVolume is 1
         if (dbSyncVolume === 1) {
-          syncTranslationWithVideo(value);
+          await syncTranslationWithVideo(value);
         }
       };
 
@@ -3178,7 +3182,7 @@ async function src_main() {
     }
 
     // A helper function to sync translation volume with video volume
-    function syncTranslationWithVideo(translationValue) {
+    async function syncTranslationWithVideo(translationValue) {
       // Get the video volume slider element
       const videoVolumeSlider = document.querySelector("#VOTVideoSlider");
 
@@ -3812,7 +3816,6 @@ async function src_main() {
 src_main().catch((e) => {
   console.error(e);
 });
-
 })();
 
 /******/ })()
