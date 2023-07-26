@@ -2485,6 +2485,8 @@ let translateToLang = "ru"; // default language of audio response
 
 let ytData = "";
 
+let to = lang
+
 async function src_main() {
   debug/* default */.Z.log("Loading extension...");
   debug/* default */.Z.log(`Selected menu language: ${lang}`);
@@ -2734,6 +2736,7 @@ async function src_main() {
       selectFromLang.appendChild(selectToLang);
       menuOptions.appendChild(selectFromLang);
 
+
       menuOptions
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
@@ -2962,25 +2965,27 @@ async function src_main() {
       });
     }
 
-    function setSelectMenuValues(from, to = lang) {
+
+    function setSelectMenuValues(from) {
       if (!document.querySelector("#VOTSelectLanguages")) {
         return;
       }
       console.log(`Set translation from ${from} to ${to}`);
       document.querySelector("#VOTTranslateFromLang").value = from;
-      document.querySelector("#VOTTranslateToLang").value = to;
+      to = document.querySelector("#VOTTranslateToLang").value;
     }
+
 
     // data - ytData or VideoData
     async function setDetectedLangauge(data, videolang) {
       switch (videolang) {
         case "en":
           data.detectedLanguage = videolang;
-          data.responseLanguage = lang;
+          data.responseLanguage = to;
           break;
         case "ru":
           data.detectedLanguage = videolang;
-          data.responseLanguage = lang;
+          data.responseLanguage = to;
           if (lang == "ru") data.responseLanguage = "en";
           break;
         default:
@@ -3287,7 +3292,8 @@ async function src_main() {
       if (window.location.hostname.includes("youtube.com")) {
         ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
         debug/* default */.Z.log("VideoValidator videoData: ", videoData);
-        if (dontTranslateYourLang === 1 && ytData.detectedLanguage === lang) {
+        console.log("VOT TEST", to)
+        if (dontTranslateYourLang === 1 && ytData.detectedLanguage === lang || ytData.detectedLanguage === to) {
           firstPlay = false;
           throw constants/* translations */.Iz[lang].VOTDisableFromYourLang;
         }
