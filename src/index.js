@@ -526,7 +526,7 @@ async function main() {
     }
 
 
-    function setSelectMenuValues(from) {
+    async function setSelectMenuValues(from, to) {
       if (!document.querySelector("#VOTSelectLanguages")) {
         return;
       }
@@ -556,7 +556,7 @@ async function main() {
           data.detectedLanguage = videolang;
       }
 
-      setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+      await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
 
       return data;
     }
@@ -580,7 +580,7 @@ async function main() {
           data.responseLanguage = videolang;
       }
 
-      setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+      await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
 
       return data;
     }
