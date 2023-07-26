@@ -2485,8 +2485,6 @@ let translateToLang = "ru"; // default language of audio response
 
 let ytData = "";
 
-let to = lang
-
 async function src_main() {
   debug/* default */.Z.log("Loading extension...");
   debug/* default */.Z.log(`Selected menu language: ${lang}`);
@@ -2736,7 +2734,6 @@ async function src_main() {
       selectFromLang.appendChild(selectToLang);
       menuOptions.appendChild(selectFromLang);
 
-
       menuOptions
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
@@ -2965,8 +2962,7 @@ async function src_main() {
       });
     }
 
-
-    async function setSelectMenuValues(from, to) {
+    function setSelectMenuValues(from, to) {
       if (!document.querySelector("#VOTSelectLanguages")) {
         return;
       }
@@ -2975,17 +2971,16 @@ async function src_main() {
       to = document.querySelector("#VOTTranslateToLang").value;
     }
 
-
     // data - ytData or VideoData
     async function setDetectedLangauge(data, videolang) {
       switch (videolang) {
         case "en":
           data.detectedLanguage = videolang;
-          data.responseLanguage = to;
+          data.responseLanguage = lang;
           break;
         case "ru":
           data.detectedLanguage = videolang;
-          data.responseLanguage = to;
+          data.responseLanguage = lang;
           if (lang == "ru") data.responseLanguage = "en";
           break;
         default:
@@ -2996,7 +2991,7 @@ async function src_main() {
           data.detectedLanguage = videolang;
       }
 
-      await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+      setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
 
       return data;
     }
@@ -3020,7 +3015,7 @@ async function src_main() {
           data.responseLanguage = videolang;
       }
 
-      await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+      setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
 
       return data;
     }
@@ -3291,9 +3286,9 @@ async function src_main() {
     async function videoValidator() {
       if (window.location.hostname.includes("youtube.com")) {
         ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
+        let to = document.querySelector("#VOTTranslateToLang").value;
         debug/* default */.Z.log("VideoValidator videoData: ", videoData);
-        console.log("VOT TEST", to)
-        if (dontTranslateYourLang === 1 && ytData.detectedLanguage === lang || ytData.detectedLanguage === to) {
+        if (dontTranslateYourLang === 1 && ytData.detectedLanguage === lang && to === lang) {
           firstPlay = false;
           throw constants/* translations */.Iz[lang].VOTDisableFromYourLang;
         }
