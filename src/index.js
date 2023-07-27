@@ -692,7 +692,7 @@ async function main() {
         debug.log(`lipsync mode is ${mode}`);
         audio.pause();
       }
-      if (mode === "abort") {
+      if (mode === "abort" || "loadstart") {
         debug.log("lipsync mode is abort");
         await stopTranslation();
       }
@@ -1006,6 +1006,7 @@ async function main() {
             "ratechange",
             "play",
             "abort",
+            "loadstart",
             "waiting",
             "pause",
           ];
