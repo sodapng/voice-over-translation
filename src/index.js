@@ -692,7 +692,7 @@ async function main() {
         debug.log(`lipsync mode is ${mode}`);
         audio.pause();
       }
-      if (mode === "abort" || "loadstart") {
+      if (mode === "abort") {
         debug.log("lipsync mode is abort");
         await stopTranslation();
       }
@@ -898,6 +898,7 @@ async function main() {
     // Define a function to translate a video and handle the callback
     async function translateFunc(VIDEO_ID, requestLang, responseLang) {
       const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
+      if (!responseLang) ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
       translateVideo(
         videoURL,
         translateFuncParam,
@@ -1006,7 +1007,6 @@ async function main() {
             "ratechange",
             "play",
             "abort",
-            "loadstart",
             "waiting",
             "pause",
           ];
