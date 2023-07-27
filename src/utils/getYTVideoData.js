@@ -1,10 +1,14 @@
 async function detect(cleanText) {
+  if (!cleanText) {
+    return;
+  }
   const response = await fetch("https://rust-server-531j.onrender.com/detect", {
     method: "POST",
     body: cleanText,
   });
   return await response.text();
 }
+
 
 // Get the language code from the response or the text
 async function getLanguage(player, response, title, description, author) {

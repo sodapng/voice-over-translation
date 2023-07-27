@@ -522,15 +522,17 @@ async function main() {
       });
     }
 
-    function setSelectMenuValues(from, to) {
-      if (!document.querySelector("#VOTSelectLanguages")) {
+    async function setSelectMenuValues(from, to) {
+      const selectLanguages = document.querySelector("#VOTSelectLanguages");
+      if (!selectLanguages) {
         return;
       }
       console.log(`Set translation from ${from} to ${to}`);
       document.querySelector("#VOTTranslateFromLang").value = from;
-      to = document.querySelector("#VOTTranslateToLang").value;
+      document.querySelector("#VOTTranslateToLang").value = to;
+      ytData.responseLanguage = to
     }
-
+    
     // data - ytData or VideoData
     async function setDetectedLangauge(data, videolang) {
       switch (videolang) {
@@ -547,38 +549,39 @@ async function main() {
           if (!Object.keys(availableLangs).includes(videolang)) {
             return setDetectedLangauge(data, "en");
           }
-
+    
           data.detectedLanguage = videolang;
       }
-
-      setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
-
+    
+      await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+    
       return data;
     }
-
+    
     // data - ytData or VideoData
     async function setResponseLangauge(data, videolang) {
       switch (videolang) {
         case "en":
           data.responseLanguage = videolang;
-          data.detectedLanguage = "ru";
+          if (lang == "ru") data.detectedLanguage = "ru";
           break;
         default:
           if (!Object.keys(availableLangs).includes(videolang)) {
             return setResponseLangauge(data, "ru");
           }
-
+    
           if (data.detectedLanguage && data.responseLanguage === lang) {
             data.detectedLanguage = "en";
           }
-
+    
           data.responseLanguage = videolang;
       }
-
-      setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
-
+    
+      await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+    
       return data;
     }
+    
 
     async function stopTraslate() {
       // Default actions on stop translate
@@ -845,10 +848,8 @@ async function main() {
 
     async function videoValidator() {
       if (window.location.hostname.includes("youtube.com")) {
-        ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
-        let to = document.querySelector("#VOTTranslateToLang").value;
         debug.log("VideoValidator videoData: ", videoData);
-        if (dontTranslateYourLang === 1 && ytData.detectedLanguage === lang && to === lang) {
+        if (dontTranslateYourLang === 1 && ytData.detectedLanguage === lang && ytData.responseLanguage === lang) {
           firstPlay = false;
           throw translations[lang].VOTDisableFromYourLang;
         }
