@@ -626,7 +626,7 @@ async function main() {
 
       videoData.duration = video?.duration || 0;
 
-      videoData.videoId = getVideoId(siteHostname);
+      videoData.videoId = await getVideoId(siteHostname);
 
       if (!videoData.videoId) return "Айди видео нет";
 
@@ -898,7 +898,6 @@ async function main() {
     // Define a function to translate a video and handle the callback
     async function translateFunc(VIDEO_ID, requestLang, responseLang) {
       const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
-      if (!responseLang) ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
       translateVideo(
         videoURL,
         translateFuncParam,
@@ -1123,7 +1122,7 @@ async function main() {
 
         try {
           debug.log("[click translationBtn] trying execute translation");
-          const VIDEO_ID = getVideoId(siteHostname);
+          const VIDEO_ID = await getVideoId(siteHostname);
 
           if (!VIDEO_ID) {
             throw translations[lang].VOTNoVideoIDFound;
@@ -1142,7 +1141,7 @@ async function main() {
       if (!(firstPlay && dbAutoTranslate === 1)) {
         return;
       }
-      const VIDEO_ID = getVideoId(siteHostname);
+      const VIDEO_ID = await getVideoId(siteHostname);
 
       if (!VIDEO_ID) {
         throw translations[lang].VOTNoVideoIDFound;
