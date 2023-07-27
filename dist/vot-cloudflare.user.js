@@ -3069,9 +3069,7 @@ async function src_main() {
 
       videoData.duration = video?.duration || 0;
 
-      videoData.videoId = await getVideoId(siteHostname);
-
-      if (!videoData.videoId) return "Айди видео нет";
+      videoData.videoId = getVideoId(siteHostname);
 
       videoData.detectedLanguage = translateFromLang;
 
@@ -3131,17 +3129,25 @@ async function src_main() {
         }
         return;
       }
-      if (mode === "pause" || "waiting" || 0) {
-        debug/* default */.Z.log(`lipsync mode is ${mode}`);
+      if (mode === "pause") {
+        debug/* default */.Z.log("lipsync mode is pause");
         audio.pause();
       }
-      if (mode === "abort") {
-        debug/* default */.Z.log("lipsync mode is abort");
-        await stopTranslation();
+      if (mode === "stop") {
+        debug/* default */.Z.log("lipsync mode is stop");
+        audio.pause();
+      }
+      if (mode === "waiting") {
+        debug/* default */.Z.log("lipsync mode is waiting");
+        audio.pause();
       }
       if (mode === "playing") {
         debug/* default */.Z.log("lipsync mode is playing");
         audio.play();
+      }
+      if (mode === "abort") {
+        debug/* default */.Z.log("lipsync mode is abort");
+        await stopTranslation();
       }
     };
 
@@ -3291,6 +3297,7 @@ async function src_main() {
 
     async function videoValidator() {
       if (window.location.hostname.includes("youtube.com")) {
+        await sleep(250)
         debug/* default */.Z.log("VideoValidator videoData: ", videoData);
         if (
           dontTranslateYourLang === 1 &&
@@ -3341,7 +3348,7 @@ async function src_main() {
     // Define a function to translate a video and handle the callback
     async function translateFunc(VIDEO_ID, requestLang, responseLang) {
       const videoURL = `${constants/* siteTranslates */.g$[siteHostname]}${VIDEO_ID}`;
-      translateVideo(
+      await translateVideo(
         videoURL,
         constants/* translateFuncParam */.ey,
         requestLang,
@@ -3475,6 +3482,7 @@ async function src_main() {
       );
     }
 
+
     document.addEventListener("click", async (event) => {
       const block = document.querySelector(".translationBlock");
       const menuContainer = document.querySelector(".translationMenuContent");
@@ -3565,7 +3573,7 @@ async function src_main() {
 
         try {
           debug/* default */.Z.log("[click translationBtn] trying execute translation");
-          const VIDEO_ID = await getVideoId(siteHostname);
+          const VIDEO_ID = getVideoId(siteHostname);
 
           if (!VIDEO_ID) {
             throw constants/* translations */.Iz[lang].VOTNoVideoIDFound;
@@ -3584,7 +3592,7 @@ async function src_main() {
       if (!(firstPlay && dbAutoTranslate === 1)) {
         return;
       }
-      const VIDEO_ID = await getVideoId(siteHostname);
+      const VIDEO_ID = getVideoId(siteHostname);
 
       if (!VIDEO_ID) {
         throw constants/* translations */.Iz[lang].VOTNoVideoIDFound;
