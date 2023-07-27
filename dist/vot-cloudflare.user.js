@@ -3331,7 +3331,7 @@ async function src_main() {
     }
 
     // Define a function to translate a video and handle the callback
-    function translateFunc(VIDEO_ID, requestLang, responseLang) {
+    async function translateFunc(VIDEO_ID, requestLang, responseLang) {
       const videoURL = `${constants/* siteTranslates */.g$[siteHostname]}${VIDEO_ID}`;
       translateVideo(
         videoURL,

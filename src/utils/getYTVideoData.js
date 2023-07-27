@@ -9,7 +9,6 @@ async function detect(cleanText) {
   return await response.text();
 }
 
-
 // Get the language code from the response or the text
 async function getLanguage(player, response, title, description, author) {
   if (!window.location.hostname.includes("m.youtube.com")) {

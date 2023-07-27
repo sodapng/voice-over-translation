@@ -132,7 +132,13 @@ async function main() {
     debug.log("VOT: Added translation menu to ", element);
   }
 
-  async function translateVideo(url, unknown1, requestLang, responseLang, callback) {
+  async function translateVideo(
+    url,
+    unknown1,
+    requestLang,
+    responseLang,
+    callback
+  ) {
     debug.log(
       `Translate video (url: ${url}, unknown1: ${unknown1}, requestLang: ${requestLang}, responseLang: ${responseLang})`
     );
@@ -530,9 +536,9 @@ async function main() {
       console.log(`Set translation from ${from} to ${to}`);
       document.querySelector("#VOTTranslateFromLang").value = from;
       document.querySelector("#VOTTranslateToLang").value = to;
-      ytData.responseLanguage = to
+      ytData.responseLanguage = to;
     }
-    
+
     // data - ytData or VideoData
     async function setDetectedLangauge(data, videolang) {
       data.detectedLanguage = videolang;
@@ -542,15 +548,15 @@ async function main() {
           if (!Object.keys(availableLangs).includes(videolang)) {
             return setDetectedLangauge(data, "en");
           }
-    
+
           data.detectedLanguage = videolang;
       }
-    
+
       await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
-    
+
       return data;
     }
-    
+
     // data - ytData or VideoData
     async function setResponseLangauge(data, videolang) {
       switch (videolang) {
@@ -562,19 +568,18 @@ async function main() {
           if (!Object.keys(availableLangs).includes(videolang)) {
             return setResponseLangauge(data, "ru");
           }
-    
+
           if (data.detectedLanguage && data.responseLanguage === lang) {
             data.detectedLanguage = "en";
           }
-    
+
           data.responseLanguage = videolang;
       }
-    
+
       await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
-    
+
       return data;
     }
-    
 
     async function stopTraslate() {
       // Default actions on stop translate
@@ -621,7 +626,7 @@ async function main() {
 
       videoData.duration = video?.duration || 0;
 
-      videoData.videoId = getVideoId(siteHostname) ;
+      videoData.videoId = getVideoId(siteHostname);
 
       if (!videoData.videoId) return "Айди видео нет";
 
@@ -844,7 +849,11 @@ async function main() {
     async function videoValidator() {
       if (window.location.hostname.includes("youtube.com")) {
         debug.log("VideoValidator videoData: ", videoData);
-        if (dontTranslateYourLang === 1 && ytData.detectedLanguage === lang && ytData.responseLanguage === lang) {
+        if (
+          dontTranslateYourLang === 1 &&
+          ytData.detectedLanguage === lang &&
+          ytData.responseLanguage === lang
+        ) {
           firstPlay = false;
           throw translations[lang].VOTDisableFromYourLang;
         }
@@ -887,7 +896,7 @@ async function main() {
     }
 
     // Define a function to translate a video and handle the callback
-    function translateFunc(VIDEO_ID, requestLang, responseLang) {
+    async function translateFunc(VIDEO_ID, requestLang, responseLang) {
       const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
       translateVideo(
         videoURL,
