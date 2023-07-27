@@ -854,7 +854,7 @@ async function main() {
 
     async function videoValidator() {
       if (window.location.hostname.includes("youtube.com")) {
-        await getVideoData()
+        videoData = await getVideoData()
         debug.log("VideoValidator videoData: ", videoData);
         if (
           dontTranslateYourLang === 1 &&
