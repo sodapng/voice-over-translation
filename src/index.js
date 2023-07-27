@@ -634,6 +634,7 @@ async function main() {
 
       if (window.location.hostname.includes("youtube.com")) {
         ytData = await getYTVideoData();
+        if (!videoData.videoId) return;
         ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
         videoData.detectedLanguage = ytData.detectedLanguage;
         videoData.responseLanguage = ytData.responseLanguage;
@@ -854,7 +855,6 @@ async function main() {
 
     async function videoValidator() {
       if (window.location.hostname.includes("youtube.com")) {
-        videoData = await getVideoData()
         debug.log("VideoValidator videoData: ", videoData);
         if (
           dontTranslateYourLang === 1 &&
