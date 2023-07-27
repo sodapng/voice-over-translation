@@ -535,16 +535,9 @@ async function main() {
     
     // data - ytData or VideoData
     async function setDetectedLangauge(data, videolang) {
+      data.detectedLanguage = videolang;
+      data.responseLanguage = lang;
       switch (videolang) {
-        case "en":
-          data.detectedLanguage = videolang;
-          data.responseLanguage = lang;
-          break;
-        case "ru":
-          data.detectedLanguage = videolang;
-          data.responseLanguage = lang;
-          if (lang == "ru") data.responseLanguage = "en";
-          break;
         default:
           if (!Object.keys(availableLangs).includes(videolang)) {
             return setDetectedLangauge(data, "en");
