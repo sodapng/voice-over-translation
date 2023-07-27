@@ -294,12 +294,12 @@ async function main() {
       selectFromLang.appendChild(selectToLang);
       menuOptions.appendChild(selectFromLang);
 
-      // menuOptions
-      //   .querySelector("#VOTTranslateFromLang")
-      //   .addEventListener("change", async (event) => {
-      //     debug.log("[onchange] select from language", event.target.value);
-      //     await setDetectedLangauge(videoData, event.target.value);
-      //   });
+      menuOptions
+        .querySelector("#VOTTranslateFromLang")
+        .addEventListener("change", async (event) => {
+          debug.log("[onchange] select from language", event.target.value);
+          await setDetectedLangauge(videoData, event.target.value);
+        });
 
       menuOptions
         .querySelector("#VOTTranslateToLang")
@@ -621,7 +621,9 @@ async function main() {
 
       videoData.duration = video?.duration || 0;
 
-      videoData.videoId = getVideoId(siteHostname);
+      videoData.videoId = getVideoId(siteHostname) ;
+
+      if (!videoData.videoId) return "Айди видео нет";
 
       videoData.detectedLanguage = translateFromLang;
 
@@ -841,7 +843,6 @@ async function main() {
 
     async function videoValidator() {
       if (window.location.hostname.includes("youtube.com")) {
-        await setDetectedLangauge(videoData, ytData.detectedLanguage);
         debug.log("VideoValidator videoData: ", videoData);
         if (dontTranslateYourLang === 1 && ytData.detectedLanguage === lang && ytData.responseLanguage === lang) {
           firstPlay = false;
