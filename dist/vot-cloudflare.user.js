@@ -3075,7 +3075,7 @@ async function src_main() {
 
       videoData.responseLanguage = translateToLang;
 
-      if (window.location.href.includes("youtube.com/watch?v=")) {
+      if (window.location.hostname.includes("youtube.com") && videoData.duration !== 0 || !videoData.videoId) {
         ytData = await getYTVideoData();
         ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
         videoData.detectedLanguage = ytData.detectedLanguage;
