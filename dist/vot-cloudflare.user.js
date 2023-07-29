@@ -3077,7 +3077,7 @@ async function src_main() {
 
       if (window.location.hostname.includes("youtube.com")) {
         ytData = await getYTVideoData();
-        if (!videoData.videoId) return;
+        if (!videoData.videoId) return ytData.detectedLanguage, ytData.responseLanguage;
         ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
         videoData.detectedLanguage = ytData.detectedLanguage;
         videoData.responseLanguage = ytData.responseLanguage;
@@ -3642,7 +3642,7 @@ async function src_main() {
       document.addEventListener("spfdone", ytPageEnter);
       document.addEventListener("yt-navigate-finish", ytPageEnter);
 
-      const ytPageLeave = () => {
+      const ytPageLeave = async () => {
         document.body.dispatchEvent(new Event("yt-translate-stop"));
       };
 
@@ -3679,9 +3679,9 @@ async function src_main() {
             attributeOldValue: true,
           });
         }
-        const ytPageLeave = () => {
+        const ytPageLeave = async () => {
           document.body.dispatchEvent(new Event("yt-translate-stop"));
-        };
+        };        
         document.addEventListener("spfdone", ytPageLeave);
         document.addEventListener("yt-navigate-finish", ytPageLeave);
         document.addEventListener("spfrequest", ytPageLeave);
@@ -3914,7 +3914,6 @@ async function src_main() {
 src_main().catch((e) => {
   console.error(e);
 });
-
 })();
 
 /******/ })()
