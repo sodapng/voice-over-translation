@@ -2747,7 +2747,8 @@ async function src_main() {
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
           debug/* default */.Z.log("[onchange] select from language", event.target.value);
-          await setDetectedLangauge(videoData, event.target.value);
+          if (videoData.author !== "")
+            await setDetectedLangauge(videoData, event.target.value);
         });
 
       menuOptions
@@ -2986,11 +2987,11 @@ async function src_main() {
     async function setDetectedLangauge(data, videolang) {
       data.detectedLanguage = videolang;
       data.responseLanguage = lang;
-      if (!Object.keys(constants/* availableLangs */.tW).includes(videolang) && data.author !== "") {
-            return setDetectedLangauge(data, "en");
+      if (!Object.keys(constants/* availableLangs */.tW).includes(videolang)) {
+        return setDetectedLangauge(data, "en");
       }
 
-      if (data.author !== "") await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+      await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
 
       return data;
     }
@@ -3072,7 +3073,8 @@ async function src_main() {
 
       if (window.location.hostname.includes("youtube.com")) {
         ytData = await getYTVideoData();
-        ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
+        if (ytData.author !== "")
+          ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
         videoData.detectedLanguage = ytData.detectedLanguage;
         videoData.responseLanguage = ytData.responseLanguage;
       } else if (
@@ -3317,6 +3319,7 @@ async function src_main() {
     }
 
     const translateExecutor = async (VIDEO_ID) => {
+      if (!videoData.detectedLanguage) return;
       debug/* default */.Z.log("Run videoValidator");
       await videoValidator();
       debug/* default */.Z.log("Run translateFunc");
@@ -3475,7 +3478,6 @@ async function src_main() {
         }
       );
     }
-
 
     document.addEventListener("click", async (event) => {
       const block = document.querySelector(".translationBlock");
@@ -3675,7 +3677,7 @@ async function src_main() {
         }
         const ytPageLeave = async () => {
           document.body.dispatchEvent(new Event("yt-translate-stop"));
-        };        
+        };
         document.addEventListener("spfdone", ytPageLeave);
         document.addEventListener("yt-navigate-finish", ytPageLeave);
         document.addEventListener("spfrequest", ytPageLeave);
@@ -3908,6 +3910,7 @@ async function src_main() {
 src_main().catch((e) => {
   console.error(e);
 });
+
 })();
 
 /******/ })()
