@@ -2915,16 +2915,11 @@ async function src_main() {
     async function setDetectedLangauge(data, videolang) {
       data.detectedLanguage = videolang;
       data.responseLanguage = lang;
-      switch (videolang) {
-        default:
-          if (!Object.keys(availableLangs).includes(videolang)) {
+      if (!Object.keys(availableLangs).includes(videolang) && data.author !== "") {
             return setDetectedLangauge(data, "en");
-          }
-
-          data.detectedLanguage = videolang;
       }
 
-      await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+      if (data.author !== "") await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
 
       return data;
     }
@@ -3004,7 +2999,7 @@ async function src_main() {
 
       videoData.responseLanguage = translateToLang;
 
-      if (window.location.hostname.includes("youtube.com") && videoData.duration !== 0 || !videoData.videoId) {
+      if (window.location.hostname.includes("youtube.com")) {
         ytData = await getYTVideoData();
         ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
         videoData.detectedLanguage = ytData.detectedLanguage;

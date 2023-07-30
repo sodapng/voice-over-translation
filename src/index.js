@@ -543,16 +543,15 @@ async function main() {
     async function setDetectedLangauge(data, videolang) {
       data.detectedLanguage = videolang;
       data.responseLanguage = lang;
-      switch (videolang) {
-        default:
-          if (!Object.keys(availableLangs).includes(videolang)) {
-            return setDetectedLangauge(data, "en");
-          }
-
-          data.detectedLanguage = videolang;
+      if (
+        !Object.keys(availableLangs).includes(videolang) &&
+        data.author !== ""
+      ) {
+        return setDetectedLangauge(data, "en");
       }
 
-      await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+      if (data.author !== "")
+        await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
 
       return data;
     }
@@ -632,7 +631,7 @@ async function main() {
 
       videoData.responseLanguage = translateToLang;
 
-      if (window.location.hostname.includes("youtube.com") && videoData.duration !== 0 || !videoData.videoId) {
+      if (window.location.hostname.includes("youtube.com")) {
         ytData = await getYTVideoData();
         ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
         videoData.detectedLanguage = ytData.detectedLanguage;
@@ -1038,7 +1037,6 @@ async function main() {
       );
     }
 
-
     document.addEventListener("click", async (event) => {
       const block = document.querySelector(".translationBlock");
       const menuContainer = document.querySelector(".translationMenuContent");
@@ -1237,7 +1235,7 @@ async function main() {
         }
         const ytPageLeave = async () => {
           document.body.dispatchEvent(new Event("yt-translate-stop"));
-        };        
+        };
         document.addEventListener("spfdone", ytPageLeave);
         document.addEventListener("yt-navigate-finish", ytPageLeave);
         document.addEventListener("spfrequest", ytPageLeave);
