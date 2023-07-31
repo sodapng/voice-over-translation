@@ -2593,7 +2593,7 @@ async function src_main() {
 
     translationPanding = true;
 
-    requestVideoTranslation(
+    await requestVideoTranslation(
       url,
       unknown1,
       requestLang,
@@ -2669,7 +2669,7 @@ async function src_main() {
 
     debug/* default */.Z.log("video", video);
 
-    let videoData = await getVideoData();
+    let videoData = "";
     console.log("VOT Video Data: ", videoData);
 
     const container =
@@ -3321,7 +3321,7 @@ async function src_main() {
     }
 
     const translateExecutor = async (VIDEO_ID) => {
-      if (!videoData.detectedLanguage) return;
+      videoData = await getVideoData()
       debug/* default */.Z.log("Run videoValidator");
       await videoValidator();
       debug/* default */.Z.log("Run translateFunc");
