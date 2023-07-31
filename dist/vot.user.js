@@ -2695,8 +2695,9 @@ async function src_main() {
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
           utils_debug.log("[onchange] select from language", event.target.value);
-          if (videoData.author !== "")
+          if (videoData.duration !== 0) {
             await setDetectedLangauge(videoData, event.target.value);
+          }
         });
 
       menuOptions
@@ -3002,10 +3003,11 @@ async function src_main() {
 
       if (window.location.hostname.includes("youtube.com") && videoData.duration !== 0) {
         ytData = await getYTVideoData();
-        if (ytData.author !== "")
+        if (ytData.author !== "") {
           ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
-        videoData.detectedLanguage = ytData.detectedLanguage;
-        videoData.responseLanguage = ytData.responseLanguage;
+          videoData.detectedLanguage = ytData.detectedLanguage;
+          videoData.responseLanguage = ytData.responseLanguage;
+        }
       } else if (
         window.location.hostname.includes("rutube") ||
         window.location.hostname.includes("my.mail.ru")
