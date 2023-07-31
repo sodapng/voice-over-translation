@@ -878,7 +878,7 @@ async function main() {
     }
 
     const translateExecutor = async (VIDEO_ID) => {
-      videoData = await getVideoData()
+      if (!videoData.detectedLanguage) videoData = await getVideoData()
       debug.log("Run videoValidator");
       await videoValidator();
       debug.log("Run translateFunc");
