@@ -871,7 +871,6 @@ async function main() {
 
     const translateExecutor = async (VIDEO_ID) => {
       if (!videoData.detectedLanguage) videoData = await getVideoData()
-      console.log("VOT Video Data: ", videoData);
       debug.log("Run videoValidator");
       await videoValidator();
       debug.log("Run translateFunc");
@@ -896,6 +895,7 @@ async function main() {
 
     // Define a function to translate a video and handle the callback
     async function translateFunc(VIDEO_ID, requestLang, responseLang) {
+      console.log("VOT Video Data: ", videoData);
       const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
       await translateVideo(
         videoURL,

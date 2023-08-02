@@ -1,7 +1,4 @@
 async function detect(cleanText) {
-  if (!cleanText) {
-    return;
-  }
   const response = await fetch("https://rust-server-531j.onrender.com/detect", {
     method: "POST",
     body: cleanText,

@@ -1560,9 +1560,6 @@ var update = injectStylesIntoStyleTag_default()(main/* default */.Z, options);
 
 ;// CONCATENATED MODULE: ./src/utils/getYTVideoData.js
 async function detect(cleanText) {
-  if (!cleanText) {
-    return;
-  }
   const response = await fetch("https://rust-server-531j.onrender.com/detect", {
     method: "POST",
     body: cleanText,
@@ -3314,7 +3311,6 @@ async function src_main() {
 
     const translateExecutor = async (VIDEO_ID) => {
       if (!videoData.detectedLanguage) videoData = await getVideoData()
-      console.log("VOT Video Data: ", videoData);
       debug/* default */.Z.log("Run videoValidator");
       await videoValidator();
       debug/* default */.Z.log("Run translateFunc");
@@ -3339,6 +3335,7 @@ async function src_main() {
 
     // Define a function to translate a video and handle the callback
     async function translateFunc(VIDEO_ID, requestLang, responseLang) {
+      console.log("VOT Video Data: ", videoData);
       const videoURL = `${constants/* siteTranslates */.g$[siteHostname]}${VIDEO_ID}`;
       await translateVideo(
         videoURL,
