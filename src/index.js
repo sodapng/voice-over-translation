@@ -302,9 +302,7 @@ async function main() {
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
           debug.log("[onchange] select from language", event.target.value);
-          if (videoData.duration !== 0 || videoData !== null) {
             await setDetectedLangauge(videoData, event.target.value);
-          }
         });
 
       menuOptions
@@ -578,6 +576,7 @@ async function main() {
 
     async function stopTraslate() {
       // Default actions on stop translate
+      videoData = ""
       audio.pause();
       video.removeEventListener(".translate", stopTraslate, false);
       await deleteAudioSrc();
@@ -627,7 +626,7 @@ async function main() {
 
       videoData.responseLanguage = translateToLang;
 
-      if (window.location.hostname.includes("youtube.com") && videoData.duration !== 0 || videoData !== null ) {
+      if (window.location.hostname.includes("youtube.com")) {
         ytData = await getYTVideoData();
         if (ytData.author !== "") {
           ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
@@ -698,10 +697,6 @@ async function main() {
       if (mode === "playing") {
         debug.log("lipsync mode is playing");
         audio.play();
-      }
-      if (mode === "abort") {
-        debug.log("lipsync mode is abort");
-        await stopTranslation();
       }
     };
 
@@ -1009,7 +1004,6 @@ async function main() {
             "playing",
             "ratechange",
             "play",
-            "abort",
             "waiting",
             "pause",
           ];
@@ -1111,9 +1105,16 @@ async function main() {
     );
     window.addEventListener("popstate", async function () {
       await stopTranslation()
-      videoData = ""
       debug.log("popstate triggered")
     });
+    document.querySelectorAll("video").forEach(video => {
+      video.addEventListener("abort", async () => {
+      debug.log("lipsync mode is abort");
+      videoData = ""
+      await stopTranslation();
+      });
+    });
+  
 
     document
       .querySelector(".translationBtn")

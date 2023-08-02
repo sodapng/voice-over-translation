@@ -2693,9 +2693,7 @@ async function src_main() {
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
           utils_debug.log("[onchange] select from language", event.target.value);
-          if (videoData.duration !== 0 || videoData !== null) {
             await setDetectedLangauge(videoData, event.target.value);
-          }
         });
 
       menuOptions
@@ -2950,6 +2948,7 @@ async function src_main() {
 
     async function stopTraslate() {
       // Default actions on stop translate
+      videoData = ""
       audio.pause();
       video.removeEventListener(".translate", stopTraslate, false);
       await deleteAudioSrc();
@@ -2999,7 +2998,7 @@ async function src_main() {
 
       videoData.responseLanguage = translateToLang;
 
-      if (window.location.hostname.includes("youtube.com") && videoData.duration !== 0 || videoData !== null ) {
+      if (window.location.hostname.includes("youtube.com")) {
         ytData = await getYTVideoData();
         if (ytData.author !== "") {
           ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
@@ -3070,10 +3069,6 @@ async function src_main() {
       if (mode === "playing") {
         utils_debug.log("lipsync mode is playing");
         audio.play();
-      }
-      if (mode === "abort") {
-        utils_debug.log("lipsync mode is abort");
-        await stopTranslation();
       }
     };
 
@@ -3371,7 +3366,6 @@ async function src_main() {
             "playing",
             "ratechange",
             "play",
-            "abort",
             "waiting",
             "pause",
           ];
@@ -3473,9 +3467,16 @@ async function src_main() {
     );
     window.addEventListener("popstate", async function () {
       await stopTranslation()
-      videoData = ""
       utils_debug.log("popstate triggered")
     });
+    document.querySelectorAll("video").forEach(video => {
+      video.addEventListener("abort", async () => {
+      utils_debug.log("lipsync mode is abort");
+      videoData = ""
+      await stopTranslation();
+      });
+    });
+  
 
     document
       .querySelector(".translationBtn")
