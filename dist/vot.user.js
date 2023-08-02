@@ -3465,10 +3465,11 @@ async function src_main() {
     document.addEventListener("touchend", (event) =>
       changeOpacityOnEvent(event, timer, opacityRatio)
     );
-    window.addEventListener("popstate", async function () {
-      await stopTranslation()
-      utils_debug.log("popstate triggered")
-    });
+    // Возможно лишнее
+    // window.addEventListener("popstate", async function () {
+    //   await stopTranslation()
+    //   debug.log("popstate triggered")
+    // });
     document.querySelectorAll("video").forEach(video => {
       video.addEventListener("abort", async () => {
       utils_debug.log("lipsync mode is abort");
