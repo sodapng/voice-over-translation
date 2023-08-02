@@ -2657,6 +2657,7 @@ async function src_main() {
     let dbAudioProxy; // cf version only
     let firstPlay = true;
     let isDBInited;
+    let videoData = "";
 
     debug/* default */.Z.log("videoContainer", videoContainer);
 
@@ -2668,9 +2669,6 @@ async function src_main() {
         : videoContainer.querySelector("video");
 
     debug/* default */.Z.log("video", video);
-
-    let videoData = "";
-    console.log("VOT Video Data: ", videoData);
 
     const container =
       siteHostname === "pornhub" &&
@@ -2747,7 +2745,7 @@ async function src_main() {
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
           debug/* default */.Z.log("[onchange] select from language", event.target.value);
-          if (videoData.duration !== 0) {
+          if (videoData.duration !== 0 || videoData !== null) {
             await setDetectedLangauge(videoData, event.target.value);
           }
         });
@@ -3072,7 +3070,7 @@ async function src_main() {
 
       videoData.responseLanguage = translateToLang;
 
-      if (window.location.hostname.includes("youtube.com") && videoData.duration !== 0) {
+      if (window.location.hostname.includes("youtube.com") && videoData.duration !== 0 || videoData !== null ) {
         ytData = await getYTVideoData();
         if (ytData.author !== "") {
           ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
@@ -3302,7 +3300,6 @@ async function src_main() {
           ytData.detectedLanguage === lang &&
           ytData.responseLanguage === lang
         ) {
-          firstPlay = false;
           throw constants/* translations */.Iz[lang].VOTDisableFromYourLang;
         }
 
@@ -3322,6 +3319,7 @@ async function src_main() {
 
     const translateExecutor = async (VIDEO_ID) => {
       if (!videoData.detectedLanguage) videoData = await getVideoData()
+      console.log("VOT Video Data: ", videoData);
       debug/* default */.Z.log("Run videoValidator");
       await videoValidator();
       debug/* default */.Z.log("Run translateFunc");
@@ -3554,6 +3552,11 @@ async function src_main() {
     document.addEventListener("touchend", (event) =>
       changeOpacityOnEvent(event, timer, opacityRatio)
     );
+    window.addEventListener("popstate", async function () {
+      await stopTranslation()
+      videoData = ""
+      debug/* default */.Z.log("popstate triggered")
+    });
 
     document
       .querySelector(".translationBtn")

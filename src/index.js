@@ -214,6 +214,7 @@ async function main() {
     let dbAudioProxy; // cf version only
     let firstPlay = true;
     let isDBInited;
+    let videoData = "";
 
     debug.log("videoContainer", videoContainer);
 
@@ -225,9 +226,6 @@ async function main() {
         : videoContainer.querySelector("video");
 
     debug.log("video", video);
-
-    let videoData = "";
-    console.log("VOT Video Data: ", videoData);
 
     const container =
       siteHostname === "pornhub" &&
@@ -304,7 +302,7 @@ async function main() {
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
           debug.log("[onchange] select from language", event.target.value);
-          if (videoData.duration !== 0) {
+          if (videoData.duration !== 0 || videoData !== null) {
             await setDetectedLangauge(videoData, event.target.value);
           }
         });
@@ -629,7 +627,7 @@ async function main() {
 
       videoData.responseLanguage = translateToLang;
 
-      if (window.location.hostname.includes("youtube.com") && videoData.duration !== 0) {
+      if (window.location.hostname.includes("youtube.com") && videoData.duration !== 0 || videoData !== null ) {
         ytData = await getYTVideoData();
         if (ytData.author !== "") {
           ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
@@ -859,7 +857,6 @@ async function main() {
           ytData.detectedLanguage === lang &&
           ytData.responseLanguage === lang
         ) {
-          firstPlay = false;
           throw translations[lang].VOTDisableFromYourLang;
         }
 
@@ -879,6 +876,7 @@ async function main() {
 
     const translateExecutor = async (VIDEO_ID) => {
       if (!videoData.detectedLanguage) videoData = await getVideoData()
+      console.log("VOT Video Data: ", videoData);
       debug.log("Run videoValidator");
       await videoValidator();
       debug.log("Run translateFunc");
@@ -1111,6 +1109,11 @@ async function main() {
     document.addEventListener("touchend", (event) =>
       changeOpacityOnEvent(event, timer, opacityRatio)
     );
+    window.addEventListener("popstate", async function () {
+      await stopTranslation()
+      videoData = ""
+      debug.log("popstate triggered")
+    });
 
     document
       .querySelector(".translationBtn")
