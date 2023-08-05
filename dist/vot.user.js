@@ -3339,7 +3339,7 @@ async function src_main() {
                       mutation.target === video &&
                       mutation.target.src !== ""
                     ) {
-                      stopTranslation();
+                      await stopTranslation();
                       firstPlay = true;
                     }
                   });
@@ -3484,8 +3484,8 @@ async function src_main() {
         // check if the audio source is not empty
         if (audio.src) {
           utils_debug.log("[click translationBtn] audio.src is not empty");
+          await stopTranslation();
           videoData.detectedLanguage = ""
-          await stopTraslate();
           return;
         }
 
