@@ -302,14 +302,14 @@ async function main() {
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
           debug.log("[onchange] select from language", event.target.value);
-            await setDetectedLangauge(videoData, event.target.value);
+          await setDetectedLangauge(videoData, event.target.value);
         });
 
       menuOptions
         .querySelector("#VOTTranslateToLang")
         .addEventListener("change", async (event) => {
           debug.log("[onchange] select to language", event.target.value);
-          videoData = await setResponseLangauge(videoData, event.target.value);
+          await setResponseLangauge(videoData, event.target.value);
         });
     }
 
@@ -526,7 +526,7 @@ async function main() {
       });
     }
 
-    async function setSelectMenuValues(from, to) {
+    async function setSelectMenuValues(videoData, from, to) {
       const selectLanguages = document.querySelector("#VOTSelectLanguages");
       if (!selectLanguages) {
         return;
@@ -534,7 +534,8 @@ async function main() {
       console.log(`Set translation from ${from} to ${to}`);
       document.querySelector("#VOTTranslateFromLang").value = from;
       document.querySelector("#VOTTranslateToLang").value = to;
-      ytData.responseLanguage = to;
+      console.log("VOT GOVNO", videoData.responseLanguage)
+      videoData.responseLanguage = to;
     }
 
     // data - ytData or VideoData
@@ -545,20 +546,20 @@ async function main() {
         return setDetectedLangauge(data, "en");
       }
 
-      await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+      await setSelectMenuValues(data, data.detectedLanguage, data.responseLanguage);
 
       return data;
     }
 
     // data - ytData or VideoData
-    async function setResponseLangauge(data, videolang) {
-      switch (videolang) {
+    async function setResponseLangauge(data, resplang) {
+      switch (resplang) {
         case "en":
-          data.responseLanguage = videolang;
+          data.responseLanguage = resplang;
           if (lang == "ru") data.detectedLanguage = "ru";
           break;
         default:
-          if (!Object.keys(availableLangs).includes(videolang)) {
+          if (!Object.keys(availableLangs).includes(resplang)) {
             return setResponseLangauge(data, "ru");
           }
 
@@ -566,17 +567,16 @@ async function main() {
             data.detectedLanguage = "en";
           }
 
-          data.responseLanguage = videolang;
+          data.responseLanguage = resplang || lang;
       }
 
-      await setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+      await setSelectMenuValues(data, data.detectedLanguage, data.responseLanguage);
 
       return data;
     }
 
     async function stopTraslate() {
       // Default actions on stop translate
-      videoData = ""
       audio.pause();
       video.removeEventListener(".translate", stopTraslate, false);
       await deleteAudioSrc();
@@ -631,7 +631,6 @@ async function main() {
         if (ytData.author !== "") {
           ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
           videoData.detectedLanguage = ytData.detectedLanguage;
-          videoData.responseLanguage = ytData.responseLanguage;
         }
       } else if (
         window.location.hostname.includes("rutube") ||
@@ -849,8 +848,8 @@ async function main() {
         debug.log("VideoValidator videoData: ", videoData);
         if (
           dontTranslateYourLang === 1 &&
-          ytData.detectedLanguage === lang &&
-          ytData.responseLanguage === lang
+          videoData.detectedLanguage === lang &&
+          videoData.responseLanguage === lang
         ) {
           throw translations[lang].VOTDisableFromYourLang;
         }
@@ -1111,7 +1110,7 @@ async function main() {
     document.querySelectorAll("video").forEach(video => {
       video.addEventListener("abort", async () => {
       debug.log("lipsync mode is abort");
-      videoData = ""
+      videoData.detectedLanguage = ""
       await stopTranslation();
       });
     });
@@ -1127,6 +1126,7 @@ async function main() {
         // check if the audio source is not empty
         if (audio.src) {
           debug.log("[click translationBtn] audio.src is not empty");
+          videoData.detectedLanguage = ""
           await stopTraslate();
           return;
         }
