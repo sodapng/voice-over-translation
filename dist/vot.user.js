@@ -2903,7 +2903,6 @@ async function src_main() {
       console.log(`Set translation from ${from} to ${to}`);
       document.querySelector("#VOTTranslateFromLang").value = from;
       document.querySelector("#VOTTranslateToLang").value = to;
-      console.log("VOT GOVNO", videoData.responseLanguage)
       videoData.responseLanguage = to;
     }
 
