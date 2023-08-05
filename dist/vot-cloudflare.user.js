@@ -3068,8 +3068,9 @@ async function src_main() {
       if (window.location.hostname.includes("youtube.com")) {
         ytData = await getYTVideoData();
         if (ytData.author !== "") {
-          ytData = await setDetectedLangauge(ytData, ytData.detectedLanguage);
           videoData.detectedLanguage = ytData.detectedLanguage;
+          videoData.responseLanguage = lang;
+          ytData = await setDetectedLangauge(ytData, videoData.detectedLanguage);
         }
       } else if (
         window.location.hostname.includes("rutube") ||
@@ -3549,7 +3550,6 @@ async function src_main() {
     document.querySelectorAll("video").forEach(video => {
       video.addEventListener("abort", async () => {
       debug/* default */.Z.log("lipsync mode is abort");
-      videoData.detectedLanguage = ""
       await stopTranslation();
       });
     });
@@ -3566,7 +3566,6 @@ async function src_main() {
         if (audio.src) {
           debug/* default */.Z.log("[click translationBtn] audio.src is not empty");
           await stopTranslation();
-          videoData.detectedLanguage = ""
           return;
         }
 
