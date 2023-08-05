@@ -2697,6 +2697,9 @@ async function src_main() {
         .querySelector("#VOTTranslateToLang")
         .addEventListener("change", async (event) => {
           utils_debug.log("[onchange] select to language", event.target.value);
+          if (!videoData) {
+            videoData = await getVideoData()
+          }
           await setResponseLangauge(videoData, event.target.value);
         });
     }
@@ -2921,21 +2924,9 @@ async function src_main() {
 
     // data - ytData or VideoData
     async function setResponseLangauge(data, resplang) {
-      switch (resplang) {
-        case "en":
-          data.responseLanguage = resplang;
-          if (lang == "ru") data.detectedLanguage = "ru";
-          break;
-        default:
-          if (!Object.keys(availableLangs).includes(resplang)) {
-            return setResponseLangauge(data, "ru");
-          }
-
-          if (data.detectedLanguage && data.responseLanguage === lang) {
-            data.detectedLanguage = "en";
-          }
-
-          data.responseLanguage = resplang || lang;
+      data.responseLanguage = resplang;
+      if (!Object.keys(availableLangs).includes(resplang)) {
+        return setResponseLangauge(data, "ru");
       }
 
       await setSelectMenuValues(data, data.detectedLanguage, data.responseLanguage);
@@ -3470,6 +3461,7 @@ async function src_main() {
       video.addEventListener("abort", async () => {
       utils_debug.log("lipsync mode is abort");
       await stopTranslation();
+      videoData = ""
       });
     });
   
