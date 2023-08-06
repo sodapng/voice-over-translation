@@ -2900,7 +2900,6 @@ async function src_main() {
       console.log(`Set translation from ${from} to ${to}`);
       videoData.detectedLanguage = from
       videoData.responseLanguage = to
-      console.log("VOT GOVNO", from, to)
     }
 
     // data - ytData or VideoData
