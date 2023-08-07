@@ -1,7 +1,13 @@
-import { detect } from "tinyld/light";
+async function detect(cleanText) {
+  const response = await fetch("https://rust-server-531j.onrender.com/detect", {
+    method: "POST",
+    body: cleanText,
+  });
+  return await response.text();
+}
 
 // Get the language code from the response or the text
-function getLanguage(player, response, title, description, author) {
+async function getLanguage(player, response, title, description, author) {
   if (!window.location.hostname.includes("m.youtube.com")) {
     // ! Experimental ! get lang from selected audio track if availabled
     const audioTracks = player.getAudioTrack();
@@ -25,14 +31,15 @@ function getLanguage(player, response, title, description, author) {
   const text = [title, description, author].join(" ");
   // Remove anything that is not a letter or a space in any language
   const cleanText = text
+    .replace(/\s+/g, " ").trim()
     .replace(/https?:\/\/\S+/g, "")
     .replace(/[^\p{L}\s]/gu, "")
     .slice(0, 250);
-  return detect(cleanText);
+  return await detect(cleanText);
 }
 
 // Get the video data from the player
-function getYTVideoData() {
+async function getYTVideoData() {
   const player = document.querySelector("#movie_player");
   const data = player.getVideoData();
   const response = player.getPlayerResponse();
@@ -44,7 +51,13 @@ function getYTVideoData() {
     title,
     description,
     author,
-    detectedLanguage: getLanguage(player, response, title, description, author),
+    detectedLanguage: await getLanguage(
+      player,
+      response,
+      title,
+      description,
+      author
+    ),
   };
   console.log("VOT Detected language: ", videoData.detectedLanguage);
   return videoData;
