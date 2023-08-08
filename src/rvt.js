@@ -19,10 +19,8 @@ async function requestVideoTranslation(
     const yandexRequest = yar.default;
     debug.log("Inited yandexRequest...");
     // Initialize variables
-    const deviceId = getUUID(true);
     const body = yandexProtobuf.encodeTranslationRequest(
       url,
-      deviceId,
       duration,
       requestLang,
       responseLang
@@ -47,5 +45,3 @@ async function requestVideoTranslation(
 }
 
 export default requestVideoTranslation;
-
-unsafeWindow.requestVideoTranslation = requestVideoTranslation;

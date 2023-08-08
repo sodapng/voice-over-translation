@@ -17,7 +17,6 @@ async function requestVideoSubtitles(
     const yandexRequest = yar.default;
     debug.log("Inited yandexRequest...");
     // Initialize variables
-    const deviceId = getUUID(true);
     const body = yandexProtobuf.encodeSubtitlesRequest(
       url,
       requestLang

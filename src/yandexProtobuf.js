@@ -44,7 +44,7 @@ const VideoSubtitlesObject = new protobuf.Type("VideoSubtitlesObject")
 
 const VideoSubtitlesResponse = new protobuf.Type("VideoSubtitlesResponse")
   .add(new protobuf.Field("unavailable", 1, "bool"))
-  .add(new protobuf.Field("subtitles", 2, "VideoSubtitlesObject"));
+  .add(new protobuf.Field("subtitles", 2, "VideoSubtitlesObject", "repeated"));
 
 // const VideoWhitelistStreamResponse = new protobuf.Type("VideoWhitelistStreamResponse")
 //   .add(new protobuf.Field("inWhitelist", 1, "bool"))
@@ -98,10 +98,9 @@ const root = new protobuf.Root()
 
 // Export the encoding and decoding functions
 export const yandexProtobuf = {
-  encodeTranslationRequest(url, deviceId, duration, requestLang, responseLang) {
+  encodeTranslationRequest(url, duration, requestLang, responseLang) {
     return root.VideoTranslationRequest.encode({
       url,
-      deviceId,
       firstRequest: true,
       duration,
       unknown2: 1,
