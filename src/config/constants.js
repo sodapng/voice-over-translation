@@ -76,6 +76,7 @@ const translations = {
     Spanish: "Испанский",
     German: "Немецкий",
     Japanese: "Японский",
+    Arabic: "Арабский",
   },
   en: {
     recommended: "recommended",
@@ -129,6 +130,7 @@ const translations = {
     Spanish: "Spanish",
     German: "German",
     Japanese: "Japanese",
+    Arabic: "Arabic",
   },
   zh: {
     recommended: "推荐使用",
@@ -177,6 +179,7 @@ const translations = {
     Spanish: "西班牙语",
     German: "德语",
     Japanese: "日语",
+    Arabic: "阿拉伯语",
   },
   de: {
     recommended: "es wird empfohlen",
@@ -235,6 +238,7 @@ const translations = {
     Spanish: "Spanisch",
     German: "Deutsch",
     Japanese: "Japanisch",
+    Arabic: "Arabisch",
   },
   es: {
     recommended: "es recomendable",
@@ -290,6 +294,7 @@ const translations = {
     Spanish: "Español",
     German: "Alemán",
     Japanese: "Japonés",
+    Arabic: "Árabe",
   },
   fr: {
     recommended: "recommande",
@@ -347,6 +352,7 @@ const translations = {
     Spanish: "Espagnol",
     German: "Allemand",
     Japanese: "Japonais",
+    Arabic: "Arabe",
   },
   it: {
     recommended: "è consigliabile",
@@ -402,6 +408,7 @@ const translations = {
     Spanish: "Spagnolo",
     German: "Tedesco",
     Japanese: "Giapponese",
+    Arabic: "Arabo",
   },
   ja: {
     recommended: "おすすめ",
@@ -455,6 +462,61 @@ const translations = {
     Spanish: "スペイン語",
     German: "ドイツ語",
     Japanese: "日本語",
+    Arabic: "アラビア語",
+  },
+  ar: {
+    recommended: "موصى به",
+    translateVideo: "ترجمة الفيديو",
+    disableTranslate: "إيقاف التشغيل",
+    translationSettings: "إعدادات الترجمة",
+    resetSettings: "إعادة تعيين الإعدادات",
+    videoBeingTranslated: "يتم ترجمة الفيديو",
+    videoLanguage: "لغة الفيديو",
+    translationLanguage: "لغة الترجمة",
+    translationTake: "ستستغرق الترجمة",
+    translationTakeMoreThanHour: "ستستغرق الترجمة أكثر من ساعة",
+    translationTakeAboutMinute: "ستستغرق الترجمة حوالي دقيقة",
+    translationTakeFewMinutes: "ستستغرق الترجمة بضع دقائق",
+    translationTakeApproximatelyMinutes:
+      "ستستغرق الترجمة تقريبا {0} دقائق",
+    translationTakeApproximatelyMinute:
+      "ستستغرق الترجمة تقريبا {0} دقيقة",
+    unSupportedExtensionError: `خطأ! ${GM_info.scriptHandler} غير مدعوم من قبل هذه النسخة من الامتداد!\n\nيرجى استخدام نسخة cloudflare من امتداد VOT.`,
+    requestTranslationFailed: "فشل طلب ترجمة الفيديو",
+    audioNotReceived: "لم يتم استلام رابط الصوت",
+    grantPermissionToAutoPlay: "السماح بالتشغيل التلقائي",
+    neededAdditionalExtension:
+      "هناك حاجة إلى امتداد إضافي لدعم هذا الموقع",
+    audioFormatNotSupported: "تنسيق الصوت غير مدعوم",
+    VOTAutoTranslate: "الترجمة عند الفتح",
+    VOTDontTranslateYourLang: "لا تترجم من لغتي",
+    VOTVolume: "حجم الفيديو",
+    VOTVolumeTranslation: "حجم الترجمة",
+    VOTAutoSetVolume: "خفض حجم الفيديو إلى ",
+    VOTShowVideoSlider: "شريط تحكم حجم الفيديو",
+    VOTSyncVolume: "اربط حجم الترجمة والفيديو",
+    VOTAudioProxy: "الصوت المستلم عبر وكيل",
+    VOTDisableFromYourLang:
+      "VOT: لقد قمت بتعطيل ترجمة الفيديو بلغتك",
+    VOTLiveNotSupported: "VOT: لا يتم دعم ترجمة البث المباشر",
+    VOTPremiere: "VOT: انتظر حتى ينتهي العرض الأول قبل الترجمة",
+    VOTVideoIsTooLong: "VOT: الفيديو طويل جداً",
+    VOTNoVideoIDFound: "VOT: لم يتم العثور على معرف الفيديو",
+    VOTFailedInitDB: "VOT: فشل في تهيئة قاعدة البيانات",
+    VOTDBNeedUpdate:
+      "VOT: تحتاج قاعدة البيانات إلى تحديث، يرجى إعادة تحميل الصفحة",
+    VOTDisabledForDBUpdating: `VOT معطل بسبب خطأ عند تحديث قاعدة البيانات. أغلق جميع علامات التبويب المفتوحة مع ${window.location.hostname} وحاول مرة أخرى`,
+    VOTFailedWriteToDB: "VOT: لم يتمكن من كتابة البيانات إلى قاعدة البيانات",
+    VOTFailedReadFromDB: "VOT: لم يتمكن من استرداد البيانات من قاعدة البيانات",
+    Russian: "الروسية",
+    English: "الإنجليزية",
+    Chinese: "الصينية",
+    French: "الفرنسية",
+    Italian: "الإيطالية",
+    Spanish: "الإسبانية",
+    German: "الألمانية",
+    Japanese: "اليابانية",
+    Arabic: "العربية",
   },
 
 };
