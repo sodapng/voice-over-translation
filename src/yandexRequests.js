@@ -2,7 +2,7 @@ const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
   .add(new protobuf.Field("url", 3, "string"))
   .add(new protobuf.Field("deviceId", 4, "string"))
   .add(new protobuf.Field("firstRequest", 5, "bool")) // true for the first request, false for subsequent ones
-  .add(new protobuf.Field("unknown1", 6, "fixed64"))
+  .add(new protobuf.Field("duration", 6, "double"))
   .add(new protobuf.Field("unknown2", 7, "int32")) // 1 1
   .add(new protobuf.Field("language", 8, "string")) // source language code
   .add(new protobuf.Field("unknown3", 9, "int32")) // 0 0
@@ -24,10 +24,10 @@ const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
   .add(new protobuf.Field("duration", 2, "double"))
   .add(new protobuf.Field("status", 4, "int32")) // status
   .add(new protobuf.Field("remainingTime", 5, "int32")) // secs before translation
+  .add(new protobuf.Field("unknown0", 6, "int32")) // unknown 0 (1st request) -> 10 (2nd, 3th and etc requests)
+  .add(new protobuf.Field("unknown1", 7, "string"))
   .add(new protobuf.Field("language", 8, "string")) // detected language (if the wrong one is set)
   .add(new protobuf.Field("message", 9, "string"));
-// 6 - unknown 0 (1st request) -> 10 (2nd, 3th and etc requests)
-// 7 - unknown array
 
 // const VideoWhitelistStreamResponse = new protobuf.Type("VideoWhitelistStreamResponse")
 //   .add(new protobuf.Field("inWhitelist", 1, "bool"))
@@ -42,13 +42,13 @@ const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
 
 // // Export the encoding and decoding functions
 // export const yandexRequests = {
-//   encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
+//   encodeTranslationRequest(url, deviceId, unknown1, requestLang, responseLang) {
 //     return root.VideoWhitelistStreamRequest.encode({
 //       url,
 //       deviceId: 'UCLA_DiR1FfKNvjuUpBHmylQ'
 //     }).finish();
 //   },
-//   decodeResponse(response) {
+//   decodeTranslationResponse(response) {
 //     return root.VideoWhitelistStreamResponse.decode(new Uint8Array(response));
 //   }
 // };
@@ -58,14 +58,14 @@ const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
 
 // // Export the encoding and decoding functions
 // export const yandexRequests = {
-//   encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
+//   encodeTranslationRequest(url, deviceId, unknown1, requestLang, responseLang) {
 //     return root.VideoTranslationStreamRequest.encode({
 //       url,
 //       language: requestLang,
 //       responseLanguage: responseLang
 //     }).finish();
 //   },
-//   decodeResponse(response) {
+//   decodeTranslationResponse(response) {
 //     return root.VideoTranslationStreamResponse.decode(new Uint8Array(response));
 //   }
 // };
@@ -78,12 +78,12 @@ const root = new protobuf.Root()
 
 // Export the encoding and decoding functions
 export const yandexRequests = {
-  encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
+  encodeTranslationRequest(url, deviceId, duration, requestLang, responseLang) {
     return root.VideoTranslationRequest.encode({
       url,
       deviceId,
       firstRequest: true,
-      unknown1,
+      duration,
       unknown2: 1,
       language: requestLang,
       unknown3: 0,
@@ -91,7 +91,7 @@ export const yandexRequests = {
       responseLanguage: responseLang,
     }).finish();
   },
-  decodeResponse(response) {
+  decodeTranslationResponse(response) {
     return root.VideoTranslationResponse.decode(new Uint8Array(response));
   },
 };

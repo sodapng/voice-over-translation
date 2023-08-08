@@ -7,7 +7,7 @@ import debug from "./utils/debug.js";
 // Request video translation from Yandex API
 async function requestVideoTranslation(
   url,
-  unknown1,
+  duration,
   requestLang,
   responseLang,
   callback
@@ -16,10 +16,10 @@ async function requestVideoTranslation(
   let response;
   let responseBody;
   const deviceId = getUUID(true);
-  const body = yandexRequests.encodeRequest(
+  const body = yandexRequests.encodeTranslationRequest(
     url,
     deviceId,
-    unknown1,
+    duration,
     requestLang,
     responseLang
   );

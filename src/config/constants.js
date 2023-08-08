@@ -1,4 +1,3 @@
-const translateFuncParam = 0x40_75_50_00_00_00_00_00;
 const availableLangs = {
   ru: "Russian",
   en: "English",
@@ -598,4 +597,4 @@ const translations = {
   },
 };
 
-export { translateFuncParam, availableLangs, siteTranslates, translations };
+export { availableLangs, siteTranslates, translations };

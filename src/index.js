@@ -5,7 +5,6 @@ import { waitForElm, getVideoId, sleep, secsToStrTime } from "./utils/utils.js";
 import { autoVolume } from "./config/config.js";
 import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
 import {
-  translateFuncParam,
   availableLangs,
   siteTranslates,
   translations,
@@ -132,9 +131,9 @@ async function main() {
     debug.log("Added translation menu to ", element);
   }
 
-  function translateVideo(url, unknown1, requestLang, responseLang, callback) {
+  function translateVideo(url, duration, requestLang, responseLang, callback) {
     debug.log(
-      `Translate video (url: ${url}, unknown1: ${unknown1}, requestLang: ${requestLang}, responseLang: ${responseLang})`
+      `Translate video (url: ${url}, duration: ${duration}, requestLang: ${requestLang}, responseLang: ${responseLang})`
     );
 
     if (BUILD_MODE === "cloudflare" && translationPanding) {
@@ -146,7 +145,7 @@ async function main() {
 
     requestVideoTranslation(
       url,
-      unknown1,
+      duration,
       requestLang,
       responseLang,
       (success, response) => {
@@ -158,7 +157,7 @@ async function main() {
           return;
         }
 
-        const translateResponse = yandexRequests.decodeResponse(response);
+        const translateResponse = yandexRequests.decodeTranslationResponse(response);
         console.log("[VOT] Response: ", translateResponse);
 
         switch (translateResponse.status) {
@@ -908,7 +907,7 @@ async function main() {
       const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
       translateVideo(
         videoURL,
-        translateFuncParam,
+        videoData.duration,
         requestLang,
         responseLang,
         async (success, urlOrError) => {
