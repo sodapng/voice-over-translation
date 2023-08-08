@@ -81,7 +81,7 @@ function requestVideoTranslation (url, duration, callback) {
             },
             withCredentials: true,
             responseType: 'arraybuffer',
-            data: String.fromCharCode.apply(null, body)
+            data: body
         }).then((response) => {
             callback((response.status === 200), response.data);
         }).catch((error) => {

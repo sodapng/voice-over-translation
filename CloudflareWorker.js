@@ -40,7 +40,7 @@ async function handleTranslateRequest(request, pathname) {
     return errorResponse('error-request');
 
   const yandexRequest = new Request('https://api.browser.yandex.ru' + pathname, {
-    body: requestInfo.body,
+    body: new Uint8Array(requestInfo.body),
     method: 'POST',
     headers: requestInfo.headers
   });

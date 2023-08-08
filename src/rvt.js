@@ -58,7 +58,8 @@ async function requestVideoTranslation(
         "Vtrans-Signature": hexSignature,
         "Sec-Vtrans-Token": getUUID(false),
       },
-      data: String.fromCharCode(...body),
+      binary: true,
+      data: new Blob([body]),
       responseType: "arraybuffer",
     };
     // Send the request using GM_xmlhttpRequest

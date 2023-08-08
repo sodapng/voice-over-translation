@@ -63,7 +63,7 @@ async function requestVideoTranslation(
           "Vtrans-Signature": hexSignature,
           "Sec-Vtrans-Token": getUUID(false),
         },
-        body: String.fromCharCode(...body),
+        body: Array.from(body)
       }),
     };
     // Fetch the translation from the worker host
