@@ -1,6 +1,7 @@
 import { getUUID } from "./getUUID.js";
+import { getSignature } from "./getSignature.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
-import { workerHost, yandexHmacKey, yandexUserAgent } from "./config/config.js";
+import { workerHost, yandexUserAgent } from "./config/config.js";
 import debug from "./utils/debug.js";
 
 // Request video translation from Yandex API
@@ -23,21 +24,6 @@ async function requestVideoTranslation(
 
   try {
     debug.log("requestVideoTranslation");
-    // Create a key from the HMAC secret
-    const utf8Encoder = new TextEncoder("utf-8");
-    const key = await window.crypto.subtle.importKey(
-      "raw",
-      utf8Encoder.encode(yandexHmacKey),
-      { name: "HMAC", hash: { name: "SHA-256" } },
-      false,
-      ["sign", "verify"]
-    );
-    // Sign the body with the key
-    const signature = await window.crypto.subtle.sign("HMAC", key, body);
-    // Convert the signature to a hex string
-    const hexSignature = Array.from(new Uint8Array(signature), (x) =>
-      x.toString(16).padStart(2, "0")
-    ).join("");
     // Create a fetch options object with headers and body
     const options = {
       // url: `https://${workerHost}/stream-translation/whitelist-stream`,
@@ -55,7 +41,7 @@ async function requestVideoTranslation(
         "sec-ch-ua": null,
         "sec-ch-ua-mobile": null,
         "sec-ch-ua-platform": null,
-        "Vtrans-Signature": hexSignature,
+        "Vtrans-Signature": await getSignature(body),
         "Sec-Vtrans-Token": getUUID(false),
       },
       binary: true,
