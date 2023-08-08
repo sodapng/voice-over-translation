@@ -762,6 +762,7 @@ const availableLangs = {
   it: "Italian",
   es: "Spanish",
   de: "German",
+  ja: "Japanese",
 }; // available languages for translation
 const siteTranslates = {
   youtube: "https://youtu.be/",
@@ -829,6 +830,7 @@ const translations = {
     Italian: "Итальянский",
     Spanish: "Испанский",
     German: "Немецкий",
+    Japanese: "Японский",
   },
   en: {
     recommended: "recommended",
@@ -880,7 +882,7 @@ const translations = {
     French: "French",
     Italian: "Italian",
     Spanish: "Spanish",
-    German: "German",
+    Japanese: "Japanese",
   },
   zh: {
     recommended: "推荐使用",
@@ -928,6 +930,7 @@ const translations = {
     Italian: "意大利语",
     Spanish: "西班牙语",
     German: "德语",
+    Japanese: "日语",
   },
   de: {
     recommended: "es wird empfohlen",
@@ -985,6 +988,7 @@ const translations = {
     Italian: "Italienisch",
     Spanish: "Spanisch",
     German: "Deutsch",
+    Japanese: "Japanisch",
   },
   es: {
     recommended: "es recomendable",
@@ -1039,6 +1043,7 @@ const translations = {
     Italian: "Italiano",
     Spanish: "Español",
     German: "Alemán",
+    Japanese: "Japonés",
   },
   fr: {
     recommended: "recommande",
@@ -1095,6 +1100,7 @@ const translations = {
     Italian: "Italien",
     Spanish: "Espagnol",
     German: "Allemand",
+    Japanese: "Japonais",
   },
   it: {
     recommended: "è consigliabile",
@@ -1149,7 +1155,62 @@ const translations = {
     Italian: "Italiano",
     Spanish: "Spagnolo",
     German: "Tedesco",
+    Japanese: "Giapponese",
   },
+  ja: {
+    recommended: "おすすめ",
+    translateVideo: "動画を翻訳する",
+    disableTranslate: "オフにする",
+    translationSettings: "翻訳設定",
+    resetSettings: "設定をリセットする",
+    videoBeingTranslated: "動画が翻訳されています",
+    videoLanguage: "動画の言語",
+    translationLanguage: "翻訳言語",
+    translationTake: "翻訳にかかる時間は",
+    translationTakeMoreThanHour: "翻訳には1時間以上かかります",
+    translationTakeAboutMinute: "翻訳には約1分かかります",
+    translationTakeFewMinutes: "翻訳には数分かかります",
+    translationTakeApproximatelyMinutes:
+      "翻訳には約{0}分かかります",
+    translationTakeApproximatelyMinute:
+      "翻訳には約{0}分かかります",
+    unSupportedExtensionError: `エラー！ ${GM_info.scriptHandler} はこのバージョンの拡張機能ではサポートされていません！\n\nVOT拡張機能のcloudflareバージョンを使用してください。`,
+    requestTranslationFailed: "動画の翻訳リクエストに失敗しました",
+    audioNotReceived: "音声リンクが受信されませんでした",
+    grantPermissionToAutoPlay: "自動再生の権限を付与する",
+    neededAdditionalExtension:
+      "このサイトをサポートするために追加の拡張機能が必要です",
+    audioFormatNotSupported: "音声形式がサポートされていません",
+    VOTAutoTranslate: "開いたときに翻訳する",
+    VOTDontTranslateYourLang: "自分の言語からは翻訳しない",
+    VOTVolume: "動画の音量",
+    VOTVolumeTranslation: "翻訳の音量",
+    VOTAutoSetVolume: "動画の音量を ",
+    VOTShowVideoSlider: "動画の音量スライダー",
+    VOTSyncVolume: "バインド翻訳とビデオボリューム",
+    VOTAudioProxy: "プロキシで受信した音声",
+    VOTDisableFromYourLang:
+      "VOT：あなたの言語での動画の翻訳を無効にしました",
+    VOTLiveNotSupported: "VOT：ライブストリームの翻訳はサポートされていません",
+    VOTPremiere: "VOT：プレミアが終わるまで待ってから翻訳してください",
+    VOTVideoIsTooLong: "VOT：動画が長すぎます",
+    VOTNoVideoIDFound: "VOT：動画IDが見つかりませんでした",
+    VOTFailedInitDB: "VOT：データベースの初期化に失敗しました",
+    VOTDBNeedUpdate:
+      "VOT：データベースを更新する必要があります。ページを再読み込みしてください。",
+    VOTDisabledForDBUpdating: `データベース更新時のエラーのため、VOTは無効になっています。${window.location.hostname} を開いているすべてのタブを閉じて、もう一度お試しください。`,
+    VOTFailedWriteToDB: "VOT：データベースにデータを書き込めませんでした。",
+    VOTFailedReadFromDB: "VOT：データベースからデータを取得できませんでした。",
+    Russian: "ロシア語",
+    English: "英語",
+    Chinese: "中国語",
+    French: "フランス語",
+    Italian: "イタリア語",
+    Spanish: "スペイン語",
+    German: "ドイツ語",
+    Japanese: "日本語",
+  },
+
 };
 
 
