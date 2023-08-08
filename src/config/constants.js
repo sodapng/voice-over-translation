@@ -3,6 +3,7 @@ const availableLangs = {
   ru: "Russian",
   en: "English",
   zh: "Chinese",
+  ar: "Arabic",
   fr: "French",
   it: "Italian",
   es: "Spanish",
