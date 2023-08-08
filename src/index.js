@@ -25,6 +25,8 @@ import regexes from "./config/regexes.js";
 import selectors from "./config/selectors.js";
 import debug from "./utils/debug.js";
 
+import requestVideoTranslation from "./rvt.js";
+
 const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 
 // translate properties
@@ -45,14 +47,6 @@ async function main() {
   // debug.translations('es');
   // debug.translations('fr');
   // debug.translations('it');
-
-  const rvt = await import(
-    `./rvt${BUILD_MODE === "cloudflare" ? "-cloudflare" : ""}.js`
-  );
-
-  const requestVideoTranslation = rvt.default;
-
-  debug.log("Inited requestVideoTranslation...");
 
   if (
     BUILD_MODE !== "cloudflare" &&
