@@ -62,7 +62,7 @@ async function main() {
       GM_info.scriptHandler
     )
   ) {
-    const errorText = translations[lang].unSupportedExtensionError;
+    const errorText = `[VOT] ${translations[lang].unSupportedExtensionError}`;
     console.error(errorText);
     return alert(errorText);
   }
@@ -129,7 +129,7 @@ async function main() {
         location.reload();
       });
 
-    debug.log("VOT: Added translation menu to ", element);
+    debug.log("Added translation menu to ", element);
   }
 
   function translateVideo(url, unknown1, requestLang, responseLang, callback) {
@@ -159,7 +159,7 @@ async function main() {
         }
 
         const translateResponse = yandexRequests.decodeResponse(response);
-        console.log("VOT Response: ", translateResponse);
+        console.log("[VOT] Response: ", translateResponse);
 
         switch (translateResponse.status) {
           case 0:
@@ -528,7 +528,7 @@ async function main() {
       }
       document.querySelector("#VOTTranslateFromLang").value = from;
       document.querySelector("#VOTTranslateToLang").value = to;
-      console.log(`Set translation from ${from} to ${to}`);
+      console.log(`[VOT] Set translation from ${from} to ${to}`);
       videoData.detectedLanguage = from
       videoData.responseLanguage = to
     }
@@ -670,11 +670,11 @@ async function main() {
         const audioPromise = audio.play();
         if (audioPromise !== undefined) {
           audioPromise.catch((e) => {
-            console.error(e);
+            console.error("[VOT]", e);
             if (e.name === "NotAllowedError") {
               const errorMessage = translations[lang].grantPermissionToAutoPlay;
               transformBtn("error", errorMessage);
-              throw `VOT: ${errorMessage}`;
+              throw `[VOT] ${errorMessage}`;
             } else if (e.name === "NotSupportedError") {
               const errorMessage = sitesChromiumBlocked.includes(
                 window.location.hostname
@@ -682,7 +682,7 @@ async function main() {
                 ? translations[lang].neededAdditionalExtension
                 : translations[lang].audioFormatNotSupported;
               transformBtn("error", errorMessage);
-              throw `VOT: ${errorMessage}`;
+              throw `[VOT] ${errorMessage}`;
             }
           });
         }
@@ -858,18 +858,18 @@ async function main() {
           videoData.detectedLanguage === lang &&
           videoData.responseLanguage === lang
         ) {
-          throw translations[lang].VOTDisableFromYourLang;
+          throw `[VOT] ${translations[lang].VOTDisableFromYourLang}`;
         }
 
         if (ytData.isLive) {
-          throw translations[lang].VOTLiveNotSupported;
+          throw `[VOT] ${translations[lang].VOTLiveNotSupported}`;
         }
 
         if (ytData.isPremiere) {
-          throw translations[lang].VOTPremiere;
+          throw `[VOT] ${translations[lang].VOTPremiere}`;
         }
         if (videoData.duration > 14_400) {
-          throw translations[lang].VOTVideoIsTooLong;
+          throw `[VOT] ${translations[lang].VOTVideoIsTooLong}`;
         }
       }
       return true;
@@ -904,7 +904,7 @@ async function main() {
 
     // Define a function to translate a video and handle the callback
     async function translateFunc(VIDEO_ID, requestLang, responseLang) {
-      console.log("VOT Video Data: ", videoData);
+      console.log("[VOT] Video Data: ", videoData);
       const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
       translateVideo(
         videoURL,
@@ -924,7 +924,7 @@ async function main() {
                 60_000
               );
             }
-            throw urlOrError;
+            throw `[VOT] ${urlOrError}`;
           }
 
           audio.src = urlOrError;
@@ -940,7 +940,7 @@ async function main() {
               ""
             );
             const proxiedAudioUrl = `https://${workerHost}/video-translation/audio-proxy/${audioPath}`;
-            console.log(`VOT Audio proxied via ${proxiedAudioUrl}`);
+            console.log(`[VOT] Audio proxied via ${proxiedAudioUrl}`);
             audio.src = proxiedAudioUrl;
           }
 
@@ -1140,13 +1140,13 @@ async function main() {
           const VIDEO_ID = getVideoId(siteHostname);
 
           if (!VIDEO_ID) {
-            throw translations[lang].VOTNoVideoIDFound;
+            throw `[VOT] ${translations[lang].VOTNoVideoIDFound}`;
           }
 
           await translateExecutor(VIDEO_ID);
         } catch (err) {
+          console.error("[VOT]", err);
           transformBtn("error", String(err).substring(4, err.length));
-          console.error(err);
         }
       });
 
@@ -1159,13 +1159,14 @@ async function main() {
       const VIDEO_ID = getVideoId(siteHostname);
 
       if (!VIDEO_ID) {
-        throw translations[lang].VOTNoVideoIDFound;
+        throw `[VOT] ${translations[lang].VOTNoVideoIDFound}`;
       }
 
       try {
         await translateExecutor(VIDEO_ID);
         firstPlay = false;
       } catch (err) {
+        console.error("[VOT]", err);
         transformBtn("error", String(err).substring(4, err.length));
         firstPlay = false;
       }
@@ -1476,5 +1477,5 @@ async function main() {
 }
 
 main().catch((e) => {
-  console.error(e);
+  console.error("[VOT]", e);
 });

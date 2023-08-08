@@ -77,7 +77,7 @@ function addTranslationBlock(element) {
   `;
 
   element.appendChild(block);
-  debug.log("VOT: Added translation button to ", element);
+  debug.log("Added translation button to ", element);
 }
 
 function createTranslationMenu() {

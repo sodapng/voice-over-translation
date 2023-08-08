@@ -59,7 +59,7 @@ async function getYTVideoData() {
       author
     ),
   };
-  console.log("VOT Detected language: ", videoData.detectedLanguage);
+  console.log("[VOT] Detected language: ", videoData.detectedLanguage);
   return videoData;
 }
 

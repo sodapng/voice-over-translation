@@ -71,10 +71,11 @@ async function requestVideoTranslation(
       `https://${workerHost}/video-translation/translate`,
       options
     );
+    debug.log(response.status, response);
     // Get the response body as an array buffer
     responseBody = await response.arrayBuffer();
   } catch (exception) {
-    debug.log(exception);
+    console.error("[VOT]", exception);
     // Handle errors
     response = { status: -1 };
     responseBody = exception;

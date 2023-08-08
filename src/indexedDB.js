@@ -38,7 +38,7 @@ async function initDB() {
         objectStore.createIndex(key, key, { unique: false });
       }
 
-      console.log("VOT: The database has been updated");
+      console.log("[VOT] The database has been updated");
       objectStore.transaction.oncomplete = (event) => {
         const objectStore = db
           .transaction("settings", "readwrite")
@@ -47,7 +47,7 @@ async function initDB() {
 
         request.onerror = (event) => {
           console.error(
-            "VOT: Data could not be retrieved from the Database: ",
+            "[VOT] Data could not be retrieved from the Database: ",
             event.error
           );
           reject(false);
@@ -64,7 +64,7 @@ async function initDB() {
 
           requestUpdate.onerror = (event) => {
             console.error(
-              "VOT: Failed to update the Database to new version",
+              "[VOT] Failed to update the Database to new version",
               event.error
             );
             reject(false);
@@ -72,7 +72,7 @@ async function initDB() {
 
           requestUpdate.onsuccess = () => {
             console.log(
-              "VOT: Standard settings of the new version have been added to the Database."
+              "[VOT] Standard settings of the new version have been added to the Database."
             );
             resolve(true);
           };
@@ -84,7 +84,7 @@ async function initDB() {
 
     openRequest.onerror = () => {
       console.error(
-        `${translations[lang].VOTFailedInitDB}: ${openRequest.error.message}`
+        `[VOT] ${translations[lang].VOTFailedInitDB}: ${openRequest.error.message}`
       );
       reject(false);
     };
@@ -93,9 +93,9 @@ async function initDB() {
       const db = openRequest.result;
 
       db.onerror = () => {
-        const errorMessage = translations[lang].VOTFailedInitDB;
-        alert(errorMessage);
+        const errorMessage = `[VOT] ${translations[lang].VOTFailedInitDB}`;
         console.error(errorMessage, openRequest.error);
+        alert(errorMessage);
         reject(false);
       };
 
@@ -112,7 +112,7 @@ async function initDB() {
           objectStore.createIndex(key, key, { unique: false });
         }
 
-        console.log("VOT: Database Created");
+        console.log("[VOT] Database Created");
 
         objectStore.transaction.oncomplete = (event) => {
           const objectStore = db
@@ -122,7 +122,7 @@ async function initDB() {
 
           request.onsuccess = () => {
             console.log(
-              "VOT: Standard settings added to the Database: ",
+              "[VOT] Standard settings added to the Database: ",
               request.result
             );
             resolve(true);
@@ -130,7 +130,7 @@ async function initDB() {
 
           request.onerror = () => {
             console.log(
-              "VOT: Error when adding standard settings to the Database: ",
+              "[VOT] Error when adding standard settings to the Database: ",
               request.error
             );
             reject(false);
@@ -148,9 +148,9 @@ async function initDB() {
       const db = openRequest.result;
       db.onversionchange = () => {
         db.close();
-        const errorMessage = translations[lang].VOTDBNeedUpdate;
-        alert(errorMessage);
+        const errorMessage = `[VOT] ${translations[lang].VOTDBNeedUpdate}`;
         console.log(errorMessage);
+        alert(errorMessage);
         window.location.reload();
         reject(false);
       };
@@ -159,7 +159,7 @@ async function initDB() {
 
     openRequest.onblocked = () => {
       const db = openRequest.result;
-      const errorMessage = translations[lang].VOTDisabledForDBUpdating;
+      const errorMessage = `[VOT] ${translations[lang].VOTDisabledForDBUpdating}`;
       console.error(errorMessage, db);
       alert(errorMessage);
       reject(false);
@@ -189,9 +189,9 @@ async function updateDB({
       const openRequest = openDB("VOT");
 
       openRequest.onerror = () => {
-        const errorMessage = translations[lang].VOTFailedWriteToDB;
-        alert(errorMessage);
+        const errorMessage = `[VOT] ${translations[lang].VOTFailedWriteToDB}`;
         console.error(errorMessage, openRequest.error.message);
+        alert(errorMessage);
         reject(false);
       };
 
@@ -207,7 +207,7 @@ async function updateDB({
         db.onversionchange = () => {
           db.close();
           console.log(
-            "VOT: The database needs an update, please reload the page if it didn't happen automatically"
+            "[VOT] The database needs an update, please reload the page if it didn't happen automatically"
           );
           window.location.reload();
           reject(false);
@@ -220,7 +220,7 @@ async function updateDB({
 
         request.onerror = (event) => {
           console.error(
-            "VOT: Data could not be retrieved from the Database: ",
+            "[VOT] Data could not be retrieved from the Database: ",
             event.error
           );
           reject(false);
@@ -261,7 +261,7 @@ async function updateDB({
 
           requestUpdate.onerror = (event) => {
             console.error(
-              "VOT: Не удалось обновить данные в Базе Данных: ",
+              "[VOT] Не удалось обновить данные в Базе Данных: ",
               event.error
             );
             reject(false);
@@ -275,7 +275,7 @@ async function updateDB({
 
       openRequest.onblocked = () => {
         const db = openRequest.result;
-        const errorMessage = translations[lang].VOTDisabledForDBUpdating;
+        const errorMessage = `[VOT] ${translations[lang].VOTDisabledForDBUpdating}`;
         console.error(errorMessage, db);
         alert(errorMessage);
         reject(false);
@@ -289,9 +289,9 @@ async function readDB() {
     const openRequest = openDB("VOT");
 
     openRequest.onerror = () => {
-      const errorMessage = translations[lang].VOTFailedReadFromDB;
-      alert(errorMessage);
+      const errorMessage = `[VOT] ${translations[lang].VOTFailedReadFromDB}`;
       console.error(errorMessage, openRequest.error.message);
+      alert(errorMessage);
       reject(false);
     };
 
@@ -306,9 +306,9 @@ async function readDB() {
       const db = openRequest.result;
       db.onversionchange = () => {
         db.close();
-        const errorMessage = translations[lang].VOTDBNeedUpdate;
-        alert(errorMessage);
+        const errorMessage = `[VOT] ${translations[lang].VOTDBNeedUpdate}`;
         console.error(errorMessage);
+        alert(errorMessage);
         reject(false);
       };
 
@@ -316,8 +316,8 @@ async function readDB() {
       const request = objectStore.get("settings");
 
       request.onerror = (event) => {
-        console.error(translations[lang].VOTFailedReadFromDB, event.error);
-        console.error(event);
+        console.error("[VOT]", translations[lang].VOTFailedReadFromDB, event.error);
+        console.error("[VOT]", event);
         reject(false);
       };
 
@@ -334,7 +334,7 @@ async function readDB() {
 
     openRequest.onblocked = () => {
       const db = openRequest.result;
-      const errorMessage = translations[lang].VOTDisabledForDBUpdating;
+      const errorMessage = `[VOT] ${translations[lang].VOTDisabledForDBUpdating}`;
       console.error(errorMessage, db);
       alert(errorMessage);
       reject(false);

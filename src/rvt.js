@@ -1,6 +1,7 @@
 import { getUUID } from "./getUUID.js";
 import { yandexRequests } from "./yandexRequests.js";
 import { workerHost, yandexHmacKey, yandexUserAgent } from "./config/config.js";
+import debug from "./utils/debug.js";
 
 // Request video translation from Yandex API
 async function requestVideoTranslation(
@@ -21,6 +22,7 @@ async function requestVideoTranslation(
   );
 
   try {
+    debug.log("requestVideoTranslation");
     // Create a key from the HMAC secret
     const utf8Encoder = new TextEncoder("utf-8");
     const key = await window.crypto.subtle.importKey(
@@ -63,13 +65,16 @@ async function requestVideoTranslation(
     GM_xmlhttpRequest({
       ...options,
       onload: (http) => {
+        debug.log(http.status, http);
         callback(http.status === 200, http.response);
       },
       onerror: (error) => {
+        console.error("[VOT]", error);
         callback(false);
       },
     });
   } catch (exception) {
+    console.error("[VOT]", exception);
     // Handle errors
     callback(false);
   }
