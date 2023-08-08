@@ -40,7 +40,7 @@ async function yandexRequest(
     };
     // Fetch the translation from the worker host
     response = await fetch(
-      `https://${workerHost}/video-translation/translate`,
+      `https://${workerHost}${path}`,
       options
     );
     debug.log("yandexRequest:", response.status, response);
