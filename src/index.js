@@ -26,6 +26,7 @@ import selectors from "./config/selectors.js";
 import debug from "./utils/debug.js";
 
 import requestVideoTranslation from "./rvt.js";
+import requestVideoSubtitles from "./rvs.js";
 
 const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 
