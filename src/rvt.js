@@ -1,5 +1,5 @@
 import { getUUID } from "./getUUID.js";
-import { yandexRequests } from "./yandexRequests.js";
+import { yandexProtobuf } from "./yandexProtobuf.js";
 import { workerHost, yandexHmacKey, yandexUserAgent } from "./config/config.js";
 import debug from "./utils/debug.js";
 
@@ -13,7 +13,7 @@ async function requestVideoTranslation(
 ) {
   // Initialize variables
   const deviceId = getUUID(true);
-  const body = yandexRequests.encodeTranslationRequest(
+  const body = yandexProtobuf.encodeTranslationRequest(
     url,
     deviceId,
     duration,

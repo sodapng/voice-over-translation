@@ -31,7 +31,7 @@ const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
 const root = new protobuf.Root().define("yandex").add(VideoTranslationRequest).add(VideoTranslationResponse);
 
 // Export the encoding and decoding functions
-export const yandexRequests = {
+export const yandexProtobuf = {
   encodeTranslationRequest(url, deviceId, duration, requestLang, responseLang) {
     return root.VideoTranslationRequest.encode({
       url,
@@ -57,7 +57,7 @@ function getUUID(isLower) {
 
 function requestVideoTranslation (url, duration, callback) {
   const deviceId = getUUID(true);
-  const body = yandexRequests.encodeTranslationRequest(url, deviceId, duration);
+  const body = yandexProtobuf.encodeTranslationRequest(url, deviceId, duration);
 
   const utf8Encoder = new TextEncoder("utf-8");
   crypto.subtle.importKey('raw', utf8Encoder.encode(yandexHmacKey), { name: 'HMAC', hash: {name: 'SHA-256'}}, false, ['sign', 'verify']).then(key => {
@@ -100,7 +100,7 @@ function translateVideo(url, callback) {
       return;
     }
 
-    const translateResponse = yandexRequests.decodeTranslationResponse(response);
+    const translateResponse = yandexProtobuf.decodeTranslationResponse(response);
     switch (translateResponse.status) {
       case 0:
         callback(false, translateResponse.message);

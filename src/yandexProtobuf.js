@@ -41,7 +41,7 @@ const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
 // const root = new protobuf.Root().define("yandex").add(VideoWhitelistStreamRequest).add(VideoWhitelistStreamResponse);
 
 // // Export the encoding and decoding functions
-// export const yandexRequests = {
+// export const yandexProtobuf = {
 //   encodeTranslationRequest(url, deviceId, unknown1, requestLang, responseLang) {
 //     return root.VideoWhitelistStreamRequest.encode({
 //       url,
@@ -57,7 +57,7 @@ const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
 // const root = new protobuf.Root().define("yandex").add(VideoTranslationStreamRequest).add(VideoTranslationStreamResponse);
 
 // // Export the encoding and decoding functions
-// export const yandexRequests = {
+// export const yandexProtobuf = {
 //   encodeTranslationRequest(url, deviceId, unknown1, requestLang, responseLang) {
 //     return root.VideoTranslationStreamRequest.encode({
 //       url,
@@ -77,7 +77,7 @@ const root = new protobuf.Root()
   .add(VideoTranslationResponse);
 
 // Export the encoding and decoding functions
-export const yandexRequests = {
+export const yandexProtobuf = {
   encodeTranslationRequest(url, deviceId, duration, requestLang, responseLang) {
     return root.VideoTranslationRequest.encode({
       url,

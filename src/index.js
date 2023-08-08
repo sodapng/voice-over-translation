@@ -1,6 +1,6 @@
 import "./styles/main.css";
 import { getYTVideoData } from "./utils/getYTVideoData.js";
-import { yandexRequests } from "./yandexRequests.js";
+import { yandexProtobuf } from "./yandexProtobuf.js";
 import { waitForElm, getVideoId, sleep, secsToStrTime } from "./utils/utils.js";
 import { autoVolume } from "./config/config.js";
 import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
@@ -157,7 +157,7 @@ async function main() {
           return;
         }
 
-        const translateResponse = yandexRequests.decodeTranslationResponse(response);
+        const translateResponse = yandexProtobuf.decodeTranslationResponse(response);
         console.log("[VOT] Response: ", translateResponse);
 
         switch (translateResponse.status) {

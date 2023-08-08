@@ -1,5 +1,5 @@
 import { getUUID } from "./getUUID.js";
-import { yandexRequests } from "./yandexRequests.js";
+import { yandexProtobuf } from "./yandexProtobuf.js";
 import { workerHost, yandexHmacKey } from "./config/config-cloudflare.js";
 import { yandexUserAgent } from "./config/config.js";
 import debug from "./utils/debug.js";
@@ -16,7 +16,7 @@ async function requestVideoTranslation(
   let response;
   let responseBody;
   const deviceId = getUUID(true);
-  const body = yandexRequests.encodeTranslationRequest(
+  const body = yandexProtobuf.encodeTranslationRequest(
     url,
     deviceId,
     duration,
