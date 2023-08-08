@@ -127,6 +127,7 @@ const translations = {
     French: "French",
     Italian: "Italian",
     Spanish: "Spanish",
+    German: "German",
     Japanese: "Japanese",
   },
   zh: {
