@@ -30,7 +30,7 @@ async function makeRequest(request) {
   return response;
 }
 
-async function handleTranslateRequest(request, pathname) {
+async function handleYandexRequest(request, pathname) {
   const requestInfo = await request.json();
   if (requestInfo.headers === undefined ||
       requestInfo.headers === null ||
@@ -77,7 +77,7 @@ addEventListener('fetch', event => {
 
   const url = new URL(request.url);
 
-  if (url.pathname === '/video-translation/translate') {
+  if (url.pathname === '/video-translation/translate' || url.pathname === '/video-subtitles/get-subtitles') {
     // translate endpoint
     const contentType = request.headers.get('content-type') || '';
     if (!contentType.includes('application/json'))
@@ -86,7 +86,7 @@ addEventListener('fetch', event => {
     if (request.method !== 'POST')
       return event.respondWith(errorResponse('error-method'));
 
-    return event.respondWith(handleTranslateRequest(request, url.pathname));
+    return event.respondWith(handleYandexRequest(request, url.pathname));
   } else if (url.pathname.startsWith('/video-translation/audio-proxy') && url.pathname.endsWith('.mp3')) {
     // proxy endpoint
     if (request.method !== 'GET')
