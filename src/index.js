@@ -1216,7 +1216,7 @@ async function main() {
       if (window.location.hostname.includes("m.youtube.com")) {
         let ytmobile = await waitForElm("#player");
         if (ytmobile) {
-          await sleep(1000);
+          await sleep(2300);
           await translateProccessor(ytmobile, "youtube", "yt-translate-stop");
 
           const mutationObserver = new MutationObserver(async (mutations) => {
@@ -1226,7 +1226,7 @@ async function main() {
                 mutation.attributeName === "src"
               ) {
                 ytmobile = await waitForElm("#player");
-                await sleep(1000);
+                await sleep(2300);
                 await translateProccessor(
                   ytmobile,
                   "youtube",
