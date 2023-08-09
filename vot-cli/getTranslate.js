@@ -41,7 +41,7 @@ const VideoSubtitlesObject = new protobuf.Type("VideoSubtitlesObject")
   .add(new protobuf.Field("unknown6", 7, "int32"));
 
 const VideoSubtitlesResponse = new protobuf.Type("VideoSubtitlesResponse")
-  .add(new protobuf.Field("unavailable", 1, "bool"))
+  .add(new protobuf.Field("unknown0", 1, "int32"))
   .add(new protobuf.Field("subtitles", 2, "VideoSubtitlesObject", "repeated"));
 
 // Create a root namespace and add the types

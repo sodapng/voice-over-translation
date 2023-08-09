@@ -58,5 +58,3 @@ async function yandexRequest(
 }
 
 export default yandexRequest;
-
-unsafeWindow.yandexRequest = yandexRequest;
