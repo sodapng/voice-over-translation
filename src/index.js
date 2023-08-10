@@ -26,7 +26,7 @@ import selectors from "./config/selectors.js";
 import debug from "./utils/debug.js";
 
 import requestVideoTranslation from "./rvt.js";
-import requestVideoSubtitles from "./rvs.js";
+import { getSubtitles } from "./subtitles.js";
 
 const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 
@@ -153,7 +153,7 @@ async function main() {
         }
 
         const translateResponse = yandexProtobuf.decodeTranslationResponse(response);
-        console.log("[VOT] Response: ", translateResponse);
+        console.log("[VOT] Translation response: ", translateResponse);
 
         switch (translateResponse.status) {
           case 0:
@@ -175,8 +175,11 @@ async function main() {
             break;
           case 3:
             /*
-              Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода. В конечном итоге, это занимает слишком много времени,
-              как-будто сервер не понимает, что данное видео уже недавно было переведено и заместо возвращения готовой ссылки на перевод начинает переводить видео заново при чём у него это получается за очень длительное время
+              Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода.
+              В конечном итоге, это занимает слишком много времени,
+              как-будто сервер не понимает, что данное видео уже недавно было переведено
+              и заместо возвращения готовой ссылки на перевод начинает переводить видео заново
+              при чём у него это получается за очень длительное время.
             */
             callback(false, translations[lang].videoBeingTranslated);
             break;
