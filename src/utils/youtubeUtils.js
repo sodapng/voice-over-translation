@@ -38,31 +38,6 @@ async function getLanguage(player, response, title, description, author) {
   return await detect(cleanText);
 }
 
-// Get the video data from the player
-async function getVideoData() {
-  const player = document.querySelector("#movie_player");
-  const data = player.getVideoData();
-  const response = player.getPlayerResponse();
-  const { isLive, isPremiere, title, author } = data;
-  const { shortDescription: description } = response?.videoDetails ?? {};
-  const videoData = {
-    isLive,
-    isPremiere,
-    title,
-    description,
-    author,
-    detectedLanguage: await getLanguage(
-      player,
-      response,
-      title,
-      description,
-      author
-    ),
-  };
-  console.log("[VOT] Detected language: ", videoData.detectedLanguage);
-  return videoData;
-}
-
 function isMobile() {
   return /^m\.youtube\.com$/.test(window.location.hostname);
 }
@@ -87,10 +62,34 @@ function getPlayerResponse() {
   return null;
 }
 
+// Get the video data from the player
+async function getVideoData() {
+  const player = getPlayer();
+  const response = getPlayerResponse();
+  const { author, title, shortDescription: description, isLive, isLiveContent, isUpcoming } = response?.videoDetails ?? {};
+  const isPremiere = (!!isLive || !!isUpcoming) && !isLiveContent;
+  const videoData = {
+    isLive: !!isLive,
+    isPremiere,
+    title,
+    description,
+    author,
+    detectedLanguage: await getLanguage(
+      player,
+      response,
+      title,
+      description,
+      author
+    ),
+  };
+  console.log("[VOT] Detected language: ", videoData.detectedLanguage);
+  return videoData;
+}
+
 export const youtubeUtils = {
-  getVideoData,
   isMobile,
   getPlayer,
-  getPlayerResponse
+  getPlayerResponse,
+  getVideoData
 }
 
