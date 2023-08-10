@@ -39,7 +39,7 @@ async function getLanguage(player, response, title, description, author) {
 }
 
 // Get the video data from the player
-async function getYTVideoData() {
+async function getVideoData() {
   const player = document.querySelector("#movie_player");
   const data = player.getVideoData();
   const response = player.getPlayerResponse();
@@ -63,4 +63,34 @@ async function getYTVideoData() {
   return videoData;
 }
 
-export { getYTVideoData };
+function isMobile() {
+  return /^m\.youtube\.com$/.test(window.location.hostname);
+}
+
+function getPlayer() {
+  return isMobile() ? document.querySelector("#app") : document.querySelector("#movie_player");
+}
+
+function getPlayerResponse() {
+  const player = getPlayer();
+  if (player) {
+      if (isMobile()) {
+          if (player.data) {
+              return player.data.playerResponse;
+          }
+      } else {
+          if (player.getPlayerResponse) {
+              return player.getPlayerResponse();
+          }
+      }
+  }
+  return null;
+}
+
+export const youtubeUtils = {
+  getVideoData,
+  isMobile,
+  getPlayer,
+  getPlayerResponse
+}
+

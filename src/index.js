@@ -1,5 +1,5 @@
 import "./styles/main.css";
-import { getYTVideoData } from "./utils/getYTVideoData.js";
+import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
 import { waitForElm, getVideoId, sleep, secsToStrTime } from "./utils/utils.js";
 import { autoVolume } from "./config/config.js";
@@ -628,7 +628,7 @@ async function main() {
       videoData.responseLanguage = translateToLang;
 
       if (window.location.hostname.includes("youtube.com")) {
-        ytData = await getYTVideoData();
+        ytData = await youtubeUtils.getVideoData();
         if (ytData.author !== "") {
           videoData.detectedLanguage = ytData.detectedLanguage;
           videoData.responseLanguage = lang;
@@ -854,13 +854,11 @@ async function main() {
         ) {
           throw `[VOT] ${translations[lang].VOTDisableFromYourLang}`;
         }
-
-        if (ytData.isLive) {
-          throw `[VOT] ${translations[lang].VOTLiveNotSupported}`;
-        }
-
         if (ytData.isPremiere) {
           throw `[VOT] ${translations[lang].VOTPremiere}`;
+        }
+        if (ytData.isLive) {
+          throw `[VOT] ${translations[lang].VOTLiveNotSupported}`;
         }
         if (videoData.duration > 14_400) {
           throw `[VOT] ${translations[lang].VOTVideoIsTooLong}`;
