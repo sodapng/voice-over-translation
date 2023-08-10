@@ -4,6 +4,56 @@ import { siteTranslates } from "./config/constants.js"
 import requestVideoSubtitles from "./rvs.js";
 import debug from "./utils/debug.js";
 
+function formatYoutubeSubtitles(subtitles) {
+  const result = {
+    containsTokens: false,
+    subtitles: []
+  };
+  if (typeof subtitles !== "object" || !("events" in subtitles) || !Array.isArray(subtitles.events)) {
+    console.error("[VOT] Failed to format youtube subtitles", subtitles);
+    return result;
+  }
+  for (const e of subtitles.events) {
+    if (!e.segs) continue;
+    const text = e.segs.map((e => e.utf8.replace(/^ +| +$/g, ""))).join(" ");
+    if (text !== "\n") {
+      result.subtitles.push({
+        text,
+        startMs: e.tStartMs,
+        durationMs: e.dDurationMs
+      });
+    }
+  }
+  return result;
+}
+
+export async function fetchSubtitles(subtitlesObject) {
+  let subtitles = await Promise.race([
+    new Promise((resolve) => setTimeout(() => {
+      console.error("[VOT] Failed to fetch subtitles. Reason: timeout");
+      resolve([]);
+    }, 5000)),
+    new Promise(async (resolve) => {
+      debug.log("Fetching subtitles:", subtitlesObject);
+      await fetch(subtitlesObject.url)
+        .then((response) => response.json())
+        .then((json) => resolve(json))
+        .catch((error) => {
+          console.error("[VOT] Failed to fetch subtitles. Reason:", error);
+          resolve({
+            containsTokens: false,
+            subtitles: []
+          });
+        });
+    })
+  ]);
+  if (subtitlesObject.source === "youtube") {
+    subtitles = formatYoutubeSubtitles(subtitles);
+  }
+  console.log("[VOT] Fetched subtitles:", subtitles);
+  return subtitles;
+}
+
 export async function getSubtitles(siteHostname, videoId, requestLang) {
   const ytSubtitles = siteHostname === "youtube" ? youtubeUtils.getSubtitles() : [];
   const yaSubtitles = await Promise.race([
