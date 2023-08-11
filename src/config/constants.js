@@ -1,4 +1,6 @@
 const translateFuncParam = 0x40_75_50_00_00_00_00_00;
+
+// available languages for translation
 const availableLangs = {
   ru: "Russian",
   en: "English",
@@ -10,24 +12,29 @@ const availableLangs = {
   es: "Spanish",
   de: "German",
   ja: "Japanese",
-  bn: "Bengali",
+};
+
+// Additional languages working with TTS
+const additionalTTS = {
+  bn: "Bengali", // TODO: Add menu translation
   pt: "Portuguese",
   cs: "Czech",
   hi: "Hindi",
-  mr: "Marathi",
-  te: "Telugu",
+  mr: "Marathi", // TODO: Add menu translation
+  te: "Telugu", // TODO: Add menu translation
   tr: "Turkish",
-  ms: "Malay",
+  ms: "Malay", // TODO: Add menu translation
   vi: "Vietnamese",
-  ta: "Tamil",
-  jv: "Javanese",
-  ur: "Urdu",
-  fa: "Persian",
-  gu: "Gujarati",
-  id: "Indonesian",
+  ta: "Tamil", // TODO: Add menu translation
+  jv: "Javanese", // TODO: Add menu translation
+  ur: "Urdu", // TODO: Add menu translation
+  fa: "Persian", // TODO: Add menu translation
+  gu: "Gujarati", // TODO: Add menu translation
+  id: "Indonesian", // TODO: Add menu translation
   uk: "Ukrainian",
+  kk: "Kazakh",
 };
- // available languages for translation
+
 const siteTranslates = {
   youtube: "https://youtu.be/",
   twitch: "https://twitch.tv/",
@@ -44,6 +51,14 @@ const siteTranslates = {
   "mail.ru": "https://my.mail.ru/",
   coub: "https://coub.com/view/",
 };
+
+// TODO:
+/*
+  Add a language upload from github.
+
+  it may be worth redesigning the translation system
+  (if there is no necessary phrase, then the phrase in English / "raw" phrase will be displayed)
+*/
 const translations = {
   ru: {
     recommended: "рекомендуется",
@@ -113,6 +128,7 @@ const translations = {
     Gujarati: "Гуджарати",
     Indonesian: "Индонезийский",
     Ukrainian: "Украинский",
+    Kazakh: "Казахский",
   },
   uk: {
     recommended: "рекомендовано",
@@ -127,10 +143,8 @@ const translations = {
     translationTakeMoreThanHour: "Переклад займе більше години",
     translationTakeAboutMinute: "Переклад займе приблизно хвилину",
     translationTakeFewMinutes: "Переклад займе кілька хвилин",
-    translationTakeApproximatelyMinutes:
-      "Переклад займе приблизно {0} хвилин",
-    translationTakeApproximatelyMinute:
-      "Переклад займе приблизно {0} хвилини",
+    translationTakeApproximatelyMinutes: "Переклад займе приблизно {0} хвилин",
+    translationTakeApproximatelyMinute: "Переклад займе приблизно {0} хвилини",
     unSupportedExtensionError: `Помилка! ${GM_info.scriptHandler} не підтримується цією версією розширення!\n\nБудь ласка, використовуйте версію VOT розширення з cloudflare.`,
     requestTranslationFailed: "Не вдалося запросити переклад відео",
     audioNotReceived: "Посилання на аудіо не отримано",
@@ -146,8 +160,7 @@ const translations = {
     VOTShowVideoSlider: "Повзунок гучності відео",
     VOTSyncVolume: "Пов'язати гучність перекладу і відео",
     VOTAudioProxy: "Проксювати отримане аудіо",
-    VOTDisableFromYourLang:
-      "VOT: Ви вимкнули переклад відео на вашу мову",
+    VOTDisableFromYourLang: "VOT: Ви вимкнули переклад відео на вашу мову",
     VOTLiveNotSupported: "VOT: Переклад прямих трансляцій не підтримується",
     VOTPremiere: "VOT: Дочекайтеся закінчення прем'єри перед перекладом",
     VOTVideoIsTooLong: "VOT: Відео занадто довге",
@@ -184,6 +197,7 @@ const translations = {
     Gujarati: "Гуджараті",
     Indonesian: "Індонезійська",
     Ukrainian: "Українська",
+    Kazakh: "Казахський",
   },
   pt: {
     recommended: "recomendado",
@@ -219,7 +233,8 @@ const translations = {
     VOTAudioProxy: "Proxy de áudio recebido",
     VOTDisableFromYourLang:
       "VOT: Você desativou a tradução do vídeo no seu idioma",
-    VOTLiveNotSupported: "VOT: A tradução de transmissões ao vivo não é suportada",
+    VOTLiveNotSupported:
+      "VOT: A tradução de transmissões ao vivo não é suportada",
     VOTPremiere: "VOT: Aguarde o fim da estreia antes de traduzir",
     VOTVideoIsTooLong: "VOT: O vídeo é muito longo",
     VOTNoVideoIDFound: "VOT: Nenhum ID de vídeo encontrado",
@@ -227,7 +242,8 @@ const translations = {
     VOTDBNeedUpdate:
       "VOT: O banco de dados precisa de uma atualização, por favor recarregue a página",
     VOTDisabledForDBUpdating: `VOT está desativado devido a um erro ao atualizar o Banco de Dados. Feche todas as abas abertas com ${window.location.hostname} e tente novamente`,
-    VOTFailedWriteToDB: "VOT: Não foi possível escrever os dados no banco de dados",
+    VOTFailedWriteToDB:
+      "VOT: Não foi possível escrever os dados no banco de dados",
     VOTFailedReadFromDB:
       "VOT: Não foi possível recuperar os dados do banco de dados",
     Russian: "Russo",
@@ -256,6 +272,7 @@ const translations = {
     Gujarati: "Gujarati",
     Indonesian: "Indonésio",
     Ukrainian: "Ucraniano",
+    Kazakh: "Cazaque",
   },
   tr: {
     recommended: "önerilen",
@@ -321,12 +338,13 @@ const translations = {
     Malay: "Malayca",
     Vietnamese: "Vietnamca",
     Tamil: "Tamilce",
-    Javanese : "Cava dili",
+    Javanese: "Cava dili",
     Urdu: "Urduca",
     Persian: "Farsça",
     Gujarati: "Gucaratça",
-    Indonesian : "Endonezce",
+    Indonesian: "Endonezce",
     Ukrainian: "Ukraynaca",
+    Kazakh: "Kazak",
   },
   hi: {
     recommended: "अनुशंसित",
@@ -341,16 +359,13 @@ const translations = {
     translationTakeMoreThanHour: "अनुवाद में एक घंटे से अधिक समय लगेगा",
     translationTakeAboutMinute: "अनुवाद में लगभग एक मिनट लगेगा",
     translationTakeFewMinutes: "अनुवाद में कुछ मिनट लगेंगे",
-    translationTakeApproximatelyMinutes:
-      "अनुवाद में लगभग {0} मिनट लगेंगे",
-    translationTakeApproximatelyMinute:
-      "अनुवाद में लगभग {0} मिनट लगेंगे",
+    translationTakeApproximatelyMinutes: "अनुवाद में लगभग {0} मिनट लगेंगे",
+    translationTakeApproximatelyMinute: "अनुवाद में लगभग {0} मिनट लगेंगे",
     unSupportedExtensionError: `त्रुटि! ${GM_info.scriptHandler} को इस संस्करण के एक्स्टेंसन द्वारा समर्थित नहीं किया जाता है!\n\nकृप्या VOT एक्स्टेंसन का cloudflare संस्करण प्रयोग करें।`,
     requestTranslationFailed: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
     audioNotReceived: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
     grantPermissionToAutoPlay: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
-    neededAdditionalExtension:
-      "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
+    neededAdditionalExtension: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
     audioFormatNotSupported: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
     VOTAutoTranslate: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
     VOTDontTranslateYourLang: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
@@ -363,7 +378,8 @@ const translations = {
     VOTDisableFromYourLang:
       "VOT: आपने अपनी भाषा में वीडियो का अनुवाद करना बंद कर दिया है",
     VOTLiveNotSupported: "VOT: प्रत्यक्ष प्रसारण का अनुवाद समर्थित नहीं है",
-    VOTPremiere: "VOT: अनुवाद करने से पहले प्रीमियर का अंत होने तक प्रतीक्षा करें",
+    VOTPremiere:
+      "VOT: अनुवाद करने से पहले प्रीमियर का अंत होने तक प्रतीक्षा करें",
     VOTVideoIsTooLong: "VOT: वीडियो बहुत लंबा है",
     VOTNoVideoIDFound: "VOT: कोई वीडियो ID नहीं मिली",
     VOTFailedInitDB: "VOT: डेटाबेस को प्रारंभ करने में विफल",
@@ -397,7 +413,8 @@ const translations = {
     Persian: "फारसी",
     Gujarati: "गुजराती",
     Indonesian: "इन्डोनेशियाई",
-    Ukrainian: "यूक्रेनी"
+    Ukrainian: "यूक्रेनी",
+    Kazakh: "कज़ाख",
   },
   vi: {
     recommended: "được khuyến nghị",
@@ -412,10 +429,8 @@ const translations = {
     translationTakeMoreThanHour: "Việc dịch sẽ mất hơn một giờ",
     translationTakeAboutMinute: "Việc dịch sẽ mất khoảng một phút",
     translationTakeFewMinutes: "Việc dịch sẽ mất vài phút",
-    translationTakeApproximatelyMinutes:
-      "Việc dịch sẽ mất khoảng {0} phút",
-    translationTakeApproximatelyMinute:
-      "Việc dịch sẽ mất khoảng {0} phút",
+    translationTakeApproximatelyMinutes: "Việc dịch sẽ mất khoảng {0} phút",
+    translationTakeApproximatelyMinute: "Việc dịch sẽ mất khoảng {0} phút",
     unSupportedExtensionError: `Lỗi! ${GM_info.scriptHandler} không được hỗ trợ bởi phiên bản này của tiện ích mở rộng!\n\nVui lòng sử dụng phiên bản cloudflare của tiện ích mở rộng VOT.`,
     requestTranslationFailed: "Không thể yêu cầu dịch video",
     audioNotReceived: "Không nhận được liên kết âm thanh",
@@ -469,6 +484,7 @@ const translations = {
     Gujarati: "Tiếng Gujarati",
     Indonesian: "Tiếng Indonesia",
     Ukrainian: "Tiếng Ukraina",
+    Kazakh: "Tiếng Kazakh",
   },
   en: {
     recommended: "recommended",
@@ -540,6 +556,7 @@ const translations = {
     Gujarati: "Gujarati",
     Indonesian: "Indonesian",
     Ukrainian: "Ukrainian",
+    Kazakh: "Kazakh",
   },
   zh: {
     recommended: "推荐使用",
@@ -606,6 +623,7 @@ const translations = {
     Gujarati: "古吉拉特语",
     Indonesian: "印度尼西亚语",
     Ukrainian: "乌克兰语",
+    Kazakh: "哈萨克语",
   },
   ar: {
     recommended: "موصى به",
@@ -620,16 +638,13 @@ const translations = {
     translationTakeMoreThanHour: "ستستغرق الترجمة أكثر من ساعة",
     translationTakeAboutMinute: "ستستغرق الترجمة حوالي دقيقة",
     translationTakeFewMinutes: "ستستغرق الترجمة بضع دقائق",
-    translationTakeApproximatelyMinutes:
-      "ستستغرق الترجمة تقريبا {0} دقائق",
-    translationTakeApproximatelyMinute:
-      "ستستغرق الترجمة تقريبا {0} دقيقة",
+    translationTakeApproximatelyMinutes: "ستستغرق الترجمة تقريبا {0} دقائق",
+    translationTakeApproximatelyMinute: "ستستغرق الترجمة تقريبا {0} دقيقة",
     unSupportedExtensionError: `خطأ! ${GM_info.scriptHandler} غير مدعوم من قبل هذه النسخة من الامتداد!\n\nيرجى استخدام نسخة cloudflare من امتداد VOT.`,
     requestTranslationFailed: "فشل طلب ترجمة الفيديو",
     audioNotReceived: "لم يتم استلام رابط الصوت",
     grantPermissionToAutoPlay: "السماح بالتشغيل التلقائي",
-    neededAdditionalExtension:
-      "هناك حاجة إلى امتداد إضافي لدعم هذا الموقع",
+    neededAdditionalExtension: "هناك حاجة إلى امتداد إضافي لدعم هذا الموقع",
     audioFormatNotSupported: "تنسيق الصوت غير مدعوم",
     VOTAutoTranslate: "الترجمة عند الفتح",
     VOTDontTranslateYourLang: "لا تترجم من لغتي",
@@ -639,8 +654,7 @@ const translations = {
     VOTShowVideoSlider: "شريط تحكم حجم الفيديو",
     VOTSyncVolume: "اربط حجم الترجمة والفيديو",
     VOTAudioProxy: "الصوت المستلم عبر وكيل",
-    VOTDisableFromYourLang:
-      "VOT: لقد قمت بتعطيل ترجمة الفيديو بلغتك",
+    VOTDisableFromYourLang: "VOT: لقد قمت بتعطيل ترجمة الفيديو بلغتك",
     VOTLiveNotSupported: "VOT: لا يتم دعم ترجمة البث المباشر",
     VOTPremiere: "VOT: انتظر حتى ينتهي العرض الأول قبل الترجمة",
     VOTVideoIsTooLong: "VOT: الفيديو طويل جداً",
@@ -677,6 +691,7 @@ const translations = {
     Gujarati: "الغوجاراتية",
     Indonesian: "الإندونيسية",
     Ukrainian: "الأوكرانية",
+    Kazakh: "الكازاخستانية",
   },
   ko: {
     recommended: "추천",
@@ -691,10 +706,8 @@ const translations = {
     translationTakeMoreThanHour: "번역에 1시간 이상 걸립니다",
     translationTakeAboutMinute: "번역에 약 1분 걸립니다",
     translationTakeFewMinutes: "번역에 몇 분 걸립니다",
-    translationTakeApproximatelyMinutes:
-      "번역에 약 {0}분 걸립니다",
-    translationTakeApproximatelyMinute:
-      "번역에 약 {0}분 걸립니다",
+    translationTakeApproximatelyMinutes: "번역에 약 {0}분 걸립니다",
+    translationTakeApproximatelyMinute: "번역에 약 {0}분 걸립니다",
     unSupportedExtensionError: `오류! ${GM_info.scriptHandler}는 이 버전의 확장 프로그램에서 지원되지 않습니다!\n\nVOT 확장 프로그램의 클라우드플레어 버전을 사용하십시오.`,
     requestTranslationFailed: "비디오 번역 요청 실패",
     audioNotReceived: "오디오 링크를 받지 못했습니다",
@@ -748,6 +761,7 @@ const translations = {
     Gujarati: "구자라트어",
     Indonesian: "인도네시아어",
     Ukrainian: "우크라이나어",
+    Kazakh: "카자흐어",
   },
   de: {
     recommended: "es wird empfohlen",
@@ -824,6 +838,7 @@ const translations = {
     Gujarati: "Gujarati",
     Indonesian: "Indonesisch",
     Ukrainian: "Ukrainisch",
+    Kazakh: "Kasachisch",
   },
   es: {
     recommended: "es recomendable",
@@ -897,6 +912,7 @@ const translations = {
     Gujarati: "Gujarati",
     Indonesian: "Indonesio",
     Ukrainian: "Ucraniano",
+    Kazakh: "Kazaja",
   },
   fr: {
     recommended: "recommande",
@@ -972,6 +988,7 @@ const translations = {
     Gujarati: "Gujarati",
     Indonesian: "Indonésien",
     Ukrainian: "Ukrainien",
+    Kazakh: "Kazakh",
   },
   it: {
     recommended: "è consigliabile",
@@ -1045,6 +1062,7 @@ const translations = {
     Gujarati: "Gujarati",
     Indonesian: "Indonesiano",
     Ukrainian: "Ucraino",
+    Kazakh: "Kasako",
   },
   ja: {
     recommended: "おすすめ",
@@ -1059,10 +1077,8 @@ const translations = {
     translationTakeMoreThanHour: "翻訳には1時間以上かかります",
     translationTakeAboutMinute: "翻訳には約1分かかります",
     translationTakeFewMinutes: "翻訳には数分かかります",
-    translationTakeApproximatelyMinutes:
-      "翻訳には約{0}分かかります",
-    translationTakeApproximatelyMinute:
-      "翻訳には約{0}分かかります",
+    translationTakeApproximatelyMinutes: "翻訳には約{0}分かかります",
+    translationTakeApproximatelyMinute: "翻訳には約{0}分かかります",
     unSupportedExtensionError: `エラー！ ${GM_info.scriptHandler} はこのバージョンの拡張機能ではサポートされていません！\n\nVOT拡張機能のcloudflareバージョンを使用してください。`,
     requestTranslationFailed: "動画の翻訳リクエストに失敗しました",
     audioNotReceived: "音声リンクが受信されませんでした",
@@ -1078,8 +1094,7 @@ const translations = {
     VOTShowVideoSlider: "動画の音量スライダー",
     VOTSyncVolume: "バインド翻訳とビデオボリューム",
     VOTAudioProxy: "プロキシで受信した音声",
-    VOTDisableFromYourLang:
-      "VOT：あなたの言語での動画の翻訳を無効にしました",
+    VOTDisableFromYourLang: "VOT：あなたの言語での動画の翻訳を無効にしました",
     VOTLiveNotSupported: "VOT：ライブストリームの翻訳はサポートされていません",
     VOTPremiere: "VOT：プレミアが終わるまで待ってから翻訳してください",
     VOTVideoIsTooLong: "VOT：動画が長すぎます",
@@ -1116,6 +1131,7 @@ const translations = {
     Gujarati: "グジャラート語",
     Indonesian: "インドネシア語",
     Ukrainian: "ウクライナ語",
+    Kazakh: "カザフ語",
   },
   cs: {
     recommended: "doporučeno",
@@ -1130,10 +1146,8 @@ const translations = {
     translationTakeMoreThanHour: "Překlad potrvá více než hodinu",
     translationTakeAboutMinute: "Překlad potrvá asi minutu",
     translationTakeFewMinutes: "Překlad potrvá několik minut",
-    translationTakeApproximatelyMinutes:
-      "Překlad potrvá přibližně {0} minut",
-    translationTakeApproximatelyMinute:
-      "Překlad potrvá přibližně {0} minutu",
+    translationTakeApproximatelyMinutes: "Překlad potrvá přibližně {0} minut",
+    translationTakeApproximatelyMinute: "Překlad potrvá přibližně {0} minutu",
     unSupportedExtensionError: `Chyba! ${GM_info.scriptHandler} není podporován touto verzí rozšíření!\n\nProsím použijte cloudflare verzi rozšíření VOT.`,
     requestTranslationFailed: "Nepodařilo se požádat o překlad videa",
     audioNotReceived: "Nebyl přijat odkaz na zvuk",
@@ -1149,8 +1163,7 @@ const translations = {
     VOTShowVideoSlider: "Posuvník hlasitosti videa",
     VOTSyncVolume: "Propojit hlasitost překladu a videa",
     VOTAudioProxy: "Proxy pro přijatý zvuk",
-    VOTDisableFromYourLang:
-      "VOT: Zakázali jste překlad videa ve vašem jazyce",
+    VOTDisableFromYourLang: "VOT: Zakázali jste překlad videa ve vašem jazyce",
     VOTLiveNotSupported: "VOT: Překlad živých vysílání není podporován",
     VOTPremiere: "VOT: Počkejte, až skončí premiéra, než začnete překládat",
     VOTVideoIsTooLong: "VOT: Video je příliš dlouhé",
@@ -1187,7 +1200,87 @@ const translations = {
     Gujarati: "Gudžarátština",
     Indonesian: "Indonéština",
     Ukrainian: "Ukrajinština",
+    Kazakh: "Kazašský",
+  },
+  kk: {
+    recommended: "ұсынылатын",
+    translateVideo: "Бейне тілін аудару",
+    disableTranslate: "Өшіру",
+    translationSettings: "Аудару параметрлері",
+    resetSettings: "Параметрлерді қалпына келтіру",
+    videoBeingTranslated: "Бейне аударылуда",
+    videoLanguage: "Бейне тілі",
+    translationLanguage: "Аудару тілі",
+    translationTake: "Аудару көзететін уақыт",
+    translationTakeMoreThanHour: "Аудару бір сағаттан артық уақыт алады",
+    translationTakeAboutMinute: "Аудару бір минуттан аз уақыт алады",
+    translationTakeFewMinutes: "Аудару бірнеше минуттан аз уақыт алады",
+    translationTakeApproximatelyMinutes:
+      "Аудару жағдайында тағы {0} минут тұрады",
+    translationTakeApproximatelyMinute:
+      "Аудару жағдайында тағы {0} минут тұрады",
+    unSupportedExtensionError: `Қате! ${GM_info.scriptHandler} көмекшілікті бұл нұсқасымен қолдаулары жоқ!\n\nVOT көмекшілігінің cloudflare-нұсқасын пайдаланыңыз.`,
+    requestTranslationFailed: "Бейненің аударуын сұрау сәтсіз аяқталды",
+    audioNotReceived: "Аудиоға сілтеме алынбады",
+    grantPermissionToAutoPlay: "Автоматты түрде ойнатуға рұқсат беріңіз",
+    neededAdditionalExtension: "Бұл сайты қолдау үшін қосымша көмекшілік керек",
+    audioFormatNotSupported: "Аудио пішімі қолдаулы емес",
+    VOTAutoTranslate: "Ашылғанда аудару",
+    VOTDontTranslateYourLang: "Туылған тілді аудармау",
+    VOTVolume: "Бейне тыңдауы",
+    VOTVolumeTranslation: "Аудару тыңдауы",
+    VOTAutoSetVolume: "Бейненің тыңдауын бұзу",
+    VOTShowVideoSlider: "Бейне тыңдауы сызғышы",
+    VOTSyncVolume: "Аудару тыңдауын бейненің тыңдауына байланыстыру",
+    VOTAudioProxy: "Алынған аудионы прокси",
+    VOTDisableFromYourLang: "VOT: Сіздің тіліңіздегі бейнені аудармау",
+    VOTLiveNotSupported:
+      "VOT: Жылжымайтын трансляцияларды аудару қолдаулы емес",
+    VOTPremiere: "VOT: Алдын ала шоу аяқталғаннан кейін аударыңыз",
+    VOTVideoIsTooLong: "VOT: Бейне тым ұзын",
+    VOTNoVideoIDFound: "VOT: Бейне ID табылмады",
+    VOTFailedInitDB: "VOT: Деректер қорытындысын іске қосу сәтсіз аяқталды",
+    VOTDBNeedUpdate:
+      "VOT: Деректер қорытындысын жаңарту керек, жаңарту үшін бетті қайта жүктеңіз",
+    VOTDisabledForDBUpdating: `VOT: Деректер базасын жаңарту қатесінен VOT өшірілді. ${window.location.hostname} сайтындағы барлық терезелерді жабыңыз және қайтадан көріңіз`,
+    VOTFailedWriteToDB:
+      "VOT: Деректер базасына деректерді жазу сәтсіз аяқталды",
+    VOTFailedReadFromDB:
+      "VOT: Деректер базасынан деректерді оқу сәтсіз аяқталды",
+    Russian: "Орыс",
+    English: "Ағылшын",
+    Chinese: "Қытай",
+    French: "Француз",
+    Italian: "Итальян",
+    Spanish: "Испан",
+    German: "Неміс",
+    Korean: "Корей",
+    Japanese: "Жапон",
+    Arabic: "Араб",
+    Bengali: "Бенгал",
+    Portuguese: "Португал",
+    Czech: "Чех",
+    Hindi: "Ҳинд",
+    Marathi: "Маратхи",
+    Telugu: "Телугу",
+    Turkish: "Түрік",
+    Malay: "Малай",
+    Vietnamese: "Вьетнам",
+    Tamil: "Тамил",
+    Javanese: "Ява",
+    Urdu: "Урду",
+    Persian: "Парсы",
+    Gujarati: "Гуджарати",
+    Indonesian: "Индонезиялық",
+    Ukrainian: "Украин",
+    Kazakh: "Қазақша",
   },
 };
 
-export { translateFuncParam, availableLangs, siteTranslates, translations };
+export {
+  translateFuncParam,
+  availableLangs,
+  additionalTTS,
+  siteTranslates,
+  translations,
+};
