@@ -31,7 +31,8 @@ async function getLanguage(player, response, title, description, author) {
   const text = [title, description, author].join(" ");
   // Remove anything that is not a letter or a space in any language
   const cleanText = text
-    .replace(/\s+/g, " ").trim()
+    .replace(/\s+/g, " ")
+    .trim()
     .replace(/https?:\/\/\S+/g, "")
     .replace(/[^\p{L}\s]/gu, "")
     .slice(0, 250);
