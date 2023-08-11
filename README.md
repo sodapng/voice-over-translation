@@ -27,6 +27,7 @@ English version: [Link](https://github.com/ilyhalight/voice-over-translation/blo
 - **[Vimeo](https://vimeo.com/)**
 - **[XVideos](https://xvideos.com/)**
 - **[PornHub](https://rt.pornhub.com/)**
+- **[Bitchute](https://www.bitchute.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[[❌] TikTok](https://tiktok.com/)**
 - **[Invidious](https://yewtu.be)**

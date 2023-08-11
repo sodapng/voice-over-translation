@@ -50,6 +50,7 @@ const siteTranslates = {
   "bilibili.com": "https://www.bilibili.com/video/",
   "mail.ru": "https://my.mail.ru/",
   coub: "https://coub.com/view/",
+  bitchute: "https://www.bitchute.com/video/",
 };
 
 // TODO:

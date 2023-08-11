@@ -142,6 +142,8 @@ const getVideoId = (service) => {
 
         return referer?.href.split("my.mail.ru")?.[1];
       }
+    case "bitchute":
+      return url.pathname.match(/video\/([^/]+)/)?.[1];
     default:
       return false;
   }

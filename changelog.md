@@ -1,3 +1,6 @@
+# 1.3.6
+- Добавлена поддержка bitchute.com
+
 # 1.3.5
 - Добавлен режим разработки для тестирования cloudflare версии: `npm run dev:cloudflare`
 - Удалена функция для теста перевода (debug.translations)

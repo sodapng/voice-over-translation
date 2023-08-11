@@ -1405,6 +1405,13 @@ async function main() {
         "coub",
         null
       );
+    } else if (window.location.hostname.includes("bitchute.com")) {
+      await sleep(1000);
+      await translateProccessor(
+        document.querySelector(".plyr__video-wrapper"),
+        "bitchute",
+        null
+      );
     } else if (window.location.hostname.includes("rutube.ru")) {
       const elementSelector = window.location.pathname.includes("/play/embed")
         ? "#app > div > div"

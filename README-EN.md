@@ -26,6 +26,7 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[Vimeo](https://vimeo.com/)**
 - **[XVideos](https://xvideos.com/)**
 - **[PornHub](https://rt.pornhub.com/)**
+- **[Bitchute](https://www.bitchute.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[[❌] TikTok](https://tiktok.com/)**
 - **[Invidious](https://yewtu.be)**
