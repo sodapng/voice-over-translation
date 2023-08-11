@@ -7,6 +7,7 @@ import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
 import {
   translateFuncParam,
   availableLangs,
+  additionalTTS,
   siteTranslates,
   translations,
 } from "./config/constants.js";
@@ -18,6 +19,7 @@ import {
   createMenuCheckbox,
   createMenuSlider,
   createMenuSelect,
+  genOptionsByOBJ,
   lang,
 } from "./menu.js";
 import { syncVolume } from "./utils/volume.js";
@@ -38,14 +40,6 @@ let ytData = "";
 async function main() {
   debug.log("Loading extension...");
   debug.log(`Selected menu language: ${lang}`);
-  // test all translations in console
-  // debug.translations('ru');
-  // debug.translations('en');
-  // debug.translations('de');
-  // debug.translations('zh');
-  // debug.translations('es');
-  // debug.translations('fr');
-  // debug.translations('it');
 
   const rvt = await import(
     `./rvt${BUILD_MODE === "cloudflare" ? "-cloudflare" : ""}.js`
@@ -252,11 +246,7 @@ async function main() {
           value: "default",
           disabled: true,
         },
-        ...Object.entries(availableLangs).map(([key, value]) => ({
-          label: translations[lang][value],
-          value: key,
-          selected: videoData.detectedLanguage === key,
-        })),
+        ...genOptionsByOBJ(availableLangs, videoData.detectedLanguage),
       ];
 
       const selectToLangOptions = [
@@ -265,11 +255,13 @@ async function main() {
           value: "default",
           disabled: true,
         },
-        ...Object.entries(availableLangs).map(([key, value]) => ({
-          label: translations[lang][value],
-          value: key,
-          selected: videoData.responseLanguage === key,
-        })),
+        ...genOptionsByOBJ(availableLangs, videoData.responseLanguage),
+        {
+          label: "─────────",
+          value: "separator",
+          disabled: true,
+        },
+        ...genOptionsByOBJ(additionalTTS, videoData.responseLanguage),
       ];
 
       const selectFromLang = createMenuSelect(
@@ -296,16 +288,22 @@ async function main() {
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
           debug.log("[onchange] select from language", event.target.value);
-          videoData = await getVideoData()
-          await setSelectMenuValues(event.target.value, videoData.responseLanguage);
+          videoData = await getVideoData();
+          await setSelectMenuValues(
+            event.target.value,
+            videoData.responseLanguage
+          );
         });
 
       menuOptions
         .querySelector("#VOTTranslateToLang")
         .addEventListener("change", async (event) => {
           debug.log("[onchange] select to language", event.target.value);
-          videoData = await getVideoData()
-          await setSelectMenuValues(videoData.detectedLanguage, event.target.value);
+          videoData = await getVideoData();
+          await setSelectMenuValues(
+            videoData.detectedLanguage,
+            event.target.value
+          );
         });
     }
 
@@ -529,8 +527,8 @@ async function main() {
       document.querySelector("#VOTTranslateFromLang").value = from;
       document.querySelector("#VOTTranslateToLang").value = to;
       console.log(`Set translation from ${from} to ${to}`);
-      videoData.detectedLanguage = from
-      videoData.responseLanguage = to
+      videoData.detectedLanguage = from;
+      videoData.responseLanguage = to;
     }
 
     // data - ytData or VideoData
@@ -877,8 +875,11 @@ async function main() {
 
     const translateExecutor = async (VIDEO_ID) => {
       if (!videoData.detectedLanguage) {
-        videoData = await getVideoData()
-        await setSelectMenuValues(videoData.detectedLanguage, videoData.responseLanguage);
+        videoData = await getVideoData();
+        await setSelectMenuValues(
+          videoData.detectedLanguage,
+          videoData.responseLanguage
+        );
       }
       debug.log("Run videoValidator");
       await videoValidator();
@@ -1113,11 +1114,11 @@ async function main() {
     document.addEventListener("touchend", (event) =>
       changeOpacityOnEvent(event, timer, opacityRatio)
     );
-    document.querySelectorAll("video").forEach(video => {
+    document.querySelectorAll("video").forEach((video) => {
       video.addEventListener("abort", async () => {
-      debug.log("lipsync mode is abort");
-      await stopTranslation();
-      videoData = ""
+        debug.log("lipsync mode is abort");
+        await stopTranslation();
+        videoData = "";
       });
     });
 
