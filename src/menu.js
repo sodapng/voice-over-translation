@@ -185,6 +185,14 @@ function createMenuSelect(id, selectOptions) {
   return selectContainer;
 }
 
+function genOptionsByOBJ(obj, conditionString) {
+  return Object.entries(obj).map(([key, value]) => ({
+    label: translations[lang][value],
+    value: key,
+    selected: conditionString === key,
+  }));
+}
+
 export {
   transformBtn,
   addTranslationBlock,
@@ -192,5 +200,6 @@ export {
   createMenuCheckbox,
   createMenuSlider,
   createMenuSelect,
+  genOptionsByOBJ,
   lang,
 };
