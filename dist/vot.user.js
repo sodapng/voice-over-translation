@@ -2387,13 +2387,6 @@ function genOptionsByOBJ(obj, conditionString) {
     value: key,
     selected: conditionString === key,
   }));
-
-  return {
-    label,
-    value,
-    selected,
-    disabled,
-  };
 }
 
 
