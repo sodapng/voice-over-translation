@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.3.4-testing
+// @version 1.3.5
 // @author sodapng, mynovelhost, Toil, SashaXser
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -91,7 +91,7 @@
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/css-loader/dist/runtime/noSourceMaps.js");
 /* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
@@ -102,254 +102,7 @@
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `.translationBlock {
-  padding: 0.45rem !important;
-  width: max-content;
-  position: absolute;
-  background: #2e2f34;
-  border-radius: 0.5rem !important;
-  left: 50%;
-  top: 5rem;
-  transform: translate(-50%);
-  text-align: center;
-  opacity: 0;
-  transition: opacity 1s;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  z-index: 100;
-}
-
-.translationBtn {
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
-  color: #fff;
-  padding-right: 0.25rem !important;
-  cursor: pointer;
-  font: 600 12px / 14px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif;
-}
-
-.translationBlock:hover {
-  opacity: 1;
-}
-
-.translationMenu {
-  display: inline-block;
-  vertical-align: middle;
-  border-left: 1px solid #424348;
-  max-height: 16px;
-  max-width: 24px;
-  cursor: pointer;
-}
-
-.translationMenuIcon {
-  padding: 0 10px !important;
-  width: 24px;
-}
-
-.translationIAlice {
-  display: inline-block;
-  vertical-align: middle;
-  max-height: 26px;
-  max-width: 50px;
-}
-
-.translationIconAlice {
-  height: 24px !important;
-  width: 24px !important;
-}
-
-.translationITranslate {
-  display: inline-block;
-  vertical-align: middle;
-  max-height: 20px;
-  max-width: 20px;
-}
-
-.translationMenuContent {
-  position: absolute;
-  background: #2e2f34;
-  color: #fff;
-  display: none;
-  border-radius: 1rem !important;
-  left: 50%;
-  top: 10rem;
-  transform: translate(-50%);
-  text-align: left;
-  font: 600 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif !important;
-
-  width: 300px;
-  /* height: 375px; */
-  opacity: 0;
-  z-index: 100;
-  transition: opacity 0.5s ease;
-}
-
-.VOTMenuSlider {
-  -webkit-appearance: none !important;
-  appearance: none !important;
-  width: 268px !important;
-  height: 8px !important;
-  outline: none !important;
-  margin-top: 0.5rem;
-  opacity: 0.7;
-  /* background: #3C3F4D !important; */
-  background: rgb(253, 222, 85, 0.6) !important;
-  border: none !important;
-  border-radius: 2rem !important;
-  -webkit-transition: 0.2s !important;
-  transition: opacity 0.2s ease !important;
-}
-
-.VOTMenuSlider:hover {
-  opacity: 1;
-}
-
-.VOTMenuSlider::-webkit-slider-thumb {
-  -webkit-appearance: none !important;
-  appearance: none !important;
-  width: 10px !important;
-  height: 10px !important;
-  border-radius: 50% !important;
-  border: none !important;
-  background: #fff !important;
-  cursor: pointer !important;
-}
-
-.VOTMenuSlider::-moz-range-thumb {
-  width: 10px !important;
-  height: 10px !important;
-  border-radius: 50% !important;
-  border: none !important;
-  background: #fff !important;
-  cursor: pointer !important;
-}
-
-.VOTMenuSlider::-ms-thumb {
-  width: 10px !important;
-  height: 10px !important;
-  border-radius: 50% !important;
-  border: none !important;
-  background: #fff !important;
-  cursor: pointer !important;
-}
-
-.VOTMenuSlider::-ms-fill-lower {
-  height: 8px !important;
-  border-radius: 2rem !important;
-  background: linear-gradient(
-    90.1deg,
-    rgba(186, 153, 244, 0.85) -5.78%,
-    rgba(236, 138, 202, 0.7) 56.46%,
-    rgba(239, 168, 117, 0.6) 108.93%
-  ) !important;
-}
-
-.VOTMenuSlider::-moz-range-progress {
-  height: 8px !important;
-  border-radius: 2rem !important;
-  background: linear-gradient(
-    90.1deg,
-    rgba(186, 153, 244, 0.85) -5.78%,
-    rgba(236, 138, 202, 0.7) 56.46%,
-    rgba(239, 168, 117, 0.6) 108.93%
-  ) !important;
-}
-
-.translationHeader {
-  padding-bottom: 0.5rem !important;
-}
-
-.translationMainHeader {
-  margin: 16px !important;
-  color: #fff;
-  font: 900 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif !important;
-}
-
-.translationMenuOptions {
-  display: flex;
-  flex-flow: column wrap;
-}
-
-.translationMenuContainer {
-  /* width: 100%; */
-  padding-left: 16px !important;
-  padding-top: 5px !important;
-  display: inline-block !important;
-}
-
-.translationMenuContainer > input {
-  appearance: auto !important;
-  vertical-align: text-bottom;
-}
-
-.translationMenuText {
-  color: #fff;
-  display: inline-flex;
-  width: 80%;
-}
-
-.translationVolumeBox,
-.translationVideoVolumeBox {
-  padding-top: 0.5rem !important;
-}
-
-.translationDropDB {
-  border: none !important;
-  border-radius: 4px !important;
-  background: #5426ff !important;
-  color: #fff !important;
-  padding: 6px 16px !important;
-  margin-left: auto !important;
-  cursor: pointer !important;
-}
-
-.translationDownload {
-  background: #5426ff !important;
-  color: #fff !important;
-  padding: 2px 10px !important;
-  border-radius: 4px !important;
-  cursor: pointer;
-  display: none;
-}
-
-.translationMenuFunctional {
-  display: flex;
-  margin: 16px !important;
-}
-
-.VOTMenuSelect {
-  width: 110px;
-  border-radius: 5px !important;
-  border: 1px solid #dadce0 !important;
-  box-shadow: 0 1px 3px -2px #9098a9;
-  box-sizing: border-box !important;
-  color: #2e2f34 !important;
-  background: #fff !important;
-  padding: 5px !important;
-}
-
-.VOTMenuSelect:focus {
-  outline: none;
-}
-
-.VOTMenuSelect:focus {
-  outline: none;
-  border-color: #0077ff;
-  box-shadow: 0 0 0 2px rgba(#0077ff, 0.2);
-}
-
-#VOTSelectLanguages {
-  display: flex !important;
-  margin-left: 5px;
-}
-
-#VOTSelectLanguages svg {
-  margin: 0 5px;
-}
-`, ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\n  padding: 0.45rem !important;\n  width: max-content;\n  position: absolute;\n  background: #2e2f34;\n  border-radius: 0.5rem !important;\n  left: 50%;\n  top: 5rem;\n  transform: translate(-50%);\n  text-align: center;\n  opacity: 0;\n  transition: opacity 1s;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  z-index: 100;\n}\n\n.translationBtn {\n  position: relative;\n  display: inline-block;\n  vertical-align: middle;\n  color: #fff;\n  padding-right: 0.25rem !important;\n  cursor: pointer;\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\n}\n\n.translationBlock:hover {\n  opacity: 1;\n}\n\n.translationMenu {\n  display: inline-block;\n  vertical-align: middle;\n  border-left: 1px solid #424348;\n  max-height: 16px;\n  max-width: 24px;\n  cursor: pointer;\n}\n\n.translationMenuIcon {\n  padding: 0 10px !important;\n  width: 24px;\n}\n\n.translationIAlice {\n  display: inline-block;\n  vertical-align: middle;\n  max-height: 26px;\n  max-width: 50px;\n}\n\n.translationIconAlice {\n  height: 24px !important;\n  width: 24px !important;\n}\n\n.translationITranslate {\n  display: inline-block;\n  vertical-align: middle;\n  max-height: 20px;\n  max-width: 20px;\n}\n\n.translationMenuContent {\n  position: absolute;\n  background: #2e2f34;\n  color: #fff;\n  display: none;\n  border-radius: 1rem !important;\n  left: 50%;\n  top: 10rem;\n  transform: translate(-50%);\n  text-align: left;\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\n\n  width: 300px;\n  /* height: 375px; */\n  opacity: 0;\n  z-index: 100;\n  transition: opacity 0.5s ease;\n}\n\n.VOTMenuSlider {\n  -webkit-appearance: none !important;\n  appearance: none !important;\n  width: 268px !important;\n  height: 8px !important;\n  outline: none !important;\n  margin-top: 0.5rem;\n  opacity: 0.7;\n  /* background: #3C3F4D !important; */\n  background: rgb(253, 222, 85, 0.6) !important;\n  border: none !important;\n  border-radius: 2rem !important;\n  -webkit-transition: 0.2s !important;\n  transition: opacity 0.2s ease !important;\n}\n\n.VOTMenuSlider:hover {\n  opacity: 1;\n}\n\n.VOTMenuSlider::-webkit-slider-thumb {\n  -webkit-appearance: none !important;\n  appearance: none !important;\n  width: 10px !important;\n  height: 10px !important;\n  border-radius: 50% !important;\n  border: none !important;\n  background: #fff !important;\n  cursor: pointer !important;\n}\n\n.VOTMenuSlider::-moz-range-thumb {\n  width: 10px !important;\n  height: 10px !important;\n  border-radius: 50% !important;\n  border: none !important;\n  background: #fff !important;\n  cursor: pointer !important;\n}\n\n.VOTMenuSlider::-ms-thumb {\n  width: 10px !important;\n  height: 10px !important;\n  border-radius: 50% !important;\n  border: none !important;\n  background: #fff !important;\n  cursor: pointer !important;\n}\n\n.VOTMenuSlider::-ms-fill-lower {\n  height: 8px !important;\n  border-radius: 2rem !important;\n  background: linear-gradient(\n    90.1deg,\n    rgba(186, 153, 244, 0.85) -5.78%,\n    rgba(236, 138, 202, 0.7) 56.46%,\n    rgba(239, 168, 117, 0.6) 108.93%\n  ) !important;\n}\n\n.VOTMenuSlider::-moz-range-progress {\n  height: 8px !important;\n  border-radius: 2rem !important;\n  background: linear-gradient(\n    90.1deg,\n    rgba(186, 153, 244, 0.85) -5.78%,\n    rgba(236, 138, 202, 0.7) 56.46%,\n    rgba(239, 168, 117, 0.6) 108.93%\n  ) !important;\n}\n\n.translationHeader {\n  padding-bottom: 0.5rem !important;\n}\n\n.translationMainHeader {\n  margin: 16px !important;\n  color: #fff;\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\n}\n\n.translationMenuOptions {\n  display: flex;\n  flex-flow: column wrap;\n}\n\n.translationMenuContainer {\n  /* width: 100%; */\n  padding-left: 16px !important;\n  padding-top: 5px !important;\n  display: inline-block !important;\n}\n\n.translationMenuContainer > input {\n  appearance: auto !important;\n  vertical-align: text-bottom;\n}\n\n.translationMenuText {\n  color: #fff;\n  display: inline-flex;\n  width: 80%;\n}\n\n.translationVolumeBox,\n.translationVideoVolumeBox {\n  padding-top: 0.5rem !important;\n}\n\n.translationDropDB {\n  border: none !important;\n  border-radius: 4px !important;\n  background: #5426ff !important;\n  color: #fff !important;\n  padding: 6px 16px !important;\n  margin-left: auto !important;\n  cursor: pointer !important;\n}\n\n.translationDownload {\n  background: #5426ff !important;\n  color: #fff !important;\n  padding: 2px 10px !important;\n  border-radius: 4px !important;\n  cursor: pointer;\n  display: none;\n}\n\n.translationMenuFunctional {\n  display: flex;\n  margin: 16px !important;\n}\n\n.VOTMenuSelect {\n  width: 110px;\n  border-radius: 5px !important;\n  border: 1px solid #dadce0 !important;\n  box-shadow: 0 1px 3px -2px #9098a9;\n  box-sizing: border-box !important;\n  color: #2e2f34 !important;\n  background: #fff !important;\n  padding: 5px !important;\n}\n\n.VOTMenuSelect:focus {\n  outline: none;\n}\n\n.VOTMenuSelect:focus {\n  outline: none;\n  border-color: #0077ff;\n  box-shadow: 0 0 0 2px rgba(#0077ff, 0.2);\n}\n\n#VOTSelectLanguages {\n  display: flex !important;\n  margin-left: 5px;\n}\n\n#VOTSelectLanguages svg {\n  margin: 0 5px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -711,10 +464,10 @@ module.exports = styleTagTransform;
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   I1: () => (/* binding */ yandexHmacKey),
-/* harmony export */   IM: () => (/* binding */ autoVolume),
-/* harmony export */   Rr: () => (/* binding */ yandexUserAgent),
-/* harmony export */   iF: () => (/* binding */ workerHost)
+/* harmony export */   "I1": () => (/* binding */ yandexHmacKey),
+/* harmony export */   "IM": () => (/* binding */ autoVolume),
+/* harmony export */   "Rr": () => (/* binding */ yandexUserAgent),
+/* harmony export */   "iF": () => (/* binding */ workerHost)
 /* harmony export */ });
 // CONFIGURATION
 const workerHost = "api.browser.yandex.ru";
@@ -771,7 +524,7 @@ async function requestVideoTranslation(
 ) {
   // Initialize variables
   const deviceId = getUUID(true);
-  const body = yandexRequests/* yandexRequests */.G.encodeRequest(
+  const body = yandexRequests/* yandexRequests.encodeRequest */.G.encodeRequest(
     url,
     deviceId,
     unknown1,
@@ -843,7 +596,7 @@ async function requestVideoTranslation(
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   G: () => (/* binding */ yandexRequests)
+/* harmony export */   "G": () => (/* binding */ yandexRequests)
 /* harmony export */ });
 const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
   .add(new protobuf.Field("url", 3, "string"))
@@ -1070,7 +823,7 @@ var update = injectStylesIntoStyleTag_default()(main/* default */.Z, options);
 
 
 
-       /* harmony default export */ const styles_main = (main/* default */.Z && main/* default */.Z.locals ? main/* default */.Z.locals : undefined);
+       /* harmony default export */ const styles_main = (main/* default */.Z && main/* default.locals */.Z.locals ? main/* default.locals */.Z.locals : undefined);
 
 ;// CONCATENATED MODULE: ./src/utils/getYTVideoData.js
 async function detect(cleanText) {
@@ -1106,7 +859,8 @@ async function getLanguage(player, response, title, description, author) {
   const text = [title, description, author].join(" ");
   // Remove anything that is not a letter or a space in any language
   const cleanText = text
-    .replace(/\s+/g, " ").trim()
+    .replace(/\s+/g, " ")
+    .trim()
     .replace(/https?:\/\/\S+/g, "")
     .replace(/[^\p{L}\s]/gu, "")
     .slice(0, 250);
@@ -1144,6 +898,8 @@ async function getYTVideoData() {
 var yandexRequests = __webpack_require__("./src/yandexRequests.js");
 ;// CONCATENATED MODULE: ./src/config/constants.js
 const translateFuncParam = 0x40_75_50_00_00_00_00_00;
+
+// available languages for translation
 const availableLangs = {
   ru: "Russian",
   en: "English",
@@ -1155,24 +911,29 @@ const availableLangs = {
   es: "Spanish",
   de: "German",
   ja: "Japanese",
-  bn: "Bengali",
+};
+
+// Additional languages working with TTS
+const additionalTTS = {
+  bn: "Bengali", // TODO: Add menu translation
   pt: "Portuguese",
   cs: "Czech",
   hi: "Hindi",
-  mr: "Marathi",
-  te: "Telugu",
+  mr: "Marathi", // TODO: Add menu translation
+  te: "Telugu", // TODO: Add menu translation
   tr: "Turkish",
-  ms: "Malay",
+  ms: "Malay", // TODO: Add menu translation
   vi: "Vietnamese",
-  ta: "Tamil",
-  jv: "Javanese",
-  ur: "Urdu",
-  fa: "Persian",
-  gu: "Gujarati",
-  id: "Indonesian",
+  ta: "Tamil", // TODO: Add menu translation
+  jv: "Javanese", // TODO: Add menu translation
+  ur: "Urdu", // TODO: Add menu translation
+  fa: "Persian", // TODO: Add menu translation
+  gu: "Gujarati", // TODO: Add menu translation
+  id: "Indonesian", // TODO: Add menu translation
   uk: "Ukrainian",
+  kk: "Kazakh",
 };
- // available languages for translation
+
 const siteTranslates = {
   youtube: "https://youtu.be/",
   twitch: "https://twitch.tv/",
@@ -1189,6 +950,14 @@ const siteTranslates = {
   "mail.ru": "https://my.mail.ru/",
   coub: "https://coub.com/view/",
 };
+
+// TODO:
+/*
+  Add a language upload from github.
+
+  it may be worth redesigning the translation system
+  (if there is no necessary phrase, then the phrase in English / "raw" phrase will be displayed)
+*/
 const translations = {
   ru: {
     recommended: "рекомендуется",
@@ -1258,6 +1027,7 @@ const translations = {
     Gujarati: "Гуджарати",
     Indonesian: "Индонезийский",
     Ukrainian: "Украинский",
+    Kazakh: "Казахский",
   },
   uk: {
     recommended: "рекомендовано",
@@ -1272,10 +1042,8 @@ const translations = {
     translationTakeMoreThanHour: "Переклад займе більше години",
     translationTakeAboutMinute: "Переклад займе приблизно хвилину",
     translationTakeFewMinutes: "Переклад займе кілька хвилин",
-    translationTakeApproximatelyMinutes:
-      "Переклад займе приблизно {0} хвилин",
-    translationTakeApproximatelyMinute:
-      "Переклад займе приблизно {0} хвилини",
+    translationTakeApproximatelyMinutes: "Переклад займе приблизно {0} хвилин",
+    translationTakeApproximatelyMinute: "Переклад займе приблизно {0} хвилини",
     unSupportedExtensionError: `Помилка! ${GM_info.scriptHandler} не підтримується цією версією розширення!\n\nБудь ласка, використовуйте версію VOT розширення з cloudflare.`,
     requestTranslationFailed: "Не вдалося запросити переклад відео",
     audioNotReceived: "Посилання на аудіо не отримано",
@@ -1291,8 +1059,7 @@ const translations = {
     VOTShowVideoSlider: "Повзунок гучності відео",
     VOTSyncVolume: "Пов'язати гучність перекладу і відео",
     VOTAudioProxy: "Проксювати отримане аудіо",
-    VOTDisableFromYourLang:
-      "VOT: Ви вимкнули переклад відео на вашу мову",
+    VOTDisableFromYourLang: "VOT: Ви вимкнули переклад відео на вашу мову",
     VOTLiveNotSupported: "VOT: Переклад прямих трансляцій не підтримується",
     VOTPremiere: "VOT: Дочекайтеся закінчення прем'єри перед перекладом",
     VOTVideoIsTooLong: "VOT: Відео занадто довге",
@@ -1329,6 +1096,7 @@ const translations = {
     Gujarati: "Гуджараті",
     Indonesian: "Індонезійська",
     Ukrainian: "Українська",
+    Kazakh: "Казахський",
   },
   pt: {
     recommended: "recomendado",
@@ -1364,7 +1132,8 @@ const translations = {
     VOTAudioProxy: "Proxy de áudio recebido",
     VOTDisableFromYourLang:
       "VOT: Você desativou a tradução do vídeo no seu idioma",
-    VOTLiveNotSupported: "VOT: A tradução de transmissões ao vivo não é suportada",
+    VOTLiveNotSupported:
+      "VOT: A tradução de transmissões ao vivo não é suportada",
     VOTPremiere: "VOT: Aguarde o fim da estreia antes de traduzir",
     VOTVideoIsTooLong: "VOT: O vídeo é muito longo",
     VOTNoVideoIDFound: "VOT: Nenhum ID de vídeo encontrado",
@@ -1372,7 +1141,8 @@ const translations = {
     VOTDBNeedUpdate:
       "VOT: O banco de dados precisa de uma atualização, por favor recarregue a página",
     VOTDisabledForDBUpdating: `VOT está desativado devido a um erro ao atualizar o Banco de Dados. Feche todas as abas abertas com ${window.location.hostname} e tente novamente`,
-    VOTFailedWriteToDB: "VOT: Não foi possível escrever os dados no banco de dados",
+    VOTFailedWriteToDB:
+      "VOT: Não foi possível escrever os dados no banco de dados",
     VOTFailedReadFromDB:
       "VOT: Não foi possível recuperar os dados do banco de dados",
     Russian: "Russo",
@@ -1401,6 +1171,7 @@ const translations = {
     Gujarati: "Gujarati",
     Indonesian: "Indonésio",
     Ukrainian: "Ucraniano",
+    Kazakh: "Cazaque",
   },
   tr: {
     recommended: "önerilen",
@@ -1466,12 +1237,13 @@ const translations = {
     Malay: "Malayca",
     Vietnamese: "Vietnamca",
     Tamil: "Tamilce",
-    Javanese : "Cava dili",
+    Javanese: "Cava dili",
     Urdu: "Urduca",
     Persian: "Farsça",
     Gujarati: "Gucaratça",
-    Indonesian : "Endonezce",
+    Indonesian: "Endonezce",
     Ukrainian: "Ukraynaca",
+    Kazakh: "Kazak",
   },
   hi: {
     recommended: "अनुशंसित",
@@ -1486,16 +1258,13 @@ const translations = {
     translationTakeMoreThanHour: "अनुवाद में एक घंटे से अधिक समय लगेगा",
     translationTakeAboutMinute: "अनुवाद में लगभग एक मिनट लगेगा",
     translationTakeFewMinutes: "अनुवाद में कुछ मिनट लगेंगे",
-    translationTakeApproximatelyMinutes:
-      "अनुवाद में लगभग {0} मिनट लगेंगे",
-    translationTakeApproximatelyMinute:
-      "अनुवाद में लगभग {0} मिनट लगेंगे",
+    translationTakeApproximatelyMinutes: "अनुवाद में लगभग {0} मिनट लगेंगे",
+    translationTakeApproximatelyMinute: "अनुवाद में लगभग {0} मिनट लगेंगे",
     unSupportedExtensionError: `त्रुटि! ${GM_info.scriptHandler} को इस संस्करण के एक्स्टेंसन द्वारा समर्थित नहीं किया जाता है!\n\nकृप्या VOT एक्स्टेंसन का cloudflare संस्करण प्रयोग करें।`,
     requestTranslationFailed: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
     audioNotReceived: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
     grantPermissionToAutoPlay: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
-    neededAdditionalExtension:
-      "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
+    neededAdditionalExtension: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
     audioFormatNotSupported: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
     VOTAutoTranslate: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
     VOTDontTranslateYourLang: "प्रत्यक्ष प्रसार के लिए प्रतीक्षा करें",
@@ -1508,7 +1277,8 @@ const translations = {
     VOTDisableFromYourLang:
       "VOT: आपने अपनी भाषा में वीडियो का अनुवाद करना बंद कर दिया है",
     VOTLiveNotSupported: "VOT: प्रत्यक्ष प्रसारण का अनुवाद समर्थित नहीं है",
-    VOTPremiere: "VOT: अनुवाद करने से पहले प्रीमियर का अंत होने तक प्रतीक्षा करें",
+    VOTPremiere:
+      "VOT: अनुवाद करने से पहले प्रीमियर का अंत होने तक प्रतीक्षा करें",
     VOTVideoIsTooLong: "VOT: वीडियो बहुत लंबा है",
     VOTNoVideoIDFound: "VOT: कोई वीडियो ID नहीं मिली",
     VOTFailedInitDB: "VOT: डेटाबेस को प्रारंभ करने में विफल",
@@ -1542,7 +1312,8 @@ const translations = {
     Persian: "फारसी",
     Gujarati: "गुजराती",
     Indonesian: "इन्डोनेशियाई",
-    Ukrainian: "यूक्रेनी"
+    Ukrainian: "यूक्रेनी",
+    Kazakh: "कज़ाख",
   },
   vi: {
     recommended: "được khuyến nghị",
@@ -1557,10 +1328,8 @@ const translations = {
     translationTakeMoreThanHour: "Việc dịch sẽ mất hơn một giờ",
     translationTakeAboutMinute: "Việc dịch sẽ mất khoảng một phút",
     translationTakeFewMinutes: "Việc dịch sẽ mất vài phút",
-    translationTakeApproximatelyMinutes:
-      "Việc dịch sẽ mất khoảng {0} phút",
-    translationTakeApproximatelyMinute:
-      "Việc dịch sẽ mất khoảng {0} phút",
+    translationTakeApproximatelyMinutes: "Việc dịch sẽ mất khoảng {0} phút",
+    translationTakeApproximatelyMinute: "Việc dịch sẽ mất khoảng {0} phút",
     unSupportedExtensionError: `Lỗi! ${GM_info.scriptHandler} không được hỗ trợ bởi phiên bản này của tiện ích mở rộng!\n\nVui lòng sử dụng phiên bản cloudflare của tiện ích mở rộng VOT.`,
     requestTranslationFailed: "Không thể yêu cầu dịch video",
     audioNotReceived: "Không nhận được liên kết âm thanh",
@@ -1614,6 +1383,7 @@ const translations = {
     Gujarati: "Tiếng Gujarati",
     Indonesian: "Tiếng Indonesia",
     Ukrainian: "Tiếng Ukraina",
+    Kazakh: "Tiếng Kazakh",
   },
   en: {
     recommended: "recommended",
@@ -1685,6 +1455,7 @@ const translations = {
     Gujarati: "Gujarati",
     Indonesian: "Indonesian",
     Ukrainian: "Ukrainian",
+    Kazakh: "Kazakh",
   },
   zh: {
     recommended: "推荐使用",
@@ -1751,6 +1522,7 @@ const translations = {
     Gujarati: "古吉拉特语",
     Indonesian: "印度尼西亚语",
     Ukrainian: "乌克兰语",
+    Kazakh: "哈萨克语",
   },
   ar: {
     recommended: "موصى به",
@@ -1765,16 +1537,13 @@ const translations = {
     translationTakeMoreThanHour: "ستستغرق الترجمة أكثر من ساعة",
     translationTakeAboutMinute: "ستستغرق الترجمة حوالي دقيقة",
     translationTakeFewMinutes: "ستستغرق الترجمة بضع دقائق",
-    translationTakeApproximatelyMinutes:
-      "ستستغرق الترجمة تقريبا {0} دقائق",
-    translationTakeApproximatelyMinute:
-      "ستستغرق الترجمة تقريبا {0} دقيقة",
+    translationTakeApproximatelyMinutes: "ستستغرق الترجمة تقريبا {0} دقائق",
+    translationTakeApproximatelyMinute: "ستستغرق الترجمة تقريبا {0} دقيقة",
     unSupportedExtensionError: `خطأ! ${GM_info.scriptHandler} غير مدعوم من قبل هذه النسخة من الامتداد!\n\nيرجى استخدام نسخة cloudflare من امتداد VOT.`,
     requestTranslationFailed: "فشل طلب ترجمة الفيديو",
     audioNotReceived: "لم يتم استلام رابط الصوت",
     grantPermissionToAutoPlay: "السماح بالتشغيل التلقائي",
-    neededAdditionalExtension:
-      "هناك حاجة إلى امتداد إضافي لدعم هذا الموقع",
+    neededAdditionalExtension: "هناك حاجة إلى امتداد إضافي لدعم هذا الموقع",
     audioFormatNotSupported: "تنسيق الصوت غير مدعوم",
     VOTAutoTranslate: "الترجمة عند الفتح",
     VOTDontTranslateYourLang: "لا تترجم من لغتي",
@@ -1784,8 +1553,7 @@ const translations = {
     VOTShowVideoSlider: "شريط تحكم حجم الفيديو",
     VOTSyncVolume: "اربط حجم الترجمة والفيديو",
     VOTAudioProxy: "الصوت المستلم عبر وكيل",
-    VOTDisableFromYourLang:
-      "VOT: لقد قمت بتعطيل ترجمة الفيديو بلغتك",
+    VOTDisableFromYourLang: "VOT: لقد قمت بتعطيل ترجمة الفيديو بلغتك",
     VOTLiveNotSupported: "VOT: لا يتم دعم ترجمة البث المباشر",
     VOTPremiere: "VOT: انتظر حتى ينتهي العرض الأول قبل الترجمة",
     VOTVideoIsTooLong: "VOT: الفيديو طويل جداً",
@@ -1822,6 +1590,7 @@ const translations = {
     Gujarati: "الغوجاراتية",
     Indonesian: "الإندونيسية",
     Ukrainian: "الأوكرانية",
+    Kazakh: "الكازاخستانية",
   },
   ko: {
     recommended: "추천",
@@ -1836,10 +1605,8 @@ const translations = {
     translationTakeMoreThanHour: "번역에 1시간 이상 걸립니다",
     translationTakeAboutMinute: "번역에 약 1분 걸립니다",
     translationTakeFewMinutes: "번역에 몇 분 걸립니다",
-    translationTakeApproximatelyMinutes:
-      "번역에 약 {0}분 걸립니다",
-    translationTakeApproximatelyMinute:
-      "번역에 약 {0}분 걸립니다",
+    translationTakeApproximatelyMinutes: "번역에 약 {0}분 걸립니다",
+    translationTakeApproximatelyMinute: "번역에 약 {0}분 걸립니다",
     unSupportedExtensionError: `오류! ${GM_info.scriptHandler}는 이 버전의 확장 프로그램에서 지원되지 않습니다!\n\nVOT 확장 프로그램의 클라우드플레어 버전을 사용하십시오.`,
     requestTranslationFailed: "비디오 번역 요청 실패",
     audioNotReceived: "오디오 링크를 받지 못했습니다",
@@ -1893,6 +1660,7 @@ const translations = {
     Gujarati: "구자라트어",
     Indonesian: "인도네시아어",
     Ukrainian: "우크라이나어",
+    Kazakh: "카자흐어",
   },
   de: {
     recommended: "es wird empfohlen",
@@ -1969,6 +1737,7 @@ const translations = {
     Gujarati: "Gujarati",
     Indonesian: "Indonesisch",
     Ukrainian: "Ukrainisch",
+    Kazakh: "Kasachisch",
   },
   es: {
     recommended: "es recomendable",
@@ -2042,6 +1811,7 @@ const translations = {
     Gujarati: "Gujarati",
     Indonesian: "Indonesio",
     Ukrainian: "Ucraniano",
+    Kazakh: "Kazaja",
   },
   fr: {
     recommended: "recommande",
@@ -2117,6 +1887,7 @@ const translations = {
     Gujarati: "Gujarati",
     Indonesian: "Indonésien",
     Ukrainian: "Ukrainien",
+    Kazakh: "Kazakh",
   },
   it: {
     recommended: "è consigliabile",
@@ -2190,6 +1961,7 @@ const translations = {
     Gujarati: "Gujarati",
     Indonesian: "Indonesiano",
     Ukrainian: "Ucraino",
+    Kazakh: "Kasako",
   },
   ja: {
     recommended: "おすすめ",
@@ -2204,10 +1976,8 @@ const translations = {
     translationTakeMoreThanHour: "翻訳には1時間以上かかります",
     translationTakeAboutMinute: "翻訳には約1分かかります",
     translationTakeFewMinutes: "翻訳には数分かかります",
-    translationTakeApproximatelyMinutes:
-      "翻訳には約{0}分かかります",
-    translationTakeApproximatelyMinute:
-      "翻訳には約{0}分かかります",
+    translationTakeApproximatelyMinutes: "翻訳には約{0}分かかります",
+    translationTakeApproximatelyMinute: "翻訳には約{0}分かかります",
     unSupportedExtensionError: `エラー！ ${GM_info.scriptHandler} はこのバージョンの拡張機能ではサポートされていません！\n\nVOT拡張機能のcloudflareバージョンを使用してください。`,
     requestTranslationFailed: "動画の翻訳リクエストに失敗しました",
     audioNotReceived: "音声リンクが受信されませんでした",
@@ -2223,8 +1993,7 @@ const translations = {
     VOTShowVideoSlider: "動画の音量スライダー",
     VOTSyncVolume: "バインド翻訳とビデオボリューム",
     VOTAudioProxy: "プロキシで受信した音声",
-    VOTDisableFromYourLang:
-      "VOT：あなたの言語での動画の翻訳を無効にしました",
+    VOTDisableFromYourLang: "VOT：あなたの言語での動画の翻訳を無効にしました",
     VOTLiveNotSupported: "VOT：ライブストリームの翻訳はサポートされていません",
     VOTPremiere: "VOT：プレミアが終わるまで待ってから翻訳してください",
     VOTVideoIsTooLong: "VOT：動画が長すぎます",
@@ -2261,6 +2030,7 @@ const translations = {
     Gujarati: "グジャラート語",
     Indonesian: "インドネシア語",
     Ukrainian: "ウクライナ語",
+    Kazakh: "カザフ語",
   },
   cs: {
     recommended: "doporučeno",
@@ -2275,10 +2045,8 @@ const translations = {
     translationTakeMoreThanHour: "Překlad potrvá více než hodinu",
     translationTakeAboutMinute: "Překlad potrvá asi minutu",
     translationTakeFewMinutes: "Překlad potrvá několik minut",
-    translationTakeApproximatelyMinutes:
-      "Překlad potrvá přibližně {0} minut",
-    translationTakeApproximatelyMinute:
-      "Překlad potrvá přibližně {0} minutu",
+    translationTakeApproximatelyMinutes: "Překlad potrvá přibližně {0} minut",
+    translationTakeApproximatelyMinute: "Překlad potrvá přibližně {0} minutu",
     unSupportedExtensionError: `Chyba! ${GM_info.scriptHandler} není podporován touto verzí rozšíření!\n\nProsím použijte cloudflare verzi rozšíření VOT.`,
     requestTranslationFailed: "Nepodařilo se požádat o překlad videa",
     audioNotReceived: "Nebyl přijat odkaz na zvuk",
@@ -2294,8 +2062,7 @@ const translations = {
     VOTShowVideoSlider: "Posuvník hlasitosti videa",
     VOTSyncVolume: "Propojit hlasitost překladu a videa",
     VOTAudioProxy: "Proxy pro přijatý zvuk",
-    VOTDisableFromYourLang:
-      "VOT: Zakázali jste překlad videa ve vašem jazyce",
+    VOTDisableFromYourLang: "VOT: Zakázali jste překlad videa ve vašem jazyce",
     VOTLiveNotSupported: "VOT: Překlad živých vysílání není podporován",
     VOTPremiere: "VOT: Počkejte, až skončí premiéra, než začnete překládat",
     VOTVideoIsTooLong: "VOT: Video je příliš dlouhé",
@@ -2332,14 +2099,86 @@ const translations = {
     Gujarati: "Gudžarátština",
     Indonesian: "Indonéština",
     Ukrainian: "Ukrajinština",
+    Kazakh: "Kazašský",
+  },
+  kk: {
+    recommended: "ұсынылатын",
+    translateVideo: "Бейне тілін аудару",
+    disableTranslate: "Өшіру",
+    translationSettings: "Аудару параметрлері",
+    resetSettings: "Параметрлерді қалпына келтіру",
+    videoBeingTranslated: "Бейне аударылуда",
+    videoLanguage: "Бейне тілі",
+    translationLanguage: "Аудару тілі",
+    translationTake: "Аудару көзететін уақыт",
+    translationTakeMoreThanHour: "Аудару бір сағаттан артық уақыт алады",
+    translationTakeAboutMinute: "Аудару бір минуттан аз уақыт алады",
+    translationTakeFewMinutes: "Аудару бірнеше минуттан аз уақыт алады",
+    translationTakeApproximatelyMinutes:
+      "Аудару жағдайында тағы {0} минут тұрады",
+    translationTakeApproximatelyMinute:
+      "Аудару жағдайында тағы {0} минут тұрады",
+    unSupportedExtensionError: `Қате! ${GM_info.scriptHandler} көмекшілікті бұл нұсқасымен қолдаулары жоқ!\n\nVOT көмекшілігінің cloudflare-нұсқасын пайдаланыңыз.`,
+    requestTranslationFailed: "Бейненің аударуын сұрау сәтсіз аяқталды",
+    audioNotReceived: "Аудиоға сілтеме алынбады",
+    grantPermissionToAutoPlay: "Автоматты түрде ойнатуға рұқсат беріңіз",
+    neededAdditionalExtension: "Бұл сайты қолдау үшін қосымша көмекшілік керек",
+    audioFormatNotSupported: "Аудио пішімі қолдаулы емес",
+    VOTAutoTranslate: "Ашылғанда аудару",
+    VOTDontTranslateYourLang: "Туылған тілді аудармау",
+    VOTVolume: "Бейне тыңдауы",
+    VOTVolumeTranslation: "Аудару тыңдауы",
+    VOTAutoSetVolume: "Бейненің тыңдауын бұзу",
+    VOTShowVideoSlider: "Бейне тыңдауы сызғышы",
+    VOTSyncVolume: "Аудару тыңдауын бейненің тыңдауына байланыстыру",
+    VOTAudioProxy: "Алынған аудионы прокси",
+    VOTDisableFromYourLang: "VOT: Сіздің тіліңіздегі бейнені аудармау",
+    VOTLiveNotSupported:
+      "VOT: Жылжымайтын трансляцияларды аудару қолдаулы емес",
+    VOTPremiere: "VOT: Алдын ала шоу аяқталғаннан кейін аударыңыз",
+    VOTVideoIsTooLong: "VOT: Бейне тым ұзын",
+    VOTNoVideoIDFound: "VOT: Бейне ID табылмады",
+    VOTFailedInitDB: "VOT: Деректер қорытындысын іске қосу сәтсіз аяқталды",
+    VOTDBNeedUpdate:
+      "VOT: Деректер қорытындысын жаңарту керек, жаңарту үшін бетті қайта жүктеңіз",
+    VOTDisabledForDBUpdating: `VOT: Деректер базасын жаңарту қатесінен VOT өшірілді. ${window.location.hostname} сайтындағы барлық терезелерді жабыңыз және қайтадан көріңіз`,
+    VOTFailedWriteToDB:
+      "VOT: Деректер базасына деректерді жазу сәтсіз аяқталды",
+    VOTFailedReadFromDB:
+      "VOT: Деректер базасынан деректерді оқу сәтсіз аяқталды",
+    Russian: "Орыс",
+    English: "Ағылшын",
+    Chinese: "Қытай",
+    French: "Француз",
+    Italian: "Итальян",
+    Spanish: "Испан",
+    German: "Неміс",
+    Korean: "Корей",
+    Japanese: "Жапон",
+    Arabic: "Араб",
+    Bengali: "Бенгал",
+    Portuguese: "Португал",
+    Czech: "Чех",
+    Hindi: "Ҳинд",
+    Marathi: "Маратхи",
+    Telugu: "Телугу",
+    Turkish: "Түрік",
+    Malay: "Малай",
+    Vietnamese: "Вьетнам",
+    Tamil: "Тамил",
+    Javanese: "Ява",
+    Urdu: "Урду",
+    Persian: "Парсы",
+    Gujarati: "Гуджарати",
+    Indonesian: "Индонезиялық",
+    Ukrainian: "Украин",
+    Kazakh: "Қазақша",
   },
 };
 
 
 
 ;// CONCATENATED MODULE: ./src/utils/debug.js
-
-
 const debug = {};
 debug.log = (...text) => {
   if (true) {
@@ -2350,24 +2189,6 @@ debug.log = (...text) => {
     "background: #F2452D; color: #fff; padding: 5px;",
     ...text
   );
-};
-
-debug.translations = (testLang) => {
-  if (true) {
-    return;
-  }
-  // for add indexes
-  const testedTranslations = Object.entries(translations[testLang]).map(
-    ([key, value]) => ({
-      phrase: key,
-      translated: value,
-    })
-  );
-  testedTranslations.unshift({
-    phrase: "language_code (debug only)",
-    translated: testLang,
-  });
-  return console.table(testedTranslations);
 };
 
 /* harmony default export */ const utils_debug = (debug);
@@ -2558,6 +2379,21 @@ function createMenuSelect(id, selectOptions) {
   selectContainer.appendChild(select);
 
   return selectContainer;
+}
+
+function genOptionsByOBJ(obj, conditionString) {
+  return Object.entries(obj).map(([key, value]) => ({
+    label: translations[lang][value],
+    value: key,
+    selected: conditionString === key,
+  }));
+
+  return {
+    label,
+    value,
+    selected,
+    disabled,
+  };
 }
 
 
@@ -3226,14 +3062,6 @@ let ytData = "";
 async function src_main() {
   utils_debug.log("Loading extension...");
   utils_debug.log(`Selected menu language: ${lang}`);
-  // test all translations in console
-  // debug.translations('ru');
-  // debug.translations('en');
-  // debug.translations('de');
-  // debug.translations('zh');
-  // debug.translations('es');
-  // debug.translations('fr');
-  // debug.translations('it');
 
   const rvt = await Promise.resolve(/* import() */).then(__webpack_require__.bind(__webpack_require__, "./src/rvt.js"));
 
@@ -3339,7 +3167,7 @@ async function src_main() {
           return;
         }
 
-        const translateResponse = yandexRequests/* yandexRequests */.G.decodeResponse(response);
+        const translateResponse = yandexRequests/* yandexRequests.decodeResponse */.G.decodeResponse(response);
         console.log("VOT Response: ", translateResponse);
 
         switch (translateResponse.status) {
@@ -3433,11 +3261,7 @@ async function src_main() {
           value: "default",
           disabled: true,
         },
-        ...Object.entries(availableLangs).map(([key, value]) => ({
-          label: translations[lang][value],
-          value: key,
-          selected: videoData.detectedLanguage === key,
-        })),
+        ...genOptionsByOBJ(availableLangs, videoData.detectedLanguage),
       ];
 
       const selectToLangOptions = [
@@ -3446,11 +3270,13 @@ async function src_main() {
           value: "default",
           disabled: true,
         },
-        ...Object.entries(availableLangs).map(([key, value]) => ({
-          label: translations[lang][value],
-          value: key,
-          selected: videoData.responseLanguage === key,
-        })),
+        ...genOptionsByOBJ(availableLangs, videoData.responseLanguage),
+        {
+          label: "─────────",
+          value: "separator",
+          disabled: true,
+        },
+        ...genOptionsByOBJ(additionalTTS, videoData.responseLanguage),
       ];
 
       const selectFromLang = createMenuSelect(
@@ -3477,16 +3303,22 @@ async function src_main() {
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
           utils_debug.log("[onchange] select from language", event.target.value);
-          videoData = await getVideoData()
-          await setSelectMenuValues(event.target.value, videoData.responseLanguage);
+          videoData = await getVideoData();
+          await setSelectMenuValues(
+            event.target.value,
+            videoData.responseLanguage
+          );
         });
 
       menuOptions
         .querySelector("#VOTTranslateToLang")
         .addEventListener("change", async (event) => {
           utils_debug.log("[onchange] select to language", event.target.value);
-          videoData = await getVideoData()
-          await setSelectMenuValues(videoData.detectedLanguage, event.target.value);
+          videoData = await getVideoData();
+          await setSelectMenuValues(
+            videoData.detectedLanguage,
+            event.target.value
+          );
         });
     }
 
@@ -3691,8 +3523,8 @@ async function src_main() {
       document.querySelector("#VOTTranslateFromLang").value = from;
       document.querySelector("#VOTTranslateToLang").value = to;
       console.log(`Set translation from ${from} to ${to}`);
-      videoData.detectedLanguage = from
-      videoData.responseLanguage = to
+      videoData.detectedLanguage = from;
+      videoData.responseLanguage = to;
     }
 
     // data - ytData or VideoData
@@ -4039,8 +3871,11 @@ async function src_main() {
 
     const translateExecutor = async (VIDEO_ID) => {
       if (!videoData.detectedLanguage) {
-        videoData = await getVideoData()
-        await setSelectMenuValues(videoData.detectedLanguage, videoData.responseLanguage);
+        videoData = await getVideoData();
+        await setSelectMenuValues(
+          videoData.detectedLanguage,
+          videoData.responseLanguage
+        );
       }
       utils_debug.log("Run videoValidator");
       await videoValidator();
@@ -4265,11 +4100,11 @@ async function src_main() {
     document.addEventListener("touchend", (event) =>
       changeOpacityOnEvent(event, timer, opacityRatio)
     );
-    document.querySelectorAll("video").forEach(video => {
+    document.querySelectorAll("video").forEach((video) => {
       video.addEventListener("abort", async () => {
-      utils_debug.log("lipsync mode is abort");
-      await stopTranslation();
-      videoData = ""
+        utils_debug.log("lipsync mode is abort");
+        await stopTranslation();
+        videoData = "";
       });
     });
 
@@ -4630,6 +4465,7 @@ async function src_main() {
 src_main().catch((e) => {
   console.error(e);
 });
+
 })();
 
 /******/ })()
