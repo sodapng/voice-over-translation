@@ -3868,7 +3868,7 @@ async function src_main() {
       }
     };
 
-    async function addVideoSlider() {
+    function addVideoSlider() {
       if (
         dbShowVideoSlider !== 1 ||
         document.querySelector("#VOTVideoSlider") ||
@@ -4173,7 +4173,7 @@ async function src_main() {
             events.forEach((e) => v.addEventListener(e, handleVideoEvent))
           );
           transformBtn("success", translations[lang].disableTranslate);
-          await addVideoSlider();
+          addVideoSlider();
           await addTranslationSlider();
 
           const VOTVideoSlider = document.querySelector("#VOTVideoSlider");
