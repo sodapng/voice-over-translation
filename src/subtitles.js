@@ -179,14 +179,14 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
 
           let subtitles = subtitlesResponse.subtitles ?? [];
           subtitles = subtitles.reduce((result, yaSubtitlesObject) => {
-            if ("language" in yaSubtitlesObject) {
+            if (yaSubtitlesObject.language) {
               result.push({
                 source: "yandex",
                 language: yaSubtitlesObject.language,
                 url: yaSubtitlesObject.url,
               });
             }
-            if ("translatedLanguage" in yaSubtitlesObject) {
+            if (yaSubtitlesObject.translatedLanguage) {
               result.push({
                 source: "yandex",
                 language: yaSubtitlesObject.translatedLanguage,
@@ -202,7 +202,7 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
       );
     })
   ]);
-  return [...yaSubtitles, ...ytSubtitles].sort((a, b) => {
+  const subtitles = [...yaSubtitles, ...ytSubtitles].sort((a, b) => {
     if (a.source !== b.source) { // sort by source
       return a.source === "yandex" ? -1 : 1;
     }
@@ -222,4 +222,101 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
     }
     return 0;
   });
+  console.log("[VOT] subtitles list", subtitles);
+  return subtitles;
+}
+
+var subtitlesWidget = null;
+
+export function addSubtitlesWidget(element) {
+  if (element.querySelector(".VOTSubtitlesWidget")) return;
+
+  const container = document.createElement("div");
+  container.classList.add("VOTSubtitlesWidget");
+  element.appendChild(container);
+  subtitlesWidget = container;
+
+  let dragging = false;
+  let containerRect, elementRect;
+  let offsetX, offsetY;
+
+  function onMouseDown(e) {
+    if (container.contains(e.target)) {
+      containerRect = container.getBoundingClientRect();
+      elementRect = element.getBoundingClientRect();
+      offsetX = e.clientX - containerRect.x;
+      offsetY = e.clientY - containerRect.y;
+      dragging = true;
+    }
+  }
+
+  function onMouseUp() {
+    dragging = false;
+  }
+
+  function onMouseMove(e) {
+    if (dragging) {
+      e.preventDefault();
+      const x = e.clientX - offsetX;
+      const y = e.clientY - offsetY;
+      const top = y >= elementRect.top;
+      const bottom = y + containerRect.height <= elementRect.bottom;
+      const left = x >= elementRect.left;
+      const right = x + containerRect.width <= elementRect.right;
+
+      if (top && bottom) {
+        container.style.top = `${y - elementRect.y}px`;
+      } else {
+        if (!top) {
+          container.style.top = `${0}px`;
+        } else {
+          container.style.top = `${elementRect.height - containerRect.height}px`;
+        }
+      }
+      if (left && right) {
+        container.style.left = `${x - elementRect.x}px`;
+      } else {
+        if (!left) {
+          container.style.left = `${0}px`;
+        } else {
+          container.style.left = `${elementRect.width - containerRect.width}px`;
+        }
+      }
+    }
+  }
+
+  document.addEventListener('mousedown', onMouseDown);
+  document.addEventListener('mouseup', onMouseUp);
+  document.addEventListener('mousemove', onMouseMove);
+}
+
+var subtitles = null;
+var lastText = null;
+
+function onTimeUpdate(event) {
+  let text = "";
+  const time = event.target.currentTime * 1000;
+  const line = subtitles.subtitles.findLast((e) => {
+    if (e.startMs < time && time < e.startMs + e.durationMs) {
+      return e;
+    }
+  });
+  if (line) {
+    text = line.text;
+  }
+  if (text !== lastText) {
+    lastText = text;
+    subtitlesWidget.innerHTML = text ? `<div>${text.replace("\\n", "<br>")}</div>` : "";
+  }
+}
+
+export function setSubtitlesWidgetContent(video, subs) {
+  if (subs) {
+    subtitles = subs;
+    video?.addEventListener("timeupdate", onTimeUpdate);
+  } else {
+    subtitles = null;
+    video?.removeEventListener("timeupdate", onTimeUpdate);
+    subtitlesWidget.innerHTML = "";
+  }
 }
