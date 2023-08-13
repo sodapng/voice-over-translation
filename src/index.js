@@ -203,7 +203,7 @@ async function main() {
     let volumeOnStart;
     let tempOriginalVolume;
     let tempVolume;
-    let dbHightlightWords;
+    let dbHighlightWords;
     let dbAutoTranslate;
     let dbDefaultVolume;
     let dbShowVideoSlider;
@@ -405,7 +405,7 @@ async function main() {
     if (isDBInited) {
       const dbData = await readDB();
       if (dbData) {
-        dbHightlightWords = false; // TODO
+        dbHighlightWords = false; // TODO
         dbAutoTranslate = dbData.autoTranslate;
         dbDefaultVolume = dbData.defaultVolume;
         dbShowVideoSlider = dbData.showVideoSlider;
@@ -417,26 +417,26 @@ async function main() {
         debug.log("[db] data from db: ", dbData);
 
         // if (
-        //   dbHightlightWords !== undefined &&
+        //   dbHighlightWords !== undefined &&
         //   menuOptions &&
-        //   !menuOptions.querySelector("#VOTHightlightWords")
+        //   !menuOptions.querySelector("#VOTHighlightWords")
         // ) {
         //   const checkbox = createMenuCheckbox(
-        //     "VOTHightlightWords",
-        //     dbHightlightWords,
-        //     "Hightlight words"
+        //     "VOTHighlightWords",
+        //     dbHighlightWords,
+        //     "Highlight words"
         //   );
 
-        //   checkbox.querySelector("#VOTHightlightWords").onclick = async (
+        //   checkbox.querySelector("#VOTHighlightWords").onclick = async (
         //     event
         //   ) => {
         //     event.stopPropagation();
         //     const value = Number(event.target.checked);
-        //     // await updateDB({ hightlightWords: value }); // TODO
-        //     dbHightlightWords = value;
+        //     // await updateDB({ highlightWords: value }); // TODO
+        //     dbHighlightWords = value;
         //     debug.log(
-        //       "hightlightWords value changed. New value: ",
-        //       dbHightlightWords
+        //       "highlightWords value changed. New value: ",
+        //       dbHighlightWords
         //     );
         //   };
 
