@@ -2,6 +2,7 @@ import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { sleep } from "./utils/utils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
 import { siteTranslates } from "./config/constants.js"
+import { lang } from "./menu.js";
 import requestVideoSubtitles from "./rvs.js";
 import debug from "./utils/debug.js";
 
@@ -179,7 +180,18 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
 
           let subtitles = subtitlesResponse.subtitles ?? [];
           subtitles = subtitles.reduce((result, yaSubtitlesObject) => {
-            if (yaSubtitlesObject.language) {
+            if (
+              yaSubtitlesObject.language &&
+              !result.find((e) => {
+                if (
+                  e.source === "yandex" &&
+                  e.language === yaSubtitlesObject.language &&
+                  e.translatedFromLanguage === yaSubtitlesObject.translatedLanguage
+                ) {
+                  return e;
+                }
+              })
+            ) {
               result.push({
                 source: "yandex",
                 language: yaSubtitlesObject.language,
@@ -206,14 +218,20 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
     if (a.source !== b.source) { // sort by source
       return a.source === "yandex" ? -1 : 1;
     }
+    if (a.language !== b.language && (a.language === lang || b.language === lang)) { // sort by user language
+      return a.language === lang ? -1 : 1;
+    }
     if (a.source === "yandex") { // sort by translation
       if (a.translatedFromLanguage !== b.translatedFromLanguage) { // sort by translatedFromLanguage
-        if (a.translatedFromLanguage === undefined || b.translatedFromLanguage === undefined) { // sort by isTranslated
-          return a.translatedFromLanguage === undefined ? 1 : -1;
+        if (!a.translatedFromLanguage || !b.translatedFromLanguage) { // sort by isTranslated
+          if (a.language === b.language) {
+            return a.translatedFromLanguage ? 1 : -1;
+          }
+          return !a.translatedFromLanguage ? 1 : -1;
         }
         return a.translatedFromLanguage === requestLang ? -1 : 1;
       }
-      if (a.translatedFromLanguage === undefined) { // sort non translated by language
+      if (!a.translatedFromLanguage) { // sort non translated by language
         return a.language === requestLang ? -1 : 1;
       }
     }
@@ -302,7 +320,18 @@ function onTimeUpdate(event) {
     }
   });
   if (line) {
-    text = line.text;
+    if (line.text.length > 300) {
+      let chunks = line.text.match(/.{1,300}(?:\s|$)/g);
+      let chunkDurationMs = line.durationMs / chunks.length;
+      for (let i = 0; i < chunks.length; i++) {
+        if (line.startMs + chunkDurationMs * i < time && time < line.startMs + chunkDurationMs * (i + 1)) {
+          text = chunks[i].trim();
+          break;
+        }
+      }
+    } else {
+      text = line.text;
+    }
   }
   if (text !== lastText) {
     lastText = text;
