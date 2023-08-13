@@ -186,7 +186,7 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
                 if (
                   e.source === "yandex" &&
                   e.language === yaSubtitlesObject.language &&
-                  e.translatedFromLanguage === yaSubtitlesObject.translatedLanguage
+                  !e.translatedFromLanguage
                 ) {
                   return e;
                 }
