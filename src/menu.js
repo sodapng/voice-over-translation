@@ -121,7 +121,7 @@ function createMenuCheckbox(id, valueToCheck, content) {
 }
 
 // Create slider for menu
-function createMenuSlider(id, sliderValue, content) {
+function createMenuSlider(id, sliderValue, content, min = 0, max = 100) {
   const sliderContainer = document.createElement("div");
   const slider = document.createElement("input");
   const sliderLabel = document.createElement("label");
@@ -129,8 +129,8 @@ function createMenuSlider(id, sliderValue, content) {
   slider.type = "range";
   slider.id = id;
   slider.classList.add("VOTMenuSlider");
-  slider.min = 0;
-  slider.max = 100;
+  slider.min = min;
+  slider.max = max;
   slider.value = sliderValue;
 
   sliderLabel.htmlFor = id;

@@ -244,7 +244,7 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
   return subtitles;
 }
 
-var subtitlesWidget = null;
+var _subtitlesWidget = null;
 
 export function addSubtitlesWidget(element) {
   if (element.querySelector(".VOTSubtitlesWidget")) return;
@@ -252,7 +252,7 @@ export function addSubtitlesWidget(element) {
   const container = document.createElement("div");
   container.classList.add("VOTSubtitlesWidget");
   element.appendChild(container);
-  subtitlesWidget = container;
+  _subtitlesWidget = container;
 
   let dragging = false;
   let containerRect, elementRect;
@@ -308,20 +308,25 @@ export function addSubtitlesWidget(element) {
   document.addEventListener('mousemove', onMouseMove);
 }
 
-var subtitles = null;
-var lastText = null;
+var _subtitles = null;
+var _video = null;
+var _lastText = null;
+var _maxLength = 300;
+var _maxLengthRegexp = /.{1,300}(?:\s|$)/g;
 
-function onTimeUpdate(event) {
+function updateSubtitles(video) {
+  if (!video) return; 
+
   let text = "";
-  const time = event.target.currentTime * 1000;
-  const line = subtitles.subtitles.findLast((e) => {
+  const time = video.currentTime * 1000;
+  const line = _subtitles.subtitles.findLast((e) => {
     if (e.startMs < time && time < e.startMs + e.durationMs) {
       return e;
     }
   });
   if (line) {
-    if (line.text.length > 300) {
-      let chunks = line.text.match(/.{1,300}(?:\s|$)/g);
+    if (line.text.length > _maxLength) {
+      let chunks = line.text.match(_maxLengthRegexp);
       let chunkDurationMs = line.durationMs / chunks.length;
       for (let i = 0; i < chunks.length; i++) {
         if (line.startMs + chunkDurationMs * i < time && time < line.startMs + chunkDurationMs * (i + 1)) {
@@ -333,19 +338,33 @@ function onTimeUpdate(event) {
       text = line.text;
     }
   }
-  if (text !== lastText) {
-    lastText = text;
-    subtitlesWidget.innerHTML = text ? `<div>${text.replace("\\n", "<br>")}</div>` : "";
+  if (text !== _lastText) {
+    _lastText = text;
+    _subtitlesWidget.innerHTML = text ? `<div>${text.replace("\\n", "<br>")}</div>` : "";
   }
 }
 
-export function setSubtitlesWidgetContent(video, subs) {
-  if (subs) {
-    subtitles = subs;
+function onTimeUpdate(event) {
+  updateSubtitles(event.target);
+}
+
+export function setSubtitlesWidgetContent(video, subtitles) {
+  if (subtitles && video) {
+    _subtitles = subtitles;
+    _video = video;
     video?.addEventListener("timeupdate", onTimeUpdate);
+    updateSubtitles(video);
   } else {
-    subtitles = null;
+    _subtitles = null;
     video?.removeEventListener("timeupdate", onTimeUpdate);
-    subtitlesWidget.innerHTML = "";
+    _subtitlesWidget.innerHTML = "";
+  }
+}
+
+export function setSubtitlesMaxLength(len) {
+  if (typeof len === "number") {
+    _maxLength = len;
+    _maxLengthRegexp = new RegExp(`.{1,${len}}(?:\\s|$)`, "g");
+    updateSubtitles(_video);
   }
 }

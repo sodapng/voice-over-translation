@@ -31,6 +31,7 @@ import {
   fetchSubtitles,
   addSubtitlesWidget,
   setSubtitlesWidgetContent,
+  setSubtitlesMaxLength,
 } from "./subtitles.js";
 
 const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
@@ -203,6 +204,7 @@ async function main() {
     let volumeOnStart;
     let tempOriginalVolume;
     let tempVolume;
+    let dbSubtitlesMaxLength;
     let dbHighlightWords;
     let dbAutoTranslate;
     let dbDefaultVolume;
@@ -247,8 +249,14 @@ async function main() {
     } else {
       addSubtitlesWidget(container);
     }
-    await changeSubtitlesLang("disabled");
-
+    // Update subtitles
+    {
+      await changeSubtitlesLang("disabled");
+      let slider = document.querySelector(".translationMenuOptions")?.querySelector("#VOTSubtitlesMaxLengthSlider");
+      if (slider) {
+        setSubtitlesMaxLength(Number(slider.value));
+      }
+    }
 
     try {
       isDBInited = await initDB();
@@ -405,6 +413,7 @@ async function main() {
     if (isDBInited) {
       const dbData = await readDB();
       if (dbData) {
+        dbSubtitlesMaxLength = 300; // TODO
         dbHighlightWords = false; // TODO
         dbAutoTranslate = dbData.autoTranslate;
         dbDefaultVolume = dbData.defaultVolume;
@@ -415,6 +424,34 @@ async function main() {
         dbSyncVolume = dbData.syncVolume; // youtube only
 
         debug.log("[db] data from db: ", dbData);
+
+        if (dbSubtitlesMaxLength !== undefined) {
+          setSubtitlesMaxLength(dbSubtitlesMaxLength);
+        }
+
+        if (
+          dbSubtitlesMaxLength !== undefined &&
+          menuOptions &&
+          !menuOptions.querySelector("#VOTSubtitlesMaxLengthSlider")
+        ) {
+          const slider = createMenuSlider(
+            "VOTSubtitlesMaxLengthSlider",
+            dbSubtitlesMaxLength,
+            `${translations[lang].VOTSubtitlesMaxLength}: <b id="VOTSubtitlesMaxLengthValue">${dbSubtitlesMaxLength}</b>`, // TODO: add localization
+            50,
+            300
+          );
+
+          slider.querySelector("#VOTSubtitlesMaxLengthSlider").oninput = async (event) => {
+            const value = Number(event.target.value);
+            // await updateDB({ subtitlesMaxLength: value }); // TODO
+            dbSubtitlesMaxLength = value;
+            slider.querySelector("#VOTSubtitlesMaxLengthValue").innerText = `${value}`;
+            setSubtitlesMaxLength(value);
+          };
+
+          menuOptions.appendChild(slider);
+        }
 
         // if (
         //   dbHighlightWords !== undefined &&
