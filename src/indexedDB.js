@@ -2,7 +2,7 @@ import { lang } from "./menu.js";
 import { translations } from "./config/constants.js";
 
 // --- IndexedDB functions start:
-const dbVersion = 2; // current db version
+const dbVersion = 3; // current db version
 const settingsDefault = {
   key: "settings",
   autoTranslate: 0,
@@ -15,6 +15,11 @@ const settingsDefault = {
 
 const valuesV2 = {
   audioProxy: 0,
+};
+
+const valuesV3 = {
+  subtitlesMaxLength: 300,
+  highlightWords: 0,
 };
 
 function openDB(name) {
@@ -142,6 +147,11 @@ async function initDB() {
         // db is outdated (db version is 1)
         updateVersionProccessor(openRequest.transaction, db, valuesV2);
       }
+
+      if (event.oldVersion < 3) {
+        // db is outdated (db version is 1)
+        updateVersionProccessor(openRequest.transaction, db, valuesV3);
+      }
     };
 
     openRequest.onsuccess = () => {
@@ -175,6 +185,8 @@ async function updateDB({
   autoSetVolumeYandexStyle,
   dontTranslateYourLang,
   audioProxy,
+  subtitlesMaxLength,
+  highlightWords,
 }) {
   return new Promise((resolve, reject) => {
     if (
@@ -184,7 +196,9 @@ async function updateDB({
       typeof syncVolume === "number" ||
       typeof autoSetVolumeYandexStyle === "number" ||
       typeof dontTranslateYourLang === "number" ||
-      typeof audioProxy === "number"
+      typeof audioProxy === "number" ||
+      typeof subtitlesMaxLength === "number" ||
+      typeof highlightWords === "number"
     ) {
       const openRequest = openDB("VOT");
 
@@ -255,6 +269,14 @@ async function updateDB({
 
           if (typeof audioProxy === "number") {
             data.audioProxy = audioProxy;
+          }
+
+          if (typeof subtitlesMaxLength === "number") {
+            data.subtitlesMaxLength = subtitlesMaxLength;
+          }
+
+          if (typeof highlightWords === "number") {
+            data.highlightWords = highlightWords;
           }
 
           const requestUpdate = objectStore.put(data);

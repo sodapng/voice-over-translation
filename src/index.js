@@ -250,14 +250,7 @@ async function main() {
     } else {
       addSubtitlesWidget(container);
     }
-    // Update subtitles
-    {
-      await changeSubtitlesLang("disabled");
-      let slider = document.querySelector(".translationMenuOptions")?.querySelector("#VOTSubtitlesMaxLengthSlider");
-      if (slider) {
-        setSubtitlesMaxLength(Number(slider.value));
-      }
-    }
+    await changeSubtitlesLang("disabled");
 
     try {
       isDBInited = await initDB();
@@ -414,8 +407,8 @@ async function main() {
     if (isDBInited) {
       const dbData = await readDB();
       if (dbData) {
-        dbSubtitlesMaxLength = 300; // TODO
-        dbHighlightWords = false; // TODO
+        dbSubtitlesMaxLength = dbData.subtitlesMaxLength;
+        dbHighlightWords = dbData.highlightWords;
         dbAutoTranslate = dbData.autoTranslate;
         dbDefaultVolume = dbData.defaultVolume;
         dbShowVideoSlider = dbData.showVideoSlider;
@@ -428,6 +421,10 @@ async function main() {
 
         if (dbSubtitlesMaxLength !== undefined) {
           setSubtitlesMaxLength(dbSubtitlesMaxLength);
+        }
+
+        if (dbHighlightWords !== undefined) {
+          setSubtitlesHighlightWords(dbHighlightWords);
         }
 
         if (
@@ -445,7 +442,7 @@ async function main() {
 
           slider.querySelector("#VOTSubtitlesMaxLengthSlider").oninput = async (event) => {
             const value = Number(event.target.value);
-            // await updateDB({ subtitlesMaxLength: value }); // TODO
+            await updateDB({ subtitlesMaxLength: value });
             dbSubtitlesMaxLength = value;
             slider.querySelector("#VOTSubtitlesMaxLengthValue").innerText = `${value}`;
             setSubtitlesMaxLength(value);
@@ -470,7 +467,7 @@ async function main() {
           ) => {
             event.stopPropagation();
             const value = Number(event.target.checked);
-            // await updateDB({ highlightWords: value }); // TODO
+            await updateDB({ highlightWords: value });
             dbHighlightWords = value;
             debug.log(
               "highlightWords value changed. New value: ",
