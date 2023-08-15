@@ -202,6 +202,7 @@ async function main() {
     let dbAudioProxy; // cf version only
     let firstPlay = true;
     let isDBInited;
+    let userlang;
     let videoData = "";
 
     debug.log("videoContainer", videoContainer);
@@ -315,6 +316,7 @@ async function main() {
         dbShowVideoSlider = dbData.showVideoSlider;
         dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
         dontTranslateYourLang = dbData.dontTranslateYourLang;
+        userlang = dbData.userlang
         dbAudioProxy = dbData.audioProxy; // cf version only
         dbSyncVolume = dbData.syncVolume; // youtube only
 
@@ -529,6 +531,7 @@ async function main() {
       console.log(`Set translation from ${from} to ${to}`);
       videoData.detectedLanguage = from;
       videoData.responseLanguage = to;
+      await updateDB({ userlang: to });
     }
 
     // data - ytData or VideoData
