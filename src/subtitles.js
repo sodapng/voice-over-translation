@@ -99,14 +99,14 @@ function formatYoutubeSubtitles(subtitles) {
     console.error("[VOT] Failed to format youtube subtitles", subtitles);
     return result;
   }
-  for (const e of subtitles.events) {
-    if (!e.segs) continue;
-    const text = e.segs.map((e => e.utf8.replace(/^ +| +$/g, ""))).join(" ");
+  for (let i = 0; i < subtitles.events.length; i++) {
+    if (!subtitles.events[i].segs) continue;
+    const text = subtitles.events[i].segs.map((e => e.utf8.replace(/^ +| +$/g, ""))).join(" ");
     if (text !== "\n") {
       result.subtitles.push({
         text,
-        startMs: e.tStartMs,
-        durationMs: e.dDurationMs
+        startMs: subtitles.events[i].tStartMs,
+        durationMs: subtitles.events[i + 1] ? subtitles.events[i + 1].tStartMs - subtitles.events[i].tStartMs : subtitles.events[i].dDurationMs
       });
     }
   }
@@ -322,9 +322,7 @@ function updateSubtitles(video) {
   let highlightWords = _highlightWords && _subtitles.containsTokens;
   const time = video.currentTime * 1000;
   const line = _subtitles.subtitles.findLast((e) => {
-    if (e.startMs < time && time < e.startMs + e.durationMs) {
-      return e;
-    }
+    return e.startMs < time && time < e.startMs + e.durationMs;
   });
   if (line) {
     if (highlightWords) {
@@ -360,7 +358,7 @@ function updateSubtitles(video) {
       for (let token of tokens) {
         const passedMs = token.startMs + token.durationMs / 2;
         content += `<span ${
-          (time > passedMs) || (time > token.startMs - 100 && time - passedMs < 275) ? "class=\"passed\"" : ""
+          (time > passedMs) || (time > token.startMs - 100 && passedMs - time < 275) ? "class=\"passed\"" : ""
         }>${token.text}</span>`;
       }
     } else {

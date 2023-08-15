@@ -438,7 +438,7 @@ async function main() {
           const slider = createMenuSlider(
             "VOTSubtitlesMaxLengthSlider",
             dbSubtitlesMaxLength,
-            `${translations[lang].VOTSubtitlesMaxLength}: <b id="VOTSubtitlesMaxLengthValue">${dbSubtitlesMaxLength}</b>`, // TODO: add localization
+            `${translations[lang].VOTSubtitlesMaxLength}: <b id="VOTSubtitlesMaxLengthValue">${dbSubtitlesMaxLength}</b>`,
             50,
             300
           );
