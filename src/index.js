@@ -32,6 +32,7 @@ import {
   addSubtitlesWidget,
   setSubtitlesWidgetContent,
   setSubtitlesMaxLength,
+  setSubtitlesHighlightWords,
 } from "./subtitles.js";
 
 const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
@@ -453,32 +454,33 @@ async function main() {
           menuOptions.appendChild(slider);
         }
 
-        // if (
-        //   dbHighlightWords !== undefined &&
-        //   menuOptions &&
-        //   !menuOptions.querySelector("#VOTHighlightWords")
-        // ) {
-        //   const checkbox = createMenuCheckbox(
-        //     "VOTHighlightWords",
-        //     dbHighlightWords,
-        //     "Highlight words"
-        //   );
+        if (
+          dbHighlightWords !== undefined &&
+          menuOptions &&
+          !menuOptions.querySelector("#VOTHighlightWords")
+        ) {
+          const checkbox = createMenuCheckbox(
+            "VOTHighlightWords",
+            dbHighlightWords,
+            translations[lang].VOTHighlightWords
+          );
 
-        //   checkbox.querySelector("#VOTHighlightWords").onclick = async (
-        //     event
-        //   ) => {
-        //     event.stopPropagation();
-        //     const value = Number(event.target.checked);
-        //     // await updateDB({ highlightWords: value }); // TODO
-        //     dbHighlightWords = value;
-        //     debug.log(
-        //       "highlightWords value changed. New value: ",
-        //       dbHighlightWords
-        //     );
-        //   };
+          checkbox.querySelector("#VOTHighlightWords").onclick = async (
+            event
+          ) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            // await updateDB({ highlightWords: value }); // TODO
+            dbHighlightWords = value;
+            debug.log(
+              "highlightWords value changed. New value: ",
+              dbHighlightWords
+            );
+            setSubtitlesHighlightWords(value);
+          };
 
-        //   menuOptions.appendChild(checkbox);
-        // }
+          menuOptions.appendChild(checkbox);
+        }
 
         if (
           dbAutoTranslate !== undefined &&

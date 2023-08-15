@@ -287,3 +287,7 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+.VOTSubtitlesWidget .passed {
+  color: #9e84ff;
+}
