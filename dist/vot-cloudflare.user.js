@@ -3916,11 +3916,15 @@ function formatYoutubeSubtitles(subtitles) {
   for (let i = 0; i < subtitles.events.length; i++) {
     if (!subtitles.events[i].segs) continue;
     const text = subtitles.events[i].segs.map((e => e.utf8.replace(/^ +| +$/g, ""))).join(" ");
+    let durationMs = subtitles.events[i].dDurationMs;
+    if (subtitles.events[i + 1] && subtitles.events[i].tStartMs + subtitles.events[i].dDurationMs > subtitles.events[i + 1].tStartMs) {
+      durationMs = subtitles.events[i + 1].tStartMs - subtitles.events[i].tStartMs;
+    }
     if (text !== "\n") {
       result.subtitles.push({
         text,
         startMs: subtitles.events[i].tStartMs,
-        durationMs: subtitles.events[i + 1] ? subtitles.events[i + 1].tStartMs - subtitles.events[i].tStartMs : subtitles.events[i].dDurationMs
+        durationMs
       });
     }
   }
