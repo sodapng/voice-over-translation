@@ -1,8 +1,5 @@
-backups/
 .vscode
 .pytest_cache
-vot-cli-py/*
-tests/*
 
 # Logs
 logs
