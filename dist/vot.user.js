@@ -92,7 +92,7 @@
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/css-loader/dist/runtime/noSourceMaps.js");
 /* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
@@ -103,7 +103,254 @@
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".translationBlock {\r\n  padding: 0.45rem !important;\r\n  width: max-content;\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  border-radius: 0.5rem !important;\r\n  left: 50%;\r\n  top: 5rem;\r\n  transform: translate(-50%);\r\n  text-align: center;\r\n  opacity: 0;\r\n  transition: opacity 1s;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n  user-select: none;\r\n  z-index: 100;\r\n}\r\n\r\n.translationBtn {\r\n  position: relative;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  color: #fff;\r\n  padding-right: 0.25rem !important;\r\n  cursor: pointer;\r\n  font: 600 12px / 14px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif;\r\n}\r\n\r\n.translationBlock:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.translationMenu {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  border-left: 1px solid #424348;\r\n  max-height: 16px;\r\n  max-width: 24px;\r\n  cursor: pointer;\r\n}\r\n\r\n.translationMenuIcon {\r\n  padding: 0 10px !important;\r\n  width: 24px;\r\n}\r\n\r\n.translationIAlice {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 26px;\r\n  max-width: 50px;\r\n}\r\n\r\n.translationIconAlice {\r\n  height: 24px !important;\r\n  width: 24px !important;\r\n}\r\n\r\n.translationITranslate {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  max-height: 20px;\r\n  max-width: 20px;\r\n}\r\n\r\n.translationMenuContent {\r\n  position: absolute;\r\n  background: #2e2f34;\r\n  color: #fff;\r\n  display: none;\r\n  border-radius: 1rem !important;\r\n  left: 50%;\r\n  top: 10rem;\r\n  transform: translate(-50%);\r\n  text-align: left;\r\n  font: 600 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n\r\n  width: 300px;\r\n  /* height: 375px; */\r\n  opacity: 0;\r\n  z-index: 100;\r\n  transition: opacity 0.5s ease;\r\n}\r\n\r\n.VOTMenuSlider {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 268px !important;\r\n  height: 8px !important;\r\n  outline: none !important;\r\n  margin-top: 0.5rem;\r\n  opacity: 0.7;\r\n  /* background: #3C3F4D !important; */\r\n  background: rgb(253, 222, 85, 0.6) !important;\r\n  border: none !important;\r\n  border-radius: 2rem !important;\r\n  -webkit-transition: 0.2s !important;\r\n  transition: opacity 0.2s ease !important;\r\n}\r\n\r\n.VOTMenuSlider:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.VOTMenuSlider::-webkit-slider-thumb {\r\n  -webkit-appearance: none !important;\r\n  appearance: none !important;\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-thumb {\r\n  width: 10px !important;\r\n  height: 10px !important;\r\n  border-radius: 50% !important;\r\n  border: none !important;\r\n  background: #fff !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.VOTMenuSlider::-ms-fill-lower {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(\r\n    90.1deg,\r\n    rgba(186, 153, 244, 0.85) -5.78%,\r\n    rgba(236, 138, 202, 0.7) 56.46%,\r\n    rgba(239, 168, 117, 0.6) 108.93%\r\n  ) !important;\r\n}\r\n\r\n.VOTMenuSlider::-moz-range-progress {\r\n  height: 8px !important;\r\n  border-radius: 2rem !important;\r\n  background: linear-gradient(\r\n    90.1deg,\r\n    rgba(186, 153, 244, 0.85) -5.78%,\r\n    rgba(236, 138, 202, 0.7) 56.46%,\r\n    rgba(239, 168, 117, 0.6) 108.93%\r\n  ) !important;\r\n}\r\n\r\n.translationHeader {\r\n  padding-bottom: 0.5rem !important;\r\n}\r\n\r\n.translationMainHeader {\r\n  margin: 16px !important;\r\n  color: #fff;\r\n  font: 900 14px / 16px \"Segoe UI\", BlinkMacSystemFont, Arial, sans-serif !important;\r\n}\r\n\r\n.translationMenuOptions {\r\n  display: flex;\r\n  flex-flow: column wrap;\r\n}\r\n\r\n.translationMenuContainer {\r\n  /* width: 100%; */\r\n  padding-left: 16px !important;\r\n  padding-top: 5px !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n.translationMenuContainer > input {\r\n  appearance: auto !important;\r\n  vertical-align: text-bottom;\r\n}\r\n\r\n.translationMenuText {\r\n  color: #fff;\r\n  display: inline-flex;\r\n  width: 80%;\r\n}\r\n\r\n.translationVolumeBox,\r\n.translationVideoVolumeBox {\r\n  padding-top: 0.5rem !important;\r\n}\r\n\r\n.translationDropDB {\r\n  border: none !important;\r\n  border-radius: 4px !important;\r\n  background: #5426ff !important;\r\n  color: #fff !important;\r\n  padding: 6px 16px !important;\r\n  margin-left: auto !important;\r\n  cursor: pointer !important;\r\n}\r\n\r\n.translationDownload {\r\n  background: #5426ff !important;\r\n  color: #fff !important;\r\n  padding: 2px 10px !important;\r\n  border-radius: 4px !important;\r\n  cursor: pointer;\r\n  display: none;\r\n}\r\n\r\n.translationMenuFunctional {\r\n  display: flex;\r\n  margin: 16px !important;\r\n}\r\n\r\n.VOTMenuSelect {\r\n  width: 110px;\r\n  border-radius: 5px !important;\r\n  border: 1px solid #dadce0 !important;\r\n  box-shadow: 0 1px 3px -2px #9098a9;\r\n  box-sizing: border-box !important;\r\n  color: #2e2f34 !important;\r\n  background: #fff !important;\r\n  padding: 5px !important;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n}\r\n\r\n.VOTMenuSelect:focus {\r\n  outline: none;\r\n  border-color: #0077ff;\r\n  box-shadow: 0 0 0 2px rgba(#0077ff, 0.2);\r\n}\r\n\r\n#VOTSelectLanguages {\r\n  display: flex !important;\r\n  margin-left: 5px;\r\n}\r\n\r\n#VOTSelectLanguages svg {\r\n  margin: 0 5px;\r\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, `.translationBlock {
+  padding: 0.45rem !important;
+  width: max-content;
+  position: absolute;
+  background: #2e2f34;
+  border-radius: 0.5rem !important;
+  left: 50%;
+  top: 5rem;
+  transform: translate(-50%);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1s;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  z-index: 100;
+}
+
+.translationBtn {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  color: #fff;
+  padding-right: 0.25rem !important;
+  cursor: pointer;
+  font: 600 12px / 14px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif;
+}
+
+.translationBlock:hover {
+  opacity: 1;
+}
+
+.translationMenu {
+  display: inline-block;
+  vertical-align: middle;
+  border-left: 1px solid #424348;
+  max-height: 16px;
+  max-width: 24px;
+  cursor: pointer;
+}
+
+.translationMenuIcon {
+  padding: 0 10px !important;
+  width: 24px;
+}
+
+.translationIAlice {
+  display: inline-block;
+  vertical-align: middle;
+  max-height: 26px;
+  max-width: 50px;
+}
+
+.translationIconAlice {
+  height: 24px !important;
+  width: 24px !important;
+}
+
+.translationITranslate {
+  display: inline-block;
+  vertical-align: middle;
+  max-height: 20px;
+  max-width: 20px;
+}
+
+.translationMenuContent {
+  position: absolute;
+  background: #2e2f34;
+  color: #fff;
+  display: none;
+  border-radius: 1rem !important;
+  left: 50%;
+  top: 10rem;
+  transform: translate(-50%);
+  text-align: left;
+  font: 600 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif !important;
+
+  width: 300px;
+  /* height: 375px; */
+  opacity: 0;
+  z-index: 100;
+  transition: opacity 0.5s ease;
+}
+
+.VOTMenuSlider {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  width: 268px !important;
+  height: 8px !important;
+  outline: none !important;
+  margin-top: 0.5rem;
+  opacity: 0.7;
+  /* background: #3C3F4D !important; */
+  background: rgb(253, 222, 85, 0.6) !important;
+  border: none !important;
+  border-radius: 2rem !important;
+  -webkit-transition: 0.2s !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.VOTMenuSlider:hover {
+  opacity: 1;
+}
+
+.VOTMenuSlider::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  background: #fff !important;
+  cursor: pointer !important;
+}
+
+.VOTMenuSlider::-moz-range-thumb {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  background: #fff !important;
+  cursor: pointer !important;
+}
+
+.VOTMenuSlider::-ms-thumb {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  background: #fff !important;
+  cursor: pointer !important;
+}
+
+.VOTMenuSlider::-ms-fill-lower {
+  height: 8px !important;
+  border-radius: 2rem !important;
+  background: linear-gradient(
+    90.1deg,
+    rgba(186, 153, 244, 0.85) -5.78%,
+    rgba(236, 138, 202, 0.7) 56.46%,
+    rgba(239, 168, 117, 0.6) 108.93%
+  ) !important;
+}
+
+.VOTMenuSlider::-moz-range-progress {
+  height: 8px !important;
+  border-radius: 2rem !important;
+  background: linear-gradient(
+    90.1deg,
+    rgba(186, 153, 244, 0.85) -5.78%,
+    rgba(236, 138, 202, 0.7) 56.46%,
+    rgba(239, 168, 117, 0.6) 108.93%
+  ) !important;
+}
+
+.translationHeader {
+  padding-bottom: 0.5rem !important;
+}
+
+.translationMainHeader {
+  margin: 16px !important;
+  color: #fff;
+  font: 900 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif !important;
+}
+
+.translationMenuOptions {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.translationMenuContainer {
+  /* width: 100%; */
+  padding-left: 16px !important;
+  padding-top: 5px !important;
+  display: inline-block !important;
+}
+
+.translationMenuContainer > input {
+  appearance: auto !important;
+  vertical-align: text-bottom;
+}
+
+.translationMenuText {
+  color: #fff;
+  display: inline-flex;
+  width: 80%;
+}
+
+.translationVolumeBox,
+.translationVideoVolumeBox {
+  padding-top: 0.5rem !important;
+}
+
+.translationDropDB {
+  border: none !important;
+  border-radius: 4px !important;
+  background: #5426ff !important;
+  color: #fff !important;
+  padding: 6px 16px !important;
+  margin-left: auto !important;
+  cursor: pointer !important;
+}
+
+.translationDownload {
+  background: #5426ff !important;
+  color: #fff !important;
+  padding: 2px 10px !important;
+  border-radius: 4px !important;
+  cursor: pointer;
+  display: none;
+}
+
+.translationMenuFunctional {
+  display: flex;
+  margin: 16px !important;
+}
+
+.VOTMenuSelect {
+  width: 110px;
+  border-radius: 5px !important;
+  border: 1px solid #dadce0 !important;
+  box-shadow: 0 1px 3px -2px #9098a9;
+  box-sizing: border-box !important;
+  color: #2e2f34 !important;
+  background: #fff !important;
+  padding: 5px !important;
+}
+
+.VOTMenuSelect:focus {
+  outline: none;
+}
+
+.VOTMenuSelect:focus {
+  outline: none;
+  border-color: #0077ff;
+  box-shadow: 0 0 0 2px rgba(#0077ff, 0.2);
+}
+
+#VOTSelectLanguages {
+  display: flex !important;
+  margin-left: 5px;
+}
+
+#VOTSelectLanguages svg {
+  margin: 0 5px;
+}
+`, ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -465,10 +712,10 @@ module.exports = styleTagTransform;
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "I1": () => (/* binding */ yandexHmacKey),
-/* harmony export */   "IM": () => (/* binding */ autoVolume),
-/* harmony export */   "Rr": () => (/* binding */ yandexUserAgent),
-/* harmony export */   "iF": () => (/* binding */ workerHost)
+/* harmony export */   I1: () => (/* binding */ yandexHmacKey),
+/* harmony export */   IM: () => (/* binding */ autoVolume),
+/* harmony export */   Rr: () => (/* binding */ yandexUserAgent),
+/* harmony export */   iF: () => (/* binding */ workerHost)
 /* harmony export */ });
 // CONFIGURATION
 const workerHost = "api.browser.yandex.ru";
@@ -525,7 +772,7 @@ async function requestVideoTranslation(
 ) {
   // Initialize variables
   const deviceId = getUUID(true);
-  const body = yandexRequests/* yandexRequests.encodeRequest */.G.encodeRequest(
+  const body = yandexRequests/* yandexRequests */.G.encodeRequest(
     url,
     deviceId,
     unknown1,
@@ -597,7 +844,7 @@ async function requestVideoTranslation(
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "G": () => (/* binding */ yandexRequests)
+/* harmony export */   G: () => (/* binding */ yandexRequests)
 /* harmony export */ });
 const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
   .add(new protobuf.Field("url", 3, "string"))
@@ -824,7 +1071,7 @@ var update = injectStylesIntoStyleTag_default()(main/* default */.Z, options);
 
 
 
-       /* harmony default export */ const styles_main = (main/* default */.Z && main/* default.locals */.Z.locals ? main/* default.locals */.Z.locals : undefined);
+       /* harmony default export */ const styles_main = (main/* default */.Z && main/* default */.Z.locals ? main/* default */.Z.locals : undefined);
 
 ;// CONCATENATED MODULE: ./src/utils/getYTVideoData.js
 async function detect(cleanText) {
@@ -3164,7 +3411,7 @@ async function src_main() {
           return;
         }
 
-        const translateResponse = yandexRequests/* yandexRequests.decodeResponse */.G.decodeResponse(response);
+        const translateResponse = yandexRequests/* yandexRequests */.G.decodeResponse(response);
         console.log("VOT Response: ", translateResponse);
 
         switch (translateResponse.status) {
@@ -3584,6 +3831,10 @@ async function src_main() {
       downloadBtn.href = "";
       downloadBtn.style.display = "none";
       transformBtn("none", translations[lang].translateVideo);
+      // temp fix
+      if (window.location.hostname.includes("youtube.com")) {
+        document.querySelector(".html5-video-player").setVolume(100);
+      }
       if (volumeOnStart) {
         video.volume = volumeOnStart;
       }
@@ -3937,6 +4188,10 @@ async function src_main() {
             dbAutoSetVolumeYandexStyle
           ) {
             video.volume = config/* autoVolume */.IM;
+            // temp fix
+            if (window.location.hostname.includes("youtube.com")) {
+              document.querySelector(".html5-video-player").setVolume(config/* autoVolume */.IM * 100);
+            }
           }
 
           switch (siteHostname) {
@@ -3997,7 +4252,6 @@ async function src_main() {
             "playing",
             "ratechange",
             "play",
-            "abort",
             "waiting",
             "pause",
           ];

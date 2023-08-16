@@ -591,6 +591,10 @@ async function main() {
       downloadBtn.href = "";
       downloadBtn.style.display = "none";
       transformBtn("none", translations[lang].translateVideo);
+      // temp fix
+      if (window.location.hostname.includes("youtube.com")) {
+        document.querySelector(".html5-video-player").setVolume(100);
+      }
       if (volumeOnStart) {
         video.volume = volumeOnStart;
       }
@@ -954,6 +958,10 @@ async function main() {
             dbAutoSetVolumeYandexStyle
           ) {
             video.volume = autoVolume;
+            // temp fix
+            if (window.location.hostname.includes("youtube.com")) {
+              document.querySelector(".html5-video-player").setVolume(autoVolume * 100);
+            }
           }
 
           switch (siteHostname) {
@@ -1014,7 +1022,6 @@ async function main() {
             "playing",
             "ratechange",
             "play",
-            "abort",
             "waiting",
             "pause",
           ];
