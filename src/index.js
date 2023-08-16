@@ -230,14 +230,14 @@ async function main() {
     addTranslationBlock(container);
     addTranslationMenu(container);
 
-    try {
-      isDBInited = await initDB();
-    } catch (err) {
-      console.error(
-        "[VOT] Failed to initialize database settings. All changes made will not be saved",
-        err
-      );
-    }
+    // try {
+    //   isDBInited = await initDB();
+    // } catch (err) {
+    //   console.error(
+    //     "[VOT] Failed to initialize database settings. All changes made will not be saved",
+    //     err
+    //   );
+    // }
 
     const menuOptions = document.querySelector(".translationMenuOptions");
     if (menuOptions && !menuOptions.querySelector("#VOTTranslateFromLang")) {
@@ -308,7 +308,6 @@ async function main() {
         });
     }
 
-    if (isDBInited) {
       const dbData = await readDB();
       if (dbData) {
         dbAutoTranslate = dbData.autoTranslate;
@@ -492,7 +491,6 @@ async function main() {
           menuOptions.appendChild(checkbox);
         }
       }
-    }
 
     transformBtn("none", translations[lang].translateVideo);
 
