@@ -1,3 +1,9 @@
+# 1.4.0
+- Добавлена поддержка субтитров (От @MrSoczekXD в [#247](https://github.com/ilyhalight/voice-over-translation/pull/247))
+- Добавлена подсветка слов в субтитрах (От @MrSoczekXD в [#247](https://github.com/ilyhalight/voice-over-translation/pull/247))
+- Добавлена установка максимальной длинны субтитров (От @MrSoczekXD в [#247](https://github.com/ilyhalight/voice-over-translation/pull/247))
+- Некоторые улучшения связанные с структурой и запросами (От @MrSoczekXD в [#247](https://github.com/ilyhalight/voice-over-translation/pull/247))
+
 # 1.3.6
 - Добавлена поддержка bitchute.com
 

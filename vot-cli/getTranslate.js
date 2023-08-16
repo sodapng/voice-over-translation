@@ -2,38 +2,64 @@ import protobuf from 'protobufjs';
 import crypto from 'crypto';
 import axios from 'axios';
 
-const yandexHmacKey = "gnnde87s24kcuMH8rbWhLyfeuEKDkGGm";
-const yandexUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 CriOS/104.0.5112.114 YaBrowser/22.9.4.633.10 SA/3 Mobile/15E148 Safari/604.1";
+const yandexHmacKey = "xtGCyGdTY2Jy6OMEKdTuXev3Twhkamgm";
+const yandexUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 YaBrowser/23.7.1.1140 Yowser/2.5 Safari/537.36";
 
 const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
   .add(new protobuf.Field("url", 3, "string"))
-  .add(new protobuf.Field("deviceId", 4, "string"))
+  .add(new protobuf.Field("deviceId", 4, "string")) // removed?
   .add(new protobuf.Field("firstRequest", 5, "bool")) // true for the first request, false for subsequent ones
-  .add(new protobuf.Field("unknown1", 6, "fixed64"))
-  .add(new protobuf.Field("unknown2", 7, "int32"))
+  .add(new protobuf.Field("duration", 6, "double"))
+  .add(new protobuf.Field("unknown2", 7, "int32")) // 1 1
   .add(new protobuf.Field("language", 8, "string")) // source language code
-  .add(new protobuf.Field("unknown3", 9, "int32"))
-  .add(new protobuf.Field("unknown4", 10, "int32"))
+  .add(new protobuf.Field("unknown3", 9, "int32")) // 0 0
+  .add(new protobuf.Field("unknown4", 10, "int32")) // 0 0
+  .add(new protobuf.Field("translationHelp", 11, "int32")) // array for translation assistance ([0] -> {2: link to video, 1: "video_file_url"}, [1] -> {2: link to subtitles, 1: "subtitles_file_url"})
   .add(new protobuf.Field("responseLanguage", 14, "string")); // target language code
+
+const VideoSubtitlesRequest = new protobuf.Type("VideoSubtitlesRequest")
+  .add(new protobuf.Field("url", 1, "string"))
+  .add(new protobuf.Field("language", 2, "string")); // source language code
 
 const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
   .add(new protobuf.Field("url", 1, "string"))
   .add(new protobuf.Field("duration", 2, "double"))
-  .add(new protobuf.Field("status", 4, "int32"))
-  .add(new protobuf.Field("remainingTime", 5, "int32"))
+  .add(new protobuf.Field("status", 4, "int32")) // status
+  .add(new protobuf.Field("remainingTime", 5, "int32")) // secs before translation
+  .add(new protobuf.Field("unknown0", 6, "int32")) // unknown 0 (1st request) -> 10 (2nd, 3th and etc requests)
+  .add(new protobuf.Field("unknown1", 7, "string"))
+  .add(new protobuf.Field("language", 8, "string")) // detected language (if the wrong one is set)
   .add(new protobuf.Field("message", 9, "string"));
 
+const VideoSubtitlesObject = new protobuf.Type("VideoSubtitlesObject")
+  .add(new protobuf.Field("language", 1, "string"))
+  .add(new protobuf.Field("url", 2, "string"))
+  .add(new protobuf.Field("unknown2", 3, "int32"))
+  .add(new protobuf.Field("translatedLanguage", 4, "string"))
+  .add(new protobuf.Field("translatedUrl", 5, "string"))
+  .add(new protobuf.Field("unknown5", 6, "int32"))
+  .add(new protobuf.Field("unknown6", 7, "int32"));
+
+const VideoSubtitlesResponse = new protobuf.Type("VideoSubtitlesResponse")
+  .add(new protobuf.Field("unknown0", 1, "int32"))
+  .add(new protobuf.Field("subtitles", 2, "VideoSubtitlesObject", "repeated"));
+
 // Create a root namespace and add the types
-const root = new protobuf.Root().define("yandex").add(VideoTranslationRequest).add(VideoTranslationResponse);
+const root = new protobuf.Root()
+  .define("yandex")
+  .add(VideoTranslationRequest)
+  .add(VideoTranslationResponse)
+  .add(VideoSubtitlesRequest)
+  .add(VideoSubtitlesObject)
+  .add(VideoSubtitlesResponse);
 
 // Export the encoding and decoding functions
-export const yandexRequests = {
-  encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
+export const yandexProtobuf = {
+  encodeTranslationRequest(url, duration, requestLang, responseLang) {
     return root.VideoTranslationRequest.encode({
       url,
-      deviceId,
       firstRequest: true,
-      unknown1,
+      duration,
       unknown2: 1,
       language: requestLang,
       unknown3: 0,
@@ -41,7 +67,7 @@ export const yandexRequests = {
       responseLanguage: responseLang
     }).finish();
   },
-  decodeResponse(response) {
+  decodeTranslationResponse(response) {
     return root.VideoTranslationResponse.decode(new Uint8Array(response));
   }
 };
@@ -51,9 +77,8 @@ function getUUID(isLower) {
     return isLower ? uuid : uuid.toUpperCase();
 }
 
-function requestVideoTranslation (url, unknown1, callback) {
-  const deviceId = getUUID(true);
-  const body = yandexRequests.encodeRequest(url, deviceId, unknown1);
+function requestVideoTranslation (url, duration, callback) {
+  const body = yandexProtobuf.encodeTranslationRequest(url, duration);
 
   const utf8Encoder = new TextEncoder("utf-8");
   crypto.subtle.importKey('raw', utf8Encoder.encode(yandexHmacKey), { name: 'HMAC', hash: {name: 'SHA-256'}}, false, ['sign', 'verify']).then(key => {
@@ -77,7 +102,7 @@ function requestVideoTranslation (url, unknown1, callback) {
             },
             withCredentials: true,
             responseType: 'arraybuffer',
-            data: String.fromCharCode.apply(null, body)
+            data: body
         }).then((response) => {
             callback((response.status === 200), response.data);
         }).catch((error) => {
@@ -88,13 +113,15 @@ function requestVideoTranslation (url, unknown1, callback) {
 }
 
 function translateVideo(url, callback) {
-  requestVideoTranslation(url, 0x40_75_50_00_00_00_00_00, (success, response) => {
+  // TODO: Use real duration
+  // 0x40_75_50_00_00_00_00_00
+  requestVideoTranslation(url, 341, (success, response) => {
     if (!success) {
       callback(false, "Failed to request video translation");
       return;
     }
 
-    const translateResponse = yandexRequests.decodeResponse(response);
+    const translateResponse = yandexProtobuf.decodeTranslationResponse(response);
     switch (translateResponse.status) {
       case 0:
         callback(false, translateResponse.message);

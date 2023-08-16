@@ -77,7 +77,7 @@ function addTranslationBlock(element) {
   `;
 
   element.appendChild(block);
-  debug.log("VOT: Added translation button to ", element);
+  debug.log("Added translation button to ", element);
 }
 
 function createTranslationMenu() {
@@ -121,7 +121,7 @@ function createMenuCheckbox(id, valueToCheck, content) {
 }
 
 // Create slider for menu
-function createMenuSlider(id, sliderValue, content) {
+function createMenuSlider(id, sliderValue, content, min = 0, max = 100) {
   const sliderContainer = document.createElement("div");
   const slider = document.createElement("input");
   const sliderLabel = document.createElement("label");
@@ -129,8 +129,8 @@ function createMenuSlider(id, sliderValue, content) {
   slider.type = "range";
   slider.id = id;
   slider.classList.add("VOTMenuSlider");
-  slider.min = 0;
-  slider.max = 100;
+  slider.min = min;
+  slider.max = max;
   slider.value = sliderValue;
 
   sliderLabel.htmlFor = id;
@@ -186,11 +186,14 @@ function createMenuSelect(id, selectOptions) {
 }
 
 function genOptionsByOBJ(obj, conditionString) {
-  return Object.entries(obj).map(([key, value]) => ({
-    label: translations[lang][value],
-    value: key,
-    selected: conditionString === key,
+  console.log(obj)
+  const test = obj.map((code) => ({
+    label: translations[lang].langs[code],
+    value: code,
+    selected: conditionString === code,
   }));
+  console.log(test)
+  return test
 }
 
 export {
