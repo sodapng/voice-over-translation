@@ -299,6 +299,7 @@ async function main() {
         .querySelector("#VOTTranslateToLang")
         .addEventListener("change", async (event) => {
           debug.log("[onchange] select to language", event.target.value);
+
           await updateDB({ userlang: event.target.value });
           location.reload();
         });

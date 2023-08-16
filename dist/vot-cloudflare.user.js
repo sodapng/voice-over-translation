@@ -2490,6 +2490,7 @@ async function main() {
         .querySelector("#VOTTranslateToLang")
         .addEventListener("change", async (event) => {
           _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[onchange] select to language", event.target.value);
+
           await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .updateDB */ .l6)({ userlang: event.target.value });
           location.reload();
         });
