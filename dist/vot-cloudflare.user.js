@@ -2392,7 +2392,7 @@ async function main() {
     let dbSyncVolume;
     let dbAudioProxy; // cf version only
     let firstPlay = true;
-    let isDBInited;
+    // let isDBInited;
     let userlang;
     let videoData = "";
 
@@ -3407,6 +3407,7 @@ async function main() {
       document.addEventListener("yt-navigate-finish", ytPageEnter);
 
       const ytPageLeave = () => {
+        videoData = ""
         document.body.dispatchEvent(new Event("yt-translate-stop"));
       };
 
@@ -3444,6 +3445,7 @@ async function main() {
           });
         }
         const ytPageLeave = () => {
+          videoData = ""
           document.body.dispatchEvent(new Event("yt-translate-stop"));
         };
         document.addEventListener("spfdone", ytPageLeave);
