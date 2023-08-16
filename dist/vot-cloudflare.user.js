@@ -2421,14 +2421,14 @@ async function main() {
     (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .addTranslationBlock */ .Ot)(container);
     addTranslationMenu(container);
 
-    try {
-      isDBInited = await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .initDB */ .zK)();
-    } catch (err) {
-      console.error(
-        "[VOT] Failed to initialize database settings. All changes made will not be saved",
-        err
-      );
-    }
+    // try {
+    //   isDBInited = await initDB();
+    // } catch (err) {
+    //   console.error(
+    //     "[VOT] Failed to initialize database settings. All changes made will not be saved",
+    //     err
+    //   );
+    // }
 
     const menuOptions = document.querySelector(".translationMenuOptions");
     if (menuOptions && !menuOptions.querySelector("#VOTTranslateFromLang")) {
@@ -2499,7 +2499,6 @@ async function main() {
         });
     }
 
-    if (isDBInited) {
       const dbData = await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .readDB */ .CZ)();
       if (dbData) {
         dbAutoTranslate = dbData.autoTranslate;
@@ -2683,7 +2682,6 @@ async function main() {
           menuOptions.appendChild(checkbox);
         }
       }
-    }
 
     (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .transformBtn */ .uJ)("none", _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].translateVideo);
 
