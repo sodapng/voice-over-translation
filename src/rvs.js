@@ -4,11 +4,7 @@ import { yandexProtobuf } from "./yandexProtobuf.js";
 import debug from "./utils/debug.js";
 
 // Request video subtitles from Yandex API
-async function requestVideoSubtitles(
-  url,
-  requestLang,
-  callback
-) {
+async function requestVideoSubtitles(url, requestLang, callback) {
   try {
     debug.log("requestVideoSubtitles");
     const yar = await import(
@@ -17,10 +13,7 @@ async function requestVideoSubtitles(
     const yandexRequest = yar.default;
     debug.log("Inited yandexRequest...");
     // Initialize variables
-    const body = yandexProtobuf.encodeSubtitlesRequest(
-      url,
-      requestLang
-    );
+    const body = yandexProtobuf.encodeSubtitlesRequest(url, requestLang);
     // Send the request
     await yandexRequest(
       "/video-subtitles/get-subtitles",
@@ -29,7 +22,7 @@ async function requestVideoSubtitles(
         "Vsubs-Signature": await getSignature(body),
         "Sec-Vsubs-Token": getUUID(false),
       },
-      callback,
+      callback
     );
   } catch (exception) {
     console.error("[VOT]", exception);

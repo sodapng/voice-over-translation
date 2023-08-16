@@ -6,7 +6,9 @@ async function getSignature(body) {
   const utf8Encoder = new TextEncoder("utf-8");
   const key = await window.crypto.subtle.importKey(
     "raw",
-    utf8Encoder.encode(BUILD_MODE === "cloudflare" ? yandexHmacKeyCloudflare : yandexHmacKey),
+    utf8Encoder.encode(
+      BUILD_MODE === "cloudflare" ? yandexHmacKeyCloudflare : yandexHmacKey
+    ),
     { name: "HMAC", hash: { name: "SHA-256" } },
     false,
     ["sign", "verify"]

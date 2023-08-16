@@ -35,7 +35,7 @@ async function requestVideoTranslation(
         "Vtrans-Signature": await getSignature(body),
         "Sec-Vtrans-Token": getUUID(false),
       },
-      callback,
+      callback
     );
   } catch (exception) {
     console.error("[VOT]", exception);

@@ -338,7 +338,11 @@ async function readDB() {
       const request = objectStore.get("settings");
 
       request.onerror = (event) => {
-        console.error("[VOT]", translations[lang].VOTFailedReadFromDB, event.error);
+        console.error(
+          "[VOT]",
+          translations[lang].VOTFailedReadFromDB,
+          event.error
+        );
         console.error("[VOT]", event);
         reject(false);
       };

@@ -1,7 +1,7 @@
 import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { sleep } from "./utils/utils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
-import { siteTranslates } from "./config/constants.js"
+import { siteTranslates } from "./config/constants.js";
 import { lang } from "./menu.js";
 import requestVideoSubtitles from "./rvs.js";
 import debug from "./utils/debug.js";
@@ -13,23 +13,27 @@ function formatYandexSubtitlesTokens(line) {
     const lastToken = result[result.length - 1];
     const alignRangeEnd = lastToken?.alignRange?.end ?? 0;
     const newAlignRangeEnd = alignRangeEnd + token.text.length;
-    result.push(Object.assign(Object.assign({}, token), {
-      alignRange: {
-        start: alignRangeEnd,
-        end: newAlignRangeEnd
-      }
-    }));
+    result.push(
+      Object.assign(Object.assign({}, token), {
+        alignRange: {
+          start: alignRangeEnd,
+          end: newAlignRangeEnd,
+        },
+      })
+    );
     if (nextToken) {
       const endMs = token.startMs + token.durationMs;
-      const durationMs = nextToken.startMs ? nextToken.startMs - endMs : lineEndMs - endMs;
+      const durationMs = nextToken.startMs
+        ? nextToken.startMs - endMs
+        : lineEndMs - endMs;
       result.push({
         text: " ",
         startMs: endMs,
         durationMs,
         alignRange: {
           start: newAlignRangeEnd,
-          end: newAlignRangeEnd + 1
-        }
+          end: newAlignRangeEnd + 1,
+        },
       });
     }
     return result;
@@ -37,21 +41,23 @@ function formatYandexSubtitlesTokens(line) {
 }
 
 function createSubtitlesTokens(line, previousLineLastToken) {
-  const tokens = line.text.split(new RegExp("([\n \t])")).reduce((result, tokenText) => {
-    if (tokenText.length) {
-      const lastToken = result[result.length - 1] ?? previousLineLastToken;
-      const alignRangeStart = lastToken?.alignRange?.end ?? 0;
-      const alignRangeEnd = alignRangeStart + tokenText.length;
-      result.push({
-        text: tokenText,
-        alignRange: {
-          start: alignRangeStart,
-          end: alignRangeEnd
-        }
-      });
-    }
-    return result;
-  }, []);
+  const tokens = line.text
+    .split(new RegExp("([\n \t])"))
+    .reduce((result, tokenText) => {
+      if (tokenText.length) {
+        const lastToken = result[result.length - 1] ?? previousLineLastToken;
+        const alignRangeStart = lastToken?.alignRange?.end ?? 0;
+        const alignRangeEnd = alignRangeStart + tokenText.length;
+        result.push({
+          text: tokenText,
+          alignRange: {
+            start: alignRangeStart,
+            end: alignRangeEnd,
+          },
+        });
+      }
+      return result;
+    }, []);
   const tokenDurationMs = Math.floor(line.durationMs / tokens.length);
   const lineEndMs = line.startMs + line.durationMs;
   return tokens.map((token, index) => {
@@ -60,7 +66,7 @@ function createSubtitlesTokens(line, previousLineLastToken) {
     const durationMs = isLastToken ? lineEndMs - startMs : tokenDurationMs;
     return Object.assign(Object.assign({}, token), {
       startMs,
-      durationMs
+      durationMs,
     });
   });
 }
@@ -82,9 +88,11 @@ function getSubtitlesTokens(subtitles, source) {
       tokens = createSubtitlesTokens(line, lastToken);
     }
     lastToken = tokens[tokens.length - 1];
-    result.push(Object.assign(Object.assign({}, line), {
-      tokens
-    }));
+    result.push(
+      Object.assign(Object.assign({}, line), {
+        tokens,
+      })
+    );
   }
   subtitles.containsTokens = true;
   return result;
@@ -93,24 +101,35 @@ function getSubtitlesTokens(subtitles, source) {
 function formatYoutubeSubtitles(subtitles) {
   const result = {
     containsTokens: false,
-    subtitles: []
+    subtitles: [],
   };
-  if (typeof subtitles !== "object" || !("events" in subtitles) || !Array.isArray(subtitles.events)) {
+  if (
+    typeof subtitles !== "object" ||
+    !("events" in subtitles) ||
+    !Array.isArray(subtitles.events)
+  ) {
     console.error("[VOT] Failed to format youtube subtitles", subtitles);
     return result;
   }
   for (let i = 0; i < subtitles.events.length; i++) {
     if (!subtitles.events[i].segs) continue;
-    const text = subtitles.events[i].segs.map((e => e.utf8.replace(/^ +| +$/g, ""))).join(" ");
+    const text = subtitles.events[i].segs
+      .map((e) => e.utf8.replace(/^ +| +$/g, ""))
+      .join(" ");
     let durationMs = subtitles.events[i].dDurationMs;
-    if (subtitles.events[i + 1] && subtitles.events[i].tStartMs + subtitles.events[i].dDurationMs > subtitles.events[i + 1].tStartMs) {
-      durationMs = subtitles.events[i + 1].tStartMs - subtitles.events[i].tStartMs;
+    if (
+      subtitles.events[i + 1] &&
+      subtitles.events[i].tStartMs + subtitles.events[i].dDurationMs >
+        subtitles.events[i + 1].tStartMs
+    ) {
+      durationMs =
+        subtitles.events[i + 1].tStartMs - subtitles.events[i].tStartMs;
     }
     if (text !== "\n") {
       result.subtitles.push({
         text,
         startMs: subtitles.events[i].tStartMs,
-        durationMs
+        durationMs,
       });
     }
   }
@@ -141,10 +160,10 @@ export async function fetchSubtitles(subtitlesObject) {
           resolved = true;
           resolve({
             containsTokens: false,
-            subtitles: []
+            subtitles: [],
           });
         });
-    })
+    }),
   ]);
   if (subtitlesObject.source === "youtube") {
     subtitles = formatYoutubeSubtitles(subtitles);
@@ -155,7 +174,8 @@ export async function fetchSubtitles(subtitlesObject) {
 }
 
 export async function getSubtitles(siteHostname, videoId, requestLang) {
-  const ytSubtitles = siteHostname === "youtube" ? youtubeUtils.getSubtitles() : [];
+  const ytSubtitles =
+    siteHostname === "youtube" ? youtubeUtils.getSubtitles() : [];
   let resolved = false;
   const yaSubtitles = await Promise.race([
     new Promise(async (resolve) => {
@@ -179,7 +199,8 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
             resolve([]);
           }
 
-          const subtitlesResponse = yandexProtobuf.decodeSubtitlesResponse(response);
+          const subtitlesResponse =
+            yandexProtobuf.decodeSubtitlesResponse(response);
           console.log("[VOT] Subtitles response: ", subtitlesResponse);
 
           let subtitles = subtitlesResponse.subtitles ?? [];
@@ -216,18 +237,26 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
           resolve(subtitles);
         }
       );
-    })
+    }),
   ]);
   const subtitles = [...yaSubtitles, ...ytSubtitles].sort((a, b) => {
-    if (a.source !== b.source) { // sort by source
+    if (a.source !== b.source) {
+      // sort by source
       return a.source === "yandex" ? -1 : 1;
     }
-    if (a.language !== b.language && (a.language === lang || b.language === lang)) { // sort by user language
+    if (
+      a.language !== b.language &&
+      (a.language === lang || b.language === lang)
+    ) {
+      // sort by user language
       return a.language === lang ? -1 : 1;
     }
-    if (a.source === "yandex") { // sort by translation
-      if (a.translatedFromLanguage !== b.translatedFromLanguage) { // sort by translatedFromLanguage
-        if (!a.translatedFromLanguage || !b.translatedFromLanguage) { // sort by isTranslated
+    if (a.source === "yandex") {
+      // sort by translation
+      if (a.translatedFromLanguage !== b.translatedFromLanguage) {
+        // sort by translatedFromLanguage
+        if (!a.translatedFromLanguage || !b.translatedFromLanguage) {
+          // sort by isTranslated
           if (a.language === b.language) {
             return a.translatedFromLanguage ? 1 : -1;
           }
@@ -235,11 +264,13 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
         }
         return a.translatedFromLanguage === requestLang ? -1 : 1;
       }
-      if (!a.translatedFromLanguage) { // sort non translated by language
+      if (!a.translatedFromLanguage) {
+        // sort non translated by language
         return a.language === requestLang ? -1 : 1;
       }
     }
-    if (a.source === "youtube" && a.isAutoGenerated !== b.isAutoGenerated) { // sort by isAutoGenerated
+    if (a.source === "youtube" && a.isAutoGenerated !== b.isAutoGenerated) {
+      // sort by isAutoGenerated
       return a.isAutoGenerated ? 1 : -1;
     }
     return 0;
@@ -292,7 +323,9 @@ export function addSubtitlesWidget(element) {
         if (!top) {
           container.style.top = `${0}px`;
         } else {
-          container.style.top = `${elementRect.height - containerRect.height}px`;
+          container.style.top = `${
+            elementRect.height - containerRect.height
+          }px`;
         }
       }
       if (left && right) {
@@ -307,9 +340,9 @@ export function addSubtitlesWidget(element) {
     }
   }
 
-  document.addEventListener('mousedown', onMouseDown);
-  document.addEventListener('mouseup', onMouseUp);
-  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener("mousedown", onMouseDown);
+  document.addEventListener("mouseup", onMouseUp);
+  document.addEventListener("mousemove", onMouseMove);
 }
 
 var _subtitles = null;
@@ -344,7 +377,10 @@ function updateSubtitles(video) {
             if (t.at(-1) && t.at(-1).text === " ") t = t.slice(0, t.length - 1);
             chunks.push({
               startMs: tokens[chunkStartIndex].startMs,
-              durationMs: tokens[chunkEndIndex].startMs + tokens[chunkEndIndex].durationMs - tokens[chunkStartIndex].startMs,
+              durationMs:
+                tokens[chunkEndIndex].startMs +
+                tokens[chunkEndIndex].durationMs -
+                tokens[chunkStartIndex].startMs,
               tokens: t,
             });
             chunkStartIndex = i;
@@ -353,7 +389,10 @@ function updateSubtitles(video) {
           chunkEndIndex = i;
         }
         for (let i = 0; i < chunks.length; i++) {
-          if (chunks[i].startMs < time && time < chunks[i].startMs + chunks[i].durationMs) {
+          if (
+            chunks[i].startMs < time &&
+            time < chunks[i].startMs + chunks[i].durationMs
+          ) {
             tokens = chunks[i].tokens;
             break;
           }
@@ -362,7 +401,10 @@ function updateSubtitles(video) {
       for (let token of tokens) {
         const passedMs = token.startMs + token.durationMs / 2;
         content += `<span ${
-          (time > passedMs) || (time > token.startMs - 100 && passedMs - time < 275) ? "class=\"passed\"" : ""
+          time > passedMs ||
+          (time > token.startMs - 100 && passedMs - time < 275)
+            ? 'class="passed"'
+            : ""
         }>${token.text}</span>`;
       }
     } else {
@@ -370,7 +412,10 @@ function updateSubtitles(video) {
         let chunks = line.text.match(_maxLengthRegexp);
         let chunkDurationMs = line.durationMs / chunks.length;
         for (let i = 0; i < chunks.length; i++) {
-          if (line.startMs + chunkDurationMs * i < time && time < line.startMs + chunkDurationMs * (i + 1)) {
+          if (
+            line.startMs + chunkDurationMs * i < time &&
+            time < line.startMs + chunkDurationMs * (i + 1)
+          ) {
             content = chunks[i].trim();
             break;
           }
@@ -382,7 +427,9 @@ function updateSubtitles(video) {
   }
   if (content !== _lastContent) {
     _lastContent = content;
-    _subtitlesWidget.innerHTML = content ? `<div>${content.replace("\\n", "<br>")}</div>` : "";
+    _subtitlesWidget.innerHTML = content
+      ? `<div>${content.replace("\\n", "<br>")}</div>`
+      : "";
   }
 }
 
