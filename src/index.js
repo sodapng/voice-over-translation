@@ -289,10 +289,9 @@ async function main() {
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
           debug.log("[onchange] select from language", event.target.value);
-          videoData = await getVideoData();
           await setSelectMenuValues(
             event.target.value,
-            videoData.responseLanguage
+            lang
           );
         });
 
@@ -300,11 +299,8 @@ async function main() {
         .querySelector("#VOTTranslateToLang")
         .addEventListener("change", async (event) => {
           debug.log("[onchange] select to language", event.target.value);
-          videoData = await getVideoData();
-          await setSelectMenuValues(
-            videoData.detectedLanguage,
-            event.target.value
-          );
+          await updateDB({ userlang: event.target.value });
+          location.reload();
         });
     }
 
@@ -529,7 +525,6 @@ async function main() {
       console.log(`Set translation from ${from} to ${to}`);
       videoData.detectedLanguage = from;
       videoData.responseLanguage = to;
-      await updateDB({ userlang: to });
     }
 
     // data - ytData or VideoData

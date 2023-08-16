@@ -2466,10 +2466,9 @@ async function main() {
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
           _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[onchange] select from language", event.target.value);
-          videoData = await getVideoData();
           await setSelectMenuValues(
             event.target.value,
-            videoData.responseLanguage
+            _menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ
           );
         });
 
@@ -2477,11 +2476,8 @@ async function main() {
         .querySelector("#VOTTranslateToLang")
         .addEventListener("change", async (event) => {
           _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[onchange] select to language", event.target.value);
-          videoData = await getVideoData();
-          await setSelectMenuValues(
-            videoData.detectedLanguage,
-            event.target.value
-          );
+          await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .updateDB */ .l6)({ userlang: event.target.value });
+          location.reload();
         });
     }
 
@@ -2687,7 +2683,6 @@ async function main() {
       console.log(`Set translation from ${from} to ${to}`);
       videoData.detectedLanguage = from;
       videoData.responseLanguage = to;
-      await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .updateDB */ .l6)({ userlang: to });
     }
 
     // data - ytData or VideoData
