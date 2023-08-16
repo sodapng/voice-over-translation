@@ -1,10 +1,5 @@
+import { lang } from "./menu.js";
 import { translations } from "./config/constants.js";
-
-let userlang = navigator.language || navigator.userLanguage;
-userlang = userlang.substr(0, 2).toLowerCase();
-if (!(userlang in translations)) {
-  userlang = "en";
-}
 
 // --- IndexedDB functions start:
 const dbVersion = 2; // current db version
@@ -20,7 +15,6 @@ const settingsDefault = {
 
 const valuesV2 = {
   audioProxy: 0,
-  userlang: String(userlang),
 };
 
 function openDB(name) {
@@ -90,7 +84,7 @@ async function initDB() {
 
     openRequest.onerror = () => {
       console.error(
-        `${translations[userlang].VOTFailedInitDB}: ${openRequest.error.message}`
+        `${translations[lang].VOTFailedInitDB}: ${openRequest.error.message}`
       );
       reject(false);
     };
@@ -99,7 +93,7 @@ async function initDB() {
       const db = openRequest.result;
 
       db.onerror = () => {
-        const errorMessage = translations[userlang].VOTFailedInitDB;
+        const errorMessage = translations[lang].VOTFailedInitDB;
         alert(errorMessage);
         console.error(errorMessage, openRequest.error);
         reject(false);
@@ -154,7 +148,7 @@ async function initDB() {
       const db = openRequest.result;
       db.onversionchange = () => {
         db.close();
-        const errorMessage = translations[userlang].VOTDBNeedUpdate;
+        const errorMessage = translations[lang].VOTDBNeedUpdate;
         alert(errorMessage);
         console.log(errorMessage);
         window.location.reload();
@@ -165,7 +159,7 @@ async function initDB() {
 
     openRequest.onblocked = () => {
       const db = openRequest.result;
-      const errorMessage = translations[userlang].VOTDisabledForDBUpdating;
+      const errorMessage = translations[lang].VOTDisabledForDBUpdating;
       console.error(errorMessage, db);
       alert(errorMessage);
       reject(false);
@@ -180,7 +174,6 @@ async function updateDB({
   syncVolume,
   autoSetVolumeYandexStyle,
   dontTranslateYourLang,
-  userlang,
   audioProxy,
 }) {
   return new Promise((resolve, reject) => {
@@ -191,13 +184,12 @@ async function updateDB({
       typeof syncVolume === "number" ||
       typeof autoSetVolumeYandexStyle === "number" ||
       typeof dontTranslateYourLang === "number" ||
-      typeof userlang === "string" ||
       typeof audioProxy === "number"
     ) {
       const openRequest = openDB("VOT");
 
       openRequest.onerror = () => {
-        const errorMessage = translations[userlang].VOTFailedWriteToDB;
+        const errorMessage = translations[lang].VOTFailedWriteToDB;
         alert(errorMessage);
         console.error(errorMessage, openRequest.error.message);
         reject(false);
@@ -261,10 +253,6 @@ async function updateDB({
             data.dontTranslateYourLang = dontTranslateYourLang;
           }
 
-          if (typeof userlang === "string") {
-            data.userlang = userlang;
-          }
-
           if (typeof audioProxy === "number") {
             data.audioProxy = audioProxy;
           }
@@ -287,7 +275,7 @@ async function updateDB({
 
       openRequest.onblocked = () => {
         const db = openRequest.result;
-        const errorMessage = translations[userlang].VOTDisabledForDBUpdating;
+        const errorMessage = translations[lang].VOTDisabledForDBUpdating;
         console.error(errorMessage, db);
         alert(errorMessage);
         reject(false);
@@ -297,12 +285,11 @@ async function updateDB({
 }
 
 async function readDB() {
-  await initDB();
   return new Promise((resolve, reject) => {
     const openRequest = openDB("VOT");
 
     openRequest.onerror = () => {
-      const errorMessage = translations[userlang].VOTFailedReadFromDB;
+      const errorMessage = translations[lang].VOTFailedReadFromDB;
       alert(errorMessage);
       console.error(errorMessage, openRequest.error.message);
       reject(false);
@@ -319,7 +306,7 @@ async function readDB() {
       const db = openRequest.result;
       db.onversionchange = () => {
         db.close();
-        const errorMessage = translations[userlang].VOTDBNeedUpdate;
+        const errorMessage = translations[lang].VOTDBNeedUpdate;
         alert(errorMessage);
         console.error(errorMessage);
         reject(false);
@@ -329,7 +316,7 @@ async function readDB() {
       const request = objectStore.get("settings");
 
       request.onerror = (event) => {
-        console.error(translations[userlang].VOTFailedReadFromDB, event.error);
+        console.error(translations[lang].VOTFailedReadFromDB, event.error);
         console.error(event);
         reject(false);
       };
@@ -347,7 +334,7 @@ async function readDB() {
 
     openRequest.onblocked = () => {
       const db = openRequest.result;
-      const errorMessage = translations[userlang].VOTDisabledForDBUpdating;
+      const errorMessage = translations[lang].VOTDisabledForDBUpdating;
       console.error(errorMessage, db);
       alert(errorMessage);
       reject(false);

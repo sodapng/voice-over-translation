@@ -201,8 +201,7 @@ async function main() {
     let dbSyncVolume;
     let dbAudioProxy; // cf version only
     let firstPlay = true;
-    // let isDBInited;
-    let userlang;
+    let isDBInited;
     let videoData = "";
 
     debug.log("videoContainer", videoContainer);
@@ -230,14 +229,14 @@ async function main() {
     addTranslationBlock(container);
     addTranslationMenu(container);
 
-    // try {
-    //   isDBInited = await initDB();
-    // } catch (err) {
-    //   console.error(
-    //     "[VOT] Failed to initialize database settings. All changes made will not be saved",
-    //     err
-    //   );
-    // }
+    try {
+      isDBInited = await initDB();
+    } catch (err) {
+      console.error(
+        "[VOT] Failed to initialize database settings. All changes made will not be saved",
+        err
+      );
+    }
 
     const menuOptions = document.querySelector(".translationMenuOptions");
     if (menuOptions && !menuOptions.querySelector("#VOTTranslateFromLang")) {
@@ -289,9 +288,10 @@ async function main() {
         .querySelector("#VOTTranslateFromLang")
         .addEventListener("change", async (event) => {
           debug.log("[onchange] select from language", event.target.value);
+          videoData = await getVideoData();
           await setSelectMenuValues(
             event.target.value,
-            lang
+            videoData.responseLanguage
           );
         });
 
@@ -299,11 +299,15 @@ async function main() {
         .querySelector("#VOTTranslateToLang")
         .addEventListener("change", async (event) => {
           debug.log("[onchange] select to language", event.target.value);
-          await updateDB({ userlang: event.target.value });
-          location.reload();
+          videoData = await getVideoData();
+          await setSelectMenuValues(
+            videoData.detectedLanguage,
+            event.target.value
+          );
         });
     }
 
+    if (isDBInited) {
       const dbData = await readDB();
       if (dbData) {
         dbAutoTranslate = dbData.autoTranslate;
@@ -311,7 +315,6 @@ async function main() {
         dbShowVideoSlider = dbData.showVideoSlider;
         dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
         dontTranslateYourLang = dbData.dontTranslateYourLang;
-        userlang = dbData.userlang
         dbAudioProxy = dbData.audioProxy; // cf version only
         dbSyncVolume = dbData.syncVolume; // youtube only
 
@@ -487,6 +490,7 @@ async function main() {
           menuOptions.appendChild(checkbox);
         }
       }
+    }
 
     transformBtn("none", translations[lang].translateVideo);
 
@@ -1211,7 +1215,6 @@ async function main() {
       document.addEventListener("yt-navigate-finish", ytPageEnter);
 
       const ytPageLeave = () => {
-        videoData = ""
         document.body.dispatchEvent(new Event("yt-translate-stop"));
       };
 
@@ -1249,7 +1252,6 @@ async function main() {
           });
         }
         const ytPageLeave = () => {
-          videoData = ""
           document.body.dispatchEvent(new Event("yt-translate-stop"));
         };
         document.addEventListener("spfdone", ytPageLeave);

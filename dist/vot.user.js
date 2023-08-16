@@ -459,53 +459,6 @@ module.exports = function (i) {
 
 /***/ }),
 
-/***/ "./src/styles/main.css":
-/***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
-
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./node_modules/style-loader/dist/runtime/styleDomAPI.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./node_modules/style-loader/dist/runtime/insertBySelector.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("./node_modules/style-loader/dist/runtime/insertStyleElement.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("./node_modules/style-loader/dist/runtime/styleTagTransform.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_main_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("./node_modules/css-loader/dist/cjs.js!./src/styles/main.css");
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-var options = {};
-
-options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
-options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
-
-      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
-options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
-options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
-
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_main_css__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Z, options);
-
-
-
-
-       /* unused harmony default export */ var __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_main_css__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Z && _node_modules_css_loader_dist_cjs_js_main_css__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Z.locals ? _node_modules_css_loader_dist_cjs_js_main_css__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Z.locals : undefined);
-
-
-/***/ }),
-
 /***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
 /***/ ((module) => {
 
@@ -755,69 +708,6 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
-/***/ "./src/config/alternativeUrls.js":
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   U: () => (/* binding */ sitesPiped),
-/* harmony export */   a: () => (/* binding */ sitesInvidious)
-/* harmony export */ });
-// Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
-const sitesInvidious = [
-  "invidious.snopyta.org",
-  "yewtu.be",
-  "invidious.kavin.rocks",
-  "vid.puffyan.us",
-  "invidious.namazso.eu",
-  "inv.riverside.rocks",
-  "yt.artemislena.eu",
-  "invidious.flokinet.to",
-  "invidious.esmailelbob.xyz",
-  "y.com.sb",
-  "invidious.nerdvpn.de",
-  "inv.vern.cc",
-  "invidious.slipfox.xyz",
-  "invidio.xamh.de",
-  "invidious.dhusch.de",
-];
-
-// Sites host Piped. I tested the performance only on piped.video
-const sitesPiped = [
-  "piped.video",
-  "piped.tokhmi.xyz",
-  "piped.moomoo.me",
-  "piped.syncpundit.io",
-  "piped.mha.fi",
-  "watch.whatever.social",
-  "piped.garudalinux.org",
-  "efy.piped.pages.dev",
-  "watch.leptons.xyz",
-  "piped.lunar.icu",
-  "yt.dc09.ru",
-  "piped.mint.lgbt",
-  "il.ax",
-  "piped.privacy.com.de",
-  "piped.esmailelbob.xyz",
-  "piped.projectsegfau.lt",
-  "piped.in.projectsegfau.lt",
-  "piped.us.projectsegfau.lt",
-  "piped.privacydev.net",
-  "piped.palveluntarjoaja.eu",
-  "piped.smnz.de",
-  "piped.adminforge.de",
-  "piped.qdi.fi",
-  "piped.hostux.net",
-  "piped.chauvet.pro",
-  "piped.jotoma.de",
-  "piped.pfcd.me",
-  "piped.frontendfriendly.xyz",
-];
-
-
-
-
-/***/ }),
-
 /***/ "./src/config/config.js":
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
@@ -839,16 +729,422 @@ const autoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video 
 
 /***/ }),
 
-/***/ "./src/config/constants.js":
+/***/ "./src/rvt.js":
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "default": () => (/* binding */ rvt)
+});
+
+;// CONCATENATED MODULE: ./src/getUUID.js
+function getUUID(isLower) {
+  const uuid = ([1e7] + 1e3 + 4e3 + 8e3 + 1e11).replace(/[018]/g, (c) =>
+    (
+      c ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+    ).toString(16)
+  );
+  return isLower ? uuid : uuid.toUpperCase();
+}
+
+
+
+// EXTERNAL MODULE: ./src/yandexRequests.js
+var yandexRequests = __webpack_require__("./src/yandexRequests.js");
+// EXTERNAL MODULE: ./src/config/config.js
+var config = __webpack_require__("./src/config/config.js");
+;// CONCATENATED MODULE: ./src/rvt.js
+
+
+
+
+// Request video translation from Yandex API
+async function requestVideoTranslation(
+  url,
+  unknown1,
+  requestLang,
+  responseLang,
+  callback
+) {
+  // Initialize variables
+  const deviceId = getUUID(true);
+  const body = yandexRequests/* yandexRequests */.G.encodeRequest(
+    url,
+    deviceId,
+    unknown1,
+    requestLang,
+    responseLang
+  );
+
+  try {
+    // Create a key from the HMAC secret
+    const utf8Encoder = new TextEncoder("utf-8");
+    const key = await window.crypto.subtle.importKey(
+      "raw",
+      utf8Encoder.encode(config/* yandexHmacKey */.I1),
+      { name: "HMAC", hash: { name: "SHA-256" } },
+      false,
+      ["sign", "verify"]
+    );
+    // Sign the body with the key
+    const signature = await window.crypto.subtle.sign("HMAC", key, body);
+    // Convert the signature to a hex string
+    const hexSignature = Array.from(new Uint8Array(signature), (x) =>
+      x.toString(16).padStart(2, "0")
+    ).join("");
+    // Create a fetch options object with headers and body
+    const options = {
+      // url: `https://${workerHost}/stream-translation/whitelist-stream`,
+      // url: `https://${workerHost}/stream-translation/translate-stream`,
+      url: `https://${config/* workerHost */.iF}/video-translation/translate`,
+      method: "POST",
+      headers: {
+        Accept: "application/x-protobuf",
+        "Accept-Language": "en",
+        "Content-Type": "application/x-protobuf",
+        "User-Agent": config/* yandexUserAgent */.Rr,
+        Pragma: "no-cache",
+        "Cache-Control": "no-cache",
+        "Sec-Fetch-Mode": "no-cors",
+        "sec-ch-ua": null,
+        "sec-ch-ua-mobile": null,
+        "sec-ch-ua-platform": null,
+        "Vtrans-Signature": hexSignature,
+        "Sec-Vtrans-Token": getUUID(false),
+      },
+      data: String.fromCharCode(...body),
+      responseType: "arraybuffer",
+    };
+    // Send the request using GM_xmlhttpRequest
+    GM_xmlhttpRequest({
+      ...options,
+      onload: (http) => {
+        callback(http.status === 200, http.response);
+      },
+      onerror: (error) => {
+        callback(false);
+      },
+    });
+  } catch (exception) {
+    // Handle errors
+    callback(false);
+  }
+}
+
+/* harmony default export */ const rvt = (requestVideoTranslation);
+
+
+/***/ }),
+
+/***/ "./src/yandexRequests.js":
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Iz: () => (/* binding */ translations),
-/* harmony export */   ey: () => (/* binding */ translateFuncParam),
-/* harmony export */   g$: () => (/* binding */ siteTranslates),
-/* harmony export */   tW: () => (/* binding */ availableLangs),
-/* harmony export */   zL: () => (/* binding */ additionalTTS)
+/* harmony export */   G: () => (/* binding */ yandexRequests)
 /* harmony export */ });
+const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
+  .add(new protobuf.Field("url", 3, "string"))
+  .add(new protobuf.Field("deviceId", 4, "string"))
+  .add(new protobuf.Field("firstRequest", 5, "bool")) // true for the first request, false for subsequent ones
+  .add(new protobuf.Field("unknown1", 6, "fixed64"))
+  .add(new protobuf.Field("unknown2", 7, "int32")) // 1 1
+  .add(new protobuf.Field("language", 8, "string")) // source language code
+  .add(new protobuf.Field("unknown3", 9, "int32")) // 0 0
+  .add(new protobuf.Field("unknown4", 10, "int32")) // 0 0
+  .add(new protobuf.Field("translationHelp", 11, "int32")) // array for translation assistance ([0] -> {2: link to video, 1: "video_file_url"}, [1] -> {2: link to subtitles, 1: "subtitles_file_url"})
+  .add(new protobuf.Field("responseLanguage", 14, "string")); // target language code
+
+// const VideoWhitelistStreamRequest = new protobuf.Type("VideoWhitelistStreamRequest")
+//   .add(new protobuf.Field("url", 1, "string"))
+//   .add(new protobuf.Field("deviceId", 4, "string"))
+
+// const VideoTranslationStreamRequest = new protobuf.Type("VideoTranslationStreamRequest")
+//   .add(new protobuf.Field("url", 1, "string"))
+//   .add(new protobuf.Field("language", 2, "string"))
+//   .add(new protobuf.Field("responseLanguage", 3, "string"))
+
+const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
+  .add(new protobuf.Field("url", 1, "string"))
+  .add(new protobuf.Field("duration", 2, "double"))
+  .add(new protobuf.Field("status", 4, "int32")) // status
+  .add(new protobuf.Field("remainingTime", 5, "int32")) // secs before translation
+  .add(new protobuf.Field("language", 8, "string")) // detected language (if the wrong one is set)
+  .add(new protobuf.Field("message", 9, "string"));
+// 6 - unknown 0 (1st request) -> 10 (2nd, 3th and etc requests)
+// 7 - unknown array
+
+// const VideoWhitelistStreamResponse = new protobuf.Type("VideoWhitelistStreamResponse")
+//   .add(new protobuf.Field("inWhitelist", 1, "bool"))
+
+// const VideoTranslationStreamResponse = new protobuf.Type("VideoTranslationStreamResponse")
+//   .add(new protobuf.Field("unknown1", 1, "int32"))
+//   .add(new protobuf.Field("array", 2, "string"))
+//   .add(new protobuf.Field("ping", 3, "int32"))
+
+// Create a root namespace and add the types
+// const root = new protobuf.Root().define("yandex").add(VideoWhitelistStreamRequest).add(VideoWhitelistStreamResponse);
+
+// // Export the encoding and decoding functions
+// export const yandexRequests = {
+//   encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
+//     return root.VideoWhitelistStreamRequest.encode({
+//       url,
+//       deviceId: 'UCLA_DiR1FfKNvjuUpBHmylQ'
+//     }).finish();
+//   },
+//   decodeResponse(response) {
+//     return root.VideoWhitelistStreamResponse.decode(new Uint8Array(response));
+//   }
+// };
+
+// // Create a root namespace and add the types
+// const root = new protobuf.Root().define("yandex").add(VideoTranslationStreamRequest).add(VideoTranslationStreamResponse);
+
+// // Export the encoding and decoding functions
+// export const yandexRequests = {
+//   encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
+//     return root.VideoTranslationStreamRequest.encode({
+//       url,
+//       language: requestLang,
+//       responseLanguage: responseLang
+//     }).finish();
+//   },
+//   decodeResponse(response) {
+//     return root.VideoTranslationStreamResponse.decode(new Uint8Array(response));
+//   }
+// };
+
+// Create a root namespace and add the types
+const root = new protobuf.Root()
+  .define("yandex")
+  .add(VideoTranslationRequest)
+  .add(VideoTranslationResponse);
+
+// Export the encoding and decoding functions
+const yandexRequests = {
+  encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
+    return root.VideoTranslationRequest.encode({
+      url,
+      deviceId,
+      firstRequest: true,
+      unknown1,
+      unknown2: 1,
+      language: requestLang,
+      unknown3: 0,
+      unknown4: 0,
+      responseLanguage: responseLang,
+    }).finish();
+  },
+  decodeResponse(response) {
+    return root.VideoTranslationResponse.decode(new Uint8Array(response));
+  },
+};
+
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			id: moduleId,
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/nonce */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nc = undefined;
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js
+var injectStylesIntoStyleTag = __webpack_require__("./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+var injectStylesIntoStyleTag_default = /*#__PURE__*/__webpack_require__.n(injectStylesIntoStyleTag);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleDomAPI.js
+var styleDomAPI = __webpack_require__("./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+var styleDomAPI_default = /*#__PURE__*/__webpack_require__.n(styleDomAPI);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertBySelector.js
+var insertBySelector = __webpack_require__("./node_modules/style-loader/dist/runtime/insertBySelector.js");
+var insertBySelector_default = /*#__PURE__*/__webpack_require__.n(insertBySelector);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js
+var setAttributesWithoutAttributes = __webpack_require__("./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+var setAttributesWithoutAttributes_default = /*#__PURE__*/__webpack_require__.n(setAttributesWithoutAttributes);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertStyleElement.js
+var insertStyleElement = __webpack_require__("./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+var insertStyleElement_default = /*#__PURE__*/__webpack_require__.n(insertStyleElement);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleTagTransform.js
+var styleTagTransform = __webpack_require__("./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+var styleTagTransform_default = /*#__PURE__*/__webpack_require__.n(styleTagTransform);
+// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/styles/main.css
+var main = __webpack_require__("./node_modules/css-loader/dist/cjs.js!./src/styles/main.css");
+;// CONCATENATED MODULE: ./src/styles/main.css
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (styleTagTransform_default());
+options.setAttributes = (setAttributesWithoutAttributes_default());
+
+      options.insert = insertBySelector_default().bind(null, "head");
+    
+options.domAPI = (styleDomAPI_default());
+options.insertStyleElement = (insertStyleElement_default());
+
+var update = injectStylesIntoStyleTag_default()(main/* default */.Z, options);
+
+
+
+
+       /* harmony default export */ const styles_main = (main/* default */.Z && main/* default */.Z.locals ? main/* default */.Z.locals : undefined);
+
+;// CONCATENATED MODULE: ./src/utils/getYTVideoData.js
+async function detect(cleanText) {
+  const response = await fetch("https://rust-server-531j.onrender.com/detect", {
+    method: "POST",
+    body: cleanText,
+  });
+  return await response.text();
+}
+
+// Get the language code from the response or the text
+async function getLanguage(player, response, title, description, author) {
+  if (!window.location.hostname.includes("m.youtube.com")) {
+    // ! Experimental ! get lang from selected audio track if availabled
+    const audioTracks = player.getAudioTrack();
+    const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
+    if (trackInfo?.id !== "und") {
+      return trackInfo.id.split(".")[0];
+    }
+  }
+
+  // TODO: If the audio tracks will work fine, transfer the receipt of captions to the audioTracks variable
+  // Check if there is an automatic caption track in the response
+  const captionTracks =
+    response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
+  if (captionTracks?.length) {
+    const autoCaption = captionTracks.find((caption) => caption.kind === "asr");
+    if (autoCaption) {
+      return autoCaption.languageCode;
+    }
+  }
+  // If there is no caption track, use detect to get the language code from the text
+  const text = [title, description, author].join(" ");
+  // Remove anything that is not a letter or a space in any language
+  const cleanText = text
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/https?:\/\/\S+/g, "")
+    .replace(/[^\p{L}\s]/gu, "")
+    .slice(0, 250);
+  return await detect(cleanText);
+}
+
+// Get the video data from the player
+async function getYTVideoData() {
+  const player = document.querySelector("#movie_player");
+  const data = player.getVideoData();
+  const response = player.getPlayerResponse();
+  const { isLive, isPremiere, title, author } = data;
+  const { shortDescription: description } = response?.videoDetails ?? {};
+  const videoData = {
+    isLive,
+    isPremiere,
+    title,
+    description,
+    author,
+    detectedLanguage: await getLanguage(
+      player,
+      response,
+      title,
+      description,
+      author
+    ),
+  };
+  console.log("VOT Detected language: ", videoData.detectedLanguage);
+  return videoData;
+}
+
+
+
+// EXTERNAL MODULE: ./src/yandexRequests.js
+var yandexRequests = __webpack_require__("./src/yandexRequests.js");
+;// CONCATENATED MODULE: ./src/config/constants.js
 const translateFuncParam = 0x40_75_50_00_00_00_00_00;
 
 // available languages for translation
@@ -2131,1930 +2427,29 @@ const translations = {
 
 
 
-
-/***/ }),
-
-/***/ "./src/config/regexes.js":
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-const regexes = () => {
-  return {
-    youtubeRegex: /^(www.|m.)?youtube(-nocookie)?.com$/,
-  };
+;// CONCATENATED MODULE: ./src/utils/debug.js
+const debug = {};
+debug.log = (...text) => {
+  if (true) {
+    return;
+  }
+  return console.log(
+    "%c[VOT DEBUG]",
+    "background: #F2452D; color: #fff; padding: 5px;",
+    ...text
+  );
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (regexes());
+/* harmony default export */ const utils_debug = (debug);
 
-
-/***/ }),
-
-/***/ "./src/config/selectors.js":
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-const selectors = () => {
-  return {
-    youtubeSelector: ".html5-video-container",
-    twitchSelector: ".video-ref",
-    twitchMobileSelector: "main > div > section > div > div > div",
-    pipedSelector: ".shaka-video-container",
-    vkSelector: ".videoplayer_media",
-    twitterSelector:
-      'div[data-testid="videoComponent"] > div:nth-child(1) > div',
-    vimeoSelector: ".player",
-    gagSelector: ".video-post",
-    bilibilicomSelector: ".bpx-player-video-wrap",
-    mailSelector: "#b-video-wrapper",
-  };
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (selectors());
-
-
-/***/ }),
-
-/***/ "./src/index.js":
-/***/ ((__webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
-/* harmony import */ var _styles_main_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./src/styles/main.css");
-/* harmony import */ var _utils_getYTVideoData_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("./src/utils/getYTVideoData.js");
-/* harmony import */ var _yandexRequests_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./src/yandexRequests.js");
-/* harmony import */ var _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./src/utils/utils.js");
-/* harmony import */ var _config_config_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("./src/config/config.js");
-/* harmony import */ var _config_alternativeUrls_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("./src/config/alternativeUrls.js");
-/* harmony import */ var _config_constants_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("./src/config/constants.js");
-/* harmony import */ var _indexedDB_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("./src/indexedDB.js");
-/* harmony import */ var _menu_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("./src/menu.js");
-/* harmony import */ var _utils_volume_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__("./src/utils/volume.js");
-/* harmony import */ var _config_regexes_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("./src/config/regexes.js");
-/* harmony import */ var _config_selectors_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("./src/config/selectors.js");
-/* harmony import */ var _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("./src/utils/debug.js");
-var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__, _menu_js__WEBPACK_IMPORTED_MODULE_5__]);
-([_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__, _menu_js__WEBPACK_IMPORTED_MODULE_5__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const sitesChromiumBlocked = [..._config_alternativeUrls_js__WEBPACK_IMPORTED_MODULE_9__/* .sitesInvidious */ .a, ..._config_alternativeUrls_js__WEBPACK_IMPORTED_MODULE_9__/* .sitesPiped */ .U];
-
-// translate properties
-let translateFromLang = "en"; // default language of video
-
-let translateToLang = _menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ; // default language of audio response
-
-let ytData = "";
-
-async function main() {
-  _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("Loading extension...");
-  _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log(`Selected menu language: ${_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ}`);
-
-  const rvt = await Promise.resolve(/* import() */).then(__webpack_require__.bind(__webpack_require__, "./src/rvt.js"));
-
-  const requestVideoTranslation = rvt.default;
-
-  _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("Inited requestVideoTranslation...");
-
-  if (
-     true &&
-    GM_info?.scriptHandler &&
-    ["Violentmonkey", "FireMonkey", "Greasemonkey", "AdGuard"].includes(
-      GM_info.scriptHandler
-    )
-  ) {
-    const errorText = _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].unSupportedExtensionError;
-    console.error(errorText);
-    return alert(errorText);
-  }
-
-  _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("Extension compatibility passed...");
-
-  let timer;
-  const audio = new Audio();
-  let opacityRatio = 0.9;
-  let openedMenu = false;
-
-  if (false) { var translationPanding; }
-
-  function logout(n) {
-    if (openedMenu) return;
-
-    document.querySelector(".translationBlock").style.opacity = n;
-  }
-
-  function resetTimer() {
-    clearTimeout(timer);
-    logout(1);
-    timer = setTimeout(() => {
-      logout(0);
-    }, 2000);
-  }
-
-  function changeOpacityOnEvent(event, timer, opacityRatio) {
-    clearTimeout(timer);
-    logout(opacityRatio);
-    event.stopPropagation();
-  }
-
-  const deleteAudioSrc = async () => {
-    audio.src = "";
-    audio.removeAttribute("src");
-  };
-
-  // Add menu container
-  function addTranslationMenu(element) {
-    if (element.querySelector(".translationMenuContent")) return;
-
-    const container = (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .createTranslationMenu */ .NX)();
-    element.appendChild(container);
-
-    // click to translation menu icon
-    document
-      .querySelector(".translationMenu")
-      ?.addEventListener("click", (event) => {
-        event.stopPropagation();
-        const content = document.querySelector(".translationMenuContent");
-        content.style.display = openedMenu ? "none" : "block";
-        content.style.opacity = opacityRatio;
-        openedMenu = !openedMenu;
-      });
-
-    document
-      .querySelector(".translationDropDB")
-      .addEventListener("click", (event) => {
-        event.stopPropagation();
-        (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .deleteDB */ .Lj)();
-        location.reload();
-      });
-
-    _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("VOT: Added translation menu to ", element);
-  }
-
-  function translateVideo(url, unknown1, requestLang, responseLang, callback) {
-    _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log(
-      `Translate video (url: ${url}, unknown1: ${unknown1}, requestLang: ${requestLang}, responseLang: ${responseLang})`
-    );
-
-    if (false) {}
-
-    translationPanding = true;
-
-    requestVideoTranslation(
-      url,
-      unknown1,
-      requestLang,
-      responseLang,
-      (success, response) => {
-        translationPanding = false;
-
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[exec callback] Requesting video translation");
-        if (!success) {
-          callback(false, _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].requestTranslationFailed);
-          return;
-        }
-
-        const translateResponse = _yandexRequests_js__WEBPACK_IMPORTED_MODULE_1__/* .yandexRequests */ .G.decodeResponse(response);
-        console.log("VOT Response: ", translateResponse);
-
-        switch (translateResponse.status) {
-          case 0:
-            callback(false, translateResponse.message);
-            break;
-          case 1:
-            callback(
-              !!translateResponse.url,
-              translateResponse.url || _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].audioNotReceived
-            );
-            break;
-          case 2:
-            callback(
-              false,
-              translateResponse.remainingTime
-                ? (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .secsToStrTime */ .PG)(translateResponse.remainingTime)
-                : _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].translationTakeFewMinutes
-            );
-            break;
-          case 3:
-            /*
-              Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода. В конечном итоге, это занимает слишком много времени,
-              как-будто сервер не понимает, что данное видео уже недавно было переведено и заместо возвращения готовой ссылки на перевод начинает переводить видео заново при чём у него это получается за очень длительное время
-            */
-            callback(false, _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].videoBeingTranslated);
-            break;
-        }
-      }
-    );
-  }
-
-  async function translateProccessor(videoContainer, siteHostname, siteEvent) {
-    _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[translateProccessor] execute on element: ", videoContainer);
-
-    let video;
-    let autoRetry;
-    let volumeOnStart;
-    let tempOriginalVolume;
-    let tempVolume;
-    let dbAutoTranslate;
-    let dbDefaultVolume;
-    let dbShowVideoSlider;
-    let dbAutoSetVolumeYandexStyle;
-    let dontTranslateYourLang;
-    let dbSyncVolume;
-    let dbAudioProxy; // cf version only
-    let firstPlay = true;
-    // let isDBInited;
-    let userlang;
-    let videoData = "";
-
-    _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("videoContainer", videoContainer);
-
-    video =
-      siteHostname === "vimeo"
-        ? videoContainer.querySelector(
-            ".vp-video-wrapper > .vp-video > .vp-telecine > video"
-          )
-        : videoContainer.querySelector("video");
-
-    _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("video", video);
-
-    const container =
-      siteHostname === "pornhub" &&
-      window.location.pathname.includes("view_video.php")
-        ? document.querySelector(".original.mainPlayerDiv")
-        : siteHostname === "pornhub" &&
-          window.location.pathname.includes("embed/")
-        ? document.querySelector("body")
-        : window.location.hostname.includes("m.youtube.com")
-        ? document.querySelector("#player-control-container")
-        : videoContainer;
-
-    (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .addTranslationBlock */ .Ot)(container);
-    addTranslationMenu(container);
-
-    // try {
-    //   isDBInited = await initDB();
-    // } catch (err) {
-    //   console.error(
-    //     "[VOT] Failed to initialize database settings. All changes made will not be saved",
-    //     err
-    //   );
-    // }
-
-    const menuOptions = document.querySelector(".translationMenuOptions");
-    if (menuOptions && !menuOptions.querySelector("#VOTTranslateFromLang")) {
-      const selectFromLangOptions = [
-        {
-          label: _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].videoLanguage,
-          value: "default",
-          disabled: true,
-        },
-        ...(0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .genOptionsByOBJ */ .Ef)(_config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .availableLangs */ .tW, videoData.detectedLanguage),
-      ];
-
-      const selectToLangOptions = [
-        {
-          label: _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].translationLanguage,
-          value: "default",
-          disabled: true,
-        },
-        ...(0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .genOptionsByOBJ */ .Ef)(_config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .availableLangs */ .tW, videoData.responseLanguage),
-        {
-          label: "─────────",
-          value: "separator",
-          disabled: true,
-        },
-        ...(0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .genOptionsByOBJ */ .Ef)(_config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .additionalTTS */ .zL, videoData.responseLanguage),
-      ];
-
-      const selectFromLang = (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .createMenuSelect */ .Mr)(
-        "VOTTranslateFromLang",
-        selectFromLangOptions
-      );
-
-      const selectToLang = (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .createMenuSelect */ .Mr)(
-        "VOTTranslateToLang",
-        selectToLangOptions
-      ).firstElementChild;
-
-      selectFromLang.id = "VOTSelectLanguages";
-      selectFromLang.innerHTML += `
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16m0 0l-6 6m6-6l-6-6"/>
-        </svg>
-      `;
-
-      selectFromLang.appendChild(selectToLang);
-      menuOptions.appendChild(selectFromLang);
-
-      menuOptions
-        .querySelector("#VOTTranslateFromLang")
-        .addEventListener("change", async (event) => {
-          _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[onchange] select from language", event.target.value);
-          await setSelectMenuValues(
-            event.target.value,
-            _menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ
-          );
-        });
-
-      menuOptions
-        .querySelector("#VOTTranslateToLang")
-        .addEventListener("change", async (event) => {
-          _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[onchange] select to language", event.target.value);
-          await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .updateDB */ .l6)({ userlang: event.target.value });
-          location.reload();
-        });
-    }
-
-      const dbData = await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .readDB */ .CZ)();
-      if (dbData) {
-        dbAutoTranslate = dbData.autoTranslate;
-        dbDefaultVolume = dbData.defaultVolume;
-        dbShowVideoSlider = dbData.showVideoSlider;
-        dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
-        dontTranslateYourLang = dbData.dontTranslateYourLang;
-        userlang = dbData.userlang
-        dbAudioProxy = dbData.audioProxy; // cf version only
-        dbSyncVolume = dbData.syncVolume; // youtube only
-
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[db] data from db: ", dbData);
-
-        if (
-          dbAutoTranslate !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTAutoTranslate")
-        ) {
-          const checkbox = (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .createMenuCheckbox */ .H0)(
-            "VOTAutoTranslate",
-            dbAutoTranslate,
-            _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTAutoTranslate +
-              (siteHostname === "vk" ||
-              window.location.hostname.includes("m.twitch.tv")
-                ? ` <strong>(${_config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].recommended})</strong>`
-                : "")
-          );
-
-          checkbox.querySelector("#VOTAutoTranslate").onclick = async (
-            event
-          ) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .updateDB */ .l6)({ autoTranslate: value });
-            dbAutoTranslate = value;
-            _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log(
-              "autoTranslate value changed. New value: ",
-              dbAutoTranslate
-            );
-          };
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (
-          window.location.hostname.includes("youtube.com") &&
-          dontTranslateYourLang !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTDontTranslateYourLang")
-        ) {
-          const checkbox = (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .createMenuCheckbox */ .H0)(
-            "VOTDontTranslateYourLang",
-            dontTranslateYourLang,
-            _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTDontTranslateYourLang
-          );
-
-          checkbox.querySelector("#VOTDontTranslateYourLang").onclick = async (
-            event
-          ) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .updateDB */ .l6)({ dontTranslateYourLang: value });
-            dontTranslateYourLang = value;
-            _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log(
-              "dontTranslateYourLang value changed. New value: ",
-              dontTranslateYourLang
-            );
-          };
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (
-          dbAutoSetVolumeYandexStyle !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTAutoSetVolume")
-        ) {
-          const checkbox = (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .createMenuCheckbox */ .H0)(
-            "VOTAutoSetVolume",
-            dbAutoSetVolumeYandexStyle,
-            _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTAutoSetVolume + `${_config_config_js__WEBPACK_IMPORTED_MODULE_10__/* .autoVolume */ .IM * 100}%`
-          );
-
-          checkbox.querySelector("#VOTAutoSetVolume").onclick = async (
-            event
-          ) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .updateDB */ .l6)({ autoSetVolumeYandexStyle: value });
-            dbAutoSetVolumeYandexStyle = value;
-            _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log(
-              "autoSetVolumeYandexStyle value changed. New value: ",
-              dbAutoSetVolumeYandexStyle
-            );
-          };
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (
-          dbShowVideoSlider !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTShowVideoSlider")
-        ) {
-          const checkbox = (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .createMenuCheckbox */ .H0)(
-            "VOTShowVideoSlider",
-            dbShowVideoSlider,
-            _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTShowVideoSlider
-          );
-
-          checkbox.querySelector("#VOTShowVideoSlider").onclick = async (
-            event
-          ) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .updateDB */ .l6)({ showVideoSlider: value });
-            dbShowVideoSlider = value;
-            _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log(
-              "showVideoSlider value changed. New value: ",
-              dbShowVideoSlider
-            );
-            if (
-              dbShowVideoSlider === 1 &&
-              document.querySelector(".translationBtn").dataset.state ===
-                "success"
-            ) {
-              addVideoSlider();
-            } else {
-              document.querySelector("#VOTVideoSlider")?.parentElement.remove();
-            }
-          };
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (
-          window.location.hostname.includes("youtube.com") &&
-          !window.location.hostname.includes("m.youtube.com") &&
-          dbSyncVolume !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTSyncVolume")
-        ) {
-          const checkbox = (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .createMenuCheckbox */ .H0)(
-            "VOTSyncVolume",
-            dbSyncVolume,
-            _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTSyncVolume
-          );
-
-          checkbox.querySelector("#VOTSyncVolume").onclick = async (event) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .updateDB */ .l6)({ syncVolume: value });
-            dbSyncVolume = value;
-            _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("syncVolume value changed. New value: ", dbSyncVolume);
-          };
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        // cf version only
-        if (
-          false
-        ) {}
-      }
-
-    (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .transformBtn */ .uJ)("none", _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].translateVideo);
-
-    if (
-      window.location.hostname.includes("youtube.com") &&
-      !window.location.hostname.includes("m.youtube.com")
-    ) {
-      const syncVolumeObserver = new MutationObserver(async function (
-        mutations
-      ) {
-        mutations.forEach(async function (mutation) {
-          if (
-            mutation.type === "attributes" &&
-            mutation.attributeName === "aria-valuenow" &&
-            document.querySelector("#VOTVideoSlider")
-          ) {
-            syncVideoVolumeSlider();
-          }
-        });
-      });
-
-      syncVolumeObserver.observe(document.querySelector(".ytp-volume-panel"), {
-        attributes: true,
-        childList: false,
-        subtree: true,
-        attributeOldValue: true,
-      });
-    }
-
-    async function setSelectMenuValues(from, to) {
-      if (!document.querySelector("#VOTSelectLanguages")) {
-        return;
-      }
-      document.querySelector("#VOTTranslateFromLang").value = from;
-      document.querySelector("#VOTTranslateToLang").value = to;
-      console.log(`Set translation from ${from} to ${to}`);
-      videoData.detectedLanguage = from;
-      videoData.responseLanguage = to;
-    }
-
-    // data - ytData or VideoData
-    // async function setDetectedLangauge(data, videolang) {
-    //   switch (videolang) {
-    //     case "en":
-    //       data.detectedLanguage = videolang;
-    //       data.responseLanguage = lang;
-    //       break;
-    //     case "ru":
-    //       data.detectedLanguage = videolang;
-    //       data.responseLanguage = lang;
-    //       if (lang == "ru") data.responseLanguage = "en";
-    //       break;
-    //     default:
-    //       if (!Object.keys(availableLangs).includes(videolang)) {
-    //         return setDetectedLangauge(data, "en");
-    //       }
-
-    //       data.detectedLanguage = videolang;
-    //   }
-
-    //   setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
-
-    //   return data;
-    // }
-
-    // data - ytData or VideoData
-    // async function setResponseLangauge(data, videolang) {
-    //   switch (videolang) {
-    //     case "en":
-    //       data.responseLanguage = videolang;
-    //       data.detectedLanguage = "ru";
-    //       break;
-    //     default:
-    //       if (!Object.keys(availableLangs).includes(videolang)) {
-    //         return setResponseLangauge(data, "ru");
-    //       }
-
-    //       if (data.detectedLanguage && data.responseLanguage === lang) {
-    //         data.detectedLanguage = "en";
-    //       }
-
-    //       data.responseLanguage = videolang;
-    //   }
-
-    //   setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
-
-    //   return data;
-    // }
-
-    async function stopTraslate() {
-      // Default actions on stop translate
-      audio.pause();
-      video.removeEventListener(".translate", stopTraslate, false);
-      await deleteAudioSrc();
-      document.querySelector("#VOTVideoSlider")?.parentElement.remove();
-      document.querySelector("#VOTTranslationSlider")?.parentElement.remove();
-      const downloadBtn = document.querySelector(".translationDownload");
-      downloadBtn.href = "";
-      downloadBtn.style.display = "none";
-      (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .transformBtn */ .uJ)("none", _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].translateVideo);
-      // temp fix
-      if (window.location.hostname.includes("youtube.com")) {
-        document.querySelector(".html5-video-player").setVolume(100);
-      }
-      if (volumeOnStart) {
-        video.volume = volumeOnStart;
-      }
-    }
-
-    async function syncVideoVolumeSlider() {
-      // Sync volume slider with original video (youtube only)
-      const newSlidersVolume = document
-        .querySelector(".ytp-volume-panel")
-        .getAttribute("aria-valuenow");
-
-      const videoSlider = document.querySelector("#VOTVideoSlider");
-
-      if (!videoSlider) {
-        return;
-      }
-      videoSlider.value = newSlidersVolume;
-
-      const videoVolumeLabel = document.querySelector("#VOTVideoVolume");
-
-      if (videoVolumeLabel) {
-        videoVolumeLabel.innerText = `${newSlidersVolume}%`;
-      }
-
-      if (dbSyncVolume === 1) {
-        tempOriginalVolume = Number(newSlidersVolume);
-      }
-    }
-
-    async function getVideoData() {
-      const videoData = {};
-
-      videoData.duration = video?.duration || 0;
-
-      videoData.videoId = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .getVideoId */ .gJ)(siteHostname);
-
-      videoData.detectedLanguage = translateFromLang;
-
-      videoData.responseLanguage = translateToLang;
-
-      if (window.location.hostname.includes("youtube.com")) {
-        ytData = await (0,_utils_getYTVideoData_js__WEBPACK_IMPORTED_MODULE_11__/* .getYTVideoData */ .l)();
-        if (ytData.author !== "") {
-          videoData.detectedLanguage = ytData.detectedLanguage;
-          videoData.responseLanguage = _menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ;
-        }
-      } else if (
-        window.location.hostname.includes("rutube") ||
-        window.location.hostname.includes("my.mail.ru")
-      ) {
-        videoData.detectedLanguage = "ru";
-        videoData.responseLanguage = "en";
-      } else if (window.location.hostname.includes("bilibili.com")) {
-        videoData.detectedLanguage = "zh";
-      }
-
-      return videoData;
-    }
-
-    const lipSync = async (mode = false) => {
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("lipsync video", video);
-      if (!video) {
-        return;
-      }
-      audio.currentTime = video.currentTime;
-      audio.playbackRate = video.playbackRate;
-
-      if (!mode) {
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("lipsync mode is not set");
-        return;
-      }
-
-      if (mode === "play") {
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("lipsync mode is play");
-        const audioPromise = audio.play();
-        if (audioPromise !== undefined) {
-          audioPromise.catch((e) => {
-            console.error(e);
-            if (e.name === "NotAllowedError") {
-              const errorMessage = _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].grantPermissionToAutoPlay;
-              (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .transformBtn */ .uJ)("error", errorMessage);
-              throw `VOT: ${errorMessage}`;
-            } else if (e.name === "NotSupportedError") {
-              const errorMessage = sitesChromiumBlocked.includes(
-                window.location.hostname
-              )
-                ? _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].neededAdditionalExtension
-                : _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].audioFormatNotSupported;
-              (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .transformBtn */ .uJ)("error", errorMessage);
-              throw `VOT: ${errorMessage}`;
-            }
-          });
-        }
-        return;
-      }
-      if (mode === "pause") {
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("lipsync mode is pause");
-        audio.pause();
-      }
-      if (mode === "stop") {
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("lipsync mode is stop");
-        audio.pause();
-      }
-      if (mode === "waiting") {
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("lipsync mode is waiting");
-        audio.pause();
-      }
-      if (mode === "playing") {
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("lipsync mode is playing");
-        audio.play();
-      }
-    };
-
-    function addVideoSlider() {
-      if (
-        dbShowVideoSlider !== 1 ||
-        document.querySelector("#VOTVideoSlider") ||
-        document.querySelector(".translationBtn").dataset.state !== "success"
-      ) {
-        return;
-      }
-
-      const newVolume =
-        window.location.hostname.includes("youtube.com") &&
-        !dbAutoSetVolumeYandexStyle
-          ? document
-              .querySelector(".ytp-volume-panel")
-              ?.getAttribute("aria-valuenow")
-          : Math.round(video.volume * 100);
-      tempOriginalVolume = newVolume;
-
-      const slider = (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .createMenuSlider */ .iT)(
-        "VOTVideoSlider",
-        newVolume,
-        `${_config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTVolume}: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
-      );
-
-      slider.querySelector("#VOTVideoSlider").oninput = async (event) => {
-        const { value } = event.target;
-        video.volume = value / 100;
-        slider.querySelector("#VOTOriginalVolume").innerText = `${value}%`;
-
-        if (dbSyncVolume !== 1) {
-          return;
-        }
-
-        // Sync translation volume slider with video volume slider
-        const translateVolumeSlider = document.querySelector(
-          "#VOTTranslationSlider"
-        );
-
-        if (!translateVolumeSlider) {
-          return;
-        }
-        const translateVolume = Number(translateVolumeSlider.value);
-        const finalValue = (0,_utils_volume_js__WEBPACK_IMPORTED_MODULE_12__/* .syncVolume */ .C)(
-          audio,
-          value,
-          translateVolume,
-          tempOriginalVolume
-        );
-
-        translateVolumeSlider.value = finalValue;
-
-        const translateVolumeLabel = document.querySelector(
-          "#VOTTranslationVolume"
-        );
-
-        if (translateVolumeLabel) {
-          translateVolumeLabel.innerText = `${finalValue}%`;
-        }
-
-        tempVolume = finalValue;
-        tempOriginalVolume = value;
-      };
-
-      const menuOptions = document.querySelector(".translationMenuOptions");
-      menuOptions.appendChild(slider);
-    }
-
-    async function addTranslationSlider() {
-      // Return early if slider already exists or translation is not successful
-      if (
-        document.querySelector("#VOTTranslationSlider") ||
-        document.querySelector(".translationBtn").dataset.state !== "success"
-      ) {
-        return;
-      }
-
-      // Use dbDefaultVolume or 100 as the default translation volume
-      const defaultTranslateVolume =
-        typeof dbDefaultVolume === "number" ? dbDefaultVolume : 100;
-      tempOriginalVolume = defaultTranslateVolume;
-
-      // Create a slider element with the default volume and label
-      const slider = (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .createMenuSlider */ .iT)(
-        "VOTTranslationSlider",
-        defaultTranslateVolume,
-        `${_config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTVolumeTranslation}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
-      );
-
-      // Add an input event listener to the slider
-      slider.querySelector("#VOTTranslationSlider").oninput = async ({
-        target: { value },
-      }) => {
-        // Set the audio volume to the slider value
-        audio.volume = value / 100;
-
-        // Update the volume label
-        document.querySelector("#VOTTranslationVolume").innerText = `${value}%`;
-
-        // Update the database with the new volume value
-        await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_4__/* .updateDB */ .l6)({ defaultVolume: Number(value) });
-        dbDefaultVolume = Number(value);
-
-        // Sync translation volume with video volume if dbSyncVolume is 1
-        if (dbSyncVolume === 1) {
-          syncTranslationWithVideo(value);
-        }
-      };
-
-      // Append the slider to the menu options
-      const menuOptions = document.querySelector(".translationMenuOptions");
-      menuOptions.appendChild(slider);
-    }
-
-    // A helper function to sync translation volume with video volume
-    function syncTranslationWithVideo(translationValue) {
-      // Get the video volume slider element
-      const videoVolumeSlider = document.querySelector("#VOTVideoSlider");
-
-      if (!videoVolumeSlider) {
-        return;
-      }
-      // Get the video volume value
-      const videoVolume = Number(videoVolumeSlider.value);
-
-      // Calculate the synced video volume based on the translation volume
-      const finalValue = (0,_utils_volume_js__WEBPACK_IMPORTED_MODULE_12__/* .syncVolume */ .C)(
-        video,
-        translationValue,
-        videoVolume,
-        tempVolume
-      );
-
-      // Set the video volume slider value to the synced value
-      videoVolumeSlider.value = finalValue;
-
-      // Update the video volume label
-      const videoVolumeLabel = document.querySelector("#VOTOriginalVolume");
-      if (videoVolumeLabel) videoVolumeLabel.innerText = `${finalValue}%`;
-
-      // Update the temp variables for future syncing
-      tempOriginalVolume = finalValue;
-      tempVolume = translationValue;
-    }
-
-    async function videoValidator() {
-      if (window.location.hostname.includes("youtube.com")) {
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("VideoValidator videoData: ", videoData);
-        if (
-          dontTranslateYourLang === 1 &&
-          videoData.detectedLanguage === _menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ &&
-          videoData.responseLanguage === _menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ
-        ) {
-          throw _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTDisableFromYourLang;
-        }
-
-        if (ytData.isLive) {
-          throw _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTLiveNotSupported;
-        }
-
-        if (ytData.isPremiere) {
-          throw _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTPremiere;
-        }
-        if (videoData.duration > 14_400) {
-          throw _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTVideoIsTooLong;
-        }
-      }
-      return true;
-    }
-
-    const translateExecutor = async (VIDEO_ID) => {
-      if (!videoData.detectedLanguage) {
-        videoData = await getVideoData();
-        await setSelectMenuValues(
-          videoData.detectedLanguage,
-          videoData.responseLanguage
-        );
-      }
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("Run videoValidator");
-      await videoValidator();
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("Run translateFunc");
-      await translateFunc(
-        VIDEO_ID,
-        videoData.detectedLanguage,
-        videoData.responseLanguage
-      );
-    };
-
-    // Define a function to handle common events
-    async function handleVideoEvent(event) {
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log(`video ${event.type}`);
-      await lipSync(event.type);
-    }
-
-    // Define a function to stop translation and clean up
-    async function stopTranslation() {
-      await stopTraslate();
-      await syncVideoVolumeSlider();
-    }
-
-    // Define a function to translate a video and handle the callback
-    async function translateFunc(VIDEO_ID, requestLang, responseLang) {
-      console.log("VOT Video Data: ", videoData);
-      const videoURL = `${_config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .siteTranslates */ .g$[siteHostname]}${VIDEO_ID}`;
-      translateVideo(
-        videoURL,
-        _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translateFuncParam */ .ey,
-        requestLang,
-        responseLang,
-        async (success, urlOrError) => {
-          _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[exec callback] translateVideo");
-          if ((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .getVideoId */ .gJ)(siteHostname) !== VIDEO_ID) return;
-          if (!success) {
-            (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .transformBtn */ .uJ)("error", urlOrError);
-            // if the error line contains information that the translation is being performed, then we wait
-            if (urlOrError.includes(_config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].translationTake)) {
-              clearTimeout(autoRetry);
-              autoRetry = setTimeout(
-                () => translateFunc(VIDEO_ID, requestLang, responseLang),
-                60_000
-              );
-            }
-            throw urlOrError;
-          }
-
-          audio.src = urlOrError;
-
-          // cf version only
-          if (
-            false
-          ) {}
-
-          volumeOnStart = video?.volume;
-          if (typeof dbDefaultVolume === "number") {
-            audio.volume = dbDefaultVolume / 100;
-          }
-          if (
-            typeof dbAutoSetVolumeYandexStyle === "number" &&
-            dbAutoSetVolumeYandexStyle
-          ) {
-            video.volume = _config_config_js__WEBPACK_IMPORTED_MODULE_10__/* .autoVolume */ .IM;
-            // temp fix
-            if (window.location.hostname.includes("youtube.com")) {
-              document.querySelector(".html5-video-player").setVolume(_config_config_js__WEBPACK_IMPORTED_MODULE_10__/* .autoVolume */ .IM * 100);
-            }
-          }
-
-          switch (siteHostname) {
-            case "twitter":
-              document
-                .querySelector('div[data-testid="app-bar-back"][role="button"]')
-                .addEventListener("click", stopTranslation);
-              break;
-            case "invidious":
-            case "piped":
-              break;
-            default:
-              if (siteEvent !== null) {
-                document.body.addEventListener(siteEvent, stopTranslation);
-              }
-              break;
-          }
-
-          const siteHostnames = [
-            "twitch",
-            "vimeo",
-            "facebook",
-            "rutube",
-            "twitter",
-            "bilibili.com",
-            "mail.ru",
-          ];
-          for (let i = 0; i < siteHostnames.length; i++) {
-            if (siteHostname === siteHostnames[i]) {
-              const mutationObserver = new MutationObserver(
-                async (mutations) => {
-                  mutations.forEach(async (mutation) => {
-                    if (
-                      mutation.type === "attributes" &&
-                      mutation.attributeName === "src" &&
-                      mutation.target === video &&
-                      mutation.target.src !== ""
-                    ) {
-                      stopTranslation();
-                      firstPlay = true;
-                    }
-                  });
-                }
-              );
-              mutationObserver.observe(videoContainer, {
-                attributes: true,
-                childList: false,
-                subtree: true,
-                attributeOldValue: true,
-              });
-              break;
-            }
-          }
-
-          if (video && !video.paused) lipSync("play");
-          const videos = document.querySelectorAll("video");
-          const events = [
-            "playing",
-            "ratechange",
-            "play",
-            "waiting",
-            "pause",
-          ];
-          videos.forEach((v) =>
-            events.forEach((e) => v.addEventListener(e, handleVideoEvent))
-          );
-          (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .transformBtn */ .uJ)("success", _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].disableTranslate);
-          addVideoSlider();
-          await addTranslationSlider();
-
-          const VOTVideoSlider = document.querySelector("#VOTVideoSlider");
-          if (VOTVideoSlider) VOTVideoSlider.value = _config_config_js__WEBPACK_IMPORTED_MODULE_10__/* .autoVolume */ .IM * 100;
-
-          const VOTOriginalVolume =
-            document.querySelector("#VOTOriginalVolume");
-          if (VOTOriginalVolume) {
-            VOTOriginalVolume.innerText = `${_config_config_js__WEBPACK_IMPORTED_MODULE_10__/* .autoVolume */ .IM * 100}%`;
-          }
-
-          const downloadBtn = document.querySelector(".translationDownload");
-          downloadBtn.href = urlOrError;
-          downloadBtn.style.display = "initial";
-        }
-      );
-    }
-
-    document.addEventListener("click", async (event) => {
-      const block = document.querySelector(".translationBlock");
-      const menuContainer = document.querySelector(".translationMenuContent");
-      const isBlock =
-        block || event.target === block ? block.contains(event.target) : false;
-      const isContent =
-        menuContainer || event.target === menuContainer
-          ? menuContainer.contains(event.target)
-          : false;
-      const isVideo =
-        videoContainer || event.target === videoContainer
-          ? videoContainer.contains(event.target)
-          : false;
-
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log(`[document click] ${isBlock} ${isContent} ${isVideo}`);
-      if (!(!isBlock && !isContent)) return;
-      if (!isVideo) logout(0);
-
-      menuContainer.style.display = "none";
-      openedMenu = false;
-    });
-
-    const addEventListeners = (element, events, handler) => {
-      events.forEach((event) =>
-        element.addEventListener(event, async (event) => {
-          await handler(event);
-        })
-      );
-    };
-
-    if (siteHostname === "pornhub") {
-      if (window.location.pathname.includes("view_video.php")) {
-        const videoElement = document.querySelector(
-          ".original.mainPlayerDiv > video-element > div"
-        );
-        addEventListeners(videoElement, ["mousemove", "mouseout"], resetTimer);
-      } else if (window.location.pathname.includes("embed/")) {
-        const playerElement = document.querySelector("#player");
-        addEventListeners(playerElement, ["mousemove", "mouseout"], resetTimer);
-      }
-    } else if (siteHostname === "twitter") {
-      const videoPlayerElement = document.querySelector(
-        'div[data-testid="videoPlayer"'
-      );
-      addEventListeners(
-        videoPlayerElement,
-        ["mousemove", "mouseout"],
-        resetTimer
-      );
-    } else {
-      addEventListeners(videoContainer, ["mousemove", "mouseout"], resetTimer);
-    }
-
-    document
-      .querySelector(".translationBlock")
-      .addEventListener("mousemove", (event) =>
-        changeOpacityOnEvent(event, timer, opacityRatio)
-      );
-    document
-      .querySelector(".translationMenuContent")
-      .addEventListener("mousemove", (event) =>
-        changeOpacityOnEvent(event, timer, opacityRatio)
-      );
-
-    document.addEventListener("touchstart", (event) =>
-      changeOpacityOnEvent(event, timer, opacityRatio)
-    );
-    document.addEventListener("touchmove", (event) =>
-      changeOpacityOnEvent(event, timer, opacityRatio)
-    );
-    document.addEventListener("touchend", (event) =>
-      changeOpacityOnEvent(event, timer, opacityRatio)
-    );
-    document.querySelectorAll("video").forEach((video) => {
-      video.addEventListener("abort", async () => {
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("lipsync mode is abort");
-        await stopTranslation();
-        videoData = "";
-      });
-    });
-
-    document
-      .querySelector(".translationBtn")
-      .addEventListener("click", async (event) => {
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[click translationBtn] before all functions & methods");
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-
-        // check if the audio source is not empty
-        if (audio.src) {
-          _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[click translationBtn] audio.src is not empty");
-          await stopTraslate();
-          return;
-        }
-
-        try {
-          _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[click translationBtn] trying execute translation");
-          const VIDEO_ID = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .getVideoId */ .gJ)(siteHostname);
-
-          if (!VIDEO_ID) {
-            throw _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTNoVideoIDFound;
-          }
-
-          await translateExecutor(VIDEO_ID);
-        } catch (err) {
-          (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .transformBtn */ .uJ)("error", String(err).substring(4, err.length));
-          console.error(err);
-        }
-      });
-
-    video.addEventListener("progress", async (event) => {
-      event.stopPropagation();
-
-      if (!(firstPlay && dbAutoTranslate === 1)) {
-        return;
-      }
-      const VIDEO_ID = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .getVideoId */ .gJ)(siteHostname);
-
-      if (!VIDEO_ID) {
-        throw _config_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .lang */ .KQ].VOTNoVideoIDFound;
-      }
-
-      try {
-        await translateExecutor(VIDEO_ID);
-        firstPlay = false;
-      } catch (err) {
-        (0,_menu_js__WEBPACK_IMPORTED_MODULE_5__/* .transformBtn */ .uJ)("error", String(err).substring(4, err.length));
-        firstPlay = false;
-      }
-    });
-  }
-
-  async function initWebsite() {
-    _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("Runned initWebsite function");
-    if (_config_regexes_js__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Z.youtubeRegex.test(window.location.hostname)) {
-      if (window.location.pathname.includes("embed")) {
-        const videoContainer = document.querySelector(".html5-video-container");
-        await translateProccessor(videoContainer, "youtube", null);
-        return;
-      }
-
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[initWebsite] Found a match with youtube hostname");
-      const ytPageEnter = () => {
-        const videoContainer = document.querySelector(
-          _config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.youtubeSelector
-        );
-        if (videoContainer) {
-          _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[exec] translateProccessor youtube on page enter");
-          translateProccessor(videoContainer, "youtube", "yt-translate-stop");
-        } else {
-          if (!ytplayer || !ytplayer.config) {
-            _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[exec] ytplayer is null");
-            return;
-          }
-          ytplayer.config.args.jsapicallback = () => {
-            _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log(
-              "[exec] translateProccessor youtube on page enter (ytplayer.config.args.jsapicallback)"
-            );
-            translateProccessor(videoContainer, "youtube", "yt-translate-stop");
-          };
-        }
-      };
-
-      document.addEventListener("spfdone", ytPageEnter);
-      document.addEventListener("yt-navigate-finish", ytPageEnter);
-
-      const ytPageLeave = () => {
-        videoData = ""
-        document.body.dispatchEvent(new Event("yt-translate-stop"));
-      };
-
-      document.addEventListener("spfrequest", ytPageLeave);
-      document.addEventListener("yt-navigate-start", ytPageLeave);
-
-      if (window.location.hostname.includes("m.youtube.com")) {
-        let ytmobile = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)("#player");
-        if (ytmobile) {
-          await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .sleep */ ._v)(2300);
-          await translateProccessor(ytmobile, "youtube", "yt-translate-stop");
-
-          const mutationObserver = new MutationObserver(async (mutations) => {
-            for (const mutation of mutations) {
-              if (
-                mutation.type === "attributes" &&
-                mutation.attributeName === "src"
-              ) {
-                ytmobile = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)("#player");
-                await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .sleep */ ._v)(2300);
-                await translateProccessor(
-                  ytmobile,
-                  "youtube",
-                  "yt-translate-stop"
-                );
-              }
-            }
-          });
-
-          mutationObserver.observe(ytmobile, {
-            attributes: true,
-            childList: true,
-            subtree: true,
-            attributeOldValue: true,
-          });
-        }
-        const ytPageLeave = () => {
-          videoData = ""
-          document.body.dispatchEvent(new Event("yt-translate-stop"));
-        };
-        document.addEventListener("spfdone", ytPageLeave);
-        document.addEventListener("yt-navigate-finish", ytPageLeave);
-        document.addEventListener("spfrequest", ytPageLeave);
-        document.addEventListener("yt-navigate-start", ytPageLeave);
-      }
-      return;
-    }
-    if (window.location.hostname.includes("twitch.tv")) {
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[initWebsite] Found a match with twitch.tv");
-      if (
-        window.location.hostname.includes("m.twitch.tv") &&
-        (window.location.pathname.includes("/videos/") ||
-          window.location.pathname.includes("/clip/"))
-      ) {
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[initWebsite] Matched Twitch Mobile");
-        const el = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.twitchMobileSelector);
-        if (el) {
-          await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .sleep */ ._v)(200);
-          const twitchMobileSelector = document.querySelector(
-            _config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.twitchMobileSelector
-          );
-          await translateProccessor(twitchMobileSelector, "twitch", null);
-
-          const mutationObserver = new MutationObserver(async (mutations) => {
-            for (const mutation of mutations) {
-              if (
-                mutation.type === "attributes" &&
-                mutation.attributeName === "src" &&
-                mutation.target === twitchMobileSelector?.querySelector("video")
-              ) {
-                await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .sleep */ ._v)(1000);
-                await translateProccessor(twitchMobileSelector, "twitch", null);
-              }
-            }
-          });
-
-          mutationObserver.observe(twitchMobileSelector, {
-            attributes: true,
-            childList: true,
-            subtree: true,
-            attributeOldValue: true,
-          });
-        }
-      } else if (
-        window.location.hostname.includes("player.twitch.tv") ||
-        window.location.hostname.includes("clips.twitch.tv") ||
-        window.location.pathname.includes("/videos/") ||
-        window.location.pathname.includes("/clip/")
-      ) {
-        _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[initWebsite] Matched Twitch Desktop");
-        const el = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.twitchSelector);
-        if (el) {
-          await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .sleep */ ._v)(200);
-          await translateProccessor(el, "twitch", null);
-        }
-      }
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[initWebsite] Exit function in the twitch section");
-      return;
-    }
-    if (window.location.hostname.includes("xvideos.com")) {
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[entered] xvideos");
-      await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .sleep */ ._v)(1000);
-      await translateProccessor(
-        document.querySelector(".video-bg-pic"),
-        "xvideos",
-        null
-      );
-      return;
-    }
-    if (window.location.hostname.includes("pornhub.com")) {
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[entered] pornhub");
-      await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .sleep */ ._v)(1000);
-      await translateProccessor(
-        document.querySelector(".mgp_videoWrapper"),
-        "pornhub",
-        null
-      );
-      return;
-    }
-    if (_config_alternativeUrls_js__WEBPACK_IMPORTED_MODULE_9__/* .sitesInvidious */ .a.includes(window.location.hostname)) {
-      // Need an additional extension to work in chrome-like browsers
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[entered] invidious");
-      await translateProccessor(
-        document.querySelector("#player"),
-        "youtube",
-        null
-      );
-    } else if (_config_alternativeUrls_js__WEBPACK_IMPORTED_MODULE_9__/* .sitesPiped */ .U.includes(window.location.hostname)) {
-      // Need an additional extension to work in chrome-like browsers
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[entered] piped");
-      const el = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.pipedSelector);
-      if (el) {
-        let videoIDNew;
-        let videoID = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .getVideoId */ .gJ)("youtube");
-        await translateProccessor(el, "youtube", "piped");
-        setInterval(async () => {
-          videoIDNew = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .getVideoId */ .gJ)("youtube");
-          if (videoID !== videoIDNew) {
-            if (videoIDNew) {
-              await translateProccessor(
-                document.querySelector(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.pipedSelector),
-                "youtube",
-                "piped"
-              );
-            }
-            videoID = videoIDNew;
-          }
-        }, 3000);
-      }
-    } else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[entered] vk.com");
-      const el = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.vkSelector);
-      if (el) {
-        await translateProccessor(
-          document.querySelector(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.vkSelector),
-          "vk",
-          null
-        );
-        let videoIDVKNew;
-        let videoIDVK = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .getVideoId */ .gJ)("vk");
-        setInterval(async () => {
-          videoIDVKNew = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .getVideoId */ .gJ)("vk");
-          if (videoIDVK !== videoIDVKNew) {
-            if (videoIDVKNew) {
-              const el = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.vkSelector);
-              if (el) {
-                await translateProccessor(el, "vk", null);
-              }
-            }
-            videoIDVK = videoIDVKNew;
-          }
-        }, 3000);
-      }
-    } else if (window.location.hostname.includes("vimeo.com")) {
-      _utils_debug_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z.log("[entered] vimeo.com");
-      const el = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.vimeoSelector);
-      if (el) {
-        await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .sleep */ ._v)(1000);
-        await translateProccessor(
-          document.querySelector(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.vimeoSelector),
-          "vimeo",
-          null
-        );
-      }
-    } else if (window.location.hostname.includes("9gag.com")) {
-      await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .sleep */ ._v)(1000);
-      await translateProccessor(
-        document.querySelector(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.gagSelector),
-        "9gag",
-        null
-      );
-    } else if (window.location.hostname.includes("coub.com")) {
-      await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .sleep */ ._v)(1000);
-      await translateProccessor(
-        document.querySelector(".viewer__player"),
-        "coub",
-        null
-      );
-    } else if (window.location.hostname.includes("bitchute.com")) {
-      await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .sleep */ ._v)(1000);
-      await translateProccessor(
-        document.querySelector(".plyr__video-wrapper"),
-        "bitchute",
-        null
-      );
-    } else if (window.location.hostname.includes("rutube.ru")) {
-      const elementSelector = window.location.pathname.includes("/play/embed")
-        ? "#app > div > div"
-        : ".video-player > div > div > div:nth-child(2)";
-
-      const el = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)(elementSelector);
-      if (el) {
-        await translateProccessor(el, "rutube", null);
-      }
-    } else if (window.location.hostname.includes("bilibili.com")) {
-      if (window.location.pathname.includes("/video/")) {
-        const el = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.bilibilicomSelector);
-        if (el) {
-          await translateProccessor(el, "bilibili.com", null);
-        }
-      } else if (
-        window.location.pathname.includes(
-          "/blackboard/webplayer/embed-old.html"
-        )
-      ) {
-        const el = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)("video");
-        if (el) {
-          await translateProccessor(el.parentElement, "bilibili.com", null);
-        }
-      }
-    } else if (window.location.hostname.includes("twitter.com")) {
-      const el = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.twitterSelector);
-      if (el) {
-        let videoIDNew;
-        let videoID = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .getVideoId */ .gJ)("twitter");
-        await translateProccessor(el, "twitter", null);
-        setInterval(async () => {
-          videoIDNew = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .getVideoId */ .gJ)("twitter");
-          if (videoID !== videoIDNew) {
-            if (videoIDNew) {
-              await translateProccessor(
-                document.querySelector(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.twitterSelector),
-                "twitter",
-                null
-              );
-            }
-            videoID = videoIDNew;
-          }
-        }, 3000);
-      }
-    } else if (window.location.hostname.includes("my.mail.ru")) {
-      const el = await (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .waitForElm */ .Nc)(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.mailSelector);
-      if (el) {
-        let videoIDNew;
-        let videoID = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .getVideoId */ .gJ)("mail.ru");
-        await translateProccessor(el, "mail.ru", null);
-        setInterval(async () => {
-          videoIDNew = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__/* .getVideoId */ .gJ)("mail.ru");
-          if (videoID !== videoIDNew) {
-            if (videoIDNew) {
-              await translateProccessor(
-                document.querySelector(_config_selectors_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z.mailSelector),
-                "mail.ru",
-                null
-              );
-            }
-            videoID = videoIDNew;
-          }
-        }, 3000);
-      }
-    }
-  }
-
-  await initWebsite();
-}
-
-main().catch((e) => {
-  console.error(e);
-});
-
-__webpack_async_result__();
-} catch(e) { __webpack_async_result__(e); } });
-
-/***/ }),
-
-/***/ "./src/indexedDB.js":
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   CZ: () => (/* binding */ readDB),
-/* harmony export */   Lj: () => (/* binding */ deleteDB),
-/* harmony export */   l6: () => (/* binding */ updateDB),
-/* harmony export */   zK: () => (/* binding */ initDB)
-/* harmony export */ });
-/* harmony import */ var _config_constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./src/config/constants.js");
-
-
-let userlang = navigator.language || navigator.userLanguage;
-userlang = userlang.substr(0, 2).toLowerCase();
-if (!(userlang in _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz)) {
-  userlang = "en";
-}
-
-// --- IndexedDB functions start:
-const dbVersion = 2; // current db version
-const settingsDefault = {
-  key: "settings",
-  autoTranslate: 0,
-  defaultVolume: 100,
-  showVideoSlider: 0,
-  syncVolume: 0,
-  autoSetVolumeYandexStyle: 1,
-  dontTranslateYourLang: 1,
-}; // default settings for db v1
-
-const valuesV2 = {
-  audioProxy: 0,
-  userlang: String(userlang),
-};
-
-function openDB(name) {
-  return indexedDB.open(name, dbVersion);
-}
-
-async function initDB() {
-  return new Promise((resolve, reject) => {
-    function updateVersionProccessor(
-      transaction,
-      db,
-      indexes,
-      previousIndexes = {}
-    ) {
-      // openRequest is transaction object
-      // indexes is object of strings with default values (used for createIndex) ex. {"name": 0}
-      // previousIndexes is indexes for previous version
-      const objectStore = transaction.objectStore("settings");
-
-      for (const key of Object.keys(indexes)) {
-        objectStore.createIndex(key, key, { unique: false });
-      }
-
-      console.log("VOT: The database has been updated");
-      objectStore.transaction.oncomplete = (event) => {
-        const objectStore = db
-          .transaction("settings", "readwrite")
-          .objectStore("settings");
-        const request = objectStore.get("settings");
-
-        request.onerror = (event) => {
-          console.error(
-            "VOT: Data could not be retrieved from the Database: ",
-            event.error
-          );
-          reject(false);
-        };
-
-        request.onsuccess = () => {
-          const data =
-            request.result || Object.assign(settingsDefault, previousIndexes); // use data from db or reset all data
-          for (const key in indexes) {
-            data[key] = indexes[key];
-          }
-
-          const requestUpdate = objectStore.put(data);
-
-          requestUpdate.onerror = (event) => {
-            console.error(
-              "VOT: Failed to update the Database to new version",
-              event.error
-            );
-            reject(false);
-          };
-
-          requestUpdate.onsuccess = () => {
-            console.log(
-              "VOT: Standard settings of the new version have been added to the Database."
-            );
-            resolve(true);
-          };
-        };
-      };
-    }
-
-    const openRequest = openDB("VOT");
-
-    openRequest.onerror = () => {
-      console.error(
-        `${_config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[userlang].VOTFailedInitDB}: ${openRequest.error.message}`
-      );
-      reject(false);
-    };
-
-    openRequest.onupgradeneeded = (event) => {
-      const db = openRequest.result;
-
-      db.onerror = () => {
-        const errorMessage = _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[userlang].VOTFailedInitDB;
-        alert(errorMessage);
-        console.error(errorMessage, openRequest.error);
-        reject(false);
-      };
-
-      if (event.oldVersion < 1) {
-        // db not found
-        const objectStore = db.createObjectStore("settings", {
-          keyPath: "key",
-        });
-
-        // add indexes for 1 version (without key index)
-        for (const key of Object.keys(settingsDefault).filter(
-          (k) => k !== "key"
-        )) {
-          objectStore.createIndex(key, key, { unique: false });
-        }
-
-        console.log("VOT: Database Created");
-
-        objectStore.transaction.oncomplete = (event) => {
-          const objectStore = db
-            .transaction("settings", "readwrite")
-            .objectStore("settings");
-          const request = objectStore.add(settingsDefault);
-
-          request.onsuccess = () => {
-            console.log(
-              "VOT: Standard settings added to the Database: ",
-              request.result
-            );
-            resolve(true);
-          };
-
-          request.onerror = () => {
-            console.log(
-              "VOT: Error when adding standard settings to the Database: ",
-              request.error
-            );
-            reject(false);
-          };
-        };
-      }
-
-      if (event.oldVersion < 2) {
-        // db is outdated (db version is 1)
-        updateVersionProccessor(openRequest.transaction, db, valuesV2);
-      }
-    };
-
-    openRequest.onsuccess = () => {
-      const db = openRequest.result;
-      db.onversionchange = () => {
-        db.close();
-        const errorMessage = _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[userlang].VOTDBNeedUpdate;
-        alert(errorMessage);
-        console.log(errorMessage);
-        window.location.reload();
-        reject(false);
-      };
-      resolve(true);
-    };
-
-    openRequest.onblocked = () => {
-      const db = openRequest.result;
-      const errorMessage = _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[userlang].VOTDisabledForDBUpdating;
-      console.error(errorMessage, db);
-      alert(errorMessage);
-      reject(false);
-    };
-  });
-}
-
-async function updateDB({
-  autoTranslate,
-  defaultVolume,
-  showVideoSlider,
-  syncVolume,
-  autoSetVolumeYandexStyle,
-  dontTranslateYourLang,
-  userlang,
-  audioProxy,
-}) {
-  return new Promise((resolve, reject) => {
-    if (
-      typeof autoTranslate === "number" ||
-      typeof defaultVolume === "number" ||
-      typeof showVideoSlider === "number" ||
-      typeof syncVolume === "number" ||
-      typeof autoSetVolumeYandexStyle === "number" ||
-      typeof dontTranslateYourLang === "number" ||
-      typeof userlang === "string" ||
-      typeof audioProxy === "number"
-    ) {
-      const openRequest = openDB("VOT");
-
-      openRequest.onerror = () => {
-        const errorMessage = _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[userlang].VOTFailedWriteToDB;
-        alert(errorMessage);
-        console.error(errorMessage, openRequest.error.message);
-        reject(false);
-      };
-
-      openRequest.onupgradeneeded = async () => {
-        const db = openRequest.result;
-        db.close();
-        await initDB();
-        resolve(true);
-      };
-
-      openRequest.onsuccess = () => {
-        const db = openRequest.result;
-        db.onversionchange = () => {
-          db.close();
-          console.log(
-            "VOT: The database needs an update, please reload the page if it didn't happen automatically"
-          );
-          window.location.reload();
-          reject(false);
-        };
-
-        const objectStore = db
-          .transaction("settings", "readwrite")
-          .objectStore("settings");
-        const request = objectStore.get("settings");
-
-        request.onerror = (event) => {
-          console.error(
-            "VOT: Data could not be retrieved from the Database: ",
-            event.error
-          );
-          reject(false);
-        };
-
-        request.onsuccess = () => {
-          const data = request.result;
-
-          if (typeof autoTranslate === "number") {
-            data.autoTranslate = autoTranslate;
-          }
-
-          if (typeof defaultVolume === "number") {
-            data.defaultVolume = defaultVolume;
-          }
-
-          if (typeof showVideoSlider === "number") {
-            data.showVideoSlider = showVideoSlider;
-          }
-
-          if (typeof syncVolume === "number") {
-            data.syncVolume = syncVolume;
-          }
-
-          if (typeof autoSetVolumeYandexStyle === "number") {
-            data.autoSetVolumeYandexStyle = autoSetVolumeYandexStyle;
-          }
-
-          if (typeof dontTranslateYourLang === "number") {
-            data.dontTranslateYourLang = dontTranslateYourLang;
-          }
-
-          if (typeof userlang === "string") {
-            data.userlang = userlang;
-          }
-
-          if (typeof audioProxy === "number") {
-            data.audioProxy = audioProxy;
-          }
-
-          const requestUpdate = objectStore.put(data);
-
-          requestUpdate.onerror = (event) => {
-            console.error(
-              "VOT: Не удалось обновить данные в Базе Данных: ",
-              event.error
-            );
-            reject(false);
-          };
-
-          requestUpdate.onsuccess = () => {
-            resolve(true);
-          };
-        };
-      };
-
-      openRequest.onblocked = () => {
-        const db = openRequest.result;
-        const errorMessage = _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[userlang].VOTDisabledForDBUpdating;
-        console.error(errorMessage, db);
-        alert(errorMessage);
-        reject(false);
-      };
-    }
-  });
-}
-
-async function readDB() {
-  await initDB();
-  return new Promise((resolve, reject) => {
-    const openRequest = openDB("VOT");
-
-    openRequest.onerror = () => {
-      const errorMessage = _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[userlang].VOTFailedReadFromDB;
-      alert(errorMessage);
-      console.error(errorMessage, openRequest.error.message);
-      reject(false);
-    };
-
-    openRequest.onupgradeneeded = async () => {
-      const db = openRequest.result;
-      db.close();
-      await initDB();
-      resolve(true);
-    };
-
-    openRequest.onsuccess = () => {
-      const db = openRequest.result;
-      db.onversionchange = () => {
-        db.close();
-        const errorMessage = _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[userlang].VOTDBNeedUpdate;
-        alert(errorMessage);
-        console.error(errorMessage);
-        reject(false);
-      };
-
-      const objectStore = db.transaction("settings").objectStore("settings");
-      const request = objectStore.get("settings");
-
-      request.onerror = (event) => {
-        console.error(_config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[userlang].VOTFailedReadFromDB, event.error);
-        console.error(event);
-        reject(false);
-      };
-
-      request.onsuccess = () => {
-        if (request.result === undefined) {
-          db.close();
-          deleteDB();
-          reject(false);
-        }
-        const data = request.result;
-        resolve(data);
-      };
-    };
-
-    openRequest.onblocked = () => {
-      const db = openRequest.result;
-      const errorMessage = _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[userlang].VOTDisabledForDBUpdating;
-      console.error(errorMessage, db);
-      alert(errorMessage);
-      reject(false);
-    };
-  });
-}
-
-function deleteDB() {
-  indexedDB.deleteDatabase("VOT");
-}
-
-
-
-
-/***/ }),
-
-/***/ "./src/menu.js":
-/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Ef: () => (/* binding */ genOptionsByOBJ),
-/* harmony export */   H0: () => (/* binding */ createMenuCheckbox),
-/* harmony export */   KQ: () => (/* binding */ lang),
-/* harmony export */   Mr: () => (/* binding */ createMenuSelect),
-/* harmony export */   NX: () => (/* binding */ createTranslationMenu),
-/* harmony export */   Ot: () => (/* binding */ addTranslationBlock),
-/* harmony export */   iT: () => (/* binding */ createMenuSlider),
-/* harmony export */   uJ: () => (/* binding */ transformBtn)
-/* harmony export */ });
-/* harmony import */ var _utils_debug_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./src/utils/debug.js");
-/* harmony import */ var _indexedDB_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./src/indexedDB.js");
-/* harmony import */ var _config_constants_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./src/config/constants.js");
-
+;// CONCATENATED MODULE: ./src/menu.js
 
 
 
 const userlang = navigator.language || navigator.userLanguage;
-let lang; // declare lang here
-try {
-  let isDBInited = await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_1__/* .initDB */ .zK)();
-  if (isDBInited) {
-    const dbData = await (0,_indexedDB_js__WEBPACK_IMPORTED_MODULE_1__/* .readDB */ .CZ)();
-    lang = dbData.hasOwnProperty("userlang") ? dbData.userlang : userlang.substr(0, 2).toLowerCase(); // assign lang here
-    if (!(lang in _config_constants_js__WEBPACK_IMPORTED_MODULE_2__/* .translations */ .Iz)) {
-      lang = "en";
-    }
-  }
-} catch (error) {
-  console.error(error);
+let lang = userlang.substr(0, 2).toLowerCase();
+if (!(lang in translations)) {
+  lang = "en";
 }
 
 function changeBtnColor(n) {
@@ -4117,7 +2512,7 @@ function addTranslationBlock(element) {
           <path fill-rule="evenodd" clip-rule="evenodd" d="M17.605 19.703c.794-.13 1.647-.476 2.47-.983.695 1.013 1.255 1.546 1.306 1.593l1.166-1.207c-.011-.01-.504-.48-1.124-1.401.277-.25.547-.512.797-.798a12.1 12.1 0 0 0 2.268-3.826c.383.216.761.541.96 1.027.68 1.649-.301 3.557-1.215 4.385l1.152 1.22c1.52-1.378 2.571-3.959 1.638-6.227-.368-.892-1.077-1.59-2.064-2.037.162-.763.216-1.38.233-1.785h-1.698c-.017.307-.06.762-.173 1.323-1.325-.187-2.818-.006-4.248.508a25.994 25.994 0 0 1-.313-2.547c5.092-.287 8.098-1.488 8.237-1.546l-.654-1.533c-.03.013-2.875 1.14-7.65 1.418-.001-.405-.008-.666-.012-.85-.008-.339-.01-.423.03-.67L17.01 5.75c-.026.283-.024.573-.018 1.278l.002.318c-.026 0-.051 0-.077.002l-.08.001a39.286 39.286 0 0 1-3.27-.14L13.25 8.89c.5.043 2.023.122 3.397.122h.1a19.457 19.457 0 0 1 .208-.003l.106-.002c.067.948.196 2.034.421 3.22a8.05 8.05 0 0 0-2.267 1.963l.811 1.871c.327-.732.995-1.51 1.856-2.111a16.762 16.762 0 0 0 1.33 3.346c-.811.514-1.64.818-2.301.804l.694 1.603Zm2.953-3.488a8.18 8.18 0 0 0 .374-.389 10.465 10.465 0 0 0 1.927-3.224c-.198-.021-.4-.031-.606-.031-.907 0-1.885.199-2.834.574.31 1.209.718 2.23 1.14 3.07ZM9.769 11.688 4.25 24.438h2.259l1.357-3.407h5.582l1.357 3.407h2.258l-5.52-12.75H9.77Zm.887 2.624 2.056 5H8.6l2.056-5Z"></path>
         </svg>
       </span>
-      <span class = "translationBtn" tabindex = "0">${_config_constants_js__WEBPACK_IMPORTED_MODULE_2__/* .translations */ .Iz[lang].translateVideo}</span>
+      <span class = "translationBtn" tabindex = "0">${translations[lang].translateVideo}</span>
     </span>
     <span class = "translationMenu" tabindex = "0" role = "button">
       <svg class = "translationMenuIcon" height="15" width="5" fill="#fff" xmlns="http://www.w3.org/2000/svg">
@@ -4127,14 +2522,14 @@ function addTranslationBlock(element) {
   `;
 
   element.appendChild(block);
-  _utils_debug_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.log("VOT: Added translation button to ", element);
+  utils_debug.log("VOT: Added translation button to ", element);
 }
 
 function createTranslationMenu() {
   const container = document.createElement("div");
   container.classList.add("translationMenuContent");
   container.innerHTML = `
-    <p class = "translationMainHeader">${_config_constants_js__WEBPACK_IMPORTED_MODULE_2__/* .translations */ .Iz[lang].translationSettings}</p>
+    <p class = "translationMainHeader">${translations[lang].translationSettings}</p>
     <div class="translationMenuOptions"></div>
     <div class="translationMenuFunctional">
       <a class = "translationDownload">
@@ -4142,7 +2537,7 @@ function createTranslationMenu() {
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
         </svg>
       </a>
-      <button class = "translationDropDB">${_config_constants_js__WEBPACK_IMPORTED_MODULE_2__/* .translations */ .Iz[lang].resetSettings}</button>
+      <button class = "translationDropDB">${translations[lang].resetSettings}</button>
     </div>
   `;
 
@@ -4237,7 +2632,7 @@ function createMenuSelect(id, selectOptions) {
 
 function genOptionsByOBJ(obj, conditionString) {
   return Object.entries(obj).map(([key, value]) => ({
-    label: _config_constants_js__WEBPACK_IMPORTED_MODULE_2__/* .translations */ .Iz[lang][value],
+    label: translations[lang][value],
     value: key,
     selected: conditionString === key,
   }));
@@ -4245,236 +2640,7 @@ function genOptionsByOBJ(obj, conditionString) {
 
 
 
-__webpack_async_result__();
-} catch(e) { __webpack_async_result__(e); } }, 1);
-
-/***/ }),
-
-/***/ "./src/rvt.js":
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, {
-  "default": () => (/* binding */ rvt)
-});
-
-;// CONCATENATED MODULE: ./src/getUUID.js
-function getUUID(isLower) {
-  const uuid = ([1e7] + 1e3 + 4e3 + 8e3 + 1e11).replace(/[018]/g, (c) =>
-    (
-      c ^
-      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-    ).toString(16)
-  );
-  return isLower ? uuid : uuid.toUpperCase();
-}
-
-
-
-// EXTERNAL MODULE: ./src/yandexRequests.js
-var yandexRequests = __webpack_require__("./src/yandexRequests.js");
-// EXTERNAL MODULE: ./src/config/config.js
-var config = __webpack_require__("./src/config/config.js");
-;// CONCATENATED MODULE: ./src/rvt.js
-
-
-
-
-// Request video translation from Yandex API
-async function requestVideoTranslation(
-  url,
-  unknown1,
-  requestLang,
-  responseLang,
-  callback
-) {
-  // Initialize variables
-  const deviceId = getUUID(true);
-  const body = yandexRequests/* yandexRequests */.G.encodeRequest(
-    url,
-    deviceId,
-    unknown1,
-    requestLang,
-    responseLang
-  );
-
-  try {
-    // Create a key from the HMAC secret
-    const utf8Encoder = new TextEncoder("utf-8");
-    const key = await window.crypto.subtle.importKey(
-      "raw",
-      utf8Encoder.encode(config/* yandexHmacKey */.I1),
-      { name: "HMAC", hash: { name: "SHA-256" } },
-      false,
-      ["sign", "verify"]
-    );
-    // Sign the body with the key
-    const signature = await window.crypto.subtle.sign("HMAC", key, body);
-    // Convert the signature to a hex string
-    const hexSignature = Array.from(new Uint8Array(signature), (x) =>
-      x.toString(16).padStart(2, "0")
-    ).join("");
-    // Create a fetch options object with headers and body
-    const options = {
-      // url: `https://${workerHost}/stream-translation/whitelist-stream`,
-      // url: `https://${workerHost}/stream-translation/translate-stream`,
-      url: `https://${config/* workerHost */.iF}/video-translation/translate`,
-      method: "POST",
-      headers: {
-        Accept: "application/x-protobuf",
-        "Accept-Language": "en",
-        "Content-Type": "application/x-protobuf",
-        "User-Agent": config/* yandexUserAgent */.Rr,
-        Pragma: "no-cache",
-        "Cache-Control": "no-cache",
-        "Sec-Fetch-Mode": "no-cors",
-        "sec-ch-ua": null,
-        "sec-ch-ua-mobile": null,
-        "sec-ch-ua-platform": null,
-        "Vtrans-Signature": hexSignature,
-        "Sec-Vtrans-Token": getUUID(false),
-      },
-      data: String.fromCharCode(...body),
-      responseType: "arraybuffer",
-    };
-    // Send the request using GM_xmlhttpRequest
-    GM_xmlhttpRequest({
-      ...options,
-      onload: (http) => {
-        callback(http.status === 200, http.response);
-      },
-      onerror: (error) => {
-        callback(false);
-      },
-    });
-  } catch (exception) {
-    // Handle errors
-    callback(false);
-  }
-}
-
-/* harmony default export */ const rvt = (requestVideoTranslation);
-
-
-/***/ }),
-
-/***/ "./src/utils/debug.js":
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-const debug = {};
-debug.log = (...text) => {
-  if (true) {
-    return;
-  }
-  return console.log(
-    "%c[VOT DEBUG]",
-    "background: #F2452D; color: #fff; padding: 5px;",
-    ...text
-  );
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (debug);
-
-
-/***/ }),
-
-/***/ "./src/utils/getYTVideoData.js":
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   l: () => (/* binding */ getYTVideoData)
-/* harmony export */ });
-async function detect(cleanText) {
-  const response = await fetch("https://rust-server-531j.onrender.com/detect", {
-    method: "POST",
-    body: cleanText,
-  });
-  return await response.text();
-}
-
-// Get the language code from the response or the text
-async function getLanguage(player, response, title, description, author) {
-  if (!window.location.hostname.includes("m.youtube.com")) {
-    // ! Experimental ! get lang from selected audio track if availabled
-    const audioTracks = player.getAudioTrack();
-    const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
-    if (trackInfo?.id !== "und") {
-      return trackInfo.id.split(".")[0];
-    }
-  }
-
-  // TODO: If the audio tracks will work fine, transfer the receipt of captions to the audioTracks variable
-  // Check if there is an automatic caption track in the response
-  const captionTracks =
-    response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
-  if (captionTracks?.length) {
-    const autoCaption = captionTracks.find((caption) => caption.kind === "asr");
-    if (autoCaption) {
-      return autoCaption.languageCode;
-    }
-  }
-  // If there is no caption track, use detect to get the language code from the text
-  const text = [title, description, author].join(" ");
-  // Remove anything that is not a letter or a space in any language
-  const cleanText = text
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(/https?:\/\/\S+/g, "")
-    .replace(/[^\p{L}\s]/gu, "")
-    .slice(0, 250);
-  return await detect(cleanText);
-}
-
-// Get the video data from the player
-async function getYTVideoData() {
-  const player = document.querySelector("#movie_player");
-  const data = player.getVideoData();
-  const response = player.getPlayerResponse();
-  const { isLive, isPremiere, title, author } = data;
-  const { shortDescription: description } = response?.videoDetails ?? {};
-  const videoData = {
-    isLive,
-    isPremiere,
-    title,
-    description,
-    author,
-    detectedLanguage: await getLanguage(
-      player,
-      response,
-      title,
-      description,
-      author
-    ),
-  };
-  console.log("VOT Detected language: ", videoData.detectedLanguage);
-  return videoData;
-}
-
-
-
-
-/***/ }),
-
-/***/ "./src/utils/utils.js":
-/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Nc: () => (/* binding */ waitForElm),
-/* harmony export */   PG: () => (/* binding */ secsToStrTime),
-/* harmony export */   _v: () => (/* binding */ sleep),
-/* harmony export */   gJ: () => (/* binding */ getVideoId)
-/* harmony export */ });
-/* harmony import */ var _config_constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./src/config/constants.js");
-/* harmony import */ var _menu_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./src/menu.js");
-var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_menu_js__WEBPACK_IMPORTED_MODULE_1__]);
-_menu_js__WEBPACK_IMPORTED_MODULE_1__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+;// CONCATENATED MODULE: ./src/utils/utils.js
 
 
 
@@ -4630,15 +2796,15 @@ function secsToStrTime(secs) {
   const minutes = Math.floor(secs / 60);
   const seconds = Math.floor(secs % 60);
   if (minutes >= 60) {
-    return _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_1__/* .lang */ .KQ].translationTakeMoreThanHour;
+    return translations[lang].translationTakeMoreThanHour;
   } else if (minutes >= 10 && minutes % 10) {
-    return _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_1__/* .lang */ .KQ].translationTakeApproximatelyMinutes.format(
+    return translations[lang].translationTakeApproximatelyMinutes.format(
       minutes
     );
   } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
-    return _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_1__/* .lang */ .KQ].translationTakeAboutMinute;
+    return translations[lang].translationTakeAboutMinute;
   } else {
-    return _config_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .translations */ .Iz[_menu_js__WEBPACK_IMPORTED_MODULE_1__/* .lang */ .KQ].translationTakeApproximatelyMinute.format(
+    return translations[lang].translationTakeApproximatelyMinute.format(
       minutes
     );
   }
@@ -4646,17 +2812,414 @@ function secsToStrTime(secs) {
 
 
 
-__webpack_async_result__();
-} catch(e) { __webpack_async_result__(e); } });
+// EXTERNAL MODULE: ./src/config/config.js
+var config = __webpack_require__("./src/config/config.js");
+;// CONCATENATED MODULE: ./src/config/alternativeUrls.js
+// Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
+const sitesInvidious = [
+  "invidious.snopyta.org",
+  "yewtu.be",
+  "invidious.kavin.rocks",
+  "vid.puffyan.us",
+  "invidious.namazso.eu",
+  "inv.riverside.rocks",
+  "yt.artemislena.eu",
+  "invidious.flokinet.to",
+  "invidious.esmailelbob.xyz",
+  "y.com.sb",
+  "invidious.nerdvpn.de",
+  "inv.vern.cc",
+  "invidious.slipfox.xyz",
+  "invidio.xamh.de",
+  "invidious.dhusch.de",
+];
 
-/***/ }),
+// Sites host Piped. I tested the performance only on piped.video
+const sitesPiped = [
+  "piped.video",
+  "piped.tokhmi.xyz",
+  "piped.moomoo.me",
+  "piped.syncpundit.io",
+  "piped.mha.fi",
+  "watch.whatever.social",
+  "piped.garudalinux.org",
+  "efy.piped.pages.dev",
+  "watch.leptons.xyz",
+  "piped.lunar.icu",
+  "yt.dc09.ru",
+  "piped.mint.lgbt",
+  "il.ax",
+  "piped.privacy.com.de",
+  "piped.esmailelbob.xyz",
+  "piped.projectsegfau.lt",
+  "piped.in.projectsegfau.lt",
+  "piped.us.projectsegfau.lt",
+  "piped.privacydev.net",
+  "piped.palveluntarjoaja.eu",
+  "piped.smnz.de",
+  "piped.adminforge.de",
+  "piped.qdi.fi",
+  "piped.hostux.net",
+  "piped.chauvet.pro",
+  "piped.jotoma.de",
+  "piped.pfcd.me",
+  "piped.frontendfriendly.xyz",
+];
 
-/***/ "./src/utils/volume.js":
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   C: () => (/* binding */ syncVolume)
-/* harmony export */ });
+
+;// CONCATENATED MODULE: ./src/indexedDB.js
+
+
+
+// --- IndexedDB functions start:
+const dbVersion = 2; // current db version
+const settingsDefault = {
+  key: "settings",
+  autoTranslate: 0,
+  defaultVolume: 100,
+  showVideoSlider: 0,
+  syncVolume: 0,
+  autoSetVolumeYandexStyle: 1,
+  dontTranslateYourLang: 1,
+}; // default settings for db v1
+
+const valuesV2 = {
+  audioProxy: 0,
+};
+
+function openDB(name) {
+  return indexedDB.open(name, dbVersion);
+}
+
+async function initDB() {
+  return new Promise((resolve, reject) => {
+    function updateVersionProccessor(
+      transaction,
+      db,
+      indexes,
+      previousIndexes = {}
+    ) {
+      // openRequest is transaction object
+      // indexes is object of strings with default values (used for createIndex) ex. {"name": 0}
+      // previousIndexes is indexes for previous version
+      const objectStore = transaction.objectStore("settings");
+
+      for (const key of Object.keys(indexes)) {
+        objectStore.createIndex(key, key, { unique: false });
+      }
+
+      console.log("VOT: The database has been updated");
+      objectStore.transaction.oncomplete = (event) => {
+        const objectStore = db
+          .transaction("settings", "readwrite")
+          .objectStore("settings");
+        const request = objectStore.get("settings");
+
+        request.onerror = (event) => {
+          console.error(
+            "VOT: Data could not be retrieved from the Database: ",
+            event.error
+          );
+          reject(false);
+        };
+
+        request.onsuccess = () => {
+          const data =
+            request.result || Object.assign(settingsDefault, previousIndexes); // use data from db or reset all data
+          for (const key in indexes) {
+            data[key] = indexes[key];
+          }
+
+          const requestUpdate = objectStore.put(data);
+
+          requestUpdate.onerror = (event) => {
+            console.error(
+              "VOT: Failed to update the Database to new version",
+              event.error
+            );
+            reject(false);
+          };
+
+          requestUpdate.onsuccess = () => {
+            console.log(
+              "VOT: Standard settings of the new version have been added to the Database."
+            );
+            resolve(true);
+          };
+        };
+      };
+    }
+
+    const openRequest = openDB("VOT");
+
+    openRequest.onerror = () => {
+      console.error(
+        `${translations[lang].VOTFailedInitDB}: ${openRequest.error.message}`
+      );
+      reject(false);
+    };
+
+    openRequest.onupgradeneeded = (event) => {
+      const db = openRequest.result;
+
+      db.onerror = () => {
+        const errorMessage = translations[lang].VOTFailedInitDB;
+        alert(errorMessage);
+        console.error(errorMessage, openRequest.error);
+        reject(false);
+      };
+
+      if (event.oldVersion < 1) {
+        // db not found
+        const objectStore = db.createObjectStore("settings", {
+          keyPath: "key",
+        });
+
+        // add indexes for 1 version (without key index)
+        for (const key of Object.keys(settingsDefault).filter(
+          (k) => k !== "key"
+        )) {
+          objectStore.createIndex(key, key, { unique: false });
+        }
+
+        console.log("VOT: Database Created");
+
+        objectStore.transaction.oncomplete = (event) => {
+          const objectStore = db
+            .transaction("settings", "readwrite")
+            .objectStore("settings");
+          const request = objectStore.add(settingsDefault);
+
+          request.onsuccess = () => {
+            console.log(
+              "VOT: Standard settings added to the Database: ",
+              request.result
+            );
+            resolve(true);
+          };
+
+          request.onerror = () => {
+            console.log(
+              "VOT: Error when adding standard settings to the Database: ",
+              request.error
+            );
+            reject(false);
+          };
+        };
+      }
+
+      if (event.oldVersion < 2) {
+        // db is outdated (db version is 1)
+        updateVersionProccessor(openRequest.transaction, db, valuesV2);
+      }
+    };
+
+    openRequest.onsuccess = () => {
+      const db = openRequest.result;
+      db.onversionchange = () => {
+        db.close();
+        const errorMessage = translations[lang].VOTDBNeedUpdate;
+        alert(errorMessage);
+        console.log(errorMessage);
+        window.location.reload();
+        reject(false);
+      };
+      resolve(true);
+    };
+
+    openRequest.onblocked = () => {
+      const db = openRequest.result;
+      const errorMessage = translations[lang].VOTDisabledForDBUpdating;
+      console.error(errorMessage, db);
+      alert(errorMessage);
+      reject(false);
+    };
+  });
+}
+
+async function updateDB({
+  autoTranslate,
+  defaultVolume,
+  showVideoSlider,
+  syncVolume,
+  autoSetVolumeYandexStyle,
+  dontTranslateYourLang,
+  audioProxy,
+}) {
+  return new Promise((resolve, reject) => {
+    if (
+      typeof autoTranslate === "number" ||
+      typeof defaultVolume === "number" ||
+      typeof showVideoSlider === "number" ||
+      typeof syncVolume === "number" ||
+      typeof autoSetVolumeYandexStyle === "number" ||
+      typeof dontTranslateYourLang === "number" ||
+      typeof audioProxy === "number"
+    ) {
+      const openRequest = openDB("VOT");
+
+      openRequest.onerror = () => {
+        const errorMessage = translations[lang].VOTFailedWriteToDB;
+        alert(errorMessage);
+        console.error(errorMessage, openRequest.error.message);
+        reject(false);
+      };
+
+      openRequest.onupgradeneeded = async () => {
+        const db = openRequest.result;
+        db.close();
+        await initDB();
+        resolve(true);
+      };
+
+      openRequest.onsuccess = () => {
+        const db = openRequest.result;
+        db.onversionchange = () => {
+          db.close();
+          console.log(
+            "VOT: The database needs an update, please reload the page if it didn't happen automatically"
+          );
+          window.location.reload();
+          reject(false);
+        };
+
+        const objectStore = db
+          .transaction("settings", "readwrite")
+          .objectStore("settings");
+        const request = objectStore.get("settings");
+
+        request.onerror = (event) => {
+          console.error(
+            "VOT: Data could not be retrieved from the Database: ",
+            event.error
+          );
+          reject(false);
+        };
+
+        request.onsuccess = () => {
+          const data = request.result;
+
+          if (typeof autoTranslate === "number") {
+            data.autoTranslate = autoTranslate;
+          }
+
+          if (typeof defaultVolume === "number") {
+            data.defaultVolume = defaultVolume;
+          }
+
+          if (typeof showVideoSlider === "number") {
+            data.showVideoSlider = showVideoSlider;
+          }
+
+          if (typeof syncVolume === "number") {
+            data.syncVolume = syncVolume;
+          }
+
+          if (typeof autoSetVolumeYandexStyle === "number") {
+            data.autoSetVolumeYandexStyle = autoSetVolumeYandexStyle;
+          }
+
+          if (typeof dontTranslateYourLang === "number") {
+            data.dontTranslateYourLang = dontTranslateYourLang;
+          }
+
+          if (typeof audioProxy === "number") {
+            data.audioProxy = audioProxy;
+          }
+
+          const requestUpdate = objectStore.put(data);
+
+          requestUpdate.onerror = (event) => {
+            console.error(
+              "VOT: Не удалось обновить данные в Базе Данных: ",
+              event.error
+            );
+            reject(false);
+          };
+
+          requestUpdate.onsuccess = () => {
+            resolve(true);
+          };
+        };
+      };
+
+      openRequest.onblocked = () => {
+        const db = openRequest.result;
+        const errorMessage = translations[lang].VOTDisabledForDBUpdating;
+        console.error(errorMessage, db);
+        alert(errorMessage);
+        reject(false);
+      };
+    }
+  });
+}
+
+async function readDB() {
+  return new Promise((resolve, reject) => {
+    const openRequest = openDB("VOT");
+
+    openRequest.onerror = () => {
+      const errorMessage = translations[lang].VOTFailedReadFromDB;
+      alert(errorMessage);
+      console.error(errorMessage, openRequest.error.message);
+      reject(false);
+    };
+
+    openRequest.onupgradeneeded = async () => {
+      const db = openRequest.result;
+      db.close();
+      await initDB();
+      resolve(true);
+    };
+
+    openRequest.onsuccess = () => {
+      const db = openRequest.result;
+      db.onversionchange = () => {
+        db.close();
+        const errorMessage = translations[lang].VOTDBNeedUpdate;
+        alert(errorMessage);
+        console.error(errorMessage);
+        reject(false);
+      };
+
+      const objectStore = db.transaction("settings").objectStore("settings");
+      const request = objectStore.get("settings");
+
+      request.onerror = (event) => {
+        console.error(translations[lang].VOTFailedReadFromDB, event.error);
+        console.error(event);
+        reject(false);
+      };
+
+      request.onsuccess = () => {
+        if (request.result === undefined) {
+          db.close();
+          deleteDB();
+          reject(false);
+        }
+        const data = request.result;
+        resolve(data);
+      };
+    };
+
+    openRequest.onblocked = () => {
+      const db = openRequest.result;
+      const errorMessage = translations[lang].VOTDisabledForDBUpdating;
+      console.error(errorMessage, db);
+      alert(errorMessage);
+      reject(false);
+    };
+  });
+}
+
+function deleteDB() {
+  indexedDB.deleteDatabase("VOT");
+}
+
+
+
+;// CONCATENATED MODULE: ./src/utils/volume.js
 // element - audio / video element
 function syncVolume(element, sliderVolume, otherSliderVolume, tempVolume) {
   let finalValue;
@@ -4687,263 +3250,1481 @@ function syncVolume(element, sliderVolume, otherSliderVolume, tempVolume) {
 
 
 
-
-/***/ }),
-
-/***/ "./src/yandexRequests.js":
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   G: () => (/* binding */ yandexRequests)
-/* harmony export */ });
-const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
-  .add(new protobuf.Field("url", 3, "string"))
-  .add(new protobuf.Field("deviceId", 4, "string"))
-  .add(new protobuf.Field("firstRequest", 5, "bool")) // true for the first request, false for subsequent ones
-  .add(new protobuf.Field("unknown1", 6, "fixed64"))
-  .add(new protobuf.Field("unknown2", 7, "int32")) // 1 1
-  .add(new protobuf.Field("language", 8, "string")) // source language code
-  .add(new protobuf.Field("unknown3", 9, "int32")) // 0 0
-  .add(new protobuf.Field("unknown4", 10, "int32")) // 0 0
-  .add(new protobuf.Field("translationHelp", 11, "int32")) // array for translation assistance ([0] -> {2: link to video, 1: "video_file_url"}, [1] -> {2: link to subtitles, 1: "subtitles_file_url"})
-  .add(new protobuf.Field("responseLanguage", 14, "string")); // target language code
-
-// const VideoWhitelistStreamRequest = new protobuf.Type("VideoWhitelistStreamRequest")
-//   .add(new protobuf.Field("url", 1, "string"))
-//   .add(new protobuf.Field("deviceId", 4, "string"))
-
-// const VideoTranslationStreamRequest = new protobuf.Type("VideoTranslationStreamRequest")
-//   .add(new protobuf.Field("url", 1, "string"))
-//   .add(new protobuf.Field("language", 2, "string"))
-//   .add(new protobuf.Field("responseLanguage", 3, "string"))
-
-const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
-  .add(new protobuf.Field("url", 1, "string"))
-  .add(new protobuf.Field("duration", 2, "double"))
-  .add(new protobuf.Field("status", 4, "int32")) // status
-  .add(new protobuf.Field("remainingTime", 5, "int32")) // secs before translation
-  .add(new protobuf.Field("language", 8, "string")) // detected language (if the wrong one is set)
-  .add(new protobuf.Field("message", 9, "string"));
-// 6 - unknown 0 (1st request) -> 10 (2nd, 3th and etc requests)
-// 7 - unknown array
-
-// const VideoWhitelistStreamResponse = new protobuf.Type("VideoWhitelistStreamResponse")
-//   .add(new protobuf.Field("inWhitelist", 1, "bool"))
-
-// const VideoTranslationStreamResponse = new protobuf.Type("VideoTranslationStreamResponse")
-//   .add(new protobuf.Field("unknown1", 1, "int32"))
-//   .add(new protobuf.Field("array", 2, "string"))
-//   .add(new protobuf.Field("ping", 3, "int32"))
-
-// Create a root namespace and add the types
-// const root = new protobuf.Root().define("yandex").add(VideoWhitelistStreamRequest).add(VideoWhitelistStreamResponse);
-
-// // Export the encoding and decoding functions
-// export const yandexRequests = {
-//   encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
-//     return root.VideoWhitelistStreamRequest.encode({
-//       url,
-//       deviceId: 'UCLA_DiR1FfKNvjuUpBHmylQ'
-//     }).finish();
-//   },
-//   decodeResponse(response) {
-//     return root.VideoWhitelistStreamResponse.decode(new Uint8Array(response));
-//   }
-// };
-
-// // Create a root namespace and add the types
-// const root = new protobuf.Root().define("yandex").add(VideoTranslationStreamRequest).add(VideoTranslationStreamResponse);
-
-// // Export the encoding and decoding functions
-// export const yandexRequests = {
-//   encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
-//     return root.VideoTranslationStreamRequest.encode({
-//       url,
-//       language: requestLang,
-//       responseLanguage: responseLang
-//     }).finish();
-//   },
-//   decodeResponse(response) {
-//     return root.VideoTranslationStreamResponse.decode(new Uint8Array(response));
-//   }
-// };
-
-// Create a root namespace and add the types
-const root = new protobuf.Root()
-  .define("yandex")
-  .add(VideoTranslationRequest)
-  .add(VideoTranslationResponse);
-
-// Export the encoding and decoding functions
-const yandexRequests = {
-  encodeRequest(url, deviceId, unknown1, requestLang, responseLang) {
-    return root.VideoTranslationRequest.encode({
-      url,
-      deviceId,
-      firstRequest: true,
-      unknown1,
-      unknown2: 1,
-      language: requestLang,
-      unknown3: 0,
-      unknown4: 0,
-      responseLanguage: responseLang,
-    }).finish();
-  },
-  decodeResponse(response) {
-    return root.VideoTranslationResponse.decode(new Uint8Array(response));
-  },
+;// CONCATENATED MODULE: ./src/config/regexes.js
+const regexes = () => {
+  return {
+    youtubeRegex: /^(www.|m.)?youtube(-nocookie)?.com$/,
+  };
 };
 
+/* harmony default export */ const config_regexes = (regexes());
 
-/***/ })
+;// CONCATENATED MODULE: ./src/config/selectors.js
+const selectors = () => {
+  return {
+    youtubeSelector: ".html5-video-container",
+    twitchSelector: ".video-ref",
+    twitchMobileSelector: "main > div > section > div > div > div",
+    pipedSelector: ".shaka-video-container",
+    vkSelector: ".videoplayer_media",
+    twitterSelector:
+      'div[data-testid="videoComponent"] > div:nth-child(1) > div',
+    vimeoSelector: ".player",
+    gagSelector: ".video-post",
+    bilibilicomSelector: ".bpx-player-video-wrap",
+    mailSelector: "#b-video-wrapper",
+  };
+};
 
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			id: moduleId,
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/async module */
-/******/ 	(() => {
-/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
-/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
-/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
-/******/ 		var resolveQueue = (queue) => {
-/******/ 			if(queue && queue.d < 1) {
-/******/ 				queue.d = 1;
-/******/ 				queue.forEach((fn) => (fn.r--));
-/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
-/******/ 			}
-/******/ 		}
-/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
-/******/ 			if(dep !== null && typeof dep === "object") {
-/******/ 				if(dep[webpackQueues]) return dep;
-/******/ 				if(dep.then) {
-/******/ 					var queue = [];
-/******/ 					queue.d = 0;
-/******/ 					dep.then((r) => {
-/******/ 						obj[webpackExports] = r;
-/******/ 						resolveQueue(queue);
-/******/ 					}, (e) => {
-/******/ 						obj[webpackError] = e;
-/******/ 						resolveQueue(queue);
-/******/ 					});
-/******/ 					var obj = {};
-/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
-/******/ 					return obj;
-/******/ 				}
-/******/ 			}
-/******/ 			var ret = {};
-/******/ 			ret[webpackQueues] = x => {};
-/******/ 			ret[webpackExports] = dep;
-/******/ 			return ret;
-/******/ 		}));
-/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
-/******/ 			var queue;
-/******/ 			hasAwait && ((queue = []).d = -1);
-/******/ 			var depQueues = new Set();
-/******/ 			var exports = module.exports;
-/******/ 			var currentDeps;
-/******/ 			var outerResolve;
-/******/ 			var reject;
-/******/ 			var promise = new Promise((resolve, rej) => {
-/******/ 				reject = rej;
-/******/ 				outerResolve = resolve;
-/******/ 			});
-/******/ 			promise[webpackExports] = exports;
-/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
-/******/ 			module.exports = promise;
-/******/ 			body((deps) => {
-/******/ 				currentDeps = wrapDeps(deps);
-/******/ 				var fn;
-/******/ 				var getResult = () => (currentDeps.map((d) => {
-/******/ 					if(d[webpackError]) throw d[webpackError];
-/******/ 					return d[webpackExports];
-/******/ 				}))
-/******/ 				var promise = new Promise((resolve) => {
-/******/ 					fn = () => (resolve(getResult));
-/******/ 					fn.r = 0;
-/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
-/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
-/******/ 				});
-/******/ 				return fn.r ? promise : getResult();
-/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
-/******/ 			queue && queue.d < 0 && (queue.d = 0);
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/nonce */
-/******/ 	(() => {
-/******/ 		__webpack_require__.nc = undefined;
-/******/ 	})();
-/******/ 	
-/************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module used 'module' so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
-/******/ 	
+/* harmony default export */ const config_selectors = (selectors());
+
+;// CONCATENATED MODULE: ./src/index.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
+
+// translate properties
+let translateFromLang = "en"; // default language of video
+
+let translateToLang = lang; // default language of audio response
+
+let ytData = "";
+
+async function src_main() {
+  utils_debug.log("Loading extension...");
+  utils_debug.log(`Selected menu language: ${lang}`);
+
+  const rvt = await Promise.resolve(/* import() */).then(__webpack_require__.bind(__webpack_require__, "./src/rvt.js"));
+
+  const requestVideoTranslation = rvt.default;
+
+  utils_debug.log("Inited requestVideoTranslation...");
+
+  if (
+     true &&
+    GM_info?.scriptHandler &&
+    ["Violentmonkey", "FireMonkey", "Greasemonkey", "AdGuard"].includes(
+      GM_info.scriptHandler
+    )
+  ) {
+    const errorText = translations[lang].unSupportedExtensionError;
+    console.error(errorText);
+    return alert(errorText);
+  }
+
+  utils_debug.log("Extension compatibility passed...");
+
+  let timer;
+  const audio = new Audio();
+  let opacityRatio = 0.9;
+  let openedMenu = false;
+
+  if (false) { var translationPanding; }
+
+  function logout(n) {
+    if (openedMenu) return;
+
+    document.querySelector(".translationBlock").style.opacity = n;
+  }
+
+  function resetTimer() {
+    clearTimeout(timer);
+    logout(1);
+    timer = setTimeout(() => {
+      logout(0);
+    }, 2000);
+  }
+
+  function changeOpacityOnEvent(event, timer, opacityRatio) {
+    clearTimeout(timer);
+    logout(opacityRatio);
+    event.stopPropagation();
+  }
+
+  const deleteAudioSrc = async () => {
+    audio.src = "";
+    audio.removeAttribute("src");
+  };
+
+  // Add menu container
+  function addTranslationMenu(element) {
+    if (element.querySelector(".translationMenuContent")) return;
+
+    const container = createTranslationMenu();
+    element.appendChild(container);
+
+    // click to translation menu icon
+    document
+      .querySelector(".translationMenu")
+      ?.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const content = document.querySelector(".translationMenuContent");
+        content.style.display = openedMenu ? "none" : "block";
+        content.style.opacity = opacityRatio;
+        openedMenu = !openedMenu;
+      });
+
+    document
+      .querySelector(".translationDropDB")
+      .addEventListener("click", (event) => {
+        event.stopPropagation();
+        deleteDB();
+        location.reload();
+      });
+
+    utils_debug.log("VOT: Added translation menu to ", element);
+  }
+
+  function translateVideo(url, unknown1, requestLang, responseLang, callback) {
+    utils_debug.log(
+      `Translate video (url: ${url}, unknown1: ${unknown1}, requestLang: ${requestLang}, responseLang: ${responseLang})`
+    );
+
+    if (false) {}
+
+    translationPanding = true;
+
+    requestVideoTranslation(
+      url,
+      unknown1,
+      requestLang,
+      responseLang,
+      (success, response) => {
+        translationPanding = false;
+
+        utils_debug.log("[exec callback] Requesting video translation");
+        if (!success) {
+          callback(false, translations[lang].requestTranslationFailed);
+          return;
+        }
+
+        const translateResponse = yandexRequests/* yandexRequests */.G.decodeResponse(response);
+        console.log("VOT Response: ", translateResponse);
+
+        switch (translateResponse.status) {
+          case 0:
+            callback(false, translateResponse.message);
+            break;
+          case 1:
+            callback(
+              !!translateResponse.url,
+              translateResponse.url || translations[lang].audioNotReceived
+            );
+            break;
+          case 2:
+            callback(
+              false,
+              translateResponse.remainingTime
+                ? secsToStrTime(translateResponse.remainingTime)
+                : translations[lang].translationTakeFewMinutes
+            );
+            break;
+          case 3:
+            /*
+              Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода. В конечном итоге, это занимает слишком много времени,
+              как-будто сервер не понимает, что данное видео уже недавно было переведено и заместо возвращения готовой ссылки на перевод начинает переводить видео заново при чём у него это получается за очень длительное время
+            */
+            callback(false, translations[lang].videoBeingTranslated);
+            break;
+        }
+      }
+    );
+  }
+
+  async function translateProccessor(videoContainer, siteHostname, siteEvent) {
+    utils_debug.log("[translateProccessor] execute on element: ", videoContainer);
+
+    let video;
+    let autoRetry;
+    let volumeOnStart;
+    let tempOriginalVolume;
+    let tempVolume;
+    let dbAutoTranslate;
+    let dbDefaultVolume;
+    let dbShowVideoSlider;
+    let dbAutoSetVolumeYandexStyle;
+    let dontTranslateYourLang;
+    let dbSyncVolume;
+    let dbAudioProxy; // cf version only
+    let firstPlay = true;
+    let isDBInited;
+    let videoData = "";
+
+    utils_debug.log("videoContainer", videoContainer);
+
+    video =
+      siteHostname === "vimeo"
+        ? videoContainer.querySelector(
+            ".vp-video-wrapper > .vp-video > .vp-telecine > video"
+          )
+        : videoContainer.querySelector("video");
+
+    utils_debug.log("video", video);
+
+    const container =
+      siteHostname === "pornhub" &&
+      window.location.pathname.includes("view_video.php")
+        ? document.querySelector(".original.mainPlayerDiv")
+        : siteHostname === "pornhub" &&
+          window.location.pathname.includes("embed/")
+        ? document.querySelector("body")
+        : window.location.hostname.includes("m.youtube.com")
+        ? document.querySelector("#player-control-container")
+        : videoContainer;
+
+    addTranslationBlock(container);
+    addTranslationMenu(container);
+
+    try {
+      isDBInited = await initDB();
+    } catch (err) {
+      console.error(
+        "[VOT] Failed to initialize database settings. All changes made will not be saved",
+        err
+      );
+    }
+
+    const menuOptions = document.querySelector(".translationMenuOptions");
+    if (menuOptions && !menuOptions.querySelector("#VOTTranslateFromLang")) {
+      const selectFromLangOptions = [
+        {
+          label: translations[lang].videoLanguage,
+          value: "default",
+          disabled: true,
+        },
+        ...genOptionsByOBJ(availableLangs, videoData.detectedLanguage),
+      ];
+
+      const selectToLangOptions = [
+        {
+          label: translations[lang].translationLanguage,
+          value: "default",
+          disabled: true,
+        },
+        ...genOptionsByOBJ(availableLangs, videoData.responseLanguage),
+        {
+          label: "─────────",
+          value: "separator",
+          disabled: true,
+        },
+        ...genOptionsByOBJ(additionalTTS, videoData.responseLanguage),
+      ];
+
+      const selectFromLang = createMenuSelect(
+        "VOTTranslateFromLang",
+        selectFromLangOptions
+      );
+
+      const selectToLang = createMenuSelect(
+        "VOTTranslateToLang",
+        selectToLangOptions
+      ).firstElementChild;
+
+      selectFromLang.id = "VOTSelectLanguages";
+      selectFromLang.innerHTML += `
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16m0 0l-6 6m6-6l-6-6"/>
+        </svg>
+      `;
+
+      selectFromLang.appendChild(selectToLang);
+      menuOptions.appendChild(selectFromLang);
+
+      menuOptions
+        .querySelector("#VOTTranslateFromLang")
+        .addEventListener("change", async (event) => {
+          utils_debug.log("[onchange] select from language", event.target.value);
+          videoData = await getVideoData();
+          await setSelectMenuValues(
+            event.target.value,
+            videoData.responseLanguage
+          );
+        });
+
+      menuOptions
+        .querySelector("#VOTTranslateToLang")
+        .addEventListener("change", async (event) => {
+          utils_debug.log("[onchange] select to language", event.target.value);
+          videoData = await getVideoData();
+          await setSelectMenuValues(
+            videoData.detectedLanguage,
+            event.target.value
+          );
+        });
+    }
+
+    if (isDBInited) {
+      const dbData = await readDB();
+      if (dbData) {
+        dbAutoTranslate = dbData.autoTranslate;
+        dbDefaultVolume = dbData.defaultVolume;
+        dbShowVideoSlider = dbData.showVideoSlider;
+        dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
+        dontTranslateYourLang = dbData.dontTranslateYourLang;
+        dbAudioProxy = dbData.audioProxy; // cf version only
+        dbSyncVolume = dbData.syncVolume; // youtube only
+
+        utils_debug.log("[db] data from db: ", dbData);
+
+        if (
+          dbAutoTranslate !== undefined &&
+          menuOptions &&
+          !menuOptions.querySelector("#VOTAutoTranslate")
+        ) {
+          const checkbox = createMenuCheckbox(
+            "VOTAutoTranslate",
+            dbAutoTranslate,
+            translations[lang].VOTAutoTranslate +
+              (siteHostname === "vk" ||
+              window.location.hostname.includes("m.twitch.tv")
+                ? ` <strong>(${translations[lang].recommended})</strong>`
+                : "")
+          );
+
+          checkbox.querySelector("#VOTAutoTranslate").onclick = async (
+            event
+          ) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({ autoTranslate: value });
+            dbAutoTranslate = value;
+            utils_debug.log(
+              "autoTranslate value changed. New value: ",
+              dbAutoTranslate
+            );
+          };
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        if (
+          window.location.hostname.includes("youtube.com") &&
+          dontTranslateYourLang !== undefined &&
+          menuOptions &&
+          !menuOptions.querySelector("#VOTDontTranslateYourLang")
+        ) {
+          const checkbox = createMenuCheckbox(
+            "VOTDontTranslateYourLang",
+            dontTranslateYourLang,
+            translations[lang].VOTDontTranslateYourLang
+          );
+
+          checkbox.querySelector("#VOTDontTranslateYourLang").onclick = async (
+            event
+          ) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({ dontTranslateYourLang: value });
+            dontTranslateYourLang = value;
+            utils_debug.log(
+              "dontTranslateYourLang value changed. New value: ",
+              dontTranslateYourLang
+            );
+          };
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        if (
+          dbAutoSetVolumeYandexStyle !== undefined &&
+          menuOptions &&
+          !menuOptions.querySelector("#VOTAutoSetVolume")
+        ) {
+          const checkbox = createMenuCheckbox(
+            "VOTAutoSetVolume",
+            dbAutoSetVolumeYandexStyle,
+            translations[lang].VOTAutoSetVolume + `${config/* autoVolume */.IM * 100}%`
+          );
+
+          checkbox.querySelector("#VOTAutoSetVolume").onclick = async (
+            event
+          ) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({ autoSetVolumeYandexStyle: value });
+            dbAutoSetVolumeYandexStyle = value;
+            utils_debug.log(
+              "autoSetVolumeYandexStyle value changed. New value: ",
+              dbAutoSetVolumeYandexStyle
+            );
+          };
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        if (
+          dbShowVideoSlider !== undefined &&
+          menuOptions &&
+          !menuOptions.querySelector("#VOTShowVideoSlider")
+        ) {
+          const checkbox = createMenuCheckbox(
+            "VOTShowVideoSlider",
+            dbShowVideoSlider,
+            translations[lang].VOTShowVideoSlider
+          );
+
+          checkbox.querySelector("#VOTShowVideoSlider").onclick = async (
+            event
+          ) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({ showVideoSlider: value });
+            dbShowVideoSlider = value;
+            utils_debug.log(
+              "showVideoSlider value changed. New value: ",
+              dbShowVideoSlider
+            );
+            if (
+              dbShowVideoSlider === 1 &&
+              document.querySelector(".translationBtn").dataset.state ===
+                "success"
+            ) {
+              addVideoSlider();
+            } else {
+              document.querySelector("#VOTVideoSlider")?.parentElement.remove();
+            }
+          };
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        if (
+          window.location.hostname.includes("youtube.com") &&
+          !window.location.hostname.includes("m.youtube.com") &&
+          dbSyncVolume !== undefined &&
+          menuOptions &&
+          !menuOptions.querySelector("#VOTSyncVolume")
+        ) {
+          const checkbox = createMenuCheckbox(
+            "VOTSyncVolume",
+            dbSyncVolume,
+            translations[lang].VOTSyncVolume
+          );
+
+          checkbox.querySelector("#VOTSyncVolume").onclick = async (event) => {
+            event.stopPropagation();
+            const value = Number(event.target.checked);
+            await updateDB({ syncVolume: value });
+            dbSyncVolume = value;
+            utils_debug.log("syncVolume value changed. New value: ", dbSyncVolume);
+          };
+
+          menuOptions.appendChild(checkbox);
+        }
+
+        // cf version only
+        if (
+          false
+        ) {}
+      }
+    }
+
+    transformBtn("none", translations[lang].translateVideo);
+
+    if (
+      window.location.hostname.includes("youtube.com") &&
+      !window.location.hostname.includes("m.youtube.com")
+    ) {
+      const syncVolumeObserver = new MutationObserver(async function (
+        mutations
+      ) {
+        mutations.forEach(async function (mutation) {
+          if (
+            mutation.type === "attributes" &&
+            mutation.attributeName === "aria-valuenow" &&
+            document.querySelector("#VOTVideoSlider")
+          ) {
+            syncVideoVolumeSlider();
+          }
+        });
+      });
+
+      syncVolumeObserver.observe(document.querySelector(".ytp-volume-panel"), {
+        attributes: true,
+        childList: false,
+        subtree: true,
+        attributeOldValue: true,
+      });
+    }
+
+    async function setSelectMenuValues(from, to) {
+      if (!document.querySelector("#VOTSelectLanguages")) {
+        return;
+      }
+      document.querySelector("#VOTTranslateFromLang").value = from;
+      document.querySelector("#VOTTranslateToLang").value = to;
+      console.log(`Set translation from ${from} to ${to}`);
+      videoData.detectedLanguage = from;
+      videoData.responseLanguage = to;
+    }
+
+    // data - ytData or VideoData
+    // async function setDetectedLangauge(data, videolang) {
+    //   switch (videolang) {
+    //     case "en":
+    //       data.detectedLanguage = videolang;
+    //       data.responseLanguage = lang;
+    //       break;
+    //     case "ru":
+    //       data.detectedLanguage = videolang;
+    //       data.responseLanguage = lang;
+    //       if (lang == "ru") data.responseLanguage = "en";
+    //       break;
+    //     default:
+    //       if (!Object.keys(availableLangs).includes(videolang)) {
+    //         return setDetectedLangauge(data, "en");
+    //       }
+
+    //       data.detectedLanguage = videolang;
+    //   }
+
+    //   setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+
+    //   return data;
+    // }
+
+    // data - ytData or VideoData
+    // async function setResponseLangauge(data, videolang) {
+    //   switch (videolang) {
+    //     case "en":
+    //       data.responseLanguage = videolang;
+    //       data.detectedLanguage = "ru";
+    //       break;
+    //     default:
+    //       if (!Object.keys(availableLangs).includes(videolang)) {
+    //         return setResponseLangauge(data, "ru");
+    //       }
+
+    //       if (data.detectedLanguage && data.responseLanguage === lang) {
+    //         data.detectedLanguage = "en";
+    //       }
+
+    //       data.responseLanguage = videolang;
+    //   }
+
+    //   setSelectMenuValues(data.detectedLanguage, data.responseLanguage);
+
+    //   return data;
+    // }
+
+    async function stopTraslate() {
+      // Default actions on stop translate
+      audio.pause();
+      video.removeEventListener(".translate", stopTraslate, false);
+      await deleteAudioSrc();
+      document.querySelector("#VOTVideoSlider")?.parentElement.remove();
+      document.querySelector("#VOTTranslationSlider")?.parentElement.remove();
+      const downloadBtn = document.querySelector(".translationDownload");
+      downloadBtn.href = "";
+      downloadBtn.style.display = "none";
+      transformBtn("none", translations[lang].translateVideo);
+      // temp fix
+      if (window.location.hostname.includes("youtube.com")) {
+        document.querySelector(".html5-video-player").setVolume(100);
+      }
+      if (volumeOnStart) {
+        video.volume = volumeOnStart;
+      }
+    }
+
+    async function syncVideoVolumeSlider() {
+      // Sync volume slider with original video (youtube only)
+      const newSlidersVolume = document
+        .querySelector(".ytp-volume-panel")
+        .getAttribute("aria-valuenow");
+
+      const videoSlider = document.querySelector("#VOTVideoSlider");
+
+      if (!videoSlider) {
+        return;
+      }
+      videoSlider.value = newSlidersVolume;
+
+      const videoVolumeLabel = document.querySelector("#VOTVideoVolume");
+
+      if (videoVolumeLabel) {
+        videoVolumeLabel.innerText = `${newSlidersVolume}%`;
+      }
+
+      if (dbSyncVolume === 1) {
+        tempOriginalVolume = Number(newSlidersVolume);
+      }
+    }
+
+    async function getVideoData() {
+      const videoData = {};
+
+      videoData.duration = video?.duration || 0;
+
+      videoData.videoId = getVideoId(siteHostname);
+
+      videoData.detectedLanguage = translateFromLang;
+
+      videoData.responseLanguage = translateToLang;
+
+      if (window.location.hostname.includes("youtube.com")) {
+        ytData = await getYTVideoData();
+        if (ytData.author !== "") {
+          videoData.detectedLanguage = ytData.detectedLanguage;
+          videoData.responseLanguage = lang;
+        }
+      } else if (
+        window.location.hostname.includes("rutube") ||
+        window.location.hostname.includes("my.mail.ru")
+      ) {
+        videoData.detectedLanguage = "ru";
+        videoData.responseLanguage = "en";
+      } else if (window.location.hostname.includes("bilibili.com")) {
+        videoData.detectedLanguage = "zh";
+      }
+
+      return videoData;
+    }
+
+    const lipSync = async (mode = false) => {
+      utils_debug.log("lipsync video", video);
+      if (!video) {
+        return;
+      }
+      audio.currentTime = video.currentTime;
+      audio.playbackRate = video.playbackRate;
+
+      if (!mode) {
+        utils_debug.log("lipsync mode is not set");
+        return;
+      }
+
+      if (mode === "play") {
+        utils_debug.log("lipsync mode is play");
+        const audioPromise = audio.play();
+        if (audioPromise !== undefined) {
+          audioPromise.catch((e) => {
+            console.error(e);
+            if (e.name === "NotAllowedError") {
+              const errorMessage = translations[lang].grantPermissionToAutoPlay;
+              transformBtn("error", errorMessage);
+              throw `VOT: ${errorMessage}`;
+            } else if (e.name === "NotSupportedError") {
+              const errorMessage = sitesChromiumBlocked.includes(
+                window.location.hostname
+              )
+                ? translations[lang].neededAdditionalExtension
+                : translations[lang].audioFormatNotSupported;
+              transformBtn("error", errorMessage);
+              throw `VOT: ${errorMessage}`;
+            }
+          });
+        }
+        return;
+      }
+      if (mode === "pause") {
+        utils_debug.log("lipsync mode is pause");
+        audio.pause();
+      }
+      if (mode === "stop") {
+        utils_debug.log("lipsync mode is stop");
+        audio.pause();
+      }
+      if (mode === "waiting") {
+        utils_debug.log("lipsync mode is waiting");
+        audio.pause();
+      }
+      if (mode === "playing") {
+        utils_debug.log("lipsync mode is playing");
+        audio.play();
+      }
+    };
+
+    function addVideoSlider() {
+      if (
+        dbShowVideoSlider !== 1 ||
+        document.querySelector("#VOTVideoSlider") ||
+        document.querySelector(".translationBtn").dataset.state !== "success"
+      ) {
+        return;
+      }
+
+      const newVolume =
+        window.location.hostname.includes("youtube.com") &&
+        !dbAutoSetVolumeYandexStyle
+          ? document
+              .querySelector(".ytp-volume-panel")
+              ?.getAttribute("aria-valuenow")
+          : Math.round(video.volume * 100);
+      tempOriginalVolume = newVolume;
+
+      const slider = createMenuSlider(
+        "VOTVideoSlider",
+        newVolume,
+        `${translations[lang].VOTVolume}: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
+      );
+
+      slider.querySelector("#VOTVideoSlider").oninput = async (event) => {
+        const { value } = event.target;
+        video.volume = value / 100;
+        slider.querySelector("#VOTOriginalVolume").innerText = `${value}%`;
+
+        if (dbSyncVolume !== 1) {
+          return;
+        }
+
+        // Sync translation volume slider with video volume slider
+        const translateVolumeSlider = document.querySelector(
+          "#VOTTranslationSlider"
+        );
+
+        if (!translateVolumeSlider) {
+          return;
+        }
+        const translateVolume = Number(translateVolumeSlider.value);
+        const finalValue = syncVolume(
+          audio,
+          value,
+          translateVolume,
+          tempOriginalVolume
+        );
+
+        translateVolumeSlider.value = finalValue;
+
+        const translateVolumeLabel = document.querySelector(
+          "#VOTTranslationVolume"
+        );
+
+        if (translateVolumeLabel) {
+          translateVolumeLabel.innerText = `${finalValue}%`;
+        }
+
+        tempVolume = finalValue;
+        tempOriginalVolume = value;
+      };
+
+      const menuOptions = document.querySelector(".translationMenuOptions");
+      menuOptions.appendChild(slider);
+    }
+
+    async function addTranslationSlider() {
+      // Return early if slider already exists or translation is not successful
+      if (
+        document.querySelector("#VOTTranslationSlider") ||
+        document.querySelector(".translationBtn").dataset.state !== "success"
+      ) {
+        return;
+      }
+
+      // Use dbDefaultVolume or 100 as the default translation volume
+      const defaultTranslateVolume =
+        typeof dbDefaultVolume === "number" ? dbDefaultVolume : 100;
+      tempOriginalVolume = defaultTranslateVolume;
+
+      // Create a slider element with the default volume and label
+      const slider = createMenuSlider(
+        "VOTTranslationSlider",
+        defaultTranslateVolume,
+        `${translations[lang].VOTVolumeTranslation}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
+      );
+
+      // Add an input event listener to the slider
+      slider.querySelector("#VOTTranslationSlider").oninput = async ({
+        target: { value },
+      }) => {
+        // Set the audio volume to the slider value
+        audio.volume = value / 100;
+
+        // Update the volume label
+        document.querySelector("#VOTTranslationVolume").innerText = `${value}%`;
+
+        // Update the database with the new volume value
+        await updateDB({ defaultVolume: Number(value) });
+        dbDefaultVolume = Number(value);
+
+        // Sync translation volume with video volume if dbSyncVolume is 1
+        if (dbSyncVolume === 1) {
+          syncTranslationWithVideo(value);
+        }
+      };
+
+      // Append the slider to the menu options
+      const menuOptions = document.querySelector(".translationMenuOptions");
+      menuOptions.appendChild(slider);
+    }
+
+    // A helper function to sync translation volume with video volume
+    function syncTranslationWithVideo(translationValue) {
+      // Get the video volume slider element
+      const videoVolumeSlider = document.querySelector("#VOTVideoSlider");
+
+      if (!videoVolumeSlider) {
+        return;
+      }
+      // Get the video volume value
+      const videoVolume = Number(videoVolumeSlider.value);
+
+      // Calculate the synced video volume based on the translation volume
+      const finalValue = syncVolume(
+        video,
+        translationValue,
+        videoVolume,
+        tempVolume
+      );
+
+      // Set the video volume slider value to the synced value
+      videoVolumeSlider.value = finalValue;
+
+      // Update the video volume label
+      const videoVolumeLabel = document.querySelector("#VOTOriginalVolume");
+      if (videoVolumeLabel) videoVolumeLabel.innerText = `${finalValue}%`;
+
+      // Update the temp variables for future syncing
+      tempOriginalVolume = finalValue;
+      tempVolume = translationValue;
+    }
+
+    async function videoValidator() {
+      if (window.location.hostname.includes("youtube.com")) {
+        utils_debug.log("VideoValidator videoData: ", videoData);
+        if (
+          dontTranslateYourLang === 1 &&
+          videoData.detectedLanguage === lang &&
+          videoData.responseLanguage === lang
+        ) {
+          throw translations[lang].VOTDisableFromYourLang;
+        }
+
+        if (ytData.isLive) {
+          throw translations[lang].VOTLiveNotSupported;
+        }
+
+        if (ytData.isPremiere) {
+          throw translations[lang].VOTPremiere;
+        }
+        if (videoData.duration > 14_400) {
+          throw translations[lang].VOTVideoIsTooLong;
+        }
+      }
+      return true;
+    }
+
+    const translateExecutor = async (VIDEO_ID) => {
+      if (!videoData.detectedLanguage) {
+        videoData = await getVideoData();
+        await setSelectMenuValues(
+          videoData.detectedLanguage,
+          videoData.responseLanguage
+        );
+      }
+      utils_debug.log("Run videoValidator");
+      await videoValidator();
+      utils_debug.log("Run translateFunc");
+      await translateFunc(
+        VIDEO_ID,
+        videoData.detectedLanguage,
+        videoData.responseLanguage
+      );
+    };
+
+    // Define a function to handle common events
+    async function handleVideoEvent(event) {
+      utils_debug.log(`video ${event.type}`);
+      await lipSync(event.type);
+    }
+
+    // Define a function to stop translation and clean up
+    async function stopTranslation() {
+      await stopTraslate();
+      await syncVideoVolumeSlider();
+    }
+
+    // Define a function to translate a video and handle the callback
+    async function translateFunc(VIDEO_ID, requestLang, responseLang) {
+      console.log("VOT Video Data: ", videoData);
+      const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
+      translateVideo(
+        videoURL,
+        translateFuncParam,
+        requestLang,
+        responseLang,
+        async (success, urlOrError) => {
+          utils_debug.log("[exec callback] translateVideo");
+          if (getVideoId(siteHostname) !== VIDEO_ID) return;
+          if (!success) {
+            transformBtn("error", urlOrError);
+            // if the error line contains information that the translation is being performed, then we wait
+            if (urlOrError.includes(translations[lang].translationTake)) {
+              clearTimeout(autoRetry);
+              autoRetry = setTimeout(
+                () => translateFunc(VIDEO_ID, requestLang, responseLang),
+                60_000
+              );
+            }
+            throw urlOrError;
+          }
+
+          audio.src = urlOrError;
+
+          // cf version only
+          if (
+            false
+          ) {}
+
+          volumeOnStart = video?.volume;
+          if (typeof dbDefaultVolume === "number") {
+            audio.volume = dbDefaultVolume / 100;
+          }
+          if (
+            typeof dbAutoSetVolumeYandexStyle === "number" &&
+            dbAutoSetVolumeYandexStyle
+          ) {
+            video.volume = config/* autoVolume */.IM;
+            // temp fix
+            if (window.location.hostname.includes("youtube.com")) {
+              document.querySelector(".html5-video-player").setVolume(config/* autoVolume */.IM * 100);
+            }
+          }
+
+          switch (siteHostname) {
+            case "twitter":
+              document
+                .querySelector('div[data-testid="app-bar-back"][role="button"]')
+                .addEventListener("click", stopTranslation);
+              break;
+            case "invidious":
+            case "piped":
+              break;
+            default:
+              if (siteEvent !== null) {
+                document.body.addEventListener(siteEvent, stopTranslation);
+              }
+              break;
+          }
+
+          const siteHostnames = [
+            "twitch",
+            "vimeo",
+            "facebook",
+            "rutube",
+            "twitter",
+            "bilibili.com",
+            "mail.ru",
+          ];
+          for (let i = 0; i < siteHostnames.length; i++) {
+            if (siteHostname === siteHostnames[i]) {
+              const mutationObserver = new MutationObserver(
+                async (mutations) => {
+                  mutations.forEach(async (mutation) => {
+                    if (
+                      mutation.type === "attributes" &&
+                      mutation.attributeName === "src" &&
+                      mutation.target === video &&
+                      mutation.target.src !== ""
+                    ) {
+                      stopTranslation();
+                      firstPlay = true;
+                    }
+                  });
+                }
+              );
+              mutationObserver.observe(videoContainer, {
+                attributes: true,
+                childList: false,
+                subtree: true,
+                attributeOldValue: true,
+              });
+              break;
+            }
+          }
+
+          if (video && !video.paused) lipSync("play");
+          const videos = document.querySelectorAll("video");
+          const events = [
+            "playing",
+            "ratechange",
+            "play",
+            "waiting",
+            "pause",
+          ];
+          videos.forEach((v) =>
+            events.forEach((e) => v.addEventListener(e, handleVideoEvent))
+          );
+          transformBtn("success", translations[lang].disableTranslate);
+          addVideoSlider();
+          await addTranslationSlider();
+
+          const VOTVideoSlider = document.querySelector("#VOTVideoSlider");
+          if (VOTVideoSlider) VOTVideoSlider.value = config/* autoVolume */.IM * 100;
+
+          const VOTOriginalVolume =
+            document.querySelector("#VOTOriginalVolume");
+          if (VOTOriginalVolume) {
+            VOTOriginalVolume.innerText = `${config/* autoVolume */.IM * 100}%`;
+          }
+
+          const downloadBtn = document.querySelector(".translationDownload");
+          downloadBtn.href = urlOrError;
+          downloadBtn.style.display = "initial";
+        }
+      );
+    }
+
+    document.addEventListener("click", async (event) => {
+      const block = document.querySelector(".translationBlock");
+      const menuContainer = document.querySelector(".translationMenuContent");
+      const isBlock =
+        block || event.target === block ? block.contains(event.target) : false;
+      const isContent =
+        menuContainer || event.target === menuContainer
+          ? menuContainer.contains(event.target)
+          : false;
+      const isVideo =
+        videoContainer || event.target === videoContainer
+          ? videoContainer.contains(event.target)
+          : false;
+
+      utils_debug.log(`[document click] ${isBlock} ${isContent} ${isVideo}`);
+      if (!(!isBlock && !isContent)) return;
+      if (!isVideo) logout(0);
+
+      menuContainer.style.display = "none";
+      openedMenu = false;
+    });
+
+    const addEventListeners = (element, events, handler) => {
+      events.forEach((event) =>
+        element.addEventListener(event, async (event) => {
+          await handler(event);
+        })
+      );
+    };
+
+    if (siteHostname === "pornhub") {
+      if (window.location.pathname.includes("view_video.php")) {
+        const videoElement = document.querySelector(
+          ".original.mainPlayerDiv > video-element > div"
+        );
+        addEventListeners(videoElement, ["mousemove", "mouseout"], resetTimer);
+      } else if (window.location.pathname.includes("embed/")) {
+        const playerElement = document.querySelector("#player");
+        addEventListeners(playerElement, ["mousemove", "mouseout"], resetTimer);
+      }
+    } else if (siteHostname === "twitter") {
+      const videoPlayerElement = document.querySelector(
+        'div[data-testid="videoPlayer"'
+      );
+      addEventListeners(
+        videoPlayerElement,
+        ["mousemove", "mouseout"],
+        resetTimer
+      );
+    } else {
+      addEventListeners(videoContainer, ["mousemove", "mouseout"], resetTimer);
+    }
+
+    document
+      .querySelector(".translationBlock")
+      .addEventListener("mousemove", (event) =>
+        changeOpacityOnEvent(event, timer, opacityRatio)
+      );
+    document
+      .querySelector(".translationMenuContent")
+      .addEventListener("mousemove", (event) =>
+        changeOpacityOnEvent(event, timer, opacityRatio)
+      );
+
+    document.addEventListener("touchstart", (event) =>
+      changeOpacityOnEvent(event, timer, opacityRatio)
+    );
+    document.addEventListener("touchmove", (event) =>
+      changeOpacityOnEvent(event, timer, opacityRatio)
+    );
+    document.addEventListener("touchend", (event) =>
+      changeOpacityOnEvent(event, timer, opacityRatio)
+    );
+    document.querySelectorAll("video").forEach((video) => {
+      video.addEventListener("abort", async () => {
+        utils_debug.log("lipsync mode is abort");
+        await stopTranslation();
+        videoData = "";
+      });
+    });
+
+    document
+      .querySelector(".translationBtn")
+      .addEventListener("click", async (event) => {
+        utils_debug.log("[click translationBtn] before all functions & methods");
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        // check if the audio source is not empty
+        if (audio.src) {
+          utils_debug.log("[click translationBtn] audio.src is not empty");
+          await stopTraslate();
+          return;
+        }
+
+        try {
+          utils_debug.log("[click translationBtn] trying execute translation");
+          const VIDEO_ID = getVideoId(siteHostname);
+
+          if (!VIDEO_ID) {
+            throw translations[lang].VOTNoVideoIDFound;
+          }
+
+          await translateExecutor(VIDEO_ID);
+        } catch (err) {
+          transformBtn("error", String(err).substring(4, err.length));
+          console.error(err);
+        }
+      });
+
+    video.addEventListener("progress", async (event) => {
+      event.stopPropagation();
+
+      if (!(firstPlay && dbAutoTranslate === 1)) {
+        return;
+      }
+      const VIDEO_ID = getVideoId(siteHostname);
+
+      if (!VIDEO_ID) {
+        throw translations[lang].VOTNoVideoIDFound;
+      }
+
+      try {
+        await translateExecutor(VIDEO_ID);
+        firstPlay = false;
+      } catch (err) {
+        transformBtn("error", String(err).substring(4, err.length));
+        firstPlay = false;
+      }
+    });
+  }
+
+  async function initWebsite() {
+    utils_debug.log("Runned initWebsite function");
+    if (config_regexes.youtubeRegex.test(window.location.hostname)) {
+      if (window.location.pathname.includes("embed")) {
+        const videoContainer = document.querySelector(".html5-video-container");
+        await translateProccessor(videoContainer, "youtube", null);
+        return;
+      }
+
+      utils_debug.log("[initWebsite] Found a match with youtube hostname");
+      const ytPageEnter = () => {
+        const videoContainer = document.querySelector(
+          config_selectors.youtubeSelector
+        );
+        if (videoContainer) {
+          utils_debug.log("[exec] translateProccessor youtube on page enter");
+          translateProccessor(videoContainer, "youtube", "yt-translate-stop");
+        } else {
+          if (!ytplayer || !ytplayer.config) {
+            utils_debug.log("[exec] ytplayer is null");
+            return;
+          }
+          ytplayer.config.args.jsapicallback = () => {
+            utils_debug.log(
+              "[exec] translateProccessor youtube on page enter (ytplayer.config.args.jsapicallback)"
+            );
+            translateProccessor(videoContainer, "youtube", "yt-translate-stop");
+          };
+        }
+      };
+
+      document.addEventListener("spfdone", ytPageEnter);
+      document.addEventListener("yt-navigate-finish", ytPageEnter);
+
+      const ytPageLeave = () => {
+        document.body.dispatchEvent(new Event("yt-translate-stop"));
+      };
+
+      document.addEventListener("spfrequest", ytPageLeave);
+      document.addEventListener("yt-navigate-start", ytPageLeave);
+
+      if (window.location.hostname.includes("m.youtube.com")) {
+        let ytmobile = await waitForElm("#player");
+        if (ytmobile) {
+          await sleep(2300);
+          await translateProccessor(ytmobile, "youtube", "yt-translate-stop");
+
+          const mutationObserver = new MutationObserver(async (mutations) => {
+            for (const mutation of mutations) {
+              if (
+                mutation.type === "attributes" &&
+                mutation.attributeName === "src"
+              ) {
+                ytmobile = await waitForElm("#player");
+                await sleep(2300);
+                await translateProccessor(
+                  ytmobile,
+                  "youtube",
+                  "yt-translate-stop"
+                );
+              }
+            }
+          });
+
+          mutationObserver.observe(ytmobile, {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            attributeOldValue: true,
+          });
+        }
+        const ytPageLeave = () => {
+          document.body.dispatchEvent(new Event("yt-translate-stop"));
+        };
+        document.addEventListener("spfdone", ytPageLeave);
+        document.addEventListener("yt-navigate-finish", ytPageLeave);
+        document.addEventListener("spfrequest", ytPageLeave);
+        document.addEventListener("yt-navigate-start", ytPageLeave);
+      }
+      return;
+    }
+    if (window.location.hostname.includes("twitch.tv")) {
+      utils_debug.log("[initWebsite] Found a match with twitch.tv");
+      if (
+        window.location.hostname.includes("m.twitch.tv") &&
+        (window.location.pathname.includes("/videos/") ||
+          window.location.pathname.includes("/clip/"))
+      ) {
+        utils_debug.log("[initWebsite] Matched Twitch Mobile");
+        const el = await waitForElm(config_selectors.twitchMobileSelector);
+        if (el) {
+          await sleep(200);
+          const twitchMobileSelector = document.querySelector(
+            config_selectors.twitchMobileSelector
+          );
+          await translateProccessor(twitchMobileSelector, "twitch", null);
+
+          const mutationObserver = new MutationObserver(async (mutations) => {
+            for (const mutation of mutations) {
+              if (
+                mutation.type === "attributes" &&
+                mutation.attributeName === "src" &&
+                mutation.target === twitchMobileSelector?.querySelector("video")
+              ) {
+                await sleep(1000);
+                await translateProccessor(twitchMobileSelector, "twitch", null);
+              }
+            }
+          });
+
+          mutationObserver.observe(twitchMobileSelector, {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            attributeOldValue: true,
+          });
+        }
+      } else if (
+        window.location.hostname.includes("player.twitch.tv") ||
+        window.location.hostname.includes("clips.twitch.tv") ||
+        window.location.pathname.includes("/videos/") ||
+        window.location.pathname.includes("/clip/")
+      ) {
+        utils_debug.log("[initWebsite] Matched Twitch Desktop");
+        const el = await waitForElm(config_selectors.twitchSelector);
+        if (el) {
+          await sleep(200);
+          await translateProccessor(el, "twitch", null);
+        }
+      }
+      utils_debug.log("[initWebsite] Exit function in the twitch section");
+      return;
+    }
+    if (window.location.hostname.includes("xvideos.com")) {
+      utils_debug.log("[entered] xvideos");
+      await sleep(1000);
+      await translateProccessor(
+        document.querySelector(".video-bg-pic"),
+        "xvideos",
+        null
+      );
+      return;
+    }
+    if (window.location.hostname.includes("pornhub.com")) {
+      utils_debug.log("[entered] pornhub");
+      await sleep(1000);
+      await translateProccessor(
+        document.querySelector(".mgp_videoWrapper"),
+        "pornhub",
+        null
+      );
+      return;
+    }
+    if (sitesInvidious.includes(window.location.hostname)) {
+      // Need an additional extension to work in chrome-like browsers
+      utils_debug.log("[entered] invidious");
+      await translateProccessor(
+        document.querySelector("#player"),
+        "youtube",
+        null
+      );
+    } else if (sitesPiped.includes(window.location.hostname)) {
+      // Need an additional extension to work in chrome-like browsers
+      utils_debug.log("[entered] piped");
+      const el = await waitForElm(config_selectors.pipedSelector);
+      if (el) {
+        let videoIDNew;
+        let videoID = getVideoId("youtube");
+        await translateProccessor(el, "youtube", "piped");
+        setInterval(async () => {
+          videoIDNew = getVideoId("youtube");
+          if (videoID !== videoIDNew) {
+            if (videoIDNew) {
+              await translateProccessor(
+                document.querySelector(config_selectors.pipedSelector),
+                "youtube",
+                "piped"
+              );
+            }
+            videoID = videoIDNew;
+          }
+        }, 3000);
+      }
+    } else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
+      utils_debug.log("[entered] vk.com");
+      const el = await waitForElm(config_selectors.vkSelector);
+      if (el) {
+        await translateProccessor(
+          document.querySelector(config_selectors.vkSelector),
+          "vk",
+          null
+        );
+        let videoIDVKNew;
+        let videoIDVK = getVideoId("vk");
+        setInterval(async () => {
+          videoIDVKNew = getVideoId("vk");
+          if (videoIDVK !== videoIDVKNew) {
+            if (videoIDVKNew) {
+              const el = await waitForElm(config_selectors.vkSelector);
+              if (el) {
+                await translateProccessor(el, "vk", null);
+              }
+            }
+            videoIDVK = videoIDVKNew;
+          }
+        }, 3000);
+      }
+    } else if (window.location.hostname.includes("vimeo.com")) {
+      utils_debug.log("[entered] vimeo.com");
+      const el = await waitForElm(config_selectors.vimeoSelector);
+      if (el) {
+        await sleep(1000);
+        await translateProccessor(
+          document.querySelector(config_selectors.vimeoSelector),
+          "vimeo",
+          null
+        );
+      }
+    } else if (window.location.hostname.includes("9gag.com")) {
+      await sleep(1000);
+      await translateProccessor(
+        document.querySelector(config_selectors.gagSelector),
+        "9gag",
+        null
+      );
+    } else if (window.location.hostname.includes("coub.com")) {
+      await sleep(1000);
+      await translateProccessor(
+        document.querySelector(".viewer__player"),
+        "coub",
+        null
+      );
+    } else if (window.location.hostname.includes("bitchute.com")) {
+      await sleep(1000);
+      await translateProccessor(
+        document.querySelector(".plyr__video-wrapper"),
+        "bitchute",
+        null
+      );
+    } else if (window.location.hostname.includes("rutube.ru")) {
+      const elementSelector = window.location.pathname.includes("/play/embed")
+        ? "#app > div > div"
+        : ".video-player > div > div > div:nth-child(2)";
+
+      const el = await waitForElm(elementSelector);
+      if (el) {
+        await translateProccessor(el, "rutube", null);
+      }
+    } else if (window.location.hostname.includes("bilibili.com")) {
+      if (window.location.pathname.includes("/video/")) {
+        const el = await waitForElm(config_selectors.bilibilicomSelector);
+        if (el) {
+          await translateProccessor(el, "bilibili.com", null);
+        }
+      } else if (
+        window.location.pathname.includes(
+          "/blackboard/webplayer/embed-old.html"
+        )
+      ) {
+        const el = await waitForElm("video");
+        if (el) {
+          await translateProccessor(el.parentElement, "bilibili.com", null);
+        }
+      }
+    } else if (window.location.hostname.includes("twitter.com")) {
+      const el = await waitForElm(config_selectors.twitterSelector);
+      if (el) {
+        let videoIDNew;
+        let videoID = getVideoId("twitter");
+        await translateProccessor(el, "twitter", null);
+        setInterval(async () => {
+          videoIDNew = getVideoId("twitter");
+          if (videoID !== videoIDNew) {
+            if (videoIDNew) {
+              await translateProccessor(
+                document.querySelector(config_selectors.twitterSelector),
+                "twitter",
+                null
+              );
+            }
+            videoID = videoIDNew;
+          }
+        }, 3000);
+      }
+    } else if (window.location.hostname.includes("my.mail.ru")) {
+      const el = await waitForElm(config_selectors.mailSelector);
+      if (el) {
+        let videoIDNew;
+        let videoID = getVideoId("mail.ru");
+        await translateProccessor(el, "mail.ru", null);
+        setInterval(async () => {
+          videoIDNew = getVideoId("mail.ru");
+          if (videoID !== videoIDNew) {
+            if (videoIDNew) {
+              await translateProccessor(
+                document.querySelector(config_selectors.mailSelector),
+                "mail.ru",
+                null
+              );
+            }
+            videoID = videoIDNew;
+          }
+        }, 3000);
+      }
+    }
+  }
+
+  await initWebsite();
+}
+
+src_main().catch((e) => {
+  console.error(e);
+});
+
+})();
+
 /******/ })()
 ;

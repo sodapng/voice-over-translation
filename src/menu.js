@@ -1,20 +1,10 @@
 import debug from "./utils/debug.js";
-import { initDB, readDB } from "./indexedDB.js";
 import { translations } from "./config/constants.js";
 
 const userlang = navigator.language || navigator.userLanguage;
-let lang; // declare lang here
-try {
-  let isDBInited = await initDB();
-  if (isDBInited) {
-    const dbData = await readDB();
-    lang = dbData.hasOwnProperty("userlang") ? dbData.userlang : userlang.substr(0, 2).toLowerCase(); // assign lang here
-    if (!(lang in translations)) {
-      lang = "en";
-    }
-  }
-} catch (error) {
-  console.error(error);
+let lang = userlang.substr(0, 2).toLowerCase();
+if (!(lang in translations)) {
+  lang = "en";
 }
 
 function changeBtnColor(n) {
