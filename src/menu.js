@@ -186,11 +186,14 @@ function createMenuSelect(id, selectOptions) {
 }
 
 function genOptionsByOBJ(obj, conditionString) {
-  return Object.entries(obj).map(([key, value]) => ({
-    label: translations[lang][value],
-    value: key,
-    selected: conditionString === key,
+  console.log(obj)
+  const test = obj.map((code) => ({
+    label: translations[lang].langs[code],
+    value: code,
+    selected: conditionString === code,
   }));
+  console.log(test)
+  return test
 }
 
 export {
