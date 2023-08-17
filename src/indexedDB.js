@@ -20,7 +20,7 @@ const valuesV2 = {
 const valuesV3 = {
   subtitlesMaxLength: 300,
   highlightWords: 0,
-  responseLanguage: lang
+  responseLanguage: lang,
 };
 
 function openDB(name) {
