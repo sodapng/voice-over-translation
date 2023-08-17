@@ -1,8 +1,11 @@
 # 1.4.0
+<!-- TODO: Сделать вкладку с настройками (версия, настройка языка меню (автоперезагрузка при смене языка), переместить туда сброс настроек) -->
+<!-- TODO: Сохранение языка на который будет переводиться -->
 - Добавлена поддержка субтитров (От @MrSoczekXD в [#247](https://github.com/ilyhalight/voice-over-translation/pull/247))
 - Добавлена подсветка слов в субтитрах (От @MrSoczekXD в [#247](https://github.com/ilyhalight/voice-over-translation/pull/247))
 - Добавлена установка максимальной длинны субтитров (От @MrSoczekXD в [#247](https://github.com/ilyhalight/voice-over-translation/pull/247))
 - Фикс громкости на ютубе (От @SashaXser в [#262](https://github.com/ilyhalight/voice-over-translation/pull/262))
+- Домен воркера был изменен на vot-new.toil-dump.workers.dev, дабы не нарушать работу у тех, кто пользуется старыми версиями
 - Были добавлены новые языки для перевода меню:
   - Бенгальский
   - Малайский
