@@ -1285,7 +1285,7 @@ async function main() {
           await translateExecutor(VIDEO_ID);
         } catch (err) {
           console.error("[VOT]", err);
-          transformBtn("error", String(err).substring(4, err.length));
+          transformBtn("error", String(err).substring(5, err.length));
         }
       });
 
@@ -1306,7 +1306,7 @@ async function main() {
         firstPlay = false;
       } catch (err) {
         console.error("[VOT]", err);
-        transformBtn("error", String(err).substring(4, err.length));
+        transformBtn("error", String(err).substring(5, err.length));
         firstPlay = false;
       }
     });
