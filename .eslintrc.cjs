@@ -3,6 +3,7 @@ module.exports = {
         "browser": true,
         "es2021": true,
         "greasemonkey": true,
+        "node ": true
     },
     extends: "eslint:recommended",
     overrides: [
@@ -37,7 +38,6 @@ module.exports = {
         // WEBPACK ENVIRONMENT
         "BUILD_MODE": "readonly",
         "DEBUG_MODE": "readonly",
-        "process": "readonly",
         // YOUTUBE PAGE API
         "ytplayer": "readonly",
     }
