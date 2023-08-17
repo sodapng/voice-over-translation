@@ -44,7 +44,7 @@ async function initDB() {
       }
 
       console.log("[VOT] The database has been updated");
-      objectStore.transaction.oncomplete = (event) => {
+      objectStore.transaction.oncomplete = () => {
         const objectStore = db
           .transaction("settings", "readwrite")
           .objectStore("settings");
@@ -119,7 +119,7 @@ async function initDB() {
 
         console.log("[VOT] Database Created");
 
-        objectStore.transaction.oncomplete = (event) => {
+        objectStore.transaction.oncomplete = () => {
           const objectStore = db
             .transaction("settings", "readwrite")
             .objectStore("settings");
