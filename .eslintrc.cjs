@@ -1,7 +1,8 @@
 module.exports = {
     env: {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "greasemonkey": true,
     },
     extends: "eslint:recommended",
     overrides: [
@@ -31,9 +32,6 @@ module.exports = {
         "dist/*",
     ],
     globals: {
-        // GREASEMONKEY API
-        "GM_info": "readonly",
-        "GM_xmlhttpRequest": "readonly",
         // IMPORTED SCRIPTS
         "protobuf": "readonly",
         // WEBPACK ENVIRONMENT
