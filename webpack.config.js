@@ -5,6 +5,8 @@ import { fileURLToPath } from 'url';
 import webpack from 'webpack';
 
 import { UserscriptPlugin } from 'webpack-userscript';
+import ESLintPlugin from 'eslint-webpack-plugin';
+// const ESLintPlugin = require('eslint-webpack-plugin');
 
 const dev = process.env.NODE_ENV === 'development';
 const __filename = fileURLToPath(import.meta.url);
@@ -82,6 +84,15 @@ export default (env) => {
       client: false
     },
     plugins: [
+      new ESLintPlugin({
+        exclude: [
+          'node_modules',
+          'vot-cli',
+          'web-server',
+          'dist',
+        ],
+        formatter: 'visualstudio' // default - stylish
+      }),
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 1
       }),
