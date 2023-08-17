@@ -13,8 +13,8 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.3.6
-// @author sodapng, mynovelhost, Toil, SashaXser
+// @version 1.4.0
+// @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
 // @match *://*.youtube-nocookie.com/*
@@ -3099,8 +3099,10 @@ const translations = {
     translationTakeMoreThanHour: "A tradução levará mais de uma hora",
     translationTakeAboutMinute: "A tradução levará cerca de um minuto",
     translationTakeFewMinutes: "A tradução levará alguns minutos",
-    translationTakeApproximatelyMinutes: "A tradução levará aproximadamente {0} minutos",
-    translationTakeApproximatelyMinute: "A tradução levará aproximadamente {0} minuto",
+    translationTakeApproximatelyMinutes:
+      "A tradução levará aproximadamente {0} minutos",
+    translationTakeApproximatelyMinute:
+      "A tradução levará aproximadamente {0} minuto",
     unSupportedExtensionError: `Erro! ${GM_info.scriptHandler} não é suportado por esta versão da extensão!\n\nPor favor, use a versão do Cloudflare da extensão VOT.`,
     requestTranslationFailed: "Falha ao solicitar a tradução do vídeo",
     audioNotReceived: "Link de áudio não recebido",
@@ -3280,7 +3282,8 @@ const translations = {
     requestTranslationFailed: "Nepodařilo se požádat o překlad videa",
     audioNotReceived: "Nepřišel odkaz na zvuk",
     grantPermissionToAutoPlay: "Povolte automatické přehrávání",
-    neededAdditionalExtension: "Pro podporu této stránky je potřeba další rozšíření",
+    neededAdditionalExtension:
+      "Pro podporu této stránky je potřeba další rozšíření",
     audioFormatNotSupported: "Formát zvuku není podporován",
     VOTAutoTranslate: "Překládat automaticky při otevření",
     VOTDontTranslateYourLang: "Nepřekládat z vašeho jazyka",
@@ -3296,7 +3299,8 @@ const translations = {
     VOTVideoIsTooLong: "Video je příliš dlouhé",
     VOTNoVideoIDFound: "Nenalezeno ID videa",
     VOTFailedInitDB: "Nepodařilo se inicializovat databázi",
-    VOTDBNeedUpdate: "Databáze potřebuje aktualizaci, prosím, znovu načtěte stránku",
+    VOTDBNeedUpdate:
+      "Databáze potřebuje aktualizaci, prosím, znovu načtěte stránku",
     VOTDisabledForDBUpdating: `VOT je vypnut kvůli chybě při aktualizaci databáze. Zavřete všechny otevřené karty s ${window.location.hostname} a zkuste to znovu`,
     VOTFailedWriteToDB: "Nepodařilo se zapsat data do databáze",
     VOTFailedReadFromDB: "Nepodařilo se načíst data z databáze",
@@ -3432,7 +3436,7 @@ const translations = {
       st: "Sotština",
       jv: "Javánština",
       ja: "Japonština",
-      kri: "Krio"
+      kri: "Krio",
     },
   },
   hi: {
@@ -3819,12 +3823,12 @@ const translations = {
     VOTAudioProxy: "Cấu hình proxy âm thanh đã nhận",
     VOTDisableFromYourLang: "Bạn đã tắt dịch video bằng ngôn ngữ của bạn",
     VOTLiveNotSupported: "Không hỗ trợ dịch trực tiếp",
-    VOTPremiere: "Vui lòng chờ đợi đến khi phát hành kỷ niệm kết thúc trước khi dịch",
+    VOTPremiere:
+      "Vui lòng chờ đợi đến khi phát hành kỷ niệm kết thúc trước khi dịch",
     VOTVideoIsTooLong: "Video quá dài",
     VOTNoVideoIDFound: "Không tìm thấy ID video",
     VOTFailedInitDB: "Không thể khởi tạo cơ sở dữ liệu",
-    VOTDBNeedUpdate:
-      "Cơ sở dữ liệu cần cập nhật, vui lòng tải lại trang",
+    VOTDBNeedUpdate: "Cơ sở dữ liệu cần cập nhật, vui lòng tải lại trang",
     VOTDisabledForDBUpdating: `VOT bị tắt do lỗi khi cập nhật cơ sở dữ liệu. Vui lòng đóng tất cả các tab mở với ${window.location.hostname} và thử lại`,
     VOTFailedWriteToDB: "Không thể ghi dữ liệu vào cơ sở dữ liệu",
     VOTFailedReadFromDB: "Không thể đọc dữ liệu từ cơ sở dữ liệu",
@@ -4149,16 +4153,21 @@ const translations = {
     videoLanguage: "Бейненің тілі",
     translationLanguage: "Аударма тілі",
     translationTake: "Аударма шығару уақыты",
-    translationTakeMoreThanHour: "Аударма бір сағатқа немесе оны шығару үшін да көп уақыт салады",
+    translationTakeMoreThanHour:
+      "Аударма бір сағатқа немесе оны шығару үшін да көп уақыт салады",
     translationTakeAboutMinute: "Аударма бір мүндегі уақытты шығарады",
     translationTakeFewMinutes: "Аударма бірнеше мүндегі уақытты шығарады",
-    translationTakeApproximatelyMinutes: "Аударма қазірғі түрде {0} минутқа жағынан аударылатын болады",
-    translationTakeApproximatelyMinute: "Аударма қазірғі түрде {0} минутқа жағынан аударылатын болады",
+    translationTakeApproximatelyMinutes:
+      "Аударма қазірғі түрде {0} минутқа жағынан аударылатын болады",
+    translationTakeApproximatelyMinute:
+      "Аударма қазірғі түрде {0} минутқа жағынан аударылатын болады",
     unSupportedExtensionError: `Қате! ${GM_info.scriptHandler} бұл кеңейтімділіктің мұндай нұсқасын қолдаушы емес!\n\nCloudflare-версиясын қолданыңыз.`,
-    requestTranslationFailed: "Бейнені аудару талап етуден кейін сәтсіз аяқталды",
+    requestTranslationFailed:
+      "Бейнені аудару талап етуден кейін сәтсіз аяқталды",
     audioNotReceived: "Аудиоға сілтеме алынған жоқ",
     grantPermissionToAutoPlay: "Автоматты түрде ойнатуды рұқсат ету",
-    neededAdditionalExtension: "Бұл сайтты қолдау үшін көбірек өзге толтырушы қосымша қажет",
+    neededAdditionalExtension:
+      "Бұл сайтты қолдау үшін көбірек өзге толтырушы қосымша қажет",
     audioFormatNotSupported: "Аудио пішімі қолдау көрсетмейді",
     VOTAutoTranslate: "Ашылада переводдау",
     VOTDontTranslateYourLang: "Өз тіліңнен таратпау",
@@ -4169,12 +4178,14 @@ const translations = {
     VOTSyncVolume: "Аударма дыбысын бейненің дыбысымен біріктіру",
     VOTAudioProxy: "Қабылдау аудиосын proxy-сервері арқылы алу",
     VOTDisableFromYourLang: "Сіз тіліңізде бейненің аудармасын өшірдіңіз",
-    VOTLiveNotSupported: "Трансляцияның түсу жолында белсендікті аудармауға қолдау көрсетілмейді",
+    VOTLiveNotSupported:
+      "Трансляцияның түсу жолында белсендікті аудармауға қолдау көрсетілмейді",
     VOTPremiere: "Аударманы көруден бұрын премьера аяқталуын күту керек",
     VOTVideoIsTooLong: "Бейне тым ұзын",
     VOTNoVideoIDFound: "Бейненің ID-сі табылмады",
     VOTFailedInitDB: "Деректер базасын іске қосу сәтсіз аяқталды",
-    VOTDBNeedUpdate: "Деректер базасын жаңартуды қажет, таңдауларды қайта іске қосыңыз",
+    VOTDBNeedUpdate:
+      "Деректер базасын жаңартуды қажет, таңдауларды қайта іске қосыңыз",
     VOTDisabledForDBUpdating: `Деректер базасын жаңарту кезінде VOT өшірілді. ${window.location.hostname} сайтындағы барлық терезелерді жабыңыз және қайтадан көріңіз`,
     VOTFailedWriteToDB: "Деректер базасына жазуге сәтсіз аяқталды",
     VOTFailedReadFromDB: "Деректер базасынан деректерді оқуға сәтсіз аяқталды",
@@ -4326,8 +4337,10 @@ const translations = {
     translationTakeMoreThanHour: "এক ঘন্টার বেশি সময় একটি অনুবাদ নেয়",
     translationTakeAboutMinute: "এক মিনিটে অনুবাদ করা হয়",
     translationTakeFewMinutes: "কয়েকটি মিনিট একটি অনুবাদ নেয়",
-    translationTakeApproximatelyMinutes: "একটি অনুবাদ প্রায় {0} মিনিট সময় নেবে",
-    translationTakeApproximatelyMinute: "একটি অনুবাদ প্রায় {0} মিনিট সময় নেবে",
+    translationTakeApproximatelyMinutes:
+      "একটি অনুবাদ প্রায় {0} মিনিট সময় নেবে",
+    translationTakeApproximatelyMinute:
+      "একটি অনুবাদ প্রায় {0} মিনিট সময় নেবে",
     unSupportedExtensionError: `ত্রুটি! ${GM_info.scriptHandler} এই সংস্করণের এক্সটেনশানটি সমর্থিত নয়!\n\nদয়া করে cloudflare ভার্শনে এক্সটেনশানটি ব্যবহার করুন।`,
     requestTranslationFailed: "ভিডিও অনুবাদের অনুরোধ ব্যর্থ হয়েছে",
     audioNotReceived: "অডিও লিঙ্ক পাওয়া যায়নি",
@@ -4499,11 +4512,15 @@ const translations = {
     videoLanguage: "Bahasa video",
     translationLanguage: "Bahasa terjemahan",
     translationTake: "Terjemahan akan mengambil masa",
-    translationTakeMoreThanHour: "Terjemahan akan mengambil masa lebih daripada satu jam",
-    translationTakeAboutMinute: "Terjemahan akan mengambil masa selama sekitar satu minit",
+    translationTakeMoreThanHour:
+      "Terjemahan akan mengambil masa lebih daripada satu jam",
+    translationTakeAboutMinute:
+      "Terjemahan akan mengambil masa selama sekitar satu minit",
     translationTakeFewMinutes: "Terjemahan akan mengambil masa beberapa minit",
-    translationTakeApproximatelyMinutes: "Terjemahan akan mengambil masa selama kira-kira {0} minit",
-    translationTakeApproximatelyMinute: "Terjemahan akan mengambil masa selama kira-kira {0} minit",
+    translationTakeApproximatelyMinutes:
+      "Terjemahan akan mengambil masa selama kira-kira {0} minit",
+    translationTakeApproximatelyMinute:
+      "Terjemahan akan mengambil masa selama kira-kira {0} minit",
     unSupportedExtensionError: `Ralat! ${GM_info.scriptHandler} tidak disokong oleh versi sambungan ini!\n\nSila gunakan versi cloudflare sambungan VOT.`,
     requestTranslationFailed: "Gagal meminta terjemahan video",
     audioNotReceived: "Link audio tidak diterima",
@@ -4519,7 +4536,8 @@ const translations = {
     VOTShowVideoSlider: "Papar slider kelantangan video",
     VOTSyncVolume: "Segerakan kelantangan terjemahan dan video",
     VOTAudioProxy: "Proksi audio yang diterima",
-    VOTDisableFromYourLang: "Anda telah mematikan terjemahan video dalam bahasa anda",
+    VOTDisableFromYourLang:
+      "Anda telah mematikan terjemahan video dalam bahasa anda",
     VOTLiveNotSupported: "Terjemahan siaran langsung tidak disokong",
     VOTPremiere: "Tunggu sehingga premiere tamat sebelum menterjemahkannya",
     VOTVideoIsTooLong: "Video terlalu panjang",
@@ -4678,8 +4696,10 @@ const translations = {
     translationTakeMoreThanHour: "Terjemahan bakal ngamot luwih sepisan jam",
     translationTakeAboutMinute: "Terjemahan bakal ngamot saantara siji menit",
     translationTakeFewMinutes: "Terjemahan bakal ngamot sakjaneke menit kaditu",
-    translationTakeApproximatelyMinutes: "Terjemahan bakal ngamot kira-kira {0} menit",
-    translationTakeApproximatelyMinute: "Terjemahan bakal ngamot kira-kira {0} menit",
+    translationTakeApproximatelyMinutes:
+      "Terjemahan bakal ngamot kira-kira {0} menit",
+    translationTakeApproximatelyMinute:
+      "Terjemahan bakal ngamot kira-kira {0} menit",
     unSupportedExtensionError: `Kesalahan! ${GM_info.scriptHandler} ora ditandhani dening versi ekstensi iki!\n\nMangga gunakake versi cloudflare iki saka ekstensi VOT.`,
     requestTranslationFailed: "Gagal ngirim pangalaman terjemeh video",
     audioNotReceived: "Link audio ora diterima",
@@ -4695,7 +4715,8 @@ const translations = {
     VOTShowVideoSlider: "Tunjukake geseran kelengeran video",
     VOTSyncVolume: "Nyetel kelengeran terjemahan lan video",
     VOTAudioProxy: "Proksi audio sing dikirim",
-    VOTDisableFromYourLang: "Sampeyan nge-disable terjemahan video ing basa sampeyan",
+    VOTDisableFromYourLang:
+      "Sampeyan nge-disable terjemahan video ing basa sampeyan",
     VOTLiveNotSupported: "Terjemahan ing siaran langsung ora disokong",
     VOTPremiere: "Rampungake prapremiere sadurunge terjemahi",
     VOTVideoIsTooLong: "Video kebangeten akeh",
@@ -5203,11 +5224,15 @@ const translations = {
     videoLanguage: "Bahasa video",
     translationLanguage: "Bahasa terjemahan",
     translationTake: "Terjemahan akan memakan waktu",
-    translationTakeMoreThanHour: "Terjemahan akan memakan waktu lebih dari satu jam",
-    translationTakeAboutMinute: "Terjemahan akan memakan waktu sekitar satu menit",
+    translationTakeMoreThanHour:
+      "Terjemahan akan memakan waktu lebih dari satu jam",
+    translationTakeAboutMinute:
+      "Terjemahan akan memakan waktu sekitar satu menit",
     translationTakeFewMinutes: "Terjemahan akan memakan waktu beberapa menit",
-    translationTakeApproximatelyMinutes: "Terjemahan akan memakan waktu sekitar {0} menit",
-    translationTakeApproximatelyMinute: "Terjemahan akan memakan waktu sekitar {0} menit",
+    translationTakeApproximatelyMinutes:
+      "Terjemahan akan memakan waktu sekitar {0} menit",
+    translationTakeApproximatelyMinute:
+      "Terjemahan akan memakan waktu sekitar {0} menit",
     unSupportedExtensionError: `Error! ${GM_info.scriptHandler} tidak didukung oleh versi ekstensi ini! \n\nSilakan gunakan versi ekstensi Cloudflare VOT.`,
     requestTranslationFailed: "Tidak dapat meminta terjemahan video",
     audioNotReceived: "Tidak ada tautan audio yang diterima",
@@ -5223,7 +5248,8 @@ const translations = {
     VOTShowVideoSlider: "Slider volume video",
     VOTSyncVolume: "Menghubungkan volume terjemahan dan video",
     VOTAudioProxy: "Proksi audio yang diterima",
-    VOTDisableFromYourLang: "Anda telah mematikan terjemahan video dalam bahasa Anda",
+    VOTDisableFromYourLang:
+      "Anda telah mematikan terjemahan video dalam bahasa Anda",
     VOTLiveNotSupported: "Terjemahan siaran langsung tidak didukung",
     VOTPremiere: "Tunggu hingga premiere selesai sebelum menerjemahkan",
     VOTVideoIsTooLong: "Video terlalu panjang",
@@ -5562,14 +5588,14 @@ function createMenuSelect(id, selectOptions) {
 }
 
 function genOptionsByOBJ(obj, conditionString) {
-  console.log(obj)
+  console.log(obj);
   const test = obj.map((code) => ({
     label: translations[lang].langs[code],
     value: code,
     selected: conditionString === code,
   }));
-  console.log(test)
-  return test
+  console.log(test);
+  return test;
 }
 
 
@@ -5827,6 +5853,7 @@ const valuesV2 = {
 const valuesV3 = {
   subtitlesMaxLength: 300,
   highlightWords: 0,
+  responseLanguage: lang,
 };
 
 function openDB(name) {
@@ -5994,6 +6021,7 @@ async function updateDB({
   audioProxy,
   subtitlesMaxLength,
   highlightWords,
+  responseLanguage,
 }) {
   return new Promise((resolve, reject) => {
     if (
@@ -6005,7 +6033,8 @@ async function updateDB({
       typeof dontTranslateYourLang === "number" ||
       typeof audioProxy === "number" ||
       typeof subtitlesMaxLength === "number" ||
-      typeof highlightWords === "number"
+      typeof highlightWords === "number" ||
+      typeof responseLanguage === "string"
     ) {
       const openRequest = openDB("VOT");
 
@@ -6084,6 +6113,10 @@ async function updateDB({
 
           if (typeof highlightWords === "number") {
             data.highlightWords = highlightWords;
+          }
+
+          if (typeof responseLanguage === "string") {
+            data.responseLanguage = responseLanguage;
           }
 
           const requestUpdate = objectStore.put(data);
@@ -7013,6 +7046,7 @@ async function src_main() {
     let dbAutoSetVolumeYandexStyle;
     let dontTranslateYourLang;
     let dbSyncVolume;
+    let dbResponseLanguage;
     let dbAudioProxy; // cf version only
     let firstPlay = true;
     let isDBInited;
@@ -7122,6 +7156,14 @@ async function src_main() {
         .querySelector("#VOTTranslateToLang")
         .addEventListener("change", async (event) => {
           debug/* default */.Z.log("[onchange] select to language", event.target.value);
+          if (isDBInited) {
+            translateToLang = event.target.value;
+            await updateDB({ responseLanguage: event.target.value });
+            debug/* default */.Z.log(
+              "Response Language value changed. New value: ",
+              event.target.value
+            );
+          }
           videoData = await getVideoData();
           await setSelectMenuValues(
             videoData.detectedLanguage,
@@ -7226,6 +7268,7 @@ async function src_main() {
         dbShowVideoSlider = dbData.showVideoSlider;
         dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
         dontTranslateYourLang = dbData.dontTranslateYourLang;
+        dbResponseLanguage = dbData.responseLanguage;
         dbAudioProxy = dbData.audioProxy; // cf version only
         dbSyncVolume = dbData.syncVolume; // youtube only
 
@@ -7237,6 +7280,12 @@ async function src_main() {
 
         if (dbHighlightWords !== undefined) {
           setSubtitlesHighlightWords(dbHighlightWords);
+        }
+
+        if (dbResponseLanguage !== undefined) {
+          videoData = await getVideoData();
+          setSelectMenuValues(videoData.detectedLanguage, dbResponseLanguage);
+          translateToLang = dbResponseLanguage;
         }
 
         if (
@@ -7546,7 +7595,7 @@ async function src_main() {
         ytData = await youtubeUtils.getVideoData();
         if (ytData.author !== "") {
           videoData.detectedLanguage = ytData.detectedLanguage;
-          videoData.responseLanguage = lang;
+          videoData.responseLanguage = translateToLang;
         }
       } else if (
         window.location.hostname.includes("rutube") ||
