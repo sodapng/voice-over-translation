@@ -3,7 +3,7 @@ module.exports = {
         "browser": true,
         "es2021": true,
         "greasemonkey": true,
-        "node ": true
+        "node": true
     },
     extends: "eslint:recommended",
     overrides: [
