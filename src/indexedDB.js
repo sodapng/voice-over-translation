@@ -20,6 +20,7 @@ const valuesV2 = {
 const valuesV3 = {
   subtitlesMaxLength: 300,
   highlightWords: 0,
+  responseLanguage: lang
 };
 
 function openDB(name) {
@@ -187,6 +188,7 @@ async function updateDB({
   audioProxy,
   subtitlesMaxLength,
   highlightWords,
+  responseLanguage,
 }) {
   return new Promise((resolve, reject) => {
     if (
@@ -198,7 +200,8 @@ async function updateDB({
       typeof dontTranslateYourLang === "number" ||
       typeof audioProxy === "number" ||
       typeof subtitlesMaxLength === "number" ||
-      typeof highlightWords === "number"
+      typeof highlightWords === "number" ||
+      typeof responseLanguage === "string"
     ) {
       const openRequest = openDB("VOT");
 
@@ -277,6 +280,10 @@ async function updateDB({
 
           if (typeof highlightWords === "number") {
             data.highlightWords = highlightWords;
+          }
+
+          if (typeof responseLanguage === "string") {
+            data.responseLanguage = responseLanguage;
           }
 
           const requestUpdate = objectStore.put(data);

@@ -208,6 +208,7 @@ async function main() {
     let dbAutoSetVolumeYandexStyle;
     let dontTranslateYourLang;
     let dbSyncVolume;
+    let dbResponseLanguage;
     let dbAudioProxy; // cf version only
     let firstPlay = true;
     let isDBInited;
@@ -317,6 +318,14 @@ async function main() {
         .querySelector("#VOTTranslateToLang")
         .addEventListener("change", async (event) => {
           debug.log("[onchange] select to language", event.target.value);
+          if (isDBInited) {
+            translateToLang = event.target.value;
+            await updateDB({ responseLanguage: event.target.value });
+            debug.log(
+              "Response Language value changed. New value: ",
+              event.target.value
+            );
+          }
           videoData = await getVideoData();
           await setSelectMenuValues(
             videoData.detectedLanguage,
@@ -421,6 +430,7 @@ async function main() {
         dbShowVideoSlider = dbData.showVideoSlider;
         dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
         dontTranslateYourLang = dbData.dontTranslateYourLang;
+        dbResponseLanguage = dbData.responseLanguage;
         dbAudioProxy = dbData.audioProxy; // cf version only
         dbSyncVolume = dbData.syncVolume; // youtube only
 
@@ -432,6 +442,12 @@ async function main() {
 
         if (dbHighlightWords !== undefined) {
           setSubtitlesHighlightWords(dbHighlightWords);
+        }
+
+        if (dbResponseLanguage !== undefined) {
+          videoData = await getVideoData();
+          setSelectMenuValues(videoData.detectedLanguage, dbResponseLanguage);
+          translateToLang = dbResponseLanguage;
         }
 
         if (
@@ -760,7 +776,7 @@ async function main() {
         ytData = await youtubeUtils.getVideoData();
         if (ytData.author !== "") {
           videoData.detectedLanguage = ytData.detectedLanguage;
-          videoData.responseLanguage = lang;
+          videoData.responseLanguage = translateToLang;
         }
       } else if (
         window.location.hostname.includes("rutube") ||
