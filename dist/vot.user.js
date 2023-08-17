@@ -5695,7 +5695,7 @@ const getVideoId = (service) => {
       return url.pathname.match(/(?:video|embed)\/([^/]+)/)?.[1];
     case "coub":
       return url.pathname.match(/view\/([^/]+)/)?.[1];
-    case "bilibili.com":
+    case "bilibili.com": {
       const bvid = url.searchParams.get("bvid");
       if (bvid) {
         return bvid;
@@ -5706,6 +5706,7 @@ const getVideoId = (service) => {
         }
         return vid;
       }
+    }
     case "mail.ru":
       if (url.pathname.startsWith("/v/") || url.pathname.startsWith("/mail/")) {
         return url.pathname;
@@ -5719,6 +5720,7 @@ const getVideoId = (service) => {
 
         return referer?.href.split("my.mail.ru")?.[1];
       }
+      return false;
     case "bitchute":
       return url.pathname.match(/video\/([^/]+)/)?.[1];
     default:
@@ -5849,7 +5851,7 @@ async function initDB() {
       }
 
       console.log("[VOT] The database has been updated");
-      objectStore.transaction.oncomplete = (event) => {
+      objectStore.transaction.oncomplete = () => {
         const objectStore = db
           .transaction("settings", "readwrite")
           .objectStore("settings");
@@ -5924,7 +5926,7 @@ async function initDB() {
 
         console.log("[VOT] Database Created");
 
-        objectStore.transaction.oncomplete = (event) => {
+        objectStore.transaction.oncomplete = () => {
           const objectStore = db
             .transaction("settings", "readwrite")
             .objectStore("settings");
