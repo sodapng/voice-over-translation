@@ -2,6 +2,14 @@
 - Добавлена поддержка субтитров (От @MrSoczekXD в [#247](https://github.com/ilyhalight/voice-over-translation/pull/247))
 - Добавлена подсветка слов в субтитрах (От @MrSoczekXD в [#247](https://github.com/ilyhalight/voice-over-translation/pull/247))
 - Добавлена установка максимальной длинны субтитров (От @MrSoczekXD в [#247](https://github.com/ilyhalight/voice-over-translation/pull/247))
+- Фикс громкости на ютубе (От @SashaXser в [#262](https://github.com/ilyhalight/voice-over-translation/pull/262))
+- Были добавлены новые языки для перевода меню:
+  - Бенгальский
+  - Малайский
+  - Яванский
+  - Урду
+  - Персидский
+  - Индонезийский
 - Некоторые улучшения связанные с структурой и запросами (От @MrSoczekXD в [#247](https://github.com/ilyhalight/voice-over-translation/pull/247))
 
 # 1.3.6
