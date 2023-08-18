@@ -1288,7 +1288,7 @@ async function main() {
           await translateExecutor(VIDEO_ID);
         } catch (err) {
           console.error("[VOT]", err);
-          transformBtn("error", String(err).substring(5, err.length));
+          transformBtn("error", err);
         }
       });
 
@@ -1309,7 +1309,7 @@ async function main() {
         firstPlay = false;
       } catch (err) {
         console.error("[VOT]", err);
-        transformBtn("error", String(err).substring(5, err.length));
+        transformBtn("error", err);
         firstPlay = false;
       }
     });
