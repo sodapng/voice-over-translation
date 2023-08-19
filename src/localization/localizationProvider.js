@@ -5,7 +5,7 @@ const localesVersion = 1;
 const localesUrl = "https://raw.githubusercontent.com/MrSoczekXD/voice-over-translation/master/src/localization/locales";
 
 export const localizationProvider = new class {
-  lang = (navigator.language || navigator.userLanguage).substr(0, 2).toLowerCase();
+  lang = (navigator.language || navigator.userLanguage)?.substr(0, 2)?.toLowerCase() ?? "en";
   locale = {};
 
   constructor() {
@@ -32,9 +32,10 @@ export const localizationProvider = new class {
         this.setLocaleFromJsonString(text);
         window.localStorage.setItem("vot-locale-version", localesVersion);
         window.localStorage.setItem("vot-locale-lang", this.lang);
+        location.reload(); // TODO: fix https://github.com/ilyhalight/voice-over-translation/pull/275#issuecomment-1685082420
       })
       .catch((error) => {
-        console.error("[VOT] failed get locale, cause:", error);
+        console.error("[VOT] [localizationProvider] failed get locale, cause:", error);
         this.setLocaleFromJsonString(window.localStorage.getItem("vot-locale"));
       });
   }
@@ -43,7 +44,7 @@ export const localizationProvider = new class {
     try {
       this.locale = JSON.parse(json) ?? {};
     } catch (exception) {
-      console.error("[VOT]", exception);
+      console.error("[VOT] [localizationProvider]", exception);
       this.locale = {};
     }
   }
