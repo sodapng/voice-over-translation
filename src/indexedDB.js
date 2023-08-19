@@ -1,5 +1,5 @@
 import { lang } from "./menu.js";
-import { translations } from "./config/constants.js";
+import { localizationProvider } from "./localization/localizationProvider.js";
 
 // --- IndexedDB functions start:
 const dbVersion = 3; // current db version
@@ -90,7 +90,7 @@ async function initDB() {
 
     openRequest.onerror = () => {
       console.error(
-        `[VOT] ${translations[lang].VOTFailedInitDB}: ${openRequest.error.message}`
+        `[VOT] ${localizationProvider.get("VOTFailedInitDB")}: ${openRequest.error.message}`
       );
       reject(false);
     };
@@ -99,7 +99,7 @@ async function initDB() {
       const db = openRequest.result;
 
       db.onerror = () => {
-        const errorMessage = `[VOT] ${translations[lang].VOTFailedInitDB}`;
+        const errorMessage = `[VOT] ${localizationProvider.get("VOTFailedInitDB")}`;
         console.error(errorMessage, openRequest.error);
         alert(errorMessage);
         reject(false);
@@ -159,7 +159,7 @@ async function initDB() {
       const db = openRequest.result;
       db.onversionchange = () => {
         db.close();
-        const errorMessage = `[VOT] ${translations[lang].VOTDBNeedUpdate}`;
+        const errorMessage = `[VOT] ${localizationProvider.get("VOTDBNeedUpdate")}`;
         console.log(errorMessage);
         alert(errorMessage);
         window.location.reload();
@@ -170,7 +170,7 @@ async function initDB() {
 
     openRequest.onblocked = () => {
       const db = openRequest.result;
-      const errorMessage = `[VOT] ${translations[lang].VOTDisabledForDBUpdating}`;
+      const errorMessage = `[VOT] ${localizationProvider.get("VOTDisabledForDBUpdating").format(window.location.hostname)}`;
       console.error(errorMessage, db);
       alert(errorMessage);
       reject(false);
@@ -206,7 +206,7 @@ async function updateDB({
       const openRequest = openDB("VOT");
 
       openRequest.onerror = () => {
-        const errorMessage = `[VOT] ${translations[lang].VOTFailedWriteToDB}`;
+        const errorMessage = `[VOT] ${localizationProvider.get("VOTFailedWriteToDB")}`;
         console.error(errorMessage, openRequest.error.message);
         alert(errorMessage);
         reject(false);
@@ -304,7 +304,7 @@ async function updateDB({
 
       openRequest.onblocked = () => {
         const db = openRequest.result;
-        const errorMessage = `[VOT] ${translations[lang].VOTDisabledForDBUpdating}`;
+        const errorMessage = `[VOT] ${localizationProvider.get("VOTDisabledForDBUpdating").format(window.location.hostname)}`;
         console.error(errorMessage, db);
         alert(errorMessage);
         reject(false);
@@ -318,7 +318,7 @@ async function readDB() {
     const openRequest = openDB("VOT");
 
     openRequest.onerror = () => {
-      const errorMessage = `[VOT] ${translations[lang].VOTFailedReadFromDB}`;
+      const errorMessage = `[VOT] ${localizationProvider.get("VOTFailedReadFromDB")}`;
       console.error(errorMessage, openRequest.error.message);
       alert(errorMessage);
       reject(false);
@@ -335,7 +335,7 @@ async function readDB() {
       const db = openRequest.result;
       db.onversionchange = () => {
         db.close();
-        const errorMessage = `[VOT] ${translations[lang].VOTDBNeedUpdate}`;
+        const errorMessage = `[VOT] ${localizationProvider.get("VOTDBNeedUpdate")}`;
         console.error(errorMessage);
         alert(errorMessage);
         reject(false);
@@ -347,7 +347,7 @@ async function readDB() {
       request.onerror = (event) => {
         console.error(
           "[VOT]",
-          translations[lang].VOTFailedReadFromDB,
+          localizationProvider.get("VOTFailedReadFromDB"),
           event.error
         );
         console.error("[VOT]", event);
@@ -367,7 +367,7 @@ async function readDB() {
 
     openRequest.onblocked = () => {
       const db = openRequest.result;
-      const errorMessage = `[VOT] ${translations[lang].VOTDisabledForDBUpdating}`;
+      const errorMessage = `[VOT] ${localizationProvider.get("VOTDisabledForDBUpdating").format(window.location.hostname)}`;
       console.error(errorMessage, db);
       alert(errorMessage);
       reject(false);

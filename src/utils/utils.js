@@ -1,5 +1,4 @@
-import { translations } from "../config/constants.js";
-import { lang } from "../menu.js";
+import { localizationProvider } from "../localization/localizationProvider.js";
 
 if (!String.prototype.format) {
   // https://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format
@@ -155,15 +154,15 @@ function secsToStrTime(secs) {
   const minutes = Math.floor(secs / 60);
   const seconds = Math.floor(secs % 60);
   if (minutes >= 60) {
-    return translations[lang].translationTakeMoreThanHour;
+    return localizationProvider.get("translationTakeMoreThanHour");
   } else if (minutes >= 10 && minutes % 10) {
-    return translations[lang].translationTakeApproximatelyMinutes.format(
+    return localizationProvider.get("translationTakeApproximatelyMinutes").format(
       minutes
     );
   } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
-    return translations[lang].translationTakeAboutMinute;
+    return localizationProvider.get("translationTakeAboutMinute");
   } else {
-    return translations[lang].translationTakeApproximatelyMinute.format(
+    return localizationProvider.get("translationTakeApproximatelyMinute").format(
       minutes
     );
   }
