@@ -32,7 +32,6 @@ export const localizationProvider = new class {
         this.setLocaleFromJsonString(text);
         window.localStorage.setItem("vot-locale-version", localesVersion);
         window.localStorage.setItem("vot-locale-lang", this.lang);
-        location.reload(); // TODO: fix https://github.com/ilyhalight/voice-over-translation/pull/275#issuecomment-1685082420
       })
       .catch((error) => {
         console.error("[VOT] [localizationProvider] failed get locale, cause:", error);

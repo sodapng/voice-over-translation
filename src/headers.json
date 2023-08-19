@@ -72,5 +72,6 @@
     "https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/light/protobuf.min.js"
   ],
   "grant": ["GM_xmlhttpRequest", "GM_info"],
-  "connect": ["api.browser.yandex.ru"]
+  "connect": ["api.browser.yandex.ru"],
+  "run-at": "document-start"
 }

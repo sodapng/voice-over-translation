@@ -52,8 +52,6 @@ async function main() {
   debug.log("Loading extension...");
   debug.log(`Selected menu language: ${lang}`);
 
-  await localizationProvider.update();
-
   if (
     BUILD_MODE !== "cloudflare" &&
     GM_info?.scriptHandler &&
@@ -1678,6 +1676,10 @@ async function main() {
   await initWebsite();
 }
 
-main().catch((e) => {
-  console.error("[VOT]", e);
+localizationProvider.update();
+
+window.addEventListener("DOMContentLoaded", () => {
+  main().catch((e) => {
+    console.error("[VOT]", e);
+  });
 });
