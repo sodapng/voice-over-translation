@@ -50,10 +50,11 @@ export const localizationProvider = new class {
 
   getFromLocale(locale, key) {
     const result = key.split(".").reduce((locale, key) => {
-      locale = locale[key];
-      return locale;
+      if (typeof locale === "object" && locale)
+        return locale[key];
+      return undefined;
     }, locale);
-    if (!result) {
+    if (result === undefined) {
       console.warn("[VOT] [localizationProvider] locale", locale, "doesn't contain key", key);
     }
     return result;
