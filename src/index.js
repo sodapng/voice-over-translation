@@ -61,9 +61,8 @@ async function main() {
       GM_info.scriptHandler
     )
   ) {
-    const errorText = `[VOT] ${localizationProvider.get("unSupportedExtensionError").format(GM_info.scriptHandler)}`;
-    console.error(errorText);
-    return alert(errorText);
+    console.error(`[VOT] ${localizationProvider.getDefault("unSupportedExtensionError").format(GM_info.scriptHandler)}`);
+    return alert(`[VOT] ${localizationProvider.get("unSupportedExtensionError").format(GM_info.scriptHandler)}`);
   }
 
   debug.log("Extension compatibility passed...");
@@ -816,17 +815,21 @@ async function main() {
           audioPromise.catch((e) => {
             console.error("[VOT]", e);
             if (e.name === "NotAllowedError") {
-              const errorMessage = localizationProvider.get("grantPermissionToAutoPlay");
-              transformBtn("error", errorMessage);
-              throw errorMessage;
+              transformBtn("error", localizationProvider.get("grantPermissionToAutoPlay"));
+              throw localizationProvider.getDefault("grantPermissionToAutoPlay");
             } else if (e.name === "NotSupportedError") {
-              const errorMessage = sitesChromiumBlocked.includes(
+              transformBtn("error", 
+                sitesChromiumBlocked.includes(
+                  window.location.hostname
+                )
+                  ? localizationProvider.get("neededAdditionalExtension")
+                  : localizationProvider.get("audioFormatNotSupported")
+              );
+              throw sitesChromiumBlocked.includes(
                 window.location.hostname
               )
-                ? localizationProvider.get("neededAdditionalExtension")
-                : localizationProvider.get("audioFormatNotSupported");
-              transformBtn("error", errorMessage);
-              throw errorMessage;
+                ? localizationProvider.getDefault("neededAdditionalExtension")
+                : localizationProvider.getDefault("audioFormatNotSupported");
             }
           });
         }
@@ -1002,16 +1005,16 @@ async function main() {
           videoData.detectedLanguage === lang &&
           videoData.responseLanguage === lang
         ) {
-          throw localizationProvider.get("VOTDisableFromYourLang");
+          throw localizationProvider.getDefault("VOTDisableFromYourLang");
         }
         if (ytData.isPremiere) {
-          throw localizationProvider.get("VOTPremiere");
+          throw localizationProvider.getDefault("VOTPremiere");
         }
         if (ytData.isLive) {
-          throw localizationProvider.get("VOTLiveNotSupported");
+          throw localizationProvider.getDefault("VOTLiveNotSupported");
         }
         if (videoData.duration > 14_400) {
-          throw localizationProvider.get("VOTVideoIsTooLong");
+          throw localizationProvider.getDefault("VOTVideoIsTooLong");
         }
       }
       return true;
@@ -1284,7 +1287,7 @@ async function main() {
           const VIDEO_ID = getVideoId(siteHostname);
 
           if (!VIDEO_ID) {
-            throw localizationProvider.get("VOTNoVideoIDFound");
+            throw localizationProvider.getDefault("VOTNoVideoIDFound");
           }
 
           await translateExecutor(VIDEO_ID);
@@ -1303,7 +1306,7 @@ async function main() {
       const VIDEO_ID = getVideoId(siteHostname);
 
       if (!VIDEO_ID) {
-        throw localizationProvider.get("VOTNoVideoIDFound");
+        throw localizationProvider.getDefault("VOTNoVideoIDFound");
       }
 
       try {
@@ -1332,7 +1335,7 @@ async function main() {
         const VIDEO_ID = getVideoId(siteHostname);
 
         if (!VIDEO_ID) {
-          console.error(`[VOT] ${localizationProvider.get("VOTNoVideoIDFound")}`);
+          console.error(`[VOT] ${localizationProvider.getDefault("VOTNoVideoIDFound")}`);
           subtitlesList = [];
           subtitlesListVideoId = null;
           await updateSubtitlesLangSelect();
