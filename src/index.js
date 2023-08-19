@@ -1,4 +1,5 @@
 import "./styles/main.css";
+import { VOTLocalizedError } from "./utils/VOTLocalizedError.js";
 import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
 import { waitForElm, getVideoId, sleep, secsToStrTime } from "./utils/utils.js";
@@ -814,7 +815,7 @@ async function main() {
             console.error("[VOT]", e);
             if (e.name === "NotAllowedError") {
               transformBtn("error", localizationProvider.get("grantPermissionToAutoPlay"));
-              throw localizationProvider.getDefault("grantPermissionToAutoPlay");
+              throw new VOTLocalizedError("grantPermissionToAutoPlay");
             } else if (e.name === "NotSupportedError") {
               transformBtn("error", 
                 sitesChromiumBlocked.includes(
@@ -826,8 +827,8 @@ async function main() {
               throw sitesChromiumBlocked.includes(
                 window.location.hostname
               )
-                ? localizationProvider.getDefault("neededAdditionalExtension")
-                : localizationProvider.getDefault("audioFormatNotSupported");
+                ? new VOTLocalizedError("neededAdditionalExtension")
+                : new VOTLocalizedError("audioFormatNotSupported");
             }
           });
         }
@@ -1003,16 +1004,16 @@ async function main() {
           videoData.detectedLanguage === lang &&
           videoData.responseLanguage === lang
         ) {
-          throw localizationProvider.getDefault("VOTDisableFromYourLang");
+          throw new VOTLocalizedError("VOTDisableFromYourLang");
         }
         if (ytData.isPremiere) {
-          throw localizationProvider.getDefault("VOTPremiere");
+          throw new VOTLocalizedError("VOTPremiere");
         }
         if (ytData.isLive) {
-          throw localizationProvider.getDefault("VOTLiveNotSupported");
+          throw new VOTLocalizedError("VOTLiveNotSupported");
         }
         if (videoData.duration > 14_400) {
-          throw localizationProvider.getDefault("VOTVideoIsTooLong");
+          throw new VOTLocalizedError("VOTVideoIsTooLong");
         }
       }
       return true;
@@ -1061,7 +1062,11 @@ async function main() {
           debug.log("[exec callback] translateVideo");
           if (getVideoId(siteHostname) !== VIDEO_ID) return;
           if (!success) {
-            transformBtn("error", urlOrError);
+            if (urlOrError?.name === "VOTLocalizedError") {
+              transformBtn("error", urlOrError.localizedMessage);
+            } else {
+              transformBtn("error", urlOrError);
+            }
             // if the error line contains information that the translation is being performed, then we wait
             if (urlOrError.includes(localizationProvider.get("translationTake"))) {
               clearTimeout(autoRetry);
@@ -1285,13 +1290,17 @@ async function main() {
           const VIDEO_ID = getVideoId(siteHostname);
 
           if (!VIDEO_ID) {
-            throw localizationProvider.getDefault("VOTNoVideoIDFound");
+            throw new VOTLocalizedError("VOTNoVideoIDFound");
           }
 
           await translateExecutor(VIDEO_ID);
         } catch (err) {
           console.error("[VOT]", err);
-          transformBtn("error", err);
+          if (err?.name === "VOTLocalizedError") {
+            transformBtn("error", err.localizedMessage);
+          } else {
+            transformBtn("error", err);
+          }
         }
       });
 
@@ -1304,7 +1313,7 @@ async function main() {
       const VIDEO_ID = getVideoId(siteHostname);
 
       if (!VIDEO_ID) {
-        throw localizationProvider.getDefault("VOTNoVideoIDFound");
+        throw new VOTLocalizedError("VOTNoVideoIDFound");
       }
 
       try {
@@ -1312,7 +1321,11 @@ async function main() {
         firstPlay = false;
       } catch (err) {
         console.error("[VOT]", err);
-        transformBtn("error", err);
+        if (err?.name === "VOTLocalizedError") {
+          transformBtn("error", err.localizedMessage);
+        } else {
+          transformBtn("error", err);
+        }
         firstPlay = false;
       }
     });
