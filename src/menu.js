@@ -2,7 +2,7 @@ import { localizationProvider } from "./localization/localizationProvider.js";
 import debug from "./utils/debug.js";
 
 const userlang = navigator.language || navigator.userLanguage;
-let lang = userlang.substr(0, 2).toLowerCase();
+let lang = userlang?.substr(0, 2)?.toLowerCase() ?? "en";
 
 function changeBtnColor(n) {
   document.querySelector(".translationBtn").style.color = n;
