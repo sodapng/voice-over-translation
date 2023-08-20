@@ -90,7 +90,9 @@ async function initDB() {
 
     openRequest.onerror = () => {
       console.error(
-        `[VOT] ${localizationProvider.getDefault("VOTFailedInitDB")}: ${openRequest.error.message}`
+        `[VOT] ${localizationProvider.getDefault("VOTFailedInitDB")}: ${
+          openRequest.error.message
+        }`
       );
       reject(false);
     };
@@ -99,7 +101,10 @@ async function initDB() {
       const db = openRequest.result;
 
       db.onerror = () => {
-        console.error(`[VOT] ${localizationProvider.getDefault("VOTFailedInitDB")}`, openRequest.error);
+        console.error(
+          `[VOT] ${localizationProvider.getDefault("VOTFailedInitDB")}`,
+          openRequest.error
+        );
         alert(`[VOT] ${localizationProvider.get("VOTFailedInitDB")}`);
         reject(false);
       };
@@ -158,7 +163,9 @@ async function initDB() {
       const db = openRequest.result;
       db.onversionchange = () => {
         db.close();
-        console.log(`[VOT] ${localizationProvider.getDefault("VOTDBNeedUpdate")}`);
+        console.log(
+          `[VOT] ${localizationProvider.getDefault("VOTDBNeedUpdate")}`
+        );
         alert(`[VOT] ${localizationProvider.get("VOTDBNeedUpdate")}`);
         window.location.reload();
         reject(false);
@@ -168,8 +175,17 @@ async function initDB() {
 
     openRequest.onblocked = () => {
       const db = openRequest.result;
-      console.error(`[VOT] ${localizationProvider.getDefault("VOTDisabledForDBUpdating").format(window.location.hostname)}`, db);
-      alert(`[VOT] ${localizationProvider.get("VOTDisabledForDBUpdating").format(window.location.hostname)}`);
+      console.error(
+        `[VOT] ${localizationProvider
+          .getDefault("VOTDisabledForDBUpdating")
+          .format(window.location.hostname)}`,
+        db
+      );
+      alert(
+        `[VOT] ${localizationProvider
+          .get("VOTDisabledForDBUpdating")
+          .format(window.location.hostname)}`
+      );
       reject(false);
     };
   });
@@ -203,7 +219,10 @@ async function updateDB({
       const openRequest = openDB("VOT");
 
       openRequest.onerror = () => {
-        console.error(`[VOT] ${localizationProvider.getDefault("VOTFailedWriteToDB")}`, openRequest.error.message);
+        console.error(
+          `[VOT] ${localizationProvider.getDefault("VOTFailedWriteToDB")}`,
+          openRequest.error.message
+        );
         alert(`[VOT] ${localizationProvider.get("VOTFailedWriteToDB")}`);
         reject(false);
       };
@@ -285,10 +304,7 @@ async function updateDB({
           const requestUpdate = objectStore.put(data);
 
           requestUpdate.onerror = (event) => {
-            console.error(
-              "[VOT] failed update db data: ",
-              event.error
-            );
+            console.error("[VOT] failed update db data: ", event.error);
             reject(false);
           };
 
@@ -300,8 +316,17 @@ async function updateDB({
 
       openRequest.onblocked = () => {
         const db = openRequest.result;
-        console.error(`[VOT] ${localizationProvider.getDefault("VOTDisabledForDBUpdating").format(window.location.hostname)}`, db);
-        alert(`[VOT] ${localizationProvider.get("VOTDisabledForDBUpdating").format(window.location.hostname)}`);
+        console.error(
+          `[VOT] ${localizationProvider
+            .getDefault("VOTDisabledForDBUpdating")
+            .format(window.location.hostname)}`,
+          db
+        );
+        alert(
+          `[VOT] ${localizationProvider
+            .get("VOTDisabledForDBUpdating")
+            .format(window.location.hostname)}`
+        );
         reject(false);
       };
     }
@@ -313,7 +338,10 @@ async function readDB() {
     const openRequest = openDB("VOT");
 
     openRequest.onerror = () => {
-      console.error(`[VOT] ${localizationProvider.getDefault("VOTFailedReadFromDB")}`, openRequest.error.message);
+      console.error(
+        `[VOT] ${localizationProvider.getDefault("VOTFailedReadFromDB")}`,
+        openRequest.error.message
+      );
       alert(`[VOT] ${localizationProvider.get("VOTFailedReadFromDB")}`);
       reject(false);
     };
@@ -329,7 +357,9 @@ async function readDB() {
       const db = openRequest.result;
       db.onversionchange = () => {
         db.close();
-        console.error(`[VOT] ${localizationProvider.getDefault("VOTDBNeedUpdate")}`);
+        console.error(
+          `[VOT] ${localizationProvider.getDefault("VOTDBNeedUpdate")}`
+        );
         alert(`[VOT] ${localizationProvider.get("VOTDBNeedUpdate")}`);
         reject(false);
       };
@@ -360,8 +390,17 @@ async function readDB() {
 
     openRequest.onblocked = () => {
       const db = openRequest.result;
-      console.error(`[VOT] ${localizationProvider.getDefault("VOTDisabledForDBUpdating").format(window.location.hostname)}`, db);
-      alert(`[VOT] ${localizationProvider.get("VOTDisabledForDBUpdating").format(window.location.hostname)}`);
+      console.error(
+        `[VOT] ${localizationProvider
+          .getDefault("VOTDisabledForDBUpdating")
+          .format(window.location.hostname)}`,
+        db
+      );
+      alert(
+        `[VOT] ${localizationProvider
+          .get("VOTDisabledForDBUpdating")
+          .format(window.location.hostname)}`
+      );
       reject(false);
     };
   });

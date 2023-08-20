@@ -2,10 +2,14 @@ import defaultLocale from "./locales/en.json";
 import debug from "../utils/debug.js";
 
 const localesVersion = 1;
-const localesUrl = "https://raw.githubusercontent.com/MrSoczekXD/voice-over-translation/master/src/localization/locales";
+const localesUrl =
+  "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/src/localization/locales";
 
-export const localizationProvider = new class {
-  lang = (navigator.language || navigator.userLanguage)?.substr(0, 2)?.toLowerCase() ?? "en";
+export const localizationProvider = new (class {
+  lang =
+    (navigator.language || navigator.userLanguage)
+      ?.substr(0, 2)
+      ?.toLowerCase() ?? "en";
   locale = {};
 
   constructor() {
@@ -13,9 +17,11 @@ export const localizationProvider = new class {
   }
 
   async update(force = false) {
-    if (!force
-      && Number(window.localStorage.getItem("vot-locale-version")) === localesVersion
-      && window.localStorage.getItem("vot-locale-lang") === this.lang
+    if (
+      !force &&
+      Number(window.localStorage.getItem("vot-locale-version")) ===
+        localesVersion &&
+      window.localStorage.getItem("vot-locale-lang") === this.lang
     ) {
       return;
     }
@@ -34,7 +40,10 @@ export const localizationProvider = new class {
         window.localStorage.setItem("vot-locale-lang", this.lang);
       })
       .catch((error) => {
-        console.error("[VOT] [localizationProvider] failed get locale, cause:", error);
+        console.error(
+          "[VOT] [localizationProvider] failed get locale, cause:",
+          error
+        );
         this.setLocaleFromJsonString(window.localStorage.getItem("vot-locale"));
       });
   }
@@ -50,12 +59,16 @@ export const localizationProvider = new class {
 
   getFromLocale(locale, key) {
     const result = key.split(".").reduce((locale, key) => {
-      if (typeof locale === "object" && locale)
-        return locale[key];
+      if (typeof locale === "object" && locale) return locale[key];
       return undefined;
     }, locale);
     if (result === undefined) {
-      console.warn("[VOT] [localizationProvider] locale", locale, "doesn't contain key", key);
+      console.warn(
+        "[VOT] [localizationProvider] locale",
+        locale,
+        "doesn't contain key",
+        key
+      );
     }
     return result;
   }
@@ -65,6 +78,10 @@ export const localizationProvider = new class {
   }
 
   get(key) {
-    return this.getFromLocale(this.locale, key) ?? this.getFromLocale(defaultLocale, key) ?? key;
+    return (
+      this.getFromLocale(this.locale, key) ??
+      this.getFromLocale(defaultLocale, key) ??
+      key
+    );
   }
-}
+})();

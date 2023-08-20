@@ -60,8 +60,16 @@ async function main() {
       GM_info.scriptHandler
     )
   ) {
-    console.error(`[VOT] ${localizationProvider.getDefault("unSupportedExtensionError").format(GM_info.scriptHandler)}`);
-    return alert(`[VOT] ${localizationProvider.get("unSupportedExtensionError").format(GM_info.scriptHandler)}`);
+    console.error(
+      `[VOT] ${localizationProvider
+        .getDefault("unSupportedExtensionError")
+        .format(GM_info.scriptHandler)}`
+    );
+    return alert(
+      `[VOT] ${localizationProvider
+        .get("unSupportedExtensionError")
+        .format(GM_info.scriptHandler)}`
+    );
   }
 
   debug.log("Extension compatibility passed...");
@@ -166,7 +174,8 @@ async function main() {
           case 1:
             callback(
               !!translateResponse.url,
-              translateResponse.url || localizationProvider.get("audioNotReceived")
+              translateResponse.url ||
+                localizationProvider.get("audioNotReceived")
             );
             break;
           case 2:
@@ -370,7 +379,9 @@ async function main() {
 
       const disabledOption = document.createElement("option");
       disabledOption.value = "disabled";
-      disabledOption.innerHTML = localizationProvider.get("VOTSubtitlesDisabled");
+      disabledOption.innerHTML = localizationProvider.get(
+        "VOTSubtitlesDisabled"
+      );
       select.append(disabledOption);
 
       for (let i = 0; i < subtitlesList.length; i++) {
@@ -378,10 +389,11 @@ async function main() {
         const option = document.createElement("option");
         option.value = i;
         option.innerHTML =
-          (localizationProvider.get("langs")[s.language] ?? s.language.toUpperCase()) +
+          (localizationProvider.get("langs")[s.language] ??
+            s.language.toUpperCase()) +
           (s.translatedFromLanguage
             ? ` ${localizationProvider.get("VOTTranslatedFrom")} ${
-              localizationProvider.get("langs")[s.translatedFromLanguage] ??
+                localizationProvider.get("langs")[s.translatedFromLanguage] ??
                 s.translatedFromLanguage.toUpperCase()
               }`
             : "") +
@@ -458,7 +470,9 @@ async function main() {
           const slider = createMenuSlider(
             "VOTSubtitlesMaxLengthSlider",
             dbSubtitlesMaxLength,
-            `${localizationProvider.get("VOTSubtitlesMaxLength")}: <b id="VOTSubtitlesMaxLengthValue">${dbSubtitlesMaxLength}</b>`,
+            `${localizationProvider.get(
+              "VOTSubtitlesMaxLength"
+            )}: <b id="VOTSubtitlesMaxLengthValue">${dbSubtitlesMaxLength}</b>`,
             50,
             300
           );
@@ -517,7 +531,9 @@ async function main() {
             localizationProvider.get("VOTAutoTranslate") +
               (siteHostname === "vk" ||
               window.location.hostname.includes("m.twitch.tv")
-                ? ` <strong>(${localizationProvider.get("recommended")})</strong>`
+                ? ` <strong>(${localizationProvider.get(
+                    "recommended"
+                  )})</strong>`
                 : "")
           );
 
@@ -573,7 +589,8 @@ async function main() {
           const checkbox = createMenuCheckbox(
             "VOTAutoSetVolume",
             dbAutoSetVolumeYandexStyle,
-            localizationProvider.get("VOTAutoSetVolume") + `${autoVolume * 100}%`
+            localizationProvider.get("VOTAutoSetVolume") +
+              `${autoVolume * 100}%`
           );
 
           checkbox.querySelector("#VOTAutoSetVolume").onclick = async (
@@ -814,19 +831,19 @@ async function main() {
           audioPromise.catch((e) => {
             console.error("[VOT]", e);
             if (e.name === "NotAllowedError") {
-              transformBtn("error", localizationProvider.get("grantPermissionToAutoPlay"));
+              transformBtn(
+                "error",
+                localizationProvider.get("grantPermissionToAutoPlay")
+              );
               throw new VOTLocalizedError("grantPermissionToAutoPlay");
             } else if (e.name === "NotSupportedError") {
-              transformBtn("error", 
-                sitesChromiumBlocked.includes(
-                  window.location.hostname
-                )
+              transformBtn(
+                "error",
+                sitesChromiumBlocked.includes(window.location.hostname)
                   ? localizationProvider.get("neededAdditionalExtension")
                   : localizationProvider.get("audioFormatNotSupported")
               );
-              throw sitesChromiumBlocked.includes(
-                window.location.hostname
-              )
+              throw sitesChromiumBlocked.includes(window.location.hostname)
                 ? new VOTLocalizedError("neededAdditionalExtension")
                 : new VOTLocalizedError("audioFormatNotSupported");
             }
@@ -873,7 +890,9 @@ async function main() {
       const slider = createMenuSlider(
         "VOTVideoSlider",
         newVolume,
-        `${localizationProvider.get("VOTVolume")}: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
+        `${localizationProvider.get(
+          "VOTVolume"
+        )}: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
       );
 
       slider.querySelector("#VOTVideoSlider").oninput = async (event) => {
@@ -937,7 +956,9 @@ async function main() {
       const slider = createMenuSlider(
         "VOTTranslationSlider",
         defaultTranslateVolume,
-        `${localizationProvider.get("VOTVolumeTranslation")}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
+        `${localizationProvider.get(
+          "VOTVolumeTranslation"
+        )}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
       );
 
       // Add an input event listener to the slider
@@ -1068,7 +1089,9 @@ async function main() {
               transformBtn("error", urlOrError);
             }
             // if the error line contains information that the translation is being performed, then we wait
-            if (urlOrError.includes(localizationProvider.get("translationTake"))) {
+            if (
+              urlOrError.includes(localizationProvider.get("translationTake"))
+            ) {
               clearTimeout(autoRetry);
               autoRetry = setTimeout(
                 () => translateFunc(VIDEO_ID, requestLang, responseLang),
@@ -1346,7 +1369,9 @@ async function main() {
         const VIDEO_ID = getVideoId(siteHostname);
 
         if (!VIDEO_ID) {
-          console.error(`[VOT] ${localizationProvider.getDefault("VOTNoVideoIDFound")}`);
+          console.error(
+            `[VOT] ${localizationProvider.getDefault("VOTNoVideoIDFound")}`
+          );
           subtitlesList = [];
           subtitlesListVideoId = null;
           await updateSubtitlesLangSelect();

@@ -156,15 +156,15 @@ function secsToStrTime(secs) {
   if (minutes >= 60) {
     return localizationProvider.get("translationTakeMoreThanHour");
   } else if (minutes >= 10 && minutes % 10) {
-    return localizationProvider.get("translationTakeApproximatelyMinutes").format(
-      minutes
-    );
+    return localizationProvider
+      .get("translationTakeApproximatelyMinutes")
+      .format(minutes);
   } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
     return localizationProvider.get("translationTakeAboutMinute");
   } else {
-    return localizationProvider.get("translationTakeApproximatelyMinute").format(
-      minutes
-    );
+    return localizationProvider
+      .get("translationTakeApproximatelyMinute")
+      .format(minutes);
   }
 }
 

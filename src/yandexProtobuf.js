@@ -17,10 +17,11 @@ const VideoSubtitlesRequest = new protobuf.Type("VideoSubtitlesRequest")
 const VideoStreamRequest = new protobuf.Type("VideoStreamRequest")
   .add(new protobuf.Field("url", 1, "string"))
   .add(new protobuf.Field("language", 2, "string"))
-  .add(new protobuf.Field("responseLanguage", 3, "string"))
+  .add(new protobuf.Field("responseLanguage", 3, "string"));
 
-const VideoStreamPingRequest = new protobuf.Type("VideoStreamPingRequest")
-  .add(new protobuf.Field("pingId", 1, "int32"))
+const VideoStreamPingRequest = new protobuf.Type("VideoStreamPingRequest").add(
+  new protobuf.Field("pingId", 1, "int32")
+);
 
 const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
   .add(new protobuf.Field("url", 1, "string"))
@@ -47,12 +48,12 @@ const VideoSubtitlesResponse = new protobuf.Type("VideoSubtitlesResponse")
 
 const VideoStreamObject = new protobuf.Type("VideoStreamObject")
   .add(new protobuf.Field("url", 1, "string"))
-  .add(new protobuf.Field("timestamp", 2, "int32")) // timestamp in ms (probably means the time of 1 request to translate the stream)
+  .add(new protobuf.Field("timestamp", 2, "int32")); // timestamp in ms (probably means the time of 1 request to translate the stream)
 
 const VideoStreamResponse = new protobuf.Type("VideoStreamResponse")
   .add(new protobuf.Field("interval", 1, "int32")) // 20s - streaming, 10s - translating
   .add(new protobuf.Field("translatedInfo", 2, "VideoStreamObject"))
-  .add(new protobuf.Field("pingId", 3, "int32"))
+  .add(new protobuf.Field("pingId", 3, "int32"));
 
 // * Yandex has been skipping any translation streams for a long time (whitelist always return true)
 // * Most likely, it is already outdated and will not be used

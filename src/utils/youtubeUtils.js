@@ -97,10 +97,7 @@ async function getVideoData() {
   const player = getPlayer();
   const response = getPlayerResponse(); // null in /embed
   const data = getPlayerData();
-  const {
-    author,
-    title
-  } = data ?? {};
+  const { author, title } = data ?? {};
   const {
     shortDescription: description,
     isLive,
