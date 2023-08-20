@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.4.0.3
+// @version 1.4.1-beta
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -996,10 +996,14 @@ var debug = __webpack_require__("./src/utils/debug.js");
 
 
 const localesVersion = 1;
-const localesUrl = "https://raw.githubusercontent.com/MrSoczekXD/voice-over-translation/master/src/localization/locales";
+const localesUrl =
+  "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/src/localization/locales";
 
-const localizationProvider = new class {
-  lang = (navigator.language || navigator.userLanguage)?.substr(0, 2)?.toLowerCase() ?? "en";
+const localizationProvider = new (class {
+  lang =
+    (navigator.language || navigator.userLanguage)
+      ?.substr(0, 2)
+      ?.toLowerCase() ?? "en";
   locale = {};
 
   constructor() {
@@ -1007,9 +1011,11 @@ const localizationProvider = new class {
   }
 
   async update(force = false) {
-    if (!force
-      && Number(window.localStorage.getItem("vot-locale-version")) === localesVersion
-      && window.localStorage.getItem("vot-locale-lang") === this.lang
+    if (
+      !force &&
+      Number(window.localStorage.getItem("vot-locale-version")) ===
+        localesVersion &&
+      window.localStorage.getItem("vot-locale-lang") === this.lang
     ) {
       return;
     }
@@ -1028,7 +1034,10 @@ const localizationProvider = new class {
         window.localStorage.setItem("vot-locale-lang", this.lang);
       })
       .catch((error) => {
-        console.error("[VOT] [localizationProvider] failed get locale, cause:", error);
+        console.error(
+          "[VOT] [localizationProvider] failed get locale, cause:",
+          error
+        );
         this.setLocaleFromJsonString(window.localStorage.getItem("vot-locale"));
       });
   }
@@ -1044,12 +1053,16 @@ const localizationProvider = new class {
 
   getFromLocale(locale, key) {
     const result = key.split(".").reduce((locale, key) => {
-      if (typeof locale === "object" && locale)
-        return locale[key];
+      if (typeof locale === "object" && locale) return locale[key];
       return undefined;
     }, locale);
     if (result === undefined) {
-      console.warn("[VOT] [localizationProvider] locale", locale, "doesn't contain key", key);
+      console.warn(
+        "[VOT] [localizationProvider] locale",
+        locale,
+        "doesn't contain key",
+        key
+      );
     }
     return result;
   }
@@ -1059,9 +1072,13 @@ const localizationProvider = new class {
   }
 
   get(key) {
-    return this.getFromLocale(this.locale, key) ?? this.getFromLocale(en_namespaceObject, key) ?? key;
+    return (
+      this.getFromLocale(this.locale, key) ??
+      this.getFromLocale(en_namespaceObject, key) ??
+      key
+    );
   }
-}
+})();
 
 ;// CONCATENATED MODULE: ./src/utils/VOTLocalizedError.js
 
@@ -1175,10 +1192,7 @@ async function getVideoData() {
   const player = getPlayer();
   const response = getPlayerResponse(); // null in /embed
   const data = getPlayerData();
-  const {
-    author,
-    title
-  } = data ?? {};
+  const { author, title } = data ?? {};
   const {
     shortDescription: description,
     isLive,
@@ -1234,10 +1248,11 @@ const VideoSubtitlesRequest = new protobuf.Type("VideoSubtitlesRequest")
 const VideoStreamRequest = new protobuf.Type("VideoStreamRequest")
   .add(new protobuf.Field("url", 1, "string"))
   .add(new protobuf.Field("language", 2, "string"))
-  .add(new protobuf.Field("responseLanguage", 3, "string"))
+  .add(new protobuf.Field("responseLanguage", 3, "string"));
 
-const VideoStreamPingRequest = new protobuf.Type("VideoStreamPingRequest")
-  .add(new protobuf.Field("pingId", 1, "int32"))
+const VideoStreamPingRequest = new protobuf.Type("VideoStreamPingRequest").add(
+  new protobuf.Field("pingId", 1, "int32")
+);
 
 const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
   .add(new protobuf.Field("url", 1, "string"))
@@ -1264,12 +1279,12 @@ const VideoSubtitlesResponse = new protobuf.Type("VideoSubtitlesResponse")
 
 const VideoStreamObject = new protobuf.Type("VideoStreamObject")
   .add(new protobuf.Field("url", 1, "string"))
-  .add(new protobuf.Field("timestamp", 2, "int32")) // timestamp in ms (probably means the time of 1 request to translate the stream)
+  .add(new protobuf.Field("timestamp", 2, "int32")); // timestamp in ms (probably means the time of 1 request to translate the stream)
 
 const VideoStreamResponse = new protobuf.Type("VideoStreamResponse")
   .add(new protobuf.Field("interval", 1, "int32")) // 20s - streaming, 10s - translating
   .add(new protobuf.Field("translatedInfo", 2, "VideoStreamObject"))
-  .add(new protobuf.Field("pingId", 3, "int32"))
+  .add(new protobuf.Field("pingId", 3, "int32"));
 
 // * Yandex has been skipping any translation streams for a long time (whitelist always return true)
 // * Most likely, it is already outdated and will not be used
@@ -1495,15 +1510,15 @@ function secsToStrTime(secs) {
   if (minutes >= 60) {
     return localizationProvider.get("translationTakeMoreThanHour");
   } else if (minutes >= 10 && minutes % 10) {
-    return localizationProvider.get("translationTakeApproximatelyMinutes").format(
-      minutes
-    );
+    return localizationProvider
+      .get("translationTakeApproximatelyMinutes")
+      .format(minutes);
   } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
     return localizationProvider.get("translationTakeAboutMinute");
   } else {
-    return localizationProvider.get("translationTakeApproximatelyMinute").format(
-      minutes
-    );
+    return localizationProvider
+      .get("translationTakeApproximatelyMinute")
+      .format(minutes);
   }
 }
 
@@ -1688,7 +1703,9 @@ function addTranslationBlock(element) {
           <path fill-rule="evenodd" clip-rule="evenodd" d="M17.605 19.703c.794-.13 1.647-.476 2.47-.983.695 1.013 1.255 1.546 1.306 1.593l1.166-1.207c-.011-.01-.504-.48-1.124-1.401.277-.25.547-.512.797-.798a12.1 12.1 0 0 0 2.268-3.826c.383.216.761.541.96 1.027.68 1.649-.301 3.557-1.215 4.385l1.152 1.22c1.52-1.378 2.571-3.959 1.638-6.227-.368-.892-1.077-1.59-2.064-2.037.162-.763.216-1.38.233-1.785h-1.698c-.017.307-.06.762-.173 1.323-1.325-.187-2.818-.006-4.248.508a25.994 25.994 0 0 1-.313-2.547c5.092-.287 8.098-1.488 8.237-1.546l-.654-1.533c-.03.013-2.875 1.14-7.65 1.418-.001-.405-.008-.666-.012-.85-.008-.339-.01-.423.03-.67L17.01 5.75c-.026.283-.024.573-.018 1.278l.002.318c-.026 0-.051 0-.077.002l-.08.001a39.286 39.286 0 0 1-3.27-.14L13.25 8.89c.5.043 2.023.122 3.397.122h.1a19.457 19.457 0 0 1 .208-.003l.106-.002c.067.948.196 2.034.421 3.22a8.05 8.05 0 0 0-2.267 1.963l.811 1.871c.327-.732.995-1.51 1.856-2.111a16.762 16.762 0 0 0 1.33 3.346c-.811.514-1.64.818-2.301.804l.694 1.603Zm2.953-3.488a8.18 8.18 0 0 0 .374-.389 10.465 10.465 0 0 0 1.927-3.224c-.198-.021-.4-.031-.606-.031-.907 0-1.885.199-2.834.574.31 1.209.718 2.23 1.14 3.07ZM9.769 11.688 4.25 24.438h2.259l1.357-3.407h5.582l1.357 3.407h2.258l-5.52-12.75H9.77Zm.887 2.624 2.056 5H8.6l2.056-5Z"></path>
         </svg>
       </span>
-      <span class = "translationBtn" tabindex = "0">${localizationProvider.get("translateVideo")}</span>
+      <span class = "translationBtn" tabindex = "0">${localizationProvider.get(
+        "translateVideo"
+      )}</span>
     </span>
     <span class = "translationMenu" tabindex = "0" role = "button">
       <svg class = "translationMenuIcon" height="15" width="5" fill="#fff" xmlns="http://www.w3.org/2000/svg">
@@ -1705,7 +1722,9 @@ function createTranslationMenu() {
   const container = document.createElement("div");
   container.classList.add("translationMenuContent");
   container.innerHTML = `
-    <p class = "translationMainHeader">${localizationProvider.get("translationSettings")}</p>
+    <p class = "translationMainHeader">${localizationProvider.get(
+      "translationSettings"
+    )}</p>
     <div class="translationMenuOptions"></div>
     <div class="translationMenuFunctional">
       <a class = "translationDownload">
@@ -1713,7 +1732,9 @@ function createTranslationMenu() {
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
         </svg>
       </a>
-      <button class = "translationDropDB">${localizationProvider.get("resetSettings")}</button>
+      <button class = "translationDropDB">${localizationProvider.get(
+        "resetSettings"
+      )}</button>
     </div>
   `;
 
@@ -1912,7 +1933,9 @@ async function initDB() {
 
     openRequest.onerror = () => {
       console.error(
-        `[VOT] ${localizationProvider.getDefault("VOTFailedInitDB")}: ${openRequest.error.message}`
+        `[VOT] ${localizationProvider.getDefault("VOTFailedInitDB")}: ${
+          openRequest.error.message
+        }`
       );
       reject(false);
     };
@@ -1921,7 +1944,10 @@ async function initDB() {
       const db = openRequest.result;
 
       db.onerror = () => {
-        console.error(`[VOT] ${localizationProvider.getDefault("VOTFailedInitDB")}`, openRequest.error);
+        console.error(
+          `[VOT] ${localizationProvider.getDefault("VOTFailedInitDB")}`,
+          openRequest.error
+        );
         alert(`[VOT] ${localizationProvider.get("VOTFailedInitDB")}`);
         reject(false);
       };
@@ -1980,7 +2006,9 @@ async function initDB() {
       const db = openRequest.result;
       db.onversionchange = () => {
         db.close();
-        console.log(`[VOT] ${localizationProvider.getDefault("VOTDBNeedUpdate")}`);
+        console.log(
+          `[VOT] ${localizationProvider.getDefault("VOTDBNeedUpdate")}`
+        );
         alert(`[VOT] ${localizationProvider.get("VOTDBNeedUpdate")}`);
         window.location.reload();
         reject(false);
@@ -1990,8 +2018,17 @@ async function initDB() {
 
     openRequest.onblocked = () => {
       const db = openRequest.result;
-      console.error(`[VOT] ${localizationProvider.getDefault("VOTDisabledForDBUpdating").format(window.location.hostname)}`, db);
-      alert(`[VOT] ${localizationProvider.get("VOTDisabledForDBUpdating").format(window.location.hostname)}`);
+      console.error(
+        `[VOT] ${localizationProvider
+          .getDefault("VOTDisabledForDBUpdating")
+          .format(window.location.hostname)}`,
+        db
+      );
+      alert(
+        `[VOT] ${localizationProvider
+          .get("VOTDisabledForDBUpdating")
+          .format(window.location.hostname)}`
+      );
       reject(false);
     };
   });
@@ -2025,7 +2062,10 @@ async function updateDB({
       const openRequest = openDB("VOT");
 
       openRequest.onerror = () => {
-        console.error(`[VOT] ${localizationProvider.getDefault("VOTFailedWriteToDB")}`, openRequest.error.message);
+        console.error(
+          `[VOT] ${localizationProvider.getDefault("VOTFailedWriteToDB")}`,
+          openRequest.error.message
+        );
         alert(`[VOT] ${localizationProvider.get("VOTFailedWriteToDB")}`);
         reject(false);
       };
@@ -2107,10 +2147,7 @@ async function updateDB({
           const requestUpdate = objectStore.put(data);
 
           requestUpdate.onerror = (event) => {
-            console.error(
-              "[VOT] failed update db data: ",
-              event.error
-            );
+            console.error("[VOT] failed update db data: ", event.error);
             reject(false);
           };
 
@@ -2122,8 +2159,17 @@ async function updateDB({
 
       openRequest.onblocked = () => {
         const db = openRequest.result;
-        console.error(`[VOT] ${localizationProvider.getDefault("VOTDisabledForDBUpdating").format(window.location.hostname)}`, db);
-        alert(`[VOT] ${localizationProvider.get("VOTDisabledForDBUpdating").format(window.location.hostname)}`);
+        console.error(
+          `[VOT] ${localizationProvider
+            .getDefault("VOTDisabledForDBUpdating")
+            .format(window.location.hostname)}`,
+          db
+        );
+        alert(
+          `[VOT] ${localizationProvider
+            .get("VOTDisabledForDBUpdating")
+            .format(window.location.hostname)}`
+        );
         reject(false);
       };
     }
@@ -2135,7 +2181,10 @@ async function readDB() {
     const openRequest = openDB("VOT");
 
     openRequest.onerror = () => {
-      console.error(`[VOT] ${localizationProvider.getDefault("VOTFailedReadFromDB")}`, openRequest.error.message);
+      console.error(
+        `[VOT] ${localizationProvider.getDefault("VOTFailedReadFromDB")}`,
+        openRequest.error.message
+      );
       alert(`[VOT] ${localizationProvider.get("VOTFailedReadFromDB")}`);
       reject(false);
     };
@@ -2151,7 +2200,9 @@ async function readDB() {
       const db = openRequest.result;
       db.onversionchange = () => {
         db.close();
-        console.error(`[VOT] ${localizationProvider.getDefault("VOTDBNeedUpdate")}`);
+        console.error(
+          `[VOT] ${localizationProvider.getDefault("VOTDBNeedUpdate")}`
+        );
         alert(`[VOT] ${localizationProvider.get("VOTDBNeedUpdate")}`);
         reject(false);
       };
@@ -2182,8 +2233,17 @@ async function readDB() {
 
     openRequest.onblocked = () => {
       const db = openRequest.result;
-      console.error(`[VOT] ${localizationProvider.getDefault("VOTDisabledForDBUpdating").format(window.location.hostname)}`, db);
-      alert(`[VOT] ${localizationProvider.get("VOTDisabledForDBUpdating").format(window.location.hostname)}`);
+      console.error(
+        `[VOT] ${localizationProvider
+          .getDefault("VOTDisabledForDBUpdating")
+          .format(window.location.hostname)}`,
+        db
+      );
+      alert(
+        `[VOT] ${localizationProvider
+          .get("VOTDisabledForDBUpdating")
+          .format(window.location.hostname)}`
+      );
       reject(false);
     };
   });
@@ -2885,8 +2945,16 @@ async function src_main() {
       GM_info.scriptHandler
     )
   ) {
-    console.error(`[VOT] ${localizationProvider.getDefault("unSupportedExtensionError").format(GM_info.scriptHandler)}`);
-    return alert(`[VOT] ${localizationProvider.get("unSupportedExtensionError").format(GM_info.scriptHandler)}`);
+    console.error(
+      `[VOT] ${localizationProvider
+        .getDefault("unSupportedExtensionError")
+        .format(GM_info.scriptHandler)}`
+    );
+    return alert(
+      `[VOT] ${localizationProvider
+        .get("unSupportedExtensionError")
+        .format(GM_info.scriptHandler)}`
+    );
   }
 
   debug/* default */.Z.log("Extension compatibility passed...");
@@ -2986,7 +3054,8 @@ async function src_main() {
           case 1:
             callback(
               !!translateResponse.url,
-              translateResponse.url || localizationProvider.get("audioNotReceived")
+              translateResponse.url ||
+                localizationProvider.get("audioNotReceived")
             );
             break;
           case 2:
@@ -3190,7 +3259,9 @@ async function src_main() {
 
       const disabledOption = document.createElement("option");
       disabledOption.value = "disabled";
-      disabledOption.innerHTML = localizationProvider.get("VOTSubtitlesDisabled");
+      disabledOption.innerHTML = localizationProvider.get(
+        "VOTSubtitlesDisabled"
+      );
       select.append(disabledOption);
 
       for (let i = 0; i < subtitlesList.length; i++) {
@@ -3198,10 +3269,11 @@ async function src_main() {
         const option = document.createElement("option");
         option.value = i;
         option.innerHTML =
-          (localizationProvider.get("langs")[s.language] ?? s.language.toUpperCase()) +
+          (localizationProvider.get("langs")[s.language] ??
+            s.language.toUpperCase()) +
           (s.translatedFromLanguage
             ? ` ${localizationProvider.get("VOTTranslatedFrom")} ${
-              localizationProvider.get("langs")[s.translatedFromLanguage] ??
+                localizationProvider.get("langs")[s.translatedFromLanguage] ??
                 s.translatedFromLanguage.toUpperCase()
               }`
             : "") +
@@ -3278,7 +3350,9 @@ async function src_main() {
           const slider = createMenuSlider(
             "VOTSubtitlesMaxLengthSlider",
             dbSubtitlesMaxLength,
-            `${localizationProvider.get("VOTSubtitlesMaxLength")}: <b id="VOTSubtitlesMaxLengthValue">${dbSubtitlesMaxLength}</b>`,
+            `${localizationProvider.get(
+              "VOTSubtitlesMaxLength"
+            )}: <b id="VOTSubtitlesMaxLengthValue">${dbSubtitlesMaxLength}</b>`,
             50,
             300
           );
@@ -3337,7 +3411,9 @@ async function src_main() {
             localizationProvider.get("VOTAutoTranslate") +
               (siteHostname === "vk" ||
               window.location.hostname.includes("m.twitch.tv")
-                ? ` <strong>(${localizationProvider.get("recommended")})</strong>`
+                ? ` <strong>(${localizationProvider.get(
+                    "recommended"
+                  )})</strong>`
                 : "")
           );
 
@@ -3393,7 +3469,8 @@ async function src_main() {
           const checkbox = createMenuCheckbox(
             "VOTAutoSetVolume",
             dbAutoSetVolumeYandexStyle,
-            localizationProvider.get("VOTAutoSetVolume") + `${config/* autoVolume */.IM * 100}%`
+            localizationProvider.get("VOTAutoSetVolume") +
+              `${config/* autoVolume */.IM * 100}%`
           );
 
           checkbox.querySelector("#VOTAutoSetVolume").onclick = async (
@@ -3615,19 +3692,19 @@ async function src_main() {
           audioPromise.catch((e) => {
             console.error("[VOT]", e);
             if (e.name === "NotAllowedError") {
-              transformBtn("error", localizationProvider.get("grantPermissionToAutoPlay"));
+              transformBtn(
+                "error",
+                localizationProvider.get("grantPermissionToAutoPlay")
+              );
               throw new VOTLocalizedError("grantPermissionToAutoPlay");
             } else if (e.name === "NotSupportedError") {
-              transformBtn("error", 
-                sitesChromiumBlocked.includes(
-                  window.location.hostname
-                )
+              transformBtn(
+                "error",
+                sitesChromiumBlocked.includes(window.location.hostname)
                   ? localizationProvider.get("neededAdditionalExtension")
                   : localizationProvider.get("audioFormatNotSupported")
               );
-              throw sitesChromiumBlocked.includes(
-                window.location.hostname
-              )
+              throw sitesChromiumBlocked.includes(window.location.hostname)
                 ? new VOTLocalizedError("neededAdditionalExtension")
                 : new VOTLocalizedError("audioFormatNotSupported");
             }
@@ -3674,7 +3751,9 @@ async function src_main() {
       const slider = createMenuSlider(
         "VOTVideoSlider",
         newVolume,
-        `${localizationProvider.get("VOTVolume")}: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
+        `${localizationProvider.get(
+          "VOTVolume"
+        )}: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
       );
 
       slider.querySelector("#VOTVideoSlider").oninput = async (event) => {
@@ -3738,7 +3817,9 @@ async function src_main() {
       const slider = createMenuSlider(
         "VOTTranslationSlider",
         defaultTranslateVolume,
-        `${localizationProvider.get("VOTVolumeTranslation")}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
+        `${localizationProvider.get(
+          "VOTVolumeTranslation"
+        )}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
       );
 
       // Add an input event listener to the slider
@@ -3869,7 +3950,9 @@ async function src_main() {
               transformBtn("error", urlOrError);
             }
             // if the error line contains information that the translation is being performed, then we wait
-            if (urlOrError.includes(localizationProvider.get("translationTake"))) {
+            if (
+              urlOrError.includes(localizationProvider.get("translationTake"))
+            ) {
               clearTimeout(autoRetry);
               autoRetry = setTimeout(
                 () => translateFunc(VIDEO_ID, requestLang, responseLang),
@@ -4137,7 +4220,9 @@ async function src_main() {
         const VIDEO_ID = getVideoId(siteHostname);
 
         if (!VIDEO_ID) {
-          console.error(`[VOT] ${localizationProvider.getDefault("VOTNoVideoIDFound")}`);
+          console.error(
+            `[VOT] ${localizationProvider.getDefault("VOTNoVideoIDFound")}`
+          );
           subtitlesList = [];
           subtitlesListVideoId = null;
           await updateSubtitlesLangSelect();
