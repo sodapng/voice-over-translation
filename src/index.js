@@ -762,9 +762,7 @@ async function main() {
 
     async function syncVideoVolumeSlider() {
       // Sync volume slider with original video (youtube only)
-      const newSlidersVolume = document
-        .querySelector(".ytp-volume-panel")
-        .getAttribute("aria-valuenow");
+      const newSlidersVolume = Math.round(getVideoVolume() * 100);
 
       const videoSlider = document.querySelector("#VOTVideoSlider");
 
@@ -773,7 +771,7 @@ async function main() {
       }
       videoSlider.value = newSlidersVolume;
 
-      const videoVolumeLabel = document.querySelector("#VOTVideoVolume");
+      const videoVolumeLabel = document.querySelector("#VOTOriginalVolume");
 
       if (videoVolumeLabel) {
         videoVolumeLabel.innerText = `${newSlidersVolume}%`;
