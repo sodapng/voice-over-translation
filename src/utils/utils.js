@@ -58,7 +58,7 @@ const getVideoId = (service) => {
         return url.searchParams.get("z").split("/")[0];
       } else if (url.searchParams.get("oid") && url.searchParams.get("id")) {
         return `video-${Math.abs(
-          url.searchParams.get("oid")
+          url.searchParams.get("oid"),
         )}_${url.searchParams.get("id")}`;
       } else {
         return false;
@@ -77,7 +77,7 @@ const getVideoId = (service) => {
       } else if (/^clips\.twitch\.tv$/.test(window.location.hostname)) {
         // get link to twitch channel (ex.: https://www.twitch.tv/xqc)
         const channelLink = document.querySelector(
-          ".tw-link[data-test-selector='stream-info-card-component__stream-avatar-link']"
+          ".tw-link[data-test-selector='stream-info-card-component__stream-avatar-link']",
         );
         if (!channelLink) {
           return false;
@@ -85,7 +85,7 @@ const getVideoId = (service) => {
 
         const channelName = channelLink.href.replace(
           "https://www.twitch.tv/",
-          ""
+          "",
         );
         return `${channelName}/clip/${url.searchParams.get("clip")}`;
       } else if (url.pathname.match(/([^/]+)\/(?:clip)\/([^/]+)/)) {
@@ -134,7 +134,7 @@ const getVideoId = (service) => {
         return url.pathname;
       } else if (url.pathname.match(/video\/embed\/([^/]+)/)) {
         const referer = document.querySelector(
-          ".b-video-controls__mymail-link"
+          ".b-video-controls__mymail-link",
         );
         if (!referer) {
           return false;

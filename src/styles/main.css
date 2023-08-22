@@ -24,7 +24,11 @@
   color: #fff;
   padding-right: 0.25rem !important;
   cursor: pointer;
-  font: 600 12px / 14px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif;
+  font:
+    600 12px / 14px "Segoe UI",
+    BlinkMacSystemFont,
+    Arial,
+    sans-serif;
 }
 
 .translationBlock:hover {
@@ -74,7 +78,11 @@
   top: 10rem;
   transform: translate(-50%);
   text-align: left;
-  font: 600 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif !important;
+  font:
+    600 14px / 16px "Segoe UI",
+    BlinkMacSystemFont,
+    Arial,
+    sans-serif !important;
 
   width: 300px;
   /* height: 375px; */
@@ -161,7 +169,11 @@
 .translationMainHeader {
   margin: 16px !important;
   color: #fff;
-  font: 900 14px / 16px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif !important;
+  font:
+    900 14px / 16px "Segoe UI",
+    BlinkMacSystemFont,
+    Arial,
+    sans-serif !important;
 }
 
 .translationMenuOptions {

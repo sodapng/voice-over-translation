@@ -65,7 +65,7 @@ function addTranslationBlock(element) {
         </svg>
       </span>
       <span class = "translationBtn" tabindex = "0">${localizationProvider.get(
-        "translateVideo"
+        "translateVideo",
       )}</span>
     </span>
     <span class = "translationMenu" tabindex = "0" role = "button">
@@ -84,7 +84,7 @@ function createTranslationMenu() {
   container.classList.add("translationMenuContent");
   container.innerHTML = `
     <p class = "translationMainHeader">${localizationProvider.get(
-      "translationSettings"
+      "translationSettings",
     )}</p>
     <div class="translationMenuOptions"></div>
     <div class="translationMenuFunctional">
@@ -94,7 +94,7 @@ function createTranslationMenu() {
         </svg>
       </a>
       <button class = "translationDropDB">${localizationProvider.get(
-        "resetSettings"
+        "resetSettings",
       )}</button>
     </div>
   `;

@@ -42,7 +42,7 @@ export const localizationProvider = new (class {
       .catch((error) => {
         console.error(
           "[VOT] [localizationProvider] failed get locale, cause:",
-          error
+          error,
         );
         this.setLocaleFromJsonString(window.localStorage.getItem("vot-locale"));
       });
@@ -67,7 +67,7 @@ export const localizationProvider = new (class {
         "[VOT] [localizationProvider] locale",
         locale,
         "doesn't contain key",
-        key
+        key,
       );
     }
     return result;

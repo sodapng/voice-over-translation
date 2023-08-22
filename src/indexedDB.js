@@ -33,7 +33,7 @@ async function initDB() {
       transaction,
       db,
       indexes,
-      previousIndexes = {}
+      previousIndexes = {},
     ) {
       // openRequest is transaction object
       // indexes is object of strings with default values (used for createIndex) ex. {"name": 0}
@@ -54,7 +54,7 @@ async function initDB() {
         request.onerror = (event) => {
           console.error(
             "[VOT] Data could not be retrieved from the Database: ",
-            event.error
+            event.error,
           );
           reject(false);
         };
@@ -71,14 +71,14 @@ async function initDB() {
           requestUpdate.onerror = (event) => {
             console.error(
               "[VOT] Failed to update the Database to new version",
-              event.error
+              event.error,
             );
             reject(false);
           };
 
           requestUpdate.onsuccess = () => {
             console.log(
-              "[VOT] Standard settings of the new version have been added to the Database."
+              "[VOT] Standard settings of the new version have been added to the Database.",
             );
             resolve(true);
           };
@@ -92,7 +92,7 @@ async function initDB() {
       console.error(
         `[VOT] ${localizationProvider.getDefault("VOTFailedInitDB")}: ${
           openRequest.error.message
-        }`
+        }`,
       );
       reject(false);
     };
@@ -103,7 +103,7 @@ async function initDB() {
       db.onerror = () => {
         console.error(
           `[VOT] ${localizationProvider.getDefault("VOTFailedInitDB")}`,
-          openRequest.error
+          openRequest.error,
         );
         alert(`[VOT] ${localizationProvider.get("VOTFailedInitDB")}`);
         reject(false);
@@ -117,7 +117,7 @@ async function initDB() {
 
         // add indexes for 1 version (without key index)
         for (const key of Object.keys(settingsDefault).filter(
-          (k) => k !== "key"
+          (k) => k !== "key",
         )) {
           objectStore.createIndex(key, key, { unique: false });
         }
@@ -133,7 +133,7 @@ async function initDB() {
           request.onsuccess = () => {
             console.log(
               "[VOT] Standard settings added to the Database: ",
-              request.result
+              request.result,
             );
             resolve(true);
           };
@@ -141,7 +141,7 @@ async function initDB() {
           request.onerror = () => {
             console.log(
               "[VOT] Error when adding standard settings to the Database: ",
-              request.error
+              request.error,
             );
             reject(false);
           };
@@ -164,7 +164,7 @@ async function initDB() {
       db.onversionchange = () => {
         db.close();
         console.log(
-          `[VOT] ${localizationProvider.getDefault("VOTDBNeedUpdate")}`
+          `[VOT] ${localizationProvider.getDefault("VOTDBNeedUpdate")}`,
         );
         alert(`[VOT] ${localizationProvider.get("VOTDBNeedUpdate")}`);
         window.location.reload();
@@ -179,12 +179,12 @@ async function initDB() {
         `[VOT] ${localizationProvider
           .getDefault("VOTDisabledForDBUpdating")
           .format(window.location.hostname)}`,
-        db
+        db,
       );
       alert(
         `[VOT] ${localizationProvider
           .get("VOTDisabledForDBUpdating")
-          .format(window.location.hostname)}`
+          .format(window.location.hostname)}`,
       );
       reject(false);
     };
@@ -221,7 +221,7 @@ async function updateDB({
       openRequest.onerror = () => {
         console.error(
           `[VOT] ${localizationProvider.getDefault("VOTFailedWriteToDB")}`,
-          openRequest.error.message
+          openRequest.error.message,
         );
         alert(`[VOT] ${localizationProvider.get("VOTFailedWriteToDB")}`);
         reject(false);
@@ -239,7 +239,7 @@ async function updateDB({
         db.onversionchange = () => {
           db.close();
           console.log(
-            "[VOT] The database needs an update, please reload the page if it didn't happen automatically"
+            "[VOT] The database needs an update, please reload the page if it didn't happen automatically",
           );
           window.location.reload();
           reject(false);
@@ -253,7 +253,7 @@ async function updateDB({
         request.onerror = (event) => {
           console.error(
             "[VOT] Data could not be retrieved from the Database: ",
-            event.error
+            event.error,
           );
           reject(false);
         };
@@ -320,12 +320,12 @@ async function updateDB({
           `[VOT] ${localizationProvider
             .getDefault("VOTDisabledForDBUpdating")
             .format(window.location.hostname)}`,
-          db
+          db,
         );
         alert(
           `[VOT] ${localizationProvider
             .get("VOTDisabledForDBUpdating")
-            .format(window.location.hostname)}`
+            .format(window.location.hostname)}`,
         );
         reject(false);
       };
@@ -340,7 +340,7 @@ async function readDB() {
     openRequest.onerror = () => {
       console.error(
         `[VOT] ${localizationProvider.getDefault("VOTFailedReadFromDB")}`,
-        openRequest.error.message
+        openRequest.error.message,
       );
       alert(`[VOT] ${localizationProvider.get("VOTFailedReadFromDB")}`);
       reject(false);
@@ -358,7 +358,7 @@ async function readDB() {
       db.onversionchange = () => {
         db.close();
         console.error(
-          `[VOT] ${localizationProvider.getDefault("VOTDBNeedUpdate")}`
+          `[VOT] ${localizationProvider.getDefault("VOTDBNeedUpdate")}`,
         );
         alert(`[VOT] ${localizationProvider.get("VOTDBNeedUpdate")}`);
         reject(false);
@@ -371,7 +371,7 @@ async function readDB() {
         console.error(
           "[VOT]",
           localizationProvider.getDefault("VOTFailedReadFromDB"),
-          event.error
+          event.error,
         );
         console.error("[VOT]", event);
         reject(false);
@@ -394,12 +394,12 @@ async function readDB() {
         `[VOT] ${localizationProvider
           .getDefault("VOTDisabledForDBUpdating")
           .format(window.location.hostname)}`,
-        db
+        db,
       );
       alert(
         `[VOT] ${localizationProvider
           .get("VOTDisabledForDBUpdating")
-          .format(window.location.hostname)}`
+          .format(window.location.hostname)}`,
       );
       reject(false);
     };

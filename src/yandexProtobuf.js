@@ -20,7 +20,7 @@ const VideoStreamRequest = new protobuf.Type("VideoStreamRequest")
   .add(new protobuf.Field("responseLanguage", 3, "string"));
 
 const VideoStreamPingRequest = new protobuf.Type("VideoStreamPingRequest").add(
-  new protobuf.Field("pingId", 1, "int32")
+  new protobuf.Field("pingId", 1, "int32"),
 );
 
 const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")

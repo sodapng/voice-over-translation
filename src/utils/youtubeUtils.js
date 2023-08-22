@@ -68,7 +68,9 @@ function getVideoVolume() {
 }
 
 function setVideoVolume(volume) {
-  return document.querySelector(".html5-video-player")?.setVolume(Math.round(volume * 100));
+  return document
+    .querySelector(".html5-video-player")
+    ?.setVolume(Math.round(volume * 100));
 }
 
 function getSubtitles() {
@@ -124,7 +126,7 @@ async function getVideoData() {
       response,
       title,
       description,
-      author
+      author,
     ),
   };
   debug.log("youtube video data:", videoData);

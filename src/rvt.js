@@ -9,7 +9,7 @@ async function requestVideoTranslation(
   duration,
   requestLang,
   responseLang,
-  callback
+  callback,
 ) {
   try {
     debug.log("requestVideoTranslation");
@@ -23,7 +23,7 @@ async function requestVideoTranslation(
       url,
       duration,
       requestLang,
-      responseLang
+      responseLang,
     );
     // Send the request
     await yandexRequest(
@@ -35,7 +35,7 @@ async function requestVideoTranslation(
         "Vtrans-Signature": await getSignature(body),
         "Sec-Vtrans-Token": getUUID(false),
       },
-      callback
+      callback,
     );
   } catch (exception) {
     console.error("[VOT]", exception);
