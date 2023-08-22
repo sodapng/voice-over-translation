@@ -748,12 +748,15 @@ async function main() {
       downloadBtn.href = "";
       downloadBtn.style.display = "none";
       transformBtn("none", localizationProvider.get("translateVideo"));
-      // temp fix
-      if (window.location.hostname.includes("youtube.com")) {
-        document.querySelector(".html5-video-player").setVolume(100);
-      }
       if (volumeOnStart) {
-        video.volume = volumeOnStart;
+        debug.log(`Volume on start: ${volumeOnStart}`)
+        if (window.location.hostname.includes("youtube.com")) {
+          document
+            .querySelector(".html5-video-player")
+            .setVolume(volumeOnStart * 100);
+        } else {
+          video.volume = volumeOnStart;
+        }
       }
     }
 
@@ -779,6 +782,28 @@ async function main() {
       if (dbSyncVolume === 1) {
         tempOriginalVolume = Number(newSlidersVolume);
       }
+    }
+
+    function getVideoVolume() {
+      /**
+       * Get video volume in 0.00-1.00 format
+       */
+      let videoVolume = video?.volume;
+      if (window.location.hostname.includes("youtube.com")) {
+        videoVolume = youtubeUtils.getVideoVolume() || videoVolume;
+      }
+      return videoVolume;
+    }
+
+    function setVideoVolume(volume) {
+      /**
+       * Set video volume in 0.00-1.00 format
+       */
+      if (window.location.hostname.includes("youtube.com")) {
+        return youtubeUtils.setVideoVolume(volume);
+      }
+
+      video.volume = volume;
     }
 
     async function getVideoData() {
@@ -878,13 +903,7 @@ async function main() {
         return;
       }
 
-      const newVolume =
-        window.location.hostname.includes("youtube.com") &&
-        !dbAutoSetVolumeYandexStyle
-          ? document
-              .querySelector(".ytp-volume-panel")
-              ?.getAttribute("aria-valuenow")
-          : Math.round(video.volume * 100);
+      const newVolume = getVideoVolume() * 100;
       tempOriginalVolume = newVolume;
 
       const slider = createMenuSlider(
@@ -897,7 +916,7 @@ async function main() {
 
       slider.querySelector("#VOTVideoSlider").oninput = async (event) => {
         const { value } = event.target;
-        video.volume = value / 100;
+        setVideoVolume(value / 100);
         slider.querySelector("#VOTOriginalVolume").innerText = `${value}%`;
 
         if (dbSyncVolume !== 1) {
@@ -1118,7 +1137,7 @@ async function main() {
             audio.src = proxiedAudioUrl;
           }
 
-          volumeOnStart = video?.volume;
+          volumeOnStart = getVideoVolume();
           if (typeof dbDefaultVolume === "number") {
             audio.volume = dbDefaultVolume / 100;
           }
@@ -1126,13 +1145,7 @@ async function main() {
             typeof dbAutoSetVolumeYandexStyle === "number" &&
             dbAutoSetVolumeYandexStyle
           ) {
-            video.volume = autoVolume;
-            // temp fix
-            if (window.location.hostname.includes("youtube.com")) {
-              document
-                .querySelector(".html5-video-player")
-                .setVolume(autoVolume * 100);
-            }
+            setVideoVolume(autoVolume);
           }
 
           switch (siteHostname) {
