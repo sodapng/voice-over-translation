@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.4.1-beta
+// @version 1.4.1-beta2
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -1178,6 +1178,14 @@ function getPlayerData() {
   return player?.getVideoData?.call() ?? null;
 }
 
+function getVideoVolume() {
+  return document.querySelector(".html5-video-player")?.getVolume() / 100;
+}
+
+function setVideoVolume(volume) {
+  return document.querySelector(".html5-video-player")?.setVolume(Math.round(volume * 100));
+}
+
 function getSubtitles() {
   const response = getPlayerResponse();
   let captionTracks =
@@ -1244,8 +1252,10 @@ const youtubeUtils = {
   getPlayer,
   getPlayerResponse,
   getPlayerData,
+  getVideoVolume,
   getSubtitles,
   getVideoData,
+  setVideoVolume,
 };
 
 ;// CONCATENATED MODULE: ./src/yandexProtobuf.js
@@ -3641,11 +3651,21 @@ async function src_main() {
       downloadBtn.style.display = "none";
       transformBtn("none", localizationProvider.get("translateVideo"));
       // temp fix
-      if (window.location.hostname.includes("youtube.com")) {
-        document.querySelector(".html5-video-player").setVolume(100);
-      }
+      // if (window.location.hostname.includes("youtube.com")) {
+      //   // document.querySelector(".html5-video-player").setVolume(100);
+      //   document
+      //     .querySelector(".html5-video-player")
+      //     .setVolume(tempOriginalVolume);
+      // }
       if (volumeOnStart) {
-        video.volume = volumeOnStart;
+        debug/* default */.Z.log(`Volume on start: ${volumeOnStart}`)
+        if (window.location.hostname.includes("youtube.com")) {
+          document
+            .querySelector(".html5-video-player")
+            .setVolume(volumeOnStart * 100);
+        } else {
+          video.volume = volumeOnStart;
+        }
       }
     }
 
@@ -3671,6 +3691,28 @@ async function src_main() {
       if (dbSyncVolume === 1) {
         tempOriginalVolume = Number(newSlidersVolume);
       }
+    }
+
+    function getVideoVolume() {
+      /**
+       * Get video volume in 0.00-1.00 format
+       */
+      let videoVolume = video?.volume;
+      if (window.location.hostname.includes("youtube.com")) {
+        videoVolume = youtubeUtils.getVideoVolume() || videoVolume;
+      }
+      return videoVolume;
+    }
+
+    function setVideoVolume(volume) {
+      /**
+       * Set video volume in 0.00-1.00 format
+       */
+      if (window.location.hostname.includes("youtube.com")) {
+        return youtubeUtils.setVideoVolume(volume);
+      }
+
+      video.volume = volume;
     }
 
     async function getVideoData() {
@@ -3770,13 +3812,7 @@ async function src_main() {
         return;
       }
 
-      const newVolume =
-        window.location.hostname.includes("youtube.com") &&
-        !dbAutoSetVolumeYandexStyle
-          ? document
-              .querySelector(".ytp-volume-panel")
-              ?.getAttribute("aria-valuenow")
-          : Math.round(video.volume * 100);
+      const newVolume = getVideoVolume() * 100;
       tempOriginalVolume = newVolume;
 
       const slider = createMenuSlider(
@@ -3789,7 +3825,7 @@ async function src_main() {
 
       slider.querySelector("#VOTVideoSlider").oninput = async (event) => {
         const { value } = event.target;
-        video.volume = value / 100;
+        setVideoVolume(value / 100);
         slider.querySelector("#VOTOriginalVolume").innerText = `${value}%`;
 
         if (dbSyncVolume !== 1) {
@@ -4010,7 +4046,7 @@ async function src_main() {
             audio.src = proxiedAudioUrl;
           }
 
-          volumeOnStart = video?.volume;
+          volumeOnStart = getVideoVolume();
           if (typeof dbDefaultVolume === "number") {
             audio.volume = dbDefaultVolume / 100;
           }
@@ -4018,13 +4054,7 @@ async function src_main() {
             typeof dbAutoSetVolumeYandexStyle === "number" &&
             dbAutoSetVolumeYandexStyle
           ) {
-            video.volume = config/* autoVolume */.IM;
-            // temp fix
-            if (window.location.hostname.includes("youtube.com")) {
-              document
-                .querySelector(".html5-video-player")
-                .setVolume(config/* autoVolume */.IM * 100);
-            }
+            setVideoVolume(config/* autoVolume */.IM);
           }
 
           switch (siteHostname) {
