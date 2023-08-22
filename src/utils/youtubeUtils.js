@@ -63,6 +63,14 @@ function getPlayerData() {
   return player?.getVideoData?.call() ?? null;
 }
 
+function getVideoVolume() {
+  return document.querySelector(".html5-video-player")?.getVolume() / 100;
+}
+
+function setVideoVolume(volume) {
+  return document.querySelector(".html5-video-player")?.setVolume(Math.round(volume * 100));
+}
+
 function getSubtitles() {
   const response = getPlayerResponse();
   let captionTracks =
@@ -129,6 +137,8 @@ export const youtubeUtils = {
   getPlayer,
   getPlayerResponse,
   getPlayerData,
+  getVideoVolume,
   getSubtitles,
   getVideoData,
+  setVideoVolume,
 };
