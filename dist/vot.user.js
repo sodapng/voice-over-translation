@@ -3619,13 +3619,6 @@ async function src_main() {
       downloadBtn.href = "";
       downloadBtn.style.display = "none";
       transformBtn("none", localizationProvider.get("translateVideo"));
-      // temp fix
-      // if (window.location.hostname.includes("youtube.com")) {
-      //   // document.querySelector(".html5-video-player").setVolume(100);
-      //   document
-      //     .querySelector(".html5-video-player")
-      //     .setVolume(tempOriginalVolume);
-      // }
       if (volumeOnStart) {
         debug/* default */.Z.log(`Volume on start: ${volumeOnStart}`)
         if (window.location.hostname.includes("youtube.com")) {
@@ -3640,9 +3633,7 @@ async function src_main() {
 
     async function syncVideoVolumeSlider() {
       // Sync volume slider with original video (youtube only)
-      const newSlidersVolume = document
-        .querySelector(".ytp-volume-panel")
-        .getAttribute("aria-valuenow");
+      const newSlidersVolume = Math.round(getVideoVolume() * 100);
 
       const videoSlider = document.querySelector("#VOTVideoSlider");
 
@@ -3651,7 +3642,7 @@ async function src_main() {
       }
       videoSlider.value = newSlidersVolume;
 
-      const videoVolumeLabel = document.querySelector("#VOTVideoVolume");
+      const videoVolumeLabel = document.querySelector("#VOTOriginalVolume");
 
       if (videoVolumeLabel) {
         videoVolumeLabel.innerText = `${newSlidersVolume}%`;
