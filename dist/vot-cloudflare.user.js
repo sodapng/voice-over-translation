@@ -1130,7 +1130,11 @@ async function getLanguage(player, response, title, description, author) {
     const audioTracks = player.getAudioTrack();
     const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
     if (trackInfo?.id !== "und") {
-      return trackInfo.id.split(".")[0];
+      return trackInfo.id.split(".")[0]
+        .toLowerCase()
+        .split(";")[0]
+        .trim()
+        .split("-")[0];
     }
   }
 
@@ -1140,8 +1144,12 @@ async function getLanguage(player, response, title, description, author) {
     response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
   if (captionTracks?.length) {
     const autoCaption = captionTracks.find((caption) => caption.kind === "asr");
-    if (autoCaption) {
-      return autoCaption.languageCode;
+    if (autoCaption && autoCaption.languageCode) {
+      return autoCaption.languageCode
+        .toLowerCase()
+        .split(";")[0]
+        .trim()
+        .split("-")[0];
     }
   }
   // If there is no caption track, use detect to get the language code from the text
