@@ -2801,9 +2801,9 @@ function updateSubtitles(video) {
   if (!video) return;
 
   let content = "";
-  let highlightWords = _highlightWords && _subtitles.containsTokens;
+  let highlightWords = _highlightWords && _subtitles?.containsTokens;
   const time = video.currentTime * 1000;
-  const line = _subtitles.subtitles.findLast((e) => {
+  const line = _subtitles?.subtitles?.findLast((e) => {
     return e.startMs < time && time < e.startMs + e.durationMs;
   });
   if (line) {
@@ -4216,6 +4216,7 @@ async function src_main() {
       .querySelector(".translationMenu")
       .addEventListener("click", async (event) => {
         event.stopPropagation();
+        event.stopImmediatePropagation();
 
         const select = document
           .querySelector(".translationMenuOptions")
