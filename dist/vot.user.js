@@ -1950,6 +1950,7 @@ async function initDB() {
 
     openRequest.onupgradeneeded = (event) => {
       const db = openRequest.result;
+      const values = Object.assign({}, settingsDefault, valuesV2, valuesV3);
 
       db.onerror = () => {
         console.error(
@@ -1966,8 +1967,8 @@ async function initDB() {
           keyPath: "key",
         });
 
-        // add indexes for 1 version (without key index)
-        for (const key of Object.keys(settingsDefault).filter(
+        // add indexes (without key index)
+        for (const key of Object.keys(values).filter(
           (k) => k !== "key"
         )) {
           objectStore.createIndex(key, key, { unique: false });
@@ -1979,7 +1980,7 @@ async function initDB() {
           const objectStore = db
             .transaction("settings", "readwrite")
             .objectStore("settings");
-          const request = objectStore.add(settingsDefault);
+          const request = objectStore.add(values);
 
           request.onsuccess = () => {
             console.log(
@@ -1997,16 +1998,19 @@ async function initDB() {
             reject(false);
           };
         };
+        return;
       }
 
       if (event.oldVersion < 2) {
         // db is outdated (db version is 1)
         updateVersionProccessor(openRequest.transaction, db, valuesV2);
+        return;
       }
 
       if (event.oldVersion < 3) {
-        // db is outdated (db version is 1)
+        // db is outdated (db version is 2)
         updateVersionProccessor(openRequest.transaction, db, valuesV3);
+        return;
       }
     };
 
