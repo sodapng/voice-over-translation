@@ -13,14 +13,11 @@ const settingsDefault = {
   dontTranslateYourLang: 1,
 }; // default settings for db v1
 
-const valuesV2 = {
-  audioProxy: 0,
-};
-
 const valuesV3 = {
   subtitlesMaxLength: 300,
   highlightWords: 0,
   responseLanguage: lang,
+  audioProxy: 0,
 };
 
 function openDB(name) {
@@ -146,11 +143,6 @@ async function initDB() {
             reject(false);
           };
         };
-      }
-
-      if (event.oldVersion < 2) {
-        // db is outdated (db version is 1)
-        updateVersionProccessor(openRequest.transaction, db, valuesV2);
       }
 
       if (event.oldVersion < 3) {

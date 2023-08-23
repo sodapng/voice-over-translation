@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
 .translationBlock {
   padding: 0.45rem !important;
   width: max-content;
@@ -25,10 +27,11 @@
   padding-right: 0.25rem !important;
   cursor: pointer;
   font:
-    600 12px / 14px "Segoe UI",
+    500 14px / 16px "Fira Sans",
+    'Segoe UI',
     BlinkMacSystemFont,
-    Arial,
-    sans-serif;
+    Tahoma,
+    sans-serif !important;
 }
 
 .translationBlock:hover {
@@ -79,9 +82,10 @@
   transform: translate(-50%);
   text-align: left;
   font:
-    600 14px / 16px "Segoe UI",
+    500 14px / 16px "Fira Sans",
+    'Segoe UI',
     BlinkMacSystemFont,
-    Arial,
+    Tahoma,
     sans-serif !important;
 
   width: 300px;
@@ -170,9 +174,10 @@
   margin: 16px !important;
   color: #fff;
   font:
-    900 14px / 16px "Segoe UI",
+    500 14px / 16px "Fira Sans",
+    'Segoe UI',
     BlinkMacSystemFont,
-    Arial,
+    Tahoma,
     sans-serif !important;
 }
 

@@ -25,8 +25,12 @@ async function getLanguage(player, response, title, description, author) {
     response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
   if (captionTracks?.length) {
     const autoCaption = captionTracks.find((caption) => caption.kind === "asr");
-    if (autoCaption) {
-      return autoCaption.languageCode;
+    if (autoCaption && autoCaption.languageCode) {
+      return autoCaption.languageCode
+        .toLowerCase()
+        .split(";")[0]
+        .trim()
+        .split("-")[0];
     }
   }
   // If there is no caption track, use detect to get the language code from the text

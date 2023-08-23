@@ -1726,10 +1726,11 @@ async function main() {
   await initWebsite();
 }
 
-await localizationProvider.update();
-
-window.addEventListener("DOMContentLoaded", () => {
-  main().catch((e) => {
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+    await Promise.all([localizationProvider.update(), main()]);
+  } catch (e) {
     console.error("[VOT]", e);
-  });
+  }
 });
+
