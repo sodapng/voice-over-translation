@@ -1854,25 +1854,25 @@ function genOptionsByOBJ(obj, conditionString) {
 
 // --- IndexedDB functions start:
 const dbVersion = 3; // current db version
-const settingsDefault = {
-  key: "settings",
-  autoTranslate: 0,
-  defaultVolume: 100,
-  showVideoSlider: 0,
-  syncVolume: 0,
-  autoSetVolumeYandexStyle: 1,
-  dontTranslateYourLang: 1,
-}; // default settings for db v1
-
-const valuesV2 = {
-  audioProxy: 0,
-};
-
-const valuesV3 = {
-  subtitlesMaxLength: 300,
-  highlightWords: 0,
-  responseLanguage: lang,
-};
+const dbData = [
+  {
+    key: "settings",
+    autoTranslate: 0,
+    defaultVolume: 100,
+    showVideoSlider: 0,
+    syncVolume: 0,
+    autoSetVolumeYandexStyle: 1,
+    dontTranslateYourLang: 1,
+  },
+  {
+    audioProxy: 0,
+  },
+  {
+    subtitlesMaxLength: 300,
+    highlightWords: 0,
+    responseLanguage: lang,
+  },
+];
 
 function openDB(name) {
   return indexedDB.open(name, dbVersion);
@@ -1912,7 +1912,7 @@ async function initDB() {
 
         request.onsuccess = () => {
           const data =
-            request.result || Object.assign(settingsDefault, previousIndexes); // use data from db or reset all data
+            request.result || Object.assign(dbData[0], previousIndexes); // use data from db or reset all data
           for (const key in indexes) {
             data[key] = indexes[key];
           }
@@ -1950,7 +1950,6 @@ async function initDB() {
 
     openRequest.onupgradeneeded = (event) => {
       const db = openRequest.result;
-      const values = Object.assign({}, settingsDefault, valuesV2, valuesV3);
 
       db.onerror = () => {
         console.error(
@@ -1962,13 +1961,15 @@ async function initDB() {
       };
 
       if (event.oldVersion < 1) {
+        const data = Object.assign({}, ...dbData.filter((e, i) => i > event.oldVersion - 1 && i <= event.newVersion - 1));
+        
         // db not found
         const objectStore = db.createObjectStore("settings", {
           keyPath: "key",
         });
 
         // add indexes (without key index)
-        for (const key of Object.keys(values).filter(
+        for (const key of Object.keys(data).filter(
           (k) => k !== "key"
         )) {
           objectStore.createIndex(key, key, { unique: false });
@@ -1980,7 +1981,7 @@ async function initDB() {
           const objectStore = db
             .transaction("settings", "readwrite")
             .objectStore("settings");
-          const request = objectStore.add(values);
+          const request = objectStore.add(data);
 
           request.onsuccess = () => {
             console.log(
@@ -2001,17 +2002,7 @@ async function initDB() {
         return;
       }
 
-      if (event.oldVersion < 2) {
-        // db is outdated (db version is 1)
-        updateVersionProccessor(openRequest.transaction, db, valuesV2);
-        return;
-      }
-
-      if (event.oldVersion < 3) {
-        // db is outdated (db version is 2)
-        updateVersionProccessor(openRequest.transaction, db, valuesV3);
-        return;
-      }
+      updateVersionProccessor(openRequest.transaction, db, Object.assign({}, ...dbData.filter((e, i) => i > event.oldVersion - 1 && i <= event.newVersion - 1)));
     };
 
     openRequest.onsuccess = () => {
