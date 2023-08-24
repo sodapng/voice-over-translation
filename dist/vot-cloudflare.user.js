@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.4.1-beta2
+// @version 1.4.1-beta3
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -1130,7 +1130,11 @@ async function getLanguage(player, response, title, description, author) {
     const audioTracks = player.getAudioTrack();
     const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
     if (trackInfo?.id !== "und") {
-      return trackInfo.id.split(".")[0];
+      return trackInfo.id.split(".")[0]
+        .toLowerCase()
+        .split(";")[0]
+        .trim()
+        .split("-")[0];
     }
   }
 
@@ -1140,8 +1144,12 @@ async function getLanguage(player, response, title, description, author) {
     response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
   if (captionTracks?.length) {
     const autoCaption = captionTracks.find((caption) => caption.kind === "asr");
-    if (autoCaption) {
-      return autoCaption.languageCode;
+    if (autoCaption && autoCaption.languageCode) {
+      return autoCaption.languageCode
+        .toLowerCase()
+        .split(";")[0]
+        .trim()
+        .split("-")[0];
     }
   }
   // If there is no caption track, use detect to get the language code from the text
@@ -1876,25 +1884,25 @@ function genOptionsByOBJ(obj, conditionString) {
 
 // --- IndexedDB functions start:
 const dbVersion = 3; // current db version
-const settingsDefault = {
-  key: "settings",
-  autoTranslate: 0,
-  defaultVolume: 100,
-  showVideoSlider: 0,
-  syncVolume: 0,
-  autoSetVolumeYandexStyle: 1,
-  dontTranslateYourLang: 1,
-}; // default settings for db v1
-
-const valuesV2 = {
-  audioProxy: 0,
-};
-
-const valuesV3 = {
-  subtitlesMaxLength: 300,
-  highlightWords: 0,
-  responseLanguage: lang,
-};
+const dbData = [
+  {
+    key: "settings",
+    autoTranslate: 0,
+    defaultVolume: 100,
+    showVideoSlider: 0,
+    syncVolume: 0,
+    autoSetVolumeYandexStyle: 1,
+    dontTranslateYourLang: 1,
+  },
+  {
+    audioProxy: 0,
+  },
+  {
+    subtitlesMaxLength: 300,
+    highlightWords: 0,
+    responseLanguage: lang,
+  },
+];
 
 function openDB(name) {
   return indexedDB.open(name, dbVersion);
@@ -1934,7 +1942,7 @@ async function initDB() {
 
         request.onsuccess = () => {
           const data =
-            request.result || Object.assign(settingsDefault, previousIndexes); // use data from db or reset all data
+            request.result || Object.assign(dbData[0], previousIndexes); // use data from db or reset all data
           for (const key in indexes) {
             data[key] = indexes[key];
           }
@@ -1983,13 +1991,15 @@ async function initDB() {
       };
 
       if (event.oldVersion < 1) {
+        const data = Object.assign({}, ...dbData.filter((e, i) => i > event.oldVersion - 1 && i <= event.newVersion - 1));
+        
         // db not found
         const objectStore = db.createObjectStore("settings", {
           keyPath: "key",
         });
 
-        // add indexes for 1 version (without key index)
-        for (const key of Object.keys(settingsDefault).filter(
+        // add indexes (without key index)
+        for (const key of Object.keys(data).filter(
           (k) => k !== "key"
         )) {
           objectStore.createIndex(key, key, { unique: false });
@@ -2001,7 +2011,7 @@ async function initDB() {
           const objectStore = db
             .transaction("settings", "readwrite")
             .objectStore("settings");
-          const request = objectStore.add(settingsDefault);
+          const request = objectStore.add(data);
 
           request.onsuccess = () => {
             console.log(
@@ -2019,17 +2029,10 @@ async function initDB() {
             reject(false);
           };
         };
+        return;
       }
 
-      if (event.oldVersion < 2) {
-        // db is outdated (db version is 1)
-        updateVersionProccessor(openRequest.transaction, db, valuesV2);
-      }
-
-      if (event.oldVersion < 3) {
-        // db is outdated (db version is 1)
-        updateVersionProccessor(openRequest.transaction, db, valuesV3);
-      }
+      updateVersionProccessor(openRequest.transaction, db, Object.assign({}, ...dbData.filter((e, i) => i > event.oldVersion - 1 && i <= event.newVersion - 1)));
     };
 
     openRequest.onsuccess = () => {
@@ -2825,9 +2828,9 @@ function updateSubtitles(video) {
   if (!video) return;
 
   let content = "";
-  let highlightWords = _highlightWords && _subtitles.containsTokens;
+  let highlightWords = _highlightWords && _subtitles?.containsTokens;
   const time = video.currentTime * 1000;
-  const line = _subtitles.subtitles.findLast((e) => {
+  const line = _subtitles?.subtitles?.findLast((e) => {
     return e.startMs < time && time < e.startMs + e.durationMs;
   });
   if (line) {
@@ -4270,6 +4273,7 @@ async function src_main() {
       .querySelector(".translationMenu")
       .addEventListener("click", async (event) => {
         event.stopPropagation();
+        event.stopImmediatePropagation();
 
         const select = document
           .querySelector(".translationMenuOptions")

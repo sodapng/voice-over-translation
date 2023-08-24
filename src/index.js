@@ -1368,6 +1368,7 @@ async function main() {
       .querySelector(".translationMenu")
       .addEventListener("click", async (event) => {
         event.stopPropagation();
+        event.stopImmediatePropagation();
 
         const select = document
           .querySelector(".translationMenuOptions")
