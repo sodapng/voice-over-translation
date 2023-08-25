@@ -86,18 +86,20 @@ npm i
 ## The extension has been tested in the following browsers:
 | Status | Browser | Browser Version | Platform | Extension
 |---|---|---|---|---
-| ⠀✅ | Firefox Developer Edition | v106.0b4, 64 bit | Windows | Tampermonkey
-| ⠀✅ | Firefox | v105.0.1 | Windows, Linux, Android | Tampermonkey
+| ⠀✅ | Firefox Developer Edition | v106 — v117, 64 bit | Windows | Tampermonkey
+| ⠀✅ | Firefox | v116.0.2 | Windows, Linux, Android | Tampermonkey
+| ⠀✅ | Firefox Nightly | v118.0a1 | Windows, Android | Tampermonkey
 | ⠀✅ | LibreWolf | v100.0.2-1 | Windows | Tampermonkey
 | ⠀✅ | Brave | v106.0.5249.91 | Windows | Tampermonkey
 | ⠀✅ | MS Edge | v106.0.1370.34 | Windows, Linux | Tampermonkey
 | ⠀✅ | Cent Browser | v4.3.9.248, 32 bit | Windows | Tampermonkey
 | ⠀✅ | Cent Browser Beta | v5.0.1002.182, 64 bit | Windows | Tampermonkey
-| ⠀✅ | Google Chrome | v106.0.5249.91 | Windows, MacOS, Linux | Tampermonkey, Violetmonkey
+| ⠀✅ | Google Chrome | v106 — 116 | Windows, MacOS, Linux | Tampermonkey, Violetmonkey, OrangeMonkey
 | ⠀✅ | Opera GX | LVL4 (core: 91.0.4516.36) | Windows | Tampermonkey
 | ⠀✅ | Opera | v92.0.4561.43 | Windows | Tampermonkey
 | ⠀✅ | Vivaldi | 5.7.2921.63 | Windows, Linux | Tampermonkey
 | ⠀❔ | Safari | v15.6.1 | MacOS, iOS | Userscripts
+| ⠀✅ | Kiwi Browser | v116.0.5845.61 | Android | Tampermonkey
 
 ## Tested in the following extensions for user scripts:
 | Status | Browser | Extension

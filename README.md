@@ -3,7 +3,7 @@
 English version: [Link](https://github.com/ilyhalight/voice-over-translation/blob/master/README-EN.md)
 
 Закадровый перевод видео, теперь, доступен не только в YandexBrowser.
-Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)** & **[SashaXser](https://github.com/SashaXser)**.. Спасиб <3
+Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)** & **[SashaXser](https://github.com/SashaXser)**. Спасиб <3
 
 ## Установка расширения:
 1. Установите расширение **[Tampermonkey](https://www.tampermonkey.net/)** (Альтернатива для Safari: **[UserScripts](https://apps.apple.com/app/userscripts/id1463298887 )**)
@@ -91,20 +91,20 @@ npm i
 ## Расширение протестировано в следующих браузерах:
 | Статус | Браузер | Версия браузера | Платформа | Расширение
 |---|---|---|---|---
-| ⠀✅ | Firefox Developer Edition | v106.0b4, 64 bit | Windows | Tampermonkey
+| ⠀✅ | Firefox Developer Edition | v106 — v117, 64 bit | Windows | Tampermonkey
 | ⠀✅ | Firefox | v116.0.2 | Windows, Linux, Android | Tampermonkey
+| ⠀✅ | Firefox Nightly | v118.0a1 | Windows, Android | Tampermonkey
 | ⠀✅ | LibreWolf | v100.0.2-1 | Windows | Tampermonkey
 | ⠀✅ | Brave | v106.0.5249.91 | Windows | Tampermonkey
 | ⠀✅ | MS Edge | v106.0.1370.34 | Windows, Linux | Tampermonkey
 | ⠀✅ | Cent Browser | v4.3.9.248, 32 bit | Windows | Tampermonkey
 | ⠀✅ | Cent Browser Beta | v5.0.1002.182, 64 bit | Windows | Tampermonkey
-| ⠀✅ | Google Chrome | v106.0.5249.91 | Windows, MacOS, Linux | Tampermonkey, Violetmonkey
+| ⠀✅ | Google Chrome | v106 — 116 | Windows, MacOS, Linux | Tampermonkey, Violetmonkey, OrangeMonkey
 | ⠀✅ | Opera GX | LVL4 (core: 91.0.4516.36) | Windows | Tampermonkey
 | ⠀✅ | Opera | v92.0.4561.43 | Windows | Tampermonkey
 | ⠀✅ | Vivaldi | 5.7.2921.63 | Windows, Linux | Tampermonkey
 | ⠀❔ | Safari | v15.6.1 | MacOS, iOS | Userscripts
 | ⠀✅ | Kiwi Browser | v116.0.5845.61 | Android | Tampermonkey
-| ⠀✅ | Firefox Nightly | v118.0a1 | Android | Tampermonkey
 
 ## Протестировано в следующих расширениях для юзерскриптов:
 | Статус | Браузер | Расширение
