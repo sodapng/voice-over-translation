@@ -110,17 +110,20 @@ async function initDB() {
       };
 
       if (event.oldVersion < 1) {
-        const data = Object.assign({}, ...dbData.filter((e, i) => i > event.oldVersion - 1 && i <= event.newVersion - 1));
-        
+        const data = Object.assign(
+          {},
+          ...dbData.filter(
+            (e, i) => i > event.oldVersion - 1 && i <= event.newVersion - 1
+          )
+        );
+
         // db not found
         const objectStore = db.createObjectStore("settings", {
           keyPath: "key",
         });
 
         // add indexes (without key index)
-        for (const key of Object.keys(data).filter(
-          (k) => k !== "key"
-        )) {
+        for (const key of Object.keys(data).filter((k) => k !== "key")) {
           objectStore.createIndex(key, key, { unique: false });
         }
 
@@ -151,7 +154,16 @@ async function initDB() {
         return;
       }
 
-      updateVersionProccessor(openRequest.transaction, db, Object.assign({}, ...dbData.filter((e, i) => i > event.oldVersion - 1 && i <= event.newVersion - 1)));
+      updateVersionProccessor(
+        openRequest.transaction,
+        db,
+        Object.assign(
+          {},
+          ...dbData.filter(
+            (e, i) => i > event.oldVersion - 1 && i <= event.newVersion - 1
+          )
+        )
+      );
     };
 
     openRequest.onsuccess = () => {

@@ -56,13 +56,7 @@ const cfOnlyExtensions = [
   "FireMonkey",
   "Greasemonkey",
   "AdGuard",
-  "OrangeMonkey"
-]
+  "OrangeMonkey",
+];
 
-
-export {
-  availableLangs,
-  additionalTTS,
-  siteTranslates,
-  cfOnlyExtensions
-};
+export { availableLangs, additionalTTS, siteTranslates, cfOnlyExtensions };
