@@ -1,6 +1,5 @@
 import debug from "./debug.js";
-import { availableLangs } from "./config/constants.js";
-
+import { availableLangs } from "../config/constants.js";
 
 async function detect(cleanText) {
   const response = await fetch("https://rust-server-531j.onrender.com/detect", {
@@ -17,7 +16,8 @@ async function getLanguage(player, response, title, description, author) {
     const audioTracks = player.getAudioTrack();
     const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
     if (trackInfo?.id !== "und") {
-      return trackInfo.id.split(".")[0]
+      return trackInfo.id
+        .split(".")[0]
         .toLowerCase()
         .split(";")[0]
         .trim()
@@ -78,7 +78,9 @@ function getVideoVolume() {
 }
 
 function setVideoVolume(volume) {
-  return document.querySelector(".html5-video-player")?.setVolume(Math.round(volume * 100));
+  return document
+    .querySelector(".html5-video-player")
+    ?.setVolume(Math.round(volume * 100));
 }
 
 function getSubtitles() {
@@ -131,7 +133,7 @@ async function getVideoData() {
     author
   );
   if (!availableLangs.includes(detectedLanguage)) {
-    detectedLanguage = 'en';
+    detectedLanguage = "en";
   }
   const videoData = {
     isLive: !!isLive,
@@ -139,7 +141,7 @@ async function getVideoData() {
     title,
     description,
     author,
-    detectedLanguage: detectedLanguage,
+    detectedLanguage,
   };
   debug.log("youtube video data:", videoData);
   console.log("[VOT] Detected language: ", videoData.detectedLanguage);
