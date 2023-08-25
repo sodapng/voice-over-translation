@@ -2,7 +2,7 @@ import "./styles/main.css";
 import { VOTLocalizedError } from "./utils/VOTLocalizedError.js";
 import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
-import { waitForElm, getVideoId, sleep, secsToStrTime } from "./utils/utils.js";
+import { getVideoId, secsToStrTime } from "./utils/utils.js";
 import { autoVolume } from "./config/config.js";
 import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
 import {
@@ -24,8 +24,6 @@ import {
 } from "./menu.js";
 import { syncVolume } from "./utils/volume.js";
 import { workerHost } from "./config/config-cloudflare.js";
-import regexes from "./config/regexes.js";
-import selectors from "./config/selectors.js";
 import debug from "./utils/debug.js";
 
 import requestVideoTranslation from "./rvt.js";
