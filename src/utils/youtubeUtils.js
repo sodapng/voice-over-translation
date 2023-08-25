@@ -1,4 +1,6 @@
 import debug from "./debug.js";
+import { availableLangs } from "./config/constants.js";
+
 
 async function detect(cleanText) {
   const response = await fetch("https://rust-server-531j.onrender.com/detect", {
@@ -121,19 +123,23 @@ async function getVideoData() {
     isUpcoming,
   } = response?.videoDetails ?? {};
   const isPremiere = (!!isLive || !!isUpcoming) && !isLiveContent;
+  let detectedLanguage = await getLanguage(
+    player,
+    response,
+    title,
+    description,
+    author
+  );
+  if (!availableLangs.includes(detectedLanguage)) {
+    detectedLanguage = 'en';
+  }
   const videoData = {
     isLive: !!isLive,
     isPremiere,
     title,
     description,
     author,
-    detectedLanguage: await getLanguage(
-      player,
-      response,
-      title,
-      description,
-      author
-    ),
+    detectedLanguage: detectedLanguage,
   };
   debug.log("youtube video data:", videoData);
   console.log("[VOT] Detected language: ", videoData.detectedLanguage);
