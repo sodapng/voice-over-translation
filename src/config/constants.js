@@ -51,4 +51,18 @@ const siteTranslates = {
   bitchute: "https://www.bitchute.com/video/",
 };
 
-export { availableLangs, additionalTTS, siteTranslates };
+const cfOnlyExtensions = [
+  "Violentmonkey",
+  "FireMonkey",
+  "Greasemonkey",
+  "AdGuard",
+  "OrangeMonkey"
+]
+
+
+export {
+  availableLangs,
+  additionalTTS,
+  siteTranslates,
+  cfOnlyExtensions
+};
