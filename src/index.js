@@ -9,6 +9,7 @@ import {
   availableLangs,
   additionalTTS,
   siteTranslates,
+  cfOnlyExtensions,
 } from "./config/constants.js";
 import { localizationProvider } from "./localization/localizationProvider.js";
 import { initDB, readDB, updateDB, deleteDB } from "./indexedDB.js";
@@ -56,9 +57,7 @@ async function main() {
   if (
     BUILD_MODE !== "cloudflare" &&
     GM_info?.scriptHandler &&
-    ["Violentmonkey", "FireMonkey", "Greasemonkey", "AdGuard"].includes(
-      GM_info.scriptHandler
-    )
+    cfOnlyExtensions.includes(GM_info.scriptHandler)
   ) {
     console.error(
       `[VOT] ${localizationProvider
@@ -749,7 +748,7 @@ async function main() {
       downloadBtn.style.display = "none";
       transformBtn("none", localizationProvider.get("translateVideo"));
       if (volumeOnStart) {
-        debug.log(`Volume on start: ${volumeOnStart}`)
+        debug.log(`Volume on start: ${volumeOnStart}`);
         if (window.location.hostname.includes("youtube.com")) {
           document
             .querySelector(".html5-video-player")
