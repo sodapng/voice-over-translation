@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.4.1-beta3
+// @version 1.4.1-beta4
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -1112,7 +1112,74 @@ class VOTLocalizedError extends Error {
   }
 }
 
+;// CONCATENATED MODULE: ./src/config/constants.js
+// available languages for translation
+const availableLangs = [
+  "ru",
+  "en",
+  "zh",
+  "ko",
+  "ar",
+  "fr",
+  "it",
+  "es",
+  "de",
+  "ja",
+];
+
+// Additional languages working with TTS
+const additionalTTS = [
+  "bn",
+  "pt",
+  "cs",
+  "hi",
+  "mr", // TODO: Add menu translation (MAYBE)
+  "te", // TODO: Add menu translation (MAYBE)
+  "tr",
+  "ms",
+  "vi",
+  "ta", // TODO: Add menu translation (MAYBE)
+  "jv",
+  "ur",
+  "fa",
+  "gu", // TODO: Add menu translation (MAYBE)
+  "id",
+  "uk",
+  "kk",
+];
+
+const siteTranslates = {
+  youtube: "https://youtu.be/",
+  twitch: "https://twitch.tv/",
+  vimeo: "https://vimeo.com/",
+  "9gag": "https://9gag.com/gag/",
+  vk: "https://vk.com/video?z=",
+  xvideos: "https://www.xvideos.com/",
+  pornhub: "https://rt.pornhub.com/view_video.php?viewkey=",
+  udemy: "https://www.udemy.com",
+  twitter: "https://twitter.com/i/status/",
+  facebook: "https://www.facebook.com/",
+  rutube: "https://rutube.ru/video/",
+  "bilibili.com": "https://www.bilibili.com/video/",
+  "mail.ru": "https://my.mail.ru/",
+  coub: "https://coub.com/view/",
+  bitchute: "https://www.bitchute.com/video/",
+};
+
+const cfOnlyExtensions = (/* unused pure expression or super */ null && ([
+  "Violentmonkey",
+  "FireMonkey",
+  "Greasemonkey",
+  "AdGuard",
+  "OrangeMonkey"
+]))
+
+
+
+
 ;// CONCATENATED MODULE: ./src/utils/youtubeUtils.js
+
+
 
 
 async function detect(cleanText) {
@@ -1236,19 +1303,23 @@ async function getVideoData() {
     isUpcoming,
   } = response?.videoDetails ?? {};
   const isPremiere = (!!isLive || !!isUpcoming) && !isLiveContent;
+  let detectedLanguage = await getLanguage(
+    player,
+    response,
+    title,
+    description,
+    author
+  );
+  if (!availableLangs.includes(detectedLanguage)) {
+    detectedLanguage = 'en';
+  }
   const videoData = {
     isLive: !!isLive,
     isPremiere,
     title,
     description,
     author,
-    detectedLanguage: await getLanguage(
-      player,
-      response,
-      title,
-      description,
-      author
-    ),
+    detectedLanguage,
   };
   debug/* default */.Z.log("youtube video data:", videoData);
   console.log("[VOT] Detected language: ", videoData.detectedLanguage);
@@ -1615,62 +1686,6 @@ const sitesPiped = [
   "piped.pfcd.me",
   "piped.frontendfriendly.xyz",
 ];
-
-
-
-;// CONCATENATED MODULE: ./src/config/constants.js
-// available languages for translation
-const availableLangs = [
-  "ru",
-  "en",
-  "zh",
-  "ko",
-  "ar",
-  "fr",
-  "it",
-  "es",
-  "de",
-  "ja",
-];
-
-// Additional languages working with TTS
-const additionalTTS = [
-  "bn",
-  "pt",
-  "cs",
-  "hi",
-  "mr", // TODO: Add menu translation (MAYBE)
-  "te", // TODO: Add menu translation (MAYBE)
-  "tr",
-  "ms",
-  "vi",
-  "ta", // TODO: Add menu translation (MAYBE)
-  "jv",
-  "ur",
-  "fa",
-  "gu", // TODO: Add menu translation (MAYBE)
-  "id",
-  "uk",
-  "kk",
-];
-
-const siteTranslates = {
-  youtube: "https://youtu.be/",
-  twitch: "https://twitch.tv/",
-  vimeo: "https://vimeo.com/",
-  "9gag": "https://9gag.com/gag/",
-  vk: "https://vk.com/video?z=",
-  xvideos: "https://www.xvideos.com/",
-  pornhub: "https://rt.pornhub.com/view_video.php?viewkey=",
-  udemy: "https://www.udemy.com",
-  twitter: "https://twitter.com/i/status/",
-  facebook: "https://www.facebook.com/",
-  rutube: "https://rutube.ru/video/",
-  "bilibili.com": "https://www.bilibili.com/video/",
-  "mail.ru": "https://my.mail.ru/",
-  coub: "https://coub.com/view/",
-  bitchute: "https://www.bitchute.com/video/",
-};
 
 
 
