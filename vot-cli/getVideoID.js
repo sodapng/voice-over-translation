@@ -1,5 +1,7 @@
 function getVideoId (service, url) {
     switch (service) {
+      case "piped":
+      case "invidious":
       case "youtube":
         if (url.includes("watch")) {
             return url.split("v=")[1];
@@ -12,7 +14,7 @@ function getVideoId (service, url) {
         } else {
           return url.includes('z=') ? url.split('z=')[1].split('%2')[0] : false; // Убираем мусор в конце параметра
         }
-      case "9gag" || "gag":
+      case "nine_gag" || "9gag" || "gag":
         if (url.includes("/gag/")) {
           return url.split('/gag/')[1];
         }
@@ -45,7 +47,7 @@ function getVideoId (service, url) {
           const urlArray = url.split('/');
           return urlArray[urlArray.length - 1];
         }
-      case "mail.ru":
+      case "mail_ru":
         if (url.pathname.includes('/v/')) {
           const urlArray = url.pathname.split('/v/');
           return urlArray[urlArray.length - 1];

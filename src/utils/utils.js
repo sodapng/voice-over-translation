@@ -46,6 +46,8 @@ const getVideoId = (service) => {
   const url = new URL(window.location.href);
 
   switch (service) {
+    case "piped":
+    case "invidious":
     case "youtube":
       return (
         url.pathname.match(/(?:watch|embed)\/([^/]+)/)?.[1] ||
@@ -63,6 +65,7 @@ const getVideoId = (service) => {
       } else {
         return false;
       }
+    case "nine_gag":
     case "9gag":
     case "gag":
       return url.pathname.match(/gag\/([^/]+)/)?.[1];
@@ -117,7 +120,7 @@ const getVideoId = (service) => {
       return url.pathname.match(/(?:video|embed)\/([^/]+)/)?.[1];
     case "coub":
       return url.pathname.match(/view\/([^/]+)/)?.[1];
-    case "bilibili.com": {
+    case "bilibili": {
       const bvid = url.searchParams.get("bvid");
       if (bvid) {
         return bvid;
@@ -129,7 +132,7 @@ const getVideoId = (service) => {
         return vid;
       }
     }
-    case "mail.ru":
+    case "mail_ru":
       if (url.pathname.startsWith("/v/") || url.pathname.startsWith("/mail/")) {
         return url.pathname;
       } else if (url.pathname.match(/video\/embed\/([^/]+)/)) {

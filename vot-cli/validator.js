@@ -14,13 +14,13 @@ function validate(site) {
   } else if (/^(https:\/\/|http:\/\/)?rt.pornhub.com\/view_video\.php\?viewkey=.*/.test(site)) {
     return 'pornhub';
   } else if (/^(https:\/\/|http:\/\/)?9gag.com\/gag\/*/.test(site)) {
-    return '9gag';
+    return 'nine_gag';
   } else if (/^(https:\/\/|http:\/\/)?vimeo.com\/*/.test(site)) {
     return 'vimeo';
   } else if (/^(https:\/\/|http:\/\/)?twitter.com\/*/.test(site)) {
     return 'twitter';
   } else if (site.includes('mail.ru')) {
-    return 'mail.ru';
+    return 'mail_ru';
   }
   return 'unknown';
 }

@@ -1168,8 +1168,8 @@ async function main() {
             "facebook",
             "rutube",
             "twitter",
-            "bilibili.com",
-            "mail.ru",
+            "bilibili",
+            "mail_ru",
           ];
           for (let i = 0; i < siteHostnames.length; i++) {
             if (siteHostname === siteHostnames[i]) {
@@ -1638,7 +1638,7 @@ async function main() {
       await sleep(1000);
       await translateProccessor(
         document.querySelector(selectors.gagSelector),
-        "9gag",
+        "nine_gag",
         null
       );
     } else if (window.location.hostname.includes("coub.com")) {
@@ -1668,7 +1668,7 @@ async function main() {
       if (window.location.pathname.includes("/video/")) {
         const el = await waitForElm(selectors.bilibilicomSelector);
         if (el) {
-          await translateProccessor(el, "bilibili.com", null);
+          await translateProccessor(el, "bilibili", null);
         }
       } else if (
         window.location.pathname.includes(
@@ -1677,7 +1677,7 @@ async function main() {
       ) {
         const el = await waitForElm("video");
         if (el) {
-          await translateProccessor(el.parentElement, "bilibili.com", null);
+          await translateProccessor(el.parentElement, "bilibili", null);
         }
       }
     } else if (window.location.hostname.includes("twitter.com")) {
@@ -1704,15 +1704,15 @@ async function main() {
       const el = await waitForElm(selectors.mailSelector);
       if (el) {
         let videoIDNew;
-        let videoID = getVideoId("mail.ru");
-        await translateProccessor(el, "mail.ru", null);
+        let videoID = getVideoId("mail_ru");
+        await translateProccessor(el, "mail_ru", null);
         setInterval(async () => {
-          videoIDNew = getVideoId("mail.ru");
+          videoIDNew = getVideoId("mail_ru");
           if (videoID !== videoIDNew) {
             if (videoIDNew) {
               await translateProccessor(
                 document.querySelector(selectors.mailSelector),
-                "mail.ru",
+                "mail_ru",
                 null
               );
             }
