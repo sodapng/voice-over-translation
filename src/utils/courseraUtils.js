@@ -3,7 +3,9 @@ import { availableLangs } from "../config/constants.js";
 import { langTo6391 } from "./utils.js";
 
 async function getCourseData(courseId) {
-  const response = await fetch(`https://www.coursera.org/api/onDemandCourses.v1/${courseId}`);
+  const response = await fetch(
+    `https://www.coursera.org/api/onDemandCourses.v1/${courseId}`
+  );
   const resJSON = await response.json();
   return resJSON?.elements?.[0];
 }
