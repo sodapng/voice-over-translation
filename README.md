@@ -29,11 +29,14 @@ English version: [Link](https://github.com/ilyhalight/voice-over-translation/blo
 - **[PornHub](https://rt.pornhub.com/)**
 - **[Bitchute](https://www.bitchute.com/)**
 - **[Coursera](https://www.coursera.org/)**
-- **[Udemy](https://www.udemy.com/)**
+- **[[⚠️] Udemy](https://www.udemy.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[[❌] TikTok](https://tiktok.com/)**
 - **[Invidious](https://yewtu.be)**
 - **[Piped](https://piped.video)**
+
+⚠️ - Требует дополнительных действий, подробнее в **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki)**
+❌ - Не работает
 
 ## Список функционала:
 1. Перевод с одного из доступных языков на русский. Язык определяется автоматически, если языка нету в списке или не удалось его определить, то используется перевод с английского.

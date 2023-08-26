@@ -28,11 +28,14 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[PornHub](https://rt.pornhub.com/)**
 - **[Bitchute](https://www.bitchute.com/)**
 - **[Coursera](https://www.coursera.org/)**
-- **[Udemy](https://www.udemy.com/)**
+- **[[⚠️] Udemy](https://www.udemy.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[[❌] TikTok](https://tiktok.com/)**
 - **[Invidious](https://yewtu.be)**
 - **[Piped](https://piped.video)**
+
+⚠️ - Requires additional actions, more in **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki)**
+❌ - Doesn't work
 
 ## List of functionality:
 1. Translation from one of the available languages into Russian. The language is detected automatically, if the language is not in the list or it was not possible to determine it, then a translation from English is used.
