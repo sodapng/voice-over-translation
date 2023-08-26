@@ -192,7 +192,8 @@
   padding-top: 0.5rem !important;
 }
 
-.translationDropDB {
+.translationDropDB,
+.translationUdemyData {
   border: none !important;
   border-radius: 4px !important;
   background: #5426ff !important;
@@ -200,6 +201,10 @@
   padding: 6px 16px !important;
   margin-left: auto !important;
   cursor: pointer !important;
+}
+
+.translationUdemyData {
+  margin: 16px !important;
 }
 
 .translationDownload {
