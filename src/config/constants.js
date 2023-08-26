@@ -49,6 +49,7 @@ const siteTranslates = {
   "mail.ru": "https://my.mail.ru/",
   coub: "https://coub.com/view/",
   bitchute: "https://www.bitchute.com/video/",
+  coursera: "https://www.coursera.org/",
 };
 
 const cfOnlyExtensions = [
