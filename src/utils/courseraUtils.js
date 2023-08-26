@@ -74,6 +74,5 @@ async function getVideoData(responseLang = "en") {
 export const courseraUtils = {
   getPlayer,
   getPlayerData,
-  // getSubtitles,
   getVideoData,
 };
