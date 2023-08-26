@@ -2,33 +2,10 @@ import debug from "./debug.js";
 import { availableLangs } from "../config/constants.js";
 import { langTo6391 } from "./utils.js";
 
-async function getAvailabledLanguage(courseId) {
-  const response = await fetch(
-    "https://www.coursera.org/graphql-gateway?opname=LanguagesForCourse",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify([
-        {
-          operationName: "LanguagesForCourse",
-          query:
-            "query LanguagesForCourse($input: LanguagesForProduct_QueryByCourseInput!) {\n  LanguagesForProduct {\n    queryByCourse(input: $input) {\n      __typename\n      ... on LanguagesForProduct_QueryByCourseSuccess {\n        availableLanguages {\n          primaryLanguageCodes\n          isSubtitleTranslationEnabled\n          subtitleLanguageCodes\n          machineTranslationEnabledLanguageCodes\n          __typename\n        }\n        __typename\n      }\n      ... on LanguagesForProduct_QueryByCourseError {\n        message\n        __typename\n      }\n    }\n    __typename\n  }\n}\n",
-          variables: {
-            input: {
-              courseId: courseId,
-            },
-          },
-        },
-      ]),
-    }
-  );
-
+async function getCourseData(courseId) {
+  const response = await fetch(`https://www.coursera.org/api/onDemandCourses.v1/${courseId}`);
   const resJSON = await response.json();
-
-  return resJSON?.[0]?.data?.LanguagesForProduct?.queryByCourse
-    ?.availableLanguages;
+  return resJSON?.elements?.[0];
 }
 
 function getSubtitlesFileURL(responseLang, tracks) {
@@ -63,9 +40,9 @@ async function getVideoData(responseLang = "en") {
   const { courseId, tracks, sources } = data?.options_ || {};
 
   const videoURL = getVideoFileURL(sources);
-  const availableLanguages = await getAvailabledLanguage(courseId); // its available languages from Coursera !!!
+  const courseData = await getCourseData(courseId); // its available languages from Coursera !!!
 
-  let detectedLanguage = availableLanguages?.primaryLanguageCodes?.[0];
+  let detectedLanguage = courseData?.primaryLanguageCodes?.[0];
   detectedLanguage = detectedLanguage ? langTo6391(detectedLanguage) : "en";
 
   if (!availableLangs.includes(detectedLanguage)) {
