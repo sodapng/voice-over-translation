@@ -1,3 +1,10 @@
+// coursera translation help object
+const VideoTranslationHelpObject = new protobuf.Type(
+  "VideoTranslationHelpObject"
+)
+  .add(new protobuf.Field("target", 1, "string")) // video_file_url or subtitles_file_url
+  .add(new protobuf.Field("targetUrl", 2, "string")); // url to video_file or url to subtitles
+
 const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
   .add(new protobuf.Field("url", 3, "string"))
   .add(new protobuf.Field("deviceId", 4, "string")) // removed?
@@ -7,7 +14,14 @@ const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
   .add(new protobuf.Field("language", 8, "string")) // source language code
   .add(new protobuf.Field("unknown3", 9, "int32")) // 0 0
   .add(new protobuf.Field("unknown4", 10, "int32")) // 0 0
-  .add(new protobuf.Field("translationHelp", 11, "int32")) // array for translation assistance ([0] -> {2: link to video, 1: "video_file_url"}, [1] -> {2: link to subtitles, 1: "subtitles_file_url"})
+  .add(
+    new protobuf.Field(
+      "translationHelp",
+      11,
+      "VideoTranslationHelpObject",
+      "repeated"
+    )
+  ) // array for translation assistance ([0] -> {2: link to video, 1: "video_file_url"}, [1] -> {2: link to subtitles, 1: "subtitles_file_url"})
   .add(new protobuf.Field("responseLanguage", 14, "string")); // target language code
 
 const VideoSubtitlesRequest = new protobuf.Type("VideoSubtitlesRequest")
@@ -26,7 +40,7 @@ const VideoStreamPingRequest = new protobuf.Type("VideoStreamPingRequest").add(
 const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
   .add(new protobuf.Field("url", 1, "string"))
   .add(new protobuf.Field("duration", 2, "double"))
-  .add(new protobuf.Field("status", 4, "int32")) // status
+  .add(new protobuf.Field("status", 4, "int32"))
   .add(new protobuf.Field("remainingTime", 5, "int32")) // secs before translation
   .add(new protobuf.Field("unknown0", 6, "int32")) // unknown 0 (1st request) -> 10 (2nd, 3th and etc requests)
   .add(new protobuf.Field("unknown1", 7, "string"))
@@ -67,6 +81,7 @@ const VideoStreamResponse = new protobuf.Type("VideoStreamResponse")
 // Create a root namespace and add the types
 const root = new protobuf.Root()
   .define("yandex")
+  .add(VideoTranslationHelpObject)
   .add(VideoTranslationRequest)
   .add(VideoTranslationResponse)
   .add(VideoSubtitlesRequest)
@@ -79,7 +94,13 @@ const root = new protobuf.Root()
 
 // Export the encoding and decoding functions
 export const yandexProtobuf = {
-  encodeTranslationRequest(url, duration, requestLang, responseLang) {
+  encodeTranslationRequest(
+    url,
+    duration,
+    requestLang,
+    responseLang,
+    translationHelp
+  ) {
     return root.VideoTranslationRequest.encode({
       url,
       firstRequest: true,
@@ -88,6 +109,7 @@ export const yandexProtobuf = {
       language: requestLang,
       unknown3: 0,
       unknown4: 0,
+      translationHelp,
       responseLanguage: responseLang,
     }).finish();
   },
