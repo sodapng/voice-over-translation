@@ -28,6 +28,8 @@ English version: [Link](https://github.com/ilyhalight/voice-over-translation/blo
 - **[XVideos](https://xvideos.com/)**
 - **[PornHub](https://rt.pornhub.com/)**
 - **[Bitchute](https://www.bitchute.com/)**
+- **[Coursera](https://www.coursera.org/)**
+- **[Udemy](https://www.udemy.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[[❌] TikTok](https://tiktok.com/)**
 - **[Invidious](https://yewtu.be)**
