@@ -1,3 +1,5 @@
+src/localization/locales/generate_phrase.py
+
 .vscode
 .pytest_cache
 
