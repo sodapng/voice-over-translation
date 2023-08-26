@@ -1,13 +1,6 @@
 import debug from "./debug.js";
 import { availableLangs } from "../config/constants.js";
-
-async function detect(cleanText) {
-  const response = await fetch("https://rust-server-531j.onrender.com/detect", {
-    method: "POST",
-    body: cleanText,
-  });
-  return await response.text();
-}
+import { detectLang, langTo6391 } from "./utils.js";
 
 // Get the language code from the response or the text
 async function getLanguage(player, response, title, description, author) {
@@ -16,12 +9,7 @@ async function getLanguage(player, response, title, description, author) {
     const audioTracks = player.getAudioTrack();
     const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
     if (trackInfo?.id !== "und") {
-      return trackInfo.id
-        .split(".")[0]
-        .toLowerCase()
-        .split(";")[0]
-        .trim()
-        .split("-")[0];
+      return langTo6391(trackInfo.id.split(".")[0]);
     }
   }
 
@@ -32,11 +20,7 @@ async function getLanguage(player, response, title, description, author) {
   if (captionTracks?.length) {
     const autoCaption = captionTracks.find((caption) => caption.kind === "asr");
     if (autoCaption && autoCaption.languageCode) {
-      return autoCaption.languageCode
-        .toLowerCase()
-        .split(";")[0]
-        .trim()
-        .split("-")[0];
+      return langTo6391(autoCaption.languageCode);
     }
   }
   // If there is no caption track, use detect to get the language code from the text
@@ -48,7 +32,7 @@ async function getLanguage(player, response, title, description, author) {
     .replace(/https?:\/\/\S+/g, "")
     .replace(/[^\p{L}\s]/gu, "")
     .slice(0, 250);
-  return await detect(cleanText);
+  return await detectLang(cleanText);
 }
 
 function isMobile() {
@@ -90,10 +74,8 @@ function getSubtitles() {
   captionTracks = captionTracks.reduce((result, captionTrack) => {
     if ("languageCode" in captionTrack) {
       const language = captionTrack?.languageCode
-        ?.toLowerCase()
-        .split(";")[0]
-        .trim()
-        .split("-")[0];
+        ? langTo6391(captionTrack?.languageCode)
+        : undefined;
       const url = captionTrack?.url || captionTrack?.baseUrl;
       language &&
         url &&

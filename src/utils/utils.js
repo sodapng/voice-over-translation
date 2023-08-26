@@ -145,6 +145,10 @@ const getVideoId = (service) => {
       return false;
     case "bitchute":
       return url.pathname.match(/video\/([^/]+)/)?.[1];
+    case "coursera":
+      // ! LINK SHOULD BE LIKE THIS https://www.coursera.org/learn/learning-how-to-learn/lecture/75EsZ
+      // return url.pathname.match(/lecture\/([^/]+)\/([^/]+)/)?.[1]; // <--- COURSE PREVIEW
+      return url.pathname.match(/learn\/([^/]+)\/lecture\/([^/]+)/)?.[0]; // <--- COURSE PASSING (IF YOU LOGINED TO COURSERA)
     default:
       return false;
   }
@@ -168,4 +172,17 @@ function secsToStrTime(secs) {
   }
 }
 
-export { waitForElm, sleep, getVideoId, secsToStrTime };
+function langTo6391(lang) {
+  // convert lang to ISO 639-1
+  return lang.toLowerCase().split(";")[0].trim().split("-")[0];
+}
+
+async function detectLang(cleanText) {
+  const response = await fetch("https://rust-server-531j.onrender.com/detect", {
+    method: "POST",
+    body: cleanText,
+  });
+  return await response.text();
+}
+
+export { waitForElm, sleep, getVideoId, secsToStrTime, detectLang, langTo6391 };
