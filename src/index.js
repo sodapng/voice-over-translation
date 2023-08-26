@@ -39,6 +39,7 @@ import {
   setSubtitlesHighlightWords,
 } from "./subtitles.js";
 import { courseraUtils } from "./utils/courseraUtils.js";
+import { udemyUtils } from "./utils/udemyUtils.js";
 
 const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 
@@ -227,6 +228,7 @@ async function main() {
     let dbAutoSetVolumeYandexStyle;
     let dontTranslateYourLang;
     let dbSyncVolume;
+    let dbUdemyData;
     let dbResponseLanguage;
     let dbAudioProxy; // cf version only
     let firstPlay = true;
@@ -455,6 +457,7 @@ async function main() {
         dbResponseLanguage = dbData.responseLanguage;
         dbAudioProxy = dbData.audioProxy; // cf version only
         dbSyncVolume = dbData.syncVolume; // youtube only
+        dbUdemyData = dbData.udemyData; // udemy only
 
         debug.log("[db] data from db: ", dbData);
 
@@ -702,6 +705,33 @@ async function main() {
 
           menuOptions.appendChild(checkbox);
         }
+
+        if (
+          window.location.hostname.includes("udemy.com") &&
+          dbUdemyData !== undefined &&
+          menuOptions &&
+          !menuOptions.querySelector("#VOTUdemyData")
+        ) {
+          // TODO: Along with the rework of the menu, change to the input field
+          const btn = document.createElement("button");
+          btn.classList.add("translationUdemyData");
+          btn.innerText = localizationProvider.get("VOTUdemyData");
+          btn.onclick = async (event) => {
+            event.stopPropagation();
+            const accessToken = prompt(
+              localizationProvider.get("enterUdemyAccessToken")
+            );
+            const udemyData = {
+              accessToken,
+              expires: new Date().getTime(),
+            };
+            await updateDB({ udemyData });
+            dbUdemyData = udemyData;
+            debug.log("udemyData value changed. New value: ", dbUdemyData);
+            window.location.reload();
+          };
+          menuOptions.appendChild(btn);
+        }
       }
     }
 
@@ -819,7 +849,7 @@ async function main() {
     async function getVideoData() {
       const videoData = {};
 
-      videoData.translationHelp = null; // ! should be null for ALL websites except coursera !
+      videoData.translationHelp = null; // ! should be null for ALL websites except coursera and udemy !
       videoData.duration = video?.duration || 343; // ! if 0 - we get 400 error
       videoData.videoId = getVideoId(siteHostname);
       videoData.detectedLanguage = translateFromLang;
@@ -844,6 +874,14 @@ async function main() {
         videoData.duration = courseraData.duration || videoData.duration; // courseraData.duration sometimes it can be equal to NaN
         videoData.detectedLanguage = courseraData.detectedLanguage;
         videoData.translationHelp = courseraData.translationHelp;
+      } else if (window.location.hostname.includes("udemy.com")) {
+        const udemyData = await udemyUtils.getVideoData(
+          dbUdemyData,
+          translateToLang
+        );
+        videoData.duration = udemyData.duration || videoData.duration;
+        videoData.detectedLanguage = udemyData.detectedLanguage;
+        videoData.translationHelp = udemyData.translationHelp;
       }
 
       return videoData;
@@ -1112,6 +1150,9 @@ async function main() {
     ) {
       console.log("[VOT] Video Data: ", videoData);
       const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
+      if (["udemy", "coursera"].includes(siteHostname) && !translationHelp) {
+        throw new VOTLocalizedError("VOTTranslationHelpNull");
+      }
       translateVideo(
         videoURL,
         videoData.duration,
@@ -1764,6 +1805,24 @@ async function main() {
                 "coursera",
                 null
               );
+            }
+            videoID = videoIDNew;
+          }
+        }, 3000);
+      }
+    } else if (window.location.hostname.includes("udemy.com")) {
+      // ONLY IF YOU LOGINED TO UDEMY /course/NAME/learn/lecture/XXXX
+      const el = await waitForElm(".vjs-v7");
+      if (el) {
+        let videoIDNew;
+        let videoID = getVideoId("udemy");
+        await translateProccessor(el, "udemy", null);
+        setInterval(async () => {
+          videoIDNew = getVideoId("udemy");
+          if (videoID !== videoIDNew) {
+            const newEl = await waitForElm(".vjs-v7");
+            if (videoIDNew && newEl) {
+              await translateProccessor(newEl, "udemy", null);
             }
             videoID = videoIDNew;
           }
