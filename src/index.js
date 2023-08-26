@@ -38,6 +38,7 @@ import {
   setSubtitlesMaxLength,
   setSubtitlesHighlightWords,
 } from "./subtitles.js";
+import { courseraUtils } from "./utils/courseraUtils.js";
 
 const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 
@@ -136,10 +137,19 @@ async function main() {
     debug.log("Added translation menu to ", element);
   }
 
-  function translateVideo(url, duration, requestLang, responseLang, callback) {
+  function translateVideo(
+    url,
+    duration,
+    requestLang,
+    responseLang,
+    translationHelp,
+    callback
+  ) {
     debug.log(
       `Translate video (url: ${url}, duration: ${duration}, requestLang: ${requestLang}, responseLang: ${responseLang})`
     );
+
+    debug.log("translationHelp:", translationHelp);
 
     if (BUILD_MODE === "cloudflare" && translationPanding) {
       debug.log("translationPanding return");
@@ -153,6 +163,7 @@ async function main() {
       duration,
       requestLang,
       responseLang,
+      translationHelp,
       (success, response) => {
         translationPanding = false;
 
@@ -744,8 +755,10 @@ async function main() {
       document.querySelector("#VOTVideoSlider")?.parentElement.remove();
       document.querySelector("#VOTTranslationSlider")?.parentElement.remove();
       const downloadBtn = document.querySelector(".translationDownload");
-      downloadBtn.href = "";
-      downloadBtn.style.display = "none";
+      if (downloadBtn) {
+        downloadBtn.href = "";
+        downloadBtn.style.display = "none";
+      }
       transformBtn("none", localizationProvider.get("translateVideo"));
       if (volumeOnStart) {
         debug.log(`Volume on start: ${volumeOnStart}`);
@@ -806,12 +819,10 @@ async function main() {
     async function getVideoData() {
       const videoData = {};
 
+      videoData.translationHelp = null; // ! should be null for ALL websites except coursera !
       videoData.duration = video?.duration || 343; // ! if 0 - we get 400 error
-
       videoData.videoId = getVideoId(siteHostname);
-
       videoData.detectedLanguage = translateFromLang;
-
       videoData.responseLanguage = translateToLang;
 
       if (window.location.hostname.includes("youtube.com")) {
@@ -828,6 +839,12 @@ async function main() {
         videoData.responseLanguage = "en";
       } else if (window.location.hostname.includes("bilibili.com")) {
         videoData.detectedLanguage = "zh";
+      } else if (window.location.hostname.includes("coursera.org")) {
+        const courseraData = await courseraUtils.getVideoData(translateToLang);
+        debug.log(`courseraData: ${courseraData}`);
+        videoData.duration = courseraData.duration || 343;
+        videoData.detectedLanguage = courseraData.detectedLanguage;
+        videoData.translationHelp = courseraData.translationHelp;
       }
 
       return videoData;
@@ -1070,7 +1087,8 @@ async function main() {
       await translateFunc(
         VIDEO_ID,
         videoData.detectedLanguage,
-        videoData.responseLanguage
+        videoData.responseLanguage,
+        videoData.translationHelp
       );
     };
 
@@ -1087,7 +1105,12 @@ async function main() {
     }
 
     // Define a function to translate a video and handle the callback
-    async function translateFunc(VIDEO_ID, requestLang, responseLang) {
+    async function translateFunc(
+      VIDEO_ID,
+      requestLang,
+      responseLang,
+      translationHelp
+    ) {
       console.log("[VOT] Video Data: ", videoData);
       const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
       translateVideo(
@@ -1095,6 +1118,7 @@ async function main() {
         videoData.duration,
         requestLang,
         responseLang,
+        translationHelp,
         async (success, urlOrError) => {
           debug.log("[exec callback] translateVideo");
           if (getVideoId(siteHostname) !== VIDEO_ID) return;
@@ -1110,7 +1134,13 @@ async function main() {
             ) {
               clearTimeout(autoRetry);
               autoRetry = setTimeout(
-                () => translateFunc(VIDEO_ID, requestLang, responseLang),
+                () =>
+                  translateFunc(
+                    VIDEO_ID,
+                    requestLang,
+                    responseLang,
+                    translationHelp
+                  ),
                 60_000
               );
             }
@@ -1712,6 +1742,27 @@ async function main() {
               await translateProccessor(
                 document.querySelector(selectors.mailSelector),
                 "mail.ru",
+                null
+              );
+            }
+            videoID = videoIDNew;
+          }
+        }, 3000);
+      }
+    } else if (window.location.hostname.includes("coursera.org")) {
+      // ONLY IF YOU LOGINED TO COURSERA /learn/NAME/lecture/XXXX
+      const el = await waitForElm("#video_player");
+      if (el) {
+        let videoIDNew;
+        let videoID = getVideoId("coursera");
+        await translateProccessor(el, "coursera", null);
+        setInterval(async () => {
+          videoIDNew = getVideoId("coursera");
+          if (videoID !== videoIDNew) {
+            if (videoIDNew) {
+              await translateProccessor(
+                document.querySelector("#video_player"),
+                "coursera",
                 null
               );
             }
