@@ -170,5 +170,10 @@
     "xh": "Xhosa",
     "yo": "Yoruba",
     "zu": "Zulu"
-  }
+  },
+  "udemyAccessTokenExpired": "Dein eingegebenes Udemy-Zugriffstoken ist abgelaufen",
+  "udemyModuleArgsNotFound": "Udemy-Moduldaten konnten nicht abgerufen werden, da Modulargs nicht gefunden wurde",
+  "VOTTranslationHelpNull": "Die für die Übersetzung erforderlichen Daten konnten nicht abgerufen werden",
+  "enterUdemyAccessToken": "Geben Sie das Udemy-Zugriffstoken ein",
+  "VOTUdemyData": "Udemy-Daten"
 }

@@ -170,5 +170,10 @@
     "jv": "Яванська",
     "ja": "Японська",
     "kri": "Крі"
-  }
+  },
+  "udemyAccessTokenExpired": "Термін дії введеного вами токена доступу до Udemy закінчився",
+  "udemyModuleArgsNotFound": "Не вдалося отримати дані модуля udemy через те, що ModuleArgs не знайдено",
+  "VOTTranslationHelpNull": "Не вдалося отримати дані, необхідні для перекладу",
+  "enterUdemyAccessToken": "Введіть маркер доступу Udemy",
+  "VOTUdemyData": "Дані Udemy"
 }

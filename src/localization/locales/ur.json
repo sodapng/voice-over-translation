@@ -170,5 +170,10 @@
     "jv": "جاوی",
     "ja": "جاپانی",
     "kri": "کری"
-  }
+  },
+  "udemyAccessTokenExpired": "آپ کے داخل کردہ اڈیمی رسائی ٹوکن کی میعاد ختم ہوگئی ہے",
+  "udemyModuleArgsNotFound": "حقیقت یہ ہے کہ ModuleArgs نہیں ملا تھا کی وجہ سے udemy ماڈیول ڈیٹا حاصل نہیں کر سکا",
+  "VOTTranslationHelpNull": "ترجمہ کے لیے درکار ڈیٹا حاصل نہیں کر سکا ۔ ",
+  "enterUdemyAccessToken": "Udemy رسائی ٹوکن درج کریں",
+  "VOTUdemyData": "اڈیمی ڈیٹا"
 }

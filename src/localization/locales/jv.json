@@ -170,5 +170,10 @@
     "jv": "Jawa",
     "ja": "Jepang",
     "kri": "Kri"
-  }
+  },
+  "udemyAccessTokenExpired": "Wkwkwkwkwkwkwkwkwkwkwk Ngakak abis dah",
+  "udemyModuleArgsNotFound": "Ora bisa entuk data modul udemy amarga Kasunyatan Manawa ModuleArgs ora ditemokake",
+  "VOTTranslationHelpNull": "Ora bisa njaluk data sing dibutuhake kanggo translate",
+  "enterUdemyAccessToken": "Masuk Token Akses Udemy",
+  "VOTUdemyData": "Data Udemy"
 }

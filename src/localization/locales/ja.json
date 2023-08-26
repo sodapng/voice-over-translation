@@ -170,5 +170,10 @@
     "st": "南部ソト語",
     "ja": "日本語",
     "nso": "北部ソト語"
-  }
+  },
+  "udemyAccessTokenExpired": "入力したUdemyアクセストークンの有効期限が切れています",
+  "udemyModuleArgsNotFound": "ModuleArgsが見つからなかったため、udemyモジュールのデータを取得できませんでした",
+  "VOTTranslationHelpNull": "翻訳に必要なデータを取得できませんでした",
+  "enterUdemyAccessToken": "Udemyアクセストークンを入力します",
+  "VOTUdemyData": "Udemyデータ"
 }

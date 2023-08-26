@@ -170,5 +170,10 @@
     "jv": "Javan",
     "ja": "Nhật",
     "kri": "Kri"
-  }
+  },
+  "udemyAccessTokenExpired": "Mã Thông Báo Truy Cập udemy đã nhập của bạn đã hết hạn",
+  "udemyModuleArgsNotFound": "Không thể lấy dữ liệu mô-đun udemy do Thực tế Là Không tìm Thấy Mô-Đun",
+  "VOTTranslationHelpNull": "Không thể nhận được dữ liệu cần thiết cho bản dịch",
+  "enterUdemyAccessToken": "Nhập Mã Thông Báo Truy Cập Udemy",
+  "VOTUdemyData": "Dữ Liệu Udemy"
 }

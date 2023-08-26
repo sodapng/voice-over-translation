@@ -170,5 +170,10 @@
     "jv": "Ява",
     "ja": "Жапон",
     "kri": "Кри"
-  }
+  },
+  "udemyAccessTokenExpired": "Сіз енгізген Udemy кіру таңбалауышының мерзімі аяқталды",
+  "udemyModuleArgsNotFound": "Moduleargs табылмағандықтан udemy Модулінің деректерін алу мүмкін болмады",
+  "VOTTranslationHelpNull": "Аударуға қажетті деректерді алу мүмкін болмады",
+  "enterUdemyAccessToken": "Udemy кіру таңбалауышын енгізіңіз",
+  "VOTUdemyData": "Udemy Деректері"
 }

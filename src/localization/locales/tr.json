@@ -170,5 +170,10 @@
     "jv": "Javanese",
     "ja": "Japonca",
     "kri": "Krio"
-  }
+  },
+  "udemyAccessTokenExpired": "Girdiğiniz Udemy Erişim Belirtecinizin süresi doldu",
+  "udemyModuleArgsNotFound": "ModuleArgs bulunamadığı için udemy modül verileri alınamadı",
+  "VOTTranslationHelpNull": "Çeviri için gereken veriler alınamadı",
+  "enterUdemyAccessToken": "Udemy Erişim Belirtecini Girin",
+  "VOTUdemyData": "Udemy Verileri"
 }

@@ -170,5 +170,10 @@
     "jv": "Jawa",
     "ja": "Jepang",
     "kri": "Kri"
-  }
+  },
+  "udemyAccessTokenExpired": "Token Akses Udemy yang Anda masukkan telah kedaluwarsa",
+  "udemyModuleArgsNotFound": "Tidak dapat memperoleh data modul udemy karena fakta bahwa ModuleArgs tidak ditemukan",
+  "VOTTranslationHelpNull": "Tidak dapat memperoleh data yang diperlukan untuk terjemahan",
+  "enterUdemyAccessToken": "Masukkan Token Akses Udemy",
+  "VOTUdemyData": "Udemy Data"
 }

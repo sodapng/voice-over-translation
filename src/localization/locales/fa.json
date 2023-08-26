@@ -170,5 +170,10 @@
     "jv": "جاوه ای",
     "ja": "ژاپنی",
     "kri": "کری"
-  }
+  },
+  "udemyAccessTokenExpired": "رمز ورود Udemy Access شما منقضی شده است",
+  "udemyModuleArgsNotFound": "نتوانست داده های ماژول udemy را به دلیل این واقعیت که ModuleArgs یافت نشد ، دریافت کند",
+  "VOTTranslationHelpNull": "نتونستم اطلاعات مورد نیاز برای ترجمه رو بدست بیارم",
+  "enterUdemyAccessToken": "توکن دسترسی Udemy را وارد کنید",
+  "VOTUdemyData": "داده های Udemy"
 }
