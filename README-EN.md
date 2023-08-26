@@ -35,6 +35,7 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[Piped](https://piped.video)**
 
 ⚠️ - Requires additional actions, more in **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki)**
+
 ❌ - Doesn't work
 
 ## List of functionality:

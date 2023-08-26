@@ -36,6 +36,7 @@ English version: [Link](https://github.com/ilyhalight/voice-over-translation/blo
 - **[Piped](https://piped.video)**
 
 ⚠️ - Требует дополнительных действий, подробнее в **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki)**
+
 ❌ - Не работает
 
 ## Список функционала:
