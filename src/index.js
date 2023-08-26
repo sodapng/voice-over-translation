@@ -841,8 +841,7 @@ async function main() {
         videoData.detectedLanguage = "zh";
       } else if (window.location.hostname.includes("coursera.org")) {
         const courseraData = await courseraUtils.getVideoData(translateToLang);
-        debug.log(`courseraData: ${courseraData}`);
-        videoData.duration = courseraData.duration || 343;
+        videoData.duration = courseraData.duration || videoData.duration; // courseraData.duration sometimes it can be equal to NaN
         videoData.detectedLanguage = courseraData.detectedLanguage;
         videoData.translationHelp = courseraData.translationHelp;
       }
