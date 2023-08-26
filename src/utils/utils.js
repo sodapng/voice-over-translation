@@ -174,7 +174,7 @@ function secsToStrTime(secs) {
 
 function langTo6391(lang) {
   // convert lang to ISO 639-1
-  return lang.toLowerCase().split(";")[0].trim().split("-")[0];
+  return lang.toLowerCase().split(";")[0].trim().split("-")[0].split("_")[0];
 }
 
 async function detectLang(cleanText) {
