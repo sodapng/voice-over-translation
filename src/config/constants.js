@@ -41,7 +41,7 @@ const siteTranslates = {
   vk: "https://vk.com/video?z=",
   xvideos: "https://www.xvideos.com/",
   pornhub: "https://rt.pornhub.com/view_video.php?viewkey=",
-  udemy: "https://www.udemy.com",
+  udemy: "https://www.udemy.com/",
   twitter: "https://twitter.com/i/status/",
   facebook: "https://www.facebook.com/",
   rutube: "https://rutube.ru/video/",
