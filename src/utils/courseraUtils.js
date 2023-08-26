@@ -28,9 +28,6 @@ function getPlayer() {
   return document.querySelector("#video_player");
 }
 
-// textTracks_.tracks_ - subtitles
-// options.playerOptions.tracks - subtitles with urls
-
 // Get the video data from the player
 async function getVideoData(responseLang = "en") {
   let translationHelp = null;
@@ -40,7 +37,7 @@ async function getVideoData(responseLang = "en") {
   const { courseId, tracks, sources } = data?.options_ || {};
 
   const videoURL = getVideoFileURL(sources);
-  const courseData = await getCourseData(courseId); // its available languages from Coursera !!!
+  const courseData = await getCourseData(courseId);
 
   let detectedLanguage = courseData?.primaryLanguageCodes?.[0];
   detectedLanguage = detectedLanguage ? langTo6391(detectedLanguage) : "en";
