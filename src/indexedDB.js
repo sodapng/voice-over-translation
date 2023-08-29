@@ -2,7 +2,7 @@ import { lang } from "./menu.js";
 import { localizationProvider } from "./localization/localizationProvider.js";
 
 // --- IndexedDB functions start:
-const dbVersion = 3; // current db version
+const dbVersion = 4; // current db version
 const dbData = [
   {
     key: "settings",
@@ -20,6 +20,12 @@ const dbData = [
     subtitlesMaxLength: 300,
     highlightWords: 0,
     responseLanguage: lang,
+  },
+  {
+    udemyData: {
+      accessToken: "",
+      expires: 0,
+    },
   },
 ];
 
@@ -110,17 +116,20 @@ async function initDB() {
       };
 
       if (event.oldVersion < 1) {
-        const data = Object.assign({}, ...dbData.filter((e, i) => i > event.oldVersion - 1 && i <= event.newVersion - 1));
-        
+        const data = Object.assign(
+          {},
+          ...dbData.filter(
+            (e, i) => i > event.oldVersion - 1 && i <= event.newVersion - 1
+          )
+        );
+
         // db not found
         const objectStore = db.createObjectStore("settings", {
           keyPath: "key",
         });
 
         // add indexes (without key index)
-        for (const key of Object.keys(data).filter(
-          (k) => k !== "key"
-        )) {
+        for (const key of Object.keys(data).filter((k) => k !== "key")) {
           objectStore.createIndex(key, key, { unique: false });
         }
 
@@ -151,7 +160,16 @@ async function initDB() {
         return;
       }
 
-      updateVersionProccessor(openRequest.transaction, db, Object.assign({}, ...dbData.filter((e, i) => i > event.oldVersion - 1 && i <= event.newVersion - 1)));
+      updateVersionProccessor(
+        openRequest.transaction,
+        db,
+        Object.assign(
+          {},
+          ...dbData.filter(
+            (e, i) => i > event.oldVersion - 1 && i <= event.newVersion - 1
+          )
+        )
+      );
     };
 
     openRequest.onsuccess = () => {
@@ -197,6 +215,7 @@ async function updateDB({
   subtitlesMaxLength,
   highlightWords,
   responseLanguage,
+  udemyData,
 }) {
   return new Promise((resolve, reject) => {
     if (
@@ -209,7 +228,8 @@ async function updateDB({
       typeof audioProxy === "number" ||
       typeof subtitlesMaxLength === "number" ||
       typeof highlightWords === "number" ||
-      typeof responseLanguage === "string"
+      typeof responseLanguage === "string" ||
+      typeof udemyData === "object"
     ) {
       const openRequest = openDB("VOT");
 
@@ -294,6 +314,10 @@ async function updateDB({
 
           if (typeof responseLanguage === "string") {
             data.responseLanguage = responseLanguage;
+          }
+
+          if (typeof udemyData === "object") {
+            data.udemyData = udemyData;
           }
 
           const requestUpdate = objectStore.put(data);

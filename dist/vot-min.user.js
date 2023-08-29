@@ -73,6 +73,8 @@
 // @match *://*.bilibili.com/*
 // @match *://my.mail.ru/*
 // @match *://*.bitchute.com/*
+// @match *://*.coursera.org/learn/*
+// @match *://*.udemy.com/course/*
 // @connect api.browser.yandex.ru
 // @downloadURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js
 // @grant GM_xmlhttpRequest

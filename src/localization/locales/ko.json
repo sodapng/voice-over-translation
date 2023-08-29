@@ -170,5 +170,10 @@
     "iw": "히브리어",
     "hi": "힌디어",
     "kri": "Kri"
-  }
+  },
+  "udemyAccessTokenExpired": "입력한 액세스 토큰이 만료되었습니다.",
+  "udemyModuleArgsNotFound": "오류 코드에 관한 문제로 트리거됩니다.",
+  "VOTTranslationHelpNull": "번역에 필요한 데이터를 가져올 수 없습니다",
+  "enterUdemyAccessToken": "액세스 토큰 입력",
+  "VOTUdemyData": "데이터"
 }

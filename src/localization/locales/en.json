@@ -170,5 +170,10 @@
     "yi": "Yiddish",
     "yo": "Yoruba",
     "zu": "Zulu"
-  }
+  },
+  "udemyAccessTokenExpired": "Your entered Udemy Access Token has expired",
+  "udemyModuleArgsNotFound": "Could not get udemy module data due to the fact that ModuleArgs was not found",
+  "VOTTranslationHelpNull": "Could not get the data required for the translate",
+  "enterUdemyAccessToken": "Enter Udemy Access Token",
+  "VOTUdemyData": "Udemy Data"
 }

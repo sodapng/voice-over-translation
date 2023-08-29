@@ -170,5 +170,10 @@
     "yi": "Yidis",
     "yo": "Yoruba",
     "zu": "Zulú"
-  }
+  },
+  "udemyAccessTokenExpired": "El Token de acceso de Udemy que has introducido ha caducado",
+  "udemyModuleArgsNotFound": "No se pudieron obtener los datos del módulo Udemy debido a que no se encontraron ModuleArgs",
+  "VOTTranslationHelpNull": "No se pudieron obtener los datos necesarios para la traducción",
+  "enterUdemyAccessToken": "Introduce el Token de Acceso de Udemy",
+  "VOTUdemyData": "Datos de Udemy"
 }

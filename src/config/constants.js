@@ -41,7 +41,7 @@ const siteTranslates = {
   vk: "https://vk.com/video?z=",
   xvideos: "https://www.xvideos.com/",
   pornhub: "https://rt.pornhub.com/view_video.php?viewkey=",
-  udemy: "https://www.udemy.com",
+  udemy: "https://www.udemy.com/",
   twitter: "https://twitter.com/i/status/",
   facebook: "https://www.facebook.com/",
   rutube: "https://rutube.ru/video/",
@@ -49,6 +49,15 @@ const siteTranslates = {
   mail_ru: "https://my.mail.ru/",
   coub: "https://coub.com/view/",
   bitchute: "https://www.bitchute.com/video/",
+  coursera: "https://www.coursera.org/",
 };
 
-export { availableLangs, additionalTTS, siteTranslates };
+const cfOnlyExtensions = [
+  "Violentmonkey",
+  "FireMonkey",
+  "Greasemonkey",
+  "AdGuard",
+  "OrangeMonkey",
+];
+
+export { availableLangs, additionalTTS, siteTranslates, cfOnlyExtensions };

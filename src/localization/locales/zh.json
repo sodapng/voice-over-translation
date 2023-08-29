@@ -170,5 +170,10 @@
     "zh-Hans": "中文（简体）",
     "zu": "祖鲁语",
     "kri": "Kri"
-  }
+  },
+  "udemyAccessTokenExpired": "您输入的Udemy访问令牌已过期",
+  "udemyModuleArgsNotFound": "由于找不到ModuleArgs，无法获取udemy模块数据",
+  "VOTTranslationHelpNull": "无法获得翻译所需的数据",
+  "enterUdemyAccessToken": "输入Udemy访问令牌",
+  "VOTUdemyData": "Udemy数据"
 }

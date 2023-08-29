@@ -9,6 +9,7 @@ async function requestVideoTranslation(
   duration,
   requestLang,
   responseLang,
+  translationHelp,
   callback
 ) {
   try {
@@ -23,7 +24,8 @@ async function requestVideoTranslation(
       url,
       duration,
       requestLang,
-      responseLang
+      responseLang,
+      translationHelp
     );
     // Send the request
     await yandexRequest(

@@ -170,5 +170,10 @@
     "jv": "Javánština",
     "ja": "Japonština",
     "kri": "Krio"
-  }
+  },
+  "udemyAccessTokenExpired": "Platnost zadaného přístupového tokenu Udemy vypršela",
+  "udemyModuleArgsNotFound": "Nelze získat data Udemy modulu Vzhledem k tomu, že ModuleArgs nebyl nalezen",
+  "VOTTranslationHelpNull": "Nelze získat data potřebná pro překlad",
+  "enterUdemyAccessToken": "Zadejte Udemy Přístupový Token",
+  "VOTUdemyData": "Udemy Data"
 }

@@ -6,18 +6,6 @@ const sites = () => {
       match: /^www.tiktok.com$/,
       selector: null,
     },
-    { // TODO
-      host: "coursera",
-      url: null,
-      match: /^www.coursera.org$/,
-      selector: null,
-    },
-    { // TODO
-      host: "udemy",
-      url: "https://www.udemy.com",
-      match: null,
-      selector: null,
-    },
     {
       host: "youtube",
       url: "https://youtu.be/",
@@ -113,6 +101,18 @@ const sites = () => {
       url: "https://my.mail.ru/",
       match: /^my.mail.ru$/,
       selector: "#b-video-wrapper",
+    },
+    { // ONLY IF YOU LOGINED TO COURSERA /learn/NAME/lecture/XXXX
+      host: "coursera",
+      url: "https://www.coursera.org/",
+      match: /^coursera.org$/,
+      selector: "#video_player",
+    },
+    { // ONLY IF YOU LOGINED TO UDEMY /course/NAME/learn/lecture/XXXX
+      host: "udemy",
+      url: "https://www.udemy.com/",
+      match: /^udemy.com$/,
+      selector: ".vjs-v7",
     },
     { // Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
       host: "invidious",

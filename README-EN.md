@@ -9,7 +9,7 @@ The voice-over translation of the video is now available not only in YandexBrows
 2. **[«Install the Script»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js)** (**[Cloudflare version](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**)
 
 ### Useful links:
-1. Version for VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, UserScripts and some browsers: **[Link](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
+1. Version for VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, OrangeMonkey, UserScripts and some browsers: **[Link](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
 2. Terminal version: **[Link](https://github.com/ilyhalight/voice-over-translation/tree/master/vot-cli)**
 3. Wiki: **[Link](https://github.com/ilyhalight/voice-over-translation/wiki)**
 
@@ -27,10 +27,16 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[XVideos](https://xvideos.com/)**
 - **[PornHub](https://rt.pornhub.com/)**
 - **[Bitchute](https://www.bitchute.com/)**
+- **[Coursera](https://www.coursera.org/)**
+- **[[⚠️] Udemy](https://www.udemy.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[[❌] TikTok](https://tiktok.com/)**
 - **[Invidious](https://yewtu.be)**
 - **[Piped](https://piped.video)**
+
+⚠️ - Requires additional actions, more in **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki)**
+
+❌ - Doesn't work
 
 ## List of functionality:
 1. Translation from one of the available languages into Russian. The language is detected automatically, if the language is not in the list or it was not possible to determine it, then a translation from English is used.
@@ -86,18 +92,20 @@ npm i
 ## The extension has been tested in the following browsers:
 | Status | Browser | Browser Version | Platform | Extension
 |---|---|---|---|---
-| ⠀✅ | Firefox Developer Edition | v106.0b4, 64 bit | Windows | Tampermonkey
-| ⠀✅ | Firefox | v105.0.1 | Windows, Linux, Android | Tampermonkey
+| ⠀✅ | Firefox Developer Edition | v106 — v117, 64 bit | Windows | Tampermonkey
+| ⠀✅ | Firefox | v116.0.2 | Windows, Linux, Android | Tampermonkey
+| ⠀✅ | Firefox Nightly | v118.0a1 | Windows, Android | Tampermonkey
 | ⠀✅ | LibreWolf | v100.0.2-1 | Windows | Tampermonkey
 | ⠀✅ | Brave | v106.0.5249.91 | Windows | Tampermonkey
 | ⠀✅ | MS Edge | v106.0.1370.34 | Windows, Linux | Tampermonkey
 | ⠀✅ | Cent Browser | v4.3.9.248, 32 bit | Windows | Tampermonkey
 | ⠀✅ | Cent Browser Beta | v5.0.1002.182, 64 bit | Windows | Tampermonkey
-| ⠀✅ | Google Chrome | v106.0.5249.91 | Windows, MacOS, Linux | Tampermonkey, Violetmonkey
+| ⠀✅ | Google Chrome | v106 — 116 | Windows, MacOS, Linux | Tampermonkey, Violetmonkey, OrangeMonkey
 | ⠀✅ | Opera GX | LVL4 (core: 91.0.4516.36) | Windows | Tampermonkey
 | ⠀✅ | Opera | v92.0.4561.43 | Windows | Tampermonkey
 | ⠀✅ | Vivaldi | 5.7.2921.63 | Windows, Linux | Tampermonkey
 | ⠀❔ | Safari | v15.6.1 | MacOS, iOS | Userscripts
+| ⠀✅ | Kiwi Browser | v116.0.5845.61 | Android | Tampermonkey
 
 ## Tested in the following extensions for user scripts:
 | Status | Browser | Extension
@@ -108,6 +116,7 @@ npm i
 | ⠀[Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Any | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
 | ⠀[Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Firefox | Firemonkey
 | ⠀[Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Any | Greasemonkey
+| ⠀[Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Any | OrangeMonkey
 
 ![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example_en.jpg "btn")
 

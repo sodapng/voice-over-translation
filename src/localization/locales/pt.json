@@ -169,5 +169,10 @@
     "jv": "Javanês",
     "ja": "Japonês",
     "kri": "Crioulo"
-  }
+  },
+  "udemyAccessTokenExpired": "O Token de acesso da Udemy inserido expirou",
+  "udemyModuleArgsNotFound": "Não foi possível obter dados do módulo udemy devido ao fato de que ModuleArgs não foi encontrado",
+  "VOTTranslationHelpNull": "Não foi possível obter os dados necessários para a tradução",
+  "enterUdemyAccessToken": "Insira O Token De Acesso Da Udemy",
+  "VOTUdemyData": "Dados Udemy"
 }
