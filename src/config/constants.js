@@ -31,6 +31,11 @@ const additionalTTS = [
   "id",
   "uk",
   "kk",
+  "da",
+  "fi",
+  "uz",
+  "pl",
+  "sv",
 ];
 
 const siteTranslates = {
