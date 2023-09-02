@@ -1549,7 +1549,8 @@ class VideoHandler {
       this.votSettingsDialog = ui.createDialog(localizationProvider.get("VOTSettings")); // TODO: add localization
       document.documentElement.appendChild(this.votSettingsDialog.container);
 
-      // TODO: Header: Translation
+      this.votTranslationHeader = ui.createHeader(localizationProvider.get("translationSettings"));
+      this.votSettingsDialog.bodyContainer.appendChild(this.votTranslationHeader);
 
       this.votAutoTranslateCheckbox = ui.createCheckbox(localizationProvider.get("VOTAutoTranslate"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votAutoTranslateCheckbox.container);
@@ -1569,7 +1570,8 @@ class VideoHandler {
       this.votAudioProxyCheckbox = ui.createCheckbox(localizationProvider.get("VOTAudioProxy"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votAudioProxyCheckbox.container);
 
-      // TODO: Header: Subtitles
+      this.votSubtitlesHeader = ui.createHeader(localizationProvider.get("subtitlesSettings")); // TODO: add localization
+      this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesHeader);
 
       this.votSubtitlesMaxLengthSlider = ui.createSlider(localizationProvider.get("VOTSubtitlesMaxLength"), 300, 50, 300);
       this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesMaxLengthSlider.container);
@@ -1577,7 +1579,8 @@ class VideoHandler {
       this.votSubtitlesHighlightWordsCheckbox = ui.createCheckbox(localizationProvider.get("VOTHighlightWords"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesHighlightWordsCheckbox.container);
 
-      // TODO: Header: About
+      this.votAboutHeader = ui.createHeader(localizationProvider.get("about")); // TODO: add localization
+      this.votSettingsDialog.bodyContainer.appendChild(this.votAboutHeader);
 
       this.votLanguageSelect = ui.createSelect(localizationProvider.get("VOTMenuLanguage")); // TODO: add localization
       this.votSettingsDialog.bodyContainer.appendChild(this.votLanguageSelect.container);

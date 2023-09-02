@@ -1,0 +1,10 @@
+.vot-header {
+  color: rgba(var(--vot-helper-onsurface-rgb), 0.87);
+  font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+  font-weight: bold;
+  line-height: 1.5;
+
+  &:not(:first-child) {
+    padding-top: 8px;
+  }
+}
