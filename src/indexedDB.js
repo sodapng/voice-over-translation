@@ -1,4 +1,4 @@
-import { lang } from "./menu.js";
+import { lang } from "./menu-old.js";
 import { localizationProvider } from "./localization/localizationProvider.js";
 
 // --- IndexedDB functions start:

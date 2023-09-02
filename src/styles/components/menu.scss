@@ -1,0 +1,217 @@
+.vot-menu {
+  --vot-helper-surface-rgb: var(--vot-surface-rgb, 255, 255, 255);
+  --vot-helper-surface: rgb(var(--vot-helper-surface-rgb));
+  --vot-helper-onsurface-rgb: var(--vot-onsurface-rgb, 0, 0, 0);
+  --vot-helper-onsurface: rgba(var(--vot-helper-onsurface-rgb), 0.87);
+  overflow: hidden;
+  position: absolute;
+  left: 50%;
+  top: calc(5rem + 32px + 16px);
+  user-select: none;
+  background-color: var(--vot-helper-surface);
+  color: var(--vot-helper-onsurface);
+  border-radius: 8px;
+  font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+  font-size: 16px;
+  line-height: 1.5;
+  min-width: 300px;
+
+  visibility: visible;
+  opacity: 1;
+  transform-origin: top;
+  transform: translate(-50%) scale(1);
+  transition: 
+    opacity 0.3s,
+    transform 0.1s;
+
+  &[hidden] {
+    pointer-events: none;
+    display: block !important;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(-50%) scale(0);
+  }
+
+  &-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(var(--vot-container-height, 75vh) - (5rem + 32px + 16px) * 2);
+    overflow: auto;
+  }
+
+  &-header-container {
+    flex-shrink: 0;
+    align-items: flex-start;
+    display: flex;
+    min-height: 31px;
+
+    &:empty {
+      padding: 0 0 16px 0;
+    }
+
+    & > .vot-icon-button {
+      margin-inline-end: 4px;
+      margin-top: 4px;
+    }
+  }
+
+  &-title-container {
+    display: flex;
+    flex: 1;
+    font-size: inherit;
+    font-weight: inherit;
+    margin: 0;
+    outline: 0;
+  }
+
+  &-title {
+    flex: 1;
+    font-size: 16px;
+    line-height: 1;
+    padding-bottom: 16px;
+    padding-inline-end: 16px;
+    padding-inline-start: 16px;
+    padding-top: 16px;
+  }
+
+  &-body-container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: 1.375rem;
+    overflow: auto;
+    padding: 0 16px;
+    gap: 8px;
+    overscroll-behavior: contain;
+
+    scrollbar-color: rgba(var(--vot-helper-onsurface-rgb), 0.1) var(--vot-helper-surface) !important;
+
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-track {
+      height: 12px !important;
+      width: 12px !important;
+      background: var(--vot-helper-surface) !important;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(var(--vot-helper-onsurface-rgb), 0.1) !important;
+      -webkit-border-radius: 1ex !important;
+      border: 5px solid var(--vot-helper-surface) !important;
+
+      &:hover {
+        border: 3px solid var(--vot-helper-surface) !important;
+      }
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: var(--vot-helper-surface) !important;
+    }
+  }
+
+  &-footer-container {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 16px;
+    padding-inline-end: 16px;
+    padding-inline-start: 16px;
+    padding-top: 16px;
+
+    &:empty {
+      padding: 16px 0 0 0;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+
+    &-label {
+      margin: 0 8px;
+    }
+
+    &-actions {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 8px;
+    }
+  }
+
+  &-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    padding-top: 8px;
+    min-width: 300px;
+    overflow-y: auto;
+
+    scrollbar-color: rgba(var(--vot-helper-onsurface-rgb), 0.5) var(--vot-helper-surface);
+
+    &::-webkit-scrollbar {
+      height: 12px;
+      width: 12px;
+      background: var(--vot-helper-surface);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(var(--vot-helper-onsurface-rgb), 0.5);
+      -webkit-border-radius: 1ex;
+      border: 5px solid var(--vot-helper-surface);
+
+      &:hover {
+        border: 3px solid var(--vot-helper-surface);
+      }
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: var(--vot-helper-surface);
+    }
+  }
+
+  &-item {
+    &-container {
+      display: flex;
+      flex-wrap: wrap;
+      /*justify-content: space-between;*/
+      align-items: center;
+
+      & label {
+        cursor: pointer;
+
+        &:not(:nth-child(1)) {
+          padding-left: 8px;
+        }
+      }
+    }
+
+    &-space {
+      flex: 1;
+    }
+
+    &-label {
+      & .vot-dark {
+        display: inline-flex;
+        max-width: 200px;
+        color: rgba(var(--vot-helper-onsurface-rgb), 0.5);
+      }
+    }
+
+    &-header {
+      margin-top: 8px;
+    }
+  }
+}

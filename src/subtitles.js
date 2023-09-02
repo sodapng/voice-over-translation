@@ -2,7 +2,7 @@ import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { sleep } from "./utils/utils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
 import { siteTranslates } from "./config/constants.js";
-import { lang } from "./menu.js";
+import { lang } from "./menu-old.js";
 import requestVideoSubtitles from "./rvs.js";
 import debug from "./utils/debug.js";
 
