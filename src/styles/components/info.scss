@@ -1,0 +1,13 @@
+.vot-info {
+  display: flex;
+  color: rgba(var(--vot-helper-onsurface-rgb), 0.87);
+  font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+  font-size: 16px;
+  line-height: 1.5;
+
+  & > :not(:first-child) {
+    color: rgba(var(--vot-helper-onsurface-rgb), 0.5);
+    flex: 1;
+    margin-left: 8px;
+  }
+}

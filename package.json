@@ -41,5 +41,8 @@
     "dev": "webpack serve --node-env development",
     "dev:cloudflare": "webpack serve --node-env development --env build_mode=cloudflare",
     "lint": "npx eslint ."
+  },
+  "dependencies": {
+    "bowser": "^2.11.0"
   }
 }

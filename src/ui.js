@@ -35,6 +35,26 @@ export function createHeader(html, level = 4) {
   return header;
 }
 
+export function createInformation(html, valueHtml) {
+  const container = document.createElement("div");
+  container.classList.add("vot-info");
+
+  const header = document.createElement("div");
+  header.innerHTML = html;
+
+  const value = document.createElement("div");
+  value.innerHTML = valueHtml;
+
+  container.appendChild(header);
+  container.appendChild(value);
+
+  return {
+    container,
+    header,
+    value
+  }
+}
+
 export function createButton(html) {
   const button = document.createElement("button");
   button.classList.add("vot-button");
@@ -327,6 +347,7 @@ export function createVOTLanguageSelect(fromOptions = [], toOptions = []) {
 
 export default {
   createHeader,
+  createInformation,
   createButton,
   createTextButton,
   createOutlinedButton,
