@@ -20,6 +20,8 @@
     "eslint": "^8.47.0",
     "eslint-webpack-plugin": "^4.0.1",
     "prettier": "^2.8.2",
+    "sass": "^1.66.1",
+    "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
     "tslib": "^2.5.3",
     "webpack": "^5.81.0",

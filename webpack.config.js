@@ -161,10 +161,11 @@ export default (env) => {
     module: {
       rules: [
         {
-          test: /\.(css)$/,
+          test: /\.(css|scss|sass)$/i,
           use: [
             'style-loader',
             'css-loader',
+            'sass-loader',
           ],
         },
       ],
