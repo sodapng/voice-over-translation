@@ -4,7 +4,11 @@ import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
 import { waitForElm, getVideoId, sleep, secsToStrTime } from "./utils/utils.js";
 import { autoVolume } from "./config/config.js";
-import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
+import {
+  sitesInvidious,
+  sitesPiped,
+  sitesProxyTok
+} from "./config/alternativeUrls.js";
 import {
   availableLangs,
   additionalTTS,
@@ -866,7 +870,6 @@ async function main() {
         window.location.hostname.includes("my.mail.ru")
       ) {
         videoData.detectedLanguage = "ru";
-        videoData.responseLanguage = "en";
       } else if (window.location.hostname.includes("bilibili.com")) {
         videoData.detectedLanguage = "zh";
       } else if (window.location.hostname.includes("coursera.org")) {
@@ -1791,7 +1794,7 @@ async function main() {
       }
     } else if (window.location.hostname.includes("coursera.org")) {
       // ONLY IF YOU LOGINED TO COURSERA /learn/NAME/lecture/XXXX
-      const el = await waitForElm("#video_player");
+      const el = await waitForElm(selectors.courseraSelector);
       if (el) {
         let videoIDNew;
         let videoID = getVideoId("coursera");
@@ -1801,7 +1804,7 @@ async function main() {
           if (videoID !== videoIDNew) {
             if (videoIDNew) {
               await translateProccessor(
-                document.querySelector("#video_player"),
+                document.querySelector(selectors.courseraSelector),
                 "coursera",
                 null
               );
@@ -1812,7 +1815,7 @@ async function main() {
       }
     } else if (window.location.hostname.includes("udemy.com")) {
       // ONLY IF YOU LOGINED TO UDEMY /course/NAME/learn/lecture/XXXX
-      const el = await waitForElm(".vjs-v7");
+      const el = await waitForElm(selectors.udemySelector);
       if (el) {
         let videoIDNew;
         let videoID = getVideoId("udemy");
@@ -1820,13 +1823,35 @@ async function main() {
         setInterval(async () => {
           videoIDNew = getVideoId("udemy");
           if (videoID !== videoIDNew) {
-            const newEl = await waitForElm(".vjs-v7");
+            const newEl = await waitForElm(selectors.udemySelector);
             if (videoIDNew && newEl) {
               await translateProccessor(newEl, "udemy", null);
             }
             videoID = videoIDNew;
           }
         }, 3000);
+      }
+    } else if (window.location.hostname.includes("tiktok.com")) {
+      const el = await waitForElm(selectors.tiktokSelector);
+      if (el) {
+        let videoIDNew;
+        let videoID = getVideoId("tiktok");
+        await translateProccessor(el.parentElement, "tiktok", null);
+        setInterval(async () => {
+          videoIDNew = getVideoId("tiktok");
+          if (videoID !== videoIDNew) {
+            const newEl = await waitForElm(selectors.tiktokSelector);
+            if (videoIDNew && newEl) {
+              await translateProccessor(newEl.parentElement, "tiktok", null);
+            }
+            videoID = videoIDNew;
+          }
+        }, 3000);
+      }
+    } else if (sitesProxyTok.includes(window.location.hostname)) {
+      const el = await waitForElm(selectors.proxyTokSelector);
+      if (el) {
+        await translateProccessor(el, "tiktok", null);
       }
     }
   }
