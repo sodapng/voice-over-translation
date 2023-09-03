@@ -11,6 +11,10 @@ const selectors = () => {
     gagSelector: ".video-post",
     bilibilicomSelector: ".bpx-player-video-wrap",
     mailSelector: "#b-video-wrapper",
+    courseraSelector: "#video_player",
+    udemySelector: ".vjs-v7",
+    tiktokSelector: "video",
+    proxyTokSelector: ".column.has-text-centered",
   };
 };
 
