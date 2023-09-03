@@ -1766,6 +1766,7 @@ class VideoHandler {
   remove() {
     debug.log("[VideoHandler] remove");
     this.translateProccessor(true);
+    this.subtitlesWidget.remove();
     this.resizeObserver.disconnect();
     this.srcObserver.disconnect();
   }

@@ -355,7 +355,7 @@ export class SubtitlesWidget {
         this.votSubtitlesContainer.style.top = `${y - this.containerRect.y}px`;
       } else {
         if (!top) {
-          this.votSubtitlesContainertainer.style.top = `${0}px`;
+          this.votSubtitlesContainer.style.top = `${0}px`;
         } else {
           this.votSubtitlesContainer.style.top = `${
             this.containerRect.height - this.subtitlesContainerRect.height
@@ -375,10 +375,35 @@ export class SubtitlesWidget {
   }
 
   onTimeUpdate() {
-    this.updateSubtitles();
+    this.update();
+  }
+  
+  setContent(subtitles) {
+    if (subtitles && this.video) {
+      this.subtitles = subtitles;
+      this.update();
+    } else {
+      this.subtitles = null;
+      this.votSubtitlesContainer.innerHTML = "";
+    }
+  }
+  
+  setMaxLength(len) {
+    if (typeof len === "number" && len) {
+      this.maxLength = len;
+      this.maxLengthRegexp = new RegExp(`.{1,${len}}(?:\\s|$)`, "g");
+      this.update();
+    }
+  }
+  
+  setHighlightWords(value) {
+    if (this.highlightWords !== !!value) {
+      this.highlightWords = !!value;
+      this.update();
+    }
   }
 
-  updateSubtitles() {
+  update() {
     if (!this.video) return;
   
     let content = "";
@@ -456,31 +481,6 @@ export class SubtitlesWidget {
       this.votSubtitlesContainer.innerHTML = content
         ? `<div class="vot-subtitles">${content.replace("\\n", "<br>")}</div>`
         : "";
-    }
-  }
-  
-  setContent(subtitles) {
-    if (subtitles && this.video) {
-      this.subtitles = subtitles;
-      this.updateSubtitles();
-    } else {
-      this.subtitles = null;
-      this.votSubtitlesContainer.innerHTML = "";
-    }
-  }
-  
-  setMaxLength(len) {
-    if (typeof len === "number" && len) {
-      this.maxLength = len;
-      this.maxLengthRegexp = new RegExp(`.{1,${len}}(?:\\s|$)`, "g");
-      this.updateSubtitles();
-    }
-  }
-  
-  setHighlightWords(value) {
-    if (this.highlightWords !== !!value) {
-      this.highlightWords = !!value;
-      this.updateSubtitles();
     }
   }
 }

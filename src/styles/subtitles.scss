@@ -18,7 +18,8 @@
     max-width: 100%;
     max-height: 100%;
     width: max-content;
-    background: #2e2f34cc;
+    background: rgba(var(--vot-surface-rgb, 46, 47, 52), 0.8);
+    color: rgb(var(--vot-onsurface-rgb, 227, 227, 227));
     border-radius: 1rem;
     pointer-events: all;
     padding: 1rem;
@@ -31,6 +32,6 @@
   }
 
   & .passed {
-    color: #9e84ff;
+    color: rgb(var(--vot-primary-rgb, 33, 150, 243));
   }
 }
