@@ -1,0 +1,189 @@
+.vot-textfield {
+  --vot-helper-theme: rgb(var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243)));
+  --vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);
+  --vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6);
+  --vot-helper-safari3: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87);
+  position: relative;
+  display: inline-block;
+  padding-top: 6px;
+  font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+  font-size: 16px;
+  line-height: 1.5;
+
+  & > input,
+  & > textarea {
+    box-sizing: border-box;
+    margin: 0;
+    border-style: solid;
+    border-width: 1px;
+    border-color: transparent var(--vot-helper-safari2) var(--vot-helper-safari2);
+    border-radius: 4px;
+    padding: 15px 13px 15px;
+    width: 100%;
+    height: inherit;
+    color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87);
+    -webkit-text-fill-color: currentColor; /* Safari */
+    background-color: transparent;
+    box-shadow:
+      inset 1px 0 transparent,
+      inset -1px 0 transparent,
+      inset 0 -1px transparent;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    caret-color: var(--vot-helper-theme);
+    transition:
+      border 0.2s,
+      box-shadow 0.2s;
+
+    &:not(:focus):placeholder-shown {
+      border-top-color: var(--vot-helper-safari2);
+    }
+
+    & + span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      width: 100%;
+      max-height: 100%;
+      color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6);
+      font-size: 75%;
+      line-height: 15px;
+      cursor: text;
+      transition:
+        color 0.2s,
+        font-size 0.2s,
+        line-height 0.2s;
+      pointer-events: none;
+    }
+
+    &:not(:focus):placeholder-shown + span {
+      font-size: inherit;
+      line-height: 68px;
+    }
+  }
+
+  /* Corners */
+  & > input,
+  & > textarea {
+    & + span::before,
+    & + span::after {
+      content: "";
+      display: block;
+      box-sizing: border-box;
+      margin-top: 6px;
+      border-top: solid 1px var(--vot-helper-safari2);
+      min-width: 10px;
+      height: 8px;
+      pointer-events: none;
+      box-shadow: inset 0 1px transparent;
+      transition:
+        border 0.2s,
+        box-shadow 0.2s;
+    }
+
+    & + span::before {
+      margin-right: 4px;
+      border-left: solid 1px transparent;
+      border-radius: 4px 0;
+    }
+
+    & + span::after {
+      flex-grow: 1;
+      margin-left: 4px;
+      border-right: solid 1px transparent;
+      border-radius: 0 4px;
+    }
+
+    &:not(:focus):placeholder-shown {
+      & + span::before,
+      & + span::after {
+        border-top-color: transparent;
+      }
+    }
+  }
+
+  &:hover {
+    & > input,
+    & > textarea {
+      border-color: transparent var(--vot-helper-safari3) var(--vot-helper-safari3);
+
+      & + span::before,
+      & + span::after {
+        border-top-color: var(--vot-helper-safari3);
+      }
+
+      &:not(:focus):placeholder-shown {
+        border-color: var(--vot-helper-safari3);
+      }
+    }
+  }
+
+  & > input:focus,
+  & > textarea:focus {
+    border-color: transparent var(--vot-helper-theme) var(--vot-helper-theme);
+    box-shadow:
+      inset 1px 0 var(--vot-helper-theme),
+      inset -1px 0 var(--vot-helper-theme),
+      inset 0 -1px var(--vot-helper-theme);
+    outline: none;
+
+    & + span {
+      color: var(--vot-helper-theme);
+
+      &::before,
+      &::after {
+        border-top-color: var(--vot-helper-theme) !important;
+        box-shadow: inset 0 1px var(--vot-helper-theme);
+      }
+    }
+  }
+
+  & > input:disabled,
+  & > textarea:disabled {
+    &,
+    & + span {
+      border-color: transparent var(--vot-helper-safari1) var(--vot-helper-safari1) !important;
+      color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);
+      pointer-events: none;
+    }
+
+    & + span {
+      &::before,
+      &::after {
+        border-top-color: var(--vot-helper-safari1) !important;
+      }
+    }
+
+    &:placeholder-shown {
+      &,
+      & + span {
+        border-top-color: var(--vot-helper-safari1) !important;
+      }
+
+      & + span {
+        &::before,
+        &::after {
+          border-top-color: transparent !important;
+        }
+      }
+    }
+  }
+}
+
+/* Faster transition in Safari for less noticable fractional font-size issue */
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    .vot-textfield > input,
+    .vot-textfield > input + span,
+    .vot-textfield > textarea,
+    .vot-textfield > textarea + span,
+    .vot-textfield > input + span::before,
+    .vot-textfield > input + span::after,
+    .vot-textfield > textarea + span::before,
+    .vot-textfield > textarea + span::after {
+      transition-duration: 0.1s;
+    }
+  }
+}

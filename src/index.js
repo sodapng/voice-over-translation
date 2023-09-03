@@ -1465,7 +1465,7 @@ class VideoHandler {
 
   async init() {
     this.data = await readDB();
-    
+
     this.subtitlesWidget = new SubtitlesWidget(this.video, this.container, this.site);
     this.subtitlesWidget.setMaxLength(this.data.subtitlesMaxLength);
     this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
@@ -1567,11 +1567,10 @@ class VideoHandler {
       this.votShowVideoSliderCheckbox = ui.createCheckbox(localizationProvider.get("VOTShowVideoSlider"), this.data?.showVideoSlider ?? false);
       this.votSettingsDialog.bodyContainer.appendChild(this.votShowVideoSliderCheckbox.container);
 
-      // TODO: Along with the rework of the menu, change to the input field
       // udemy only
-      this.votUdemyDataButton = ui.createButton(localizationProvider.get("VOTUdemyData"));
-      this.votUdemyDataButton.hidden = this.site.host !== "udemy";
-      this.votSettingsDialog.bodyContainer.appendChild(this.votUdemyDataButton);
+      this.votUdemyDataTextfield = ui.createTextfield(localizationProvider.get("VOTUdemyData"), this.data?.udemyData?.accessToken ?? "");
+      this.votUdemyDataTextfield.hidden = this.site.host !== "udemy";
+      this.votSettingsDialog.bodyContainer.appendChild(this.votUdemyDataTextfield.container);
 
       // youtube only
       this.votSyncVolumeCheckbox = ui.createCheckbox(localizationProvider.get("VOTSyncVolume"), this.data?.syncVolume ?? false);
@@ -1660,7 +1659,7 @@ class VideoHandler {
 
       this.votTranslationLanguageSelect.toSelect.addEventListener("change", async (e) => {
         this.data.responseLanguage = this.translateToLang = e.target.value;
-        await updateDB({ responseLanguage: e.target.value });
+        await updateDB({ responseLanguage: this.data.responseLanguage });
         debug.log("Response Language value changed. New value: ", this.data.responseLanguage);
         // TODO
       });
@@ -1709,16 +1708,13 @@ class VideoHandler {
         this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
       });
 
-      // TODO: Along with the rework of the menu, change to the input field
-      this.votUdemyDataButton.addEventListener("click", async () => {
-        const accessToken = prompt(localizationProvider.get("enterUdemyAccessToken"));
-        const udemyData = {
-          accessToken,
+      this.votUdemyDataTextfield.input.addEventListener("change", async (e) => {
+        this.data.udemyData = {
+          accessToken: e.target.value,
           expires: new Date().getTime(),
         };
-        await updateDB({ udemyData });
-        this.data.udemyData = udemyData;
-        debug.log("udemyData value changed. New value: ", udemyData);
+        await updateDB({ udemyData: this.data.udemyData });
+        debug.log("udemyData value changed. New value: ", this.data.udemyData);
         window.location.reload();
       });
 

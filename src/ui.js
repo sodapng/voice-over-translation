@@ -159,6 +159,27 @@ export function createSelect(html, options = []) {
   };
 }
 
+export function createTextfield(html, value = "", multiline = false) {
+  const container = document.createElement("div");
+  container.classList.add("vot-textfield");
+
+  const input = document.createElement(multiline ? "textarea" : "input");
+  input.placeholder = " ";
+  input.value = value;
+
+  const label = document.createElement("span");
+  label.innerHTML = html;
+
+  container.appendChild(input);
+  container.appendChild(label);
+
+  return {
+    container,
+    input,
+    label
+  };
+}
+
 export function createDialog(html) {
   const container = document.createElement("div");
   container.classList.add("vot-dialog-container");
@@ -355,6 +376,7 @@ export default {
   createCheckbox,
   createSlider,
   createSelect,
+  createTextfield,
   createDialog,
   createVOTButton,
   createVOTMenu,
