@@ -25,6 +25,7 @@
     border-color: var(--vot-helper-safari2);
     border-radius: 4px;
     padding: 5px 3px 5px;
+    max-width: 150px;
     width: calc(100% / 2 - 16px);
     height: 32px;
     color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87);

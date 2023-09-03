@@ -1,3 +1,5 @@
+import { sitesInvidious, sitesPiped } from "./alternativeUrls.js";
+
 const sites = () => {
   return [
     { // TODO
@@ -7,12 +9,20 @@ const sites = () => {
       selector: null,
     },
     {
+      additionalData: "mobile",
       host: "youtube",
       url: "https://youtu.be/",
-      match: /^(www.|m.)?youtube(-nocookie)?.com$/,
+      match: /^m.youtube(-nocookie)?.com$/,
+      selector: "#player-control-container",
+    },
+    {
+      host: "youtube",
+      url: "https://youtu.be/",
+      match: /^(www.)?youtube(-nocookie)?.com$/,
       selector: ".html5-video-container",
     },
-    { // mobile
+    {
+      additionalData: "mobile",
       host: "twitch",
       url: "https://twitch.tv/",
       match: /^m.twitch.tv$/,
@@ -34,8 +44,21 @@ const sites = () => {
       host: "pornhub",
       url: "https://rt.pornhub.com/view_video.php?viewkey=",
       match: /^[a-z]+.pornhub.com$/,
-      selector: ".mgp_videoWrapper",
+      selector: ".original.mainPlayerDiv",
     },
+    {
+      additionalData: "embed",
+      host: "pornhub",
+      url: "https://rt.pornhub.com/view_video.php?viewkey=",
+      match: /^[a-z]+.pornhub.com$/,
+      selector: "body",
+    },
+    // {
+    //   host: "pornhub",
+    //   url: "https://rt.pornhub.com/view_video.php?viewkey=",
+    //   match: /^[a-z]+.pornhub.com$/,
+    //   selector: ".mgp_videoWrapper",
+    // },
     {
       host: "vk",
       url: "https://vk.com/video?z=",
@@ -72,7 +95,8 @@ const sites = () => {
       match: /^rutube.ru$/,
       selector: ".video-player > div > div > div:nth-child(2)",
     },
-    { // embed
+    {
+      additionalData: "embed",
       host: "rutube",
       url: "https://rutube.ru/video/",
       match: /^rutube.ru$/,
@@ -84,7 +108,8 @@ const sites = () => {
       match: /^(www|m).bilibili.com$/,
       selector: ".bpx-player-video-wrap",
     },
-    { // old (/blackboard/webplayer/embed-old.html)
+    {
+      additionalData: "old", // /blackboard/webplayer/embed-old.html
       host: "bilibili",
       url: "https://www.bilibili.com/video/",
       match: /^(www|m).bilibili.com$/,
@@ -117,58 +142,13 @@ const sites = () => {
     { // Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
       host: "invidious",
       url: "https://youtu.be/",
-      match: [
-        "invidious.snopyta.org",
-        "yewtu.be",
-        "invidious.kavin.rocks",
-        "vid.puffyan.us",
-        "invidious.namazso.eu",
-        "inv.riverside.rocks",
-        "yt.artemislena.eu",
-        "invidious.flokinet.to",
-        "invidious.esmailelbob.xyz",
-        "y.com.sb",
-        "invidious.nerdvpn.de",
-        "inv.vern.cc",
-        "invidious.slipfox.xyz",
-        "invidio.xamh.de",
-        "invidious.dhusch.de",
-      ],
+      match: sitesInvidious,
       selector: "#player",
     },
     { // Sites host Piped. I tested the performance only on piped.video
       host: "piped",
       url: "https://youtu.be/",
-      match: [
-        "piped.video",
-        "piped.tokhmi.xyz",
-        "piped.moomoo.me",
-        "piped.syncpundit.io",
-        "piped.mha.fi",
-        "watch.whatever.social",
-        "piped.garudalinux.org",
-        "efy.piped.pages.dev",
-        "watch.leptons.xyz",
-        "piped.lunar.icu",
-        "yt.dc09.ru",
-        "piped.mint.lgbt",
-        "il.ax",
-        "piped.privacy.com.de",
-        "piped.esmailelbob.xyz",
-        "piped.projectsegfau.lt",
-        "piped.in.projectsegfau.lt",
-        "piped.us.projectsegfau.lt",
-        "piped.privacydev.net",
-        "piped.palveluntarjoaja.eu",
-        "piped.smnz.de",
-        "piped.adminforge.de",
-        "piped.qdi.fi",
-        "piped.hostux.net",
-        "piped.chauvet.pro",
-        "piped.jotoma.de",
-        "piped.pfcd.me",
-        "piped.frontendfriendly.xyz",
-      ],
+      match: sitesPiped,
       selector: ".shaka-video-container",
     }
   ];

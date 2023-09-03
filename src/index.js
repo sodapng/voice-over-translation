@@ -253,15 +253,6 @@ async function translateProccessor(videoContainer, siteHostname, stop = false) {
   }
   await changeSubtitlesLang("disabled");
 
-  try {
-    isDBInited = await initDB();
-  } catch (err) {
-    console.error(
-      "[VOT] Failed to initialize database settings. All changes made will not be saved",
-      err
-    );
-  }
-
   const menuOptions = document.querySelector(".translationMenuOptions");
   if (menuOptions && !menuOptions.querySelector("#VOTTranslateFromLang")) {
     const selectFromLangOptions = [
@@ -1469,7 +1460,6 @@ async function translateProccessor(videoContainer, siteHostname, stop = false) {
     });
 }
 
-// TODO: Create button, menu and events specifically for each video
 class VideoHandler {
   constructor(video, container, site) {
     debug.log("[VideoHandler] add video:", video, "container:", container);
@@ -1492,6 +1482,7 @@ class VideoHandler {
       this.container.appendChild(this.votButton.container);
 
       this.votButton.container.addEventListener("click", (e) => {
+        e.stopPropagation();
         e.stopImmediatePropagation();
       });
 
@@ -1537,6 +1528,7 @@ class VideoHandler {
       this.votMenu.container.setAttribute("style", `--vot-container-height: ${this.video.getBoundingClientRect().height}px`);
   
       this.votMenu.container.addEventListener("click", (e) => {
+        e.stopPropagation();
         e.stopImmediatePropagation();
       });
   
@@ -1633,7 +1625,7 @@ function getSite() {
       return (match instanceof RegExp && match.test(window.location.hostname))
         || (typeof match === "string" && window.location.hostname.includes(match))
         || (typeof match === "function" && match(window.location));
-    }
+    };
     if (isMathes(e.match) || (e.match instanceof Array && e.match.some((e) => isMathes(e.match)))) {
       return e.host && e.url;
     }
@@ -1669,6 +1661,18 @@ async function main() {
   }
 
   debug.log("Extension compatibility passed...");
+
+  try {
+    if (!await initDB()) {
+      console.error("[VOT] Failed to initialize database");
+      return;
+    }
+  } catch (err) {
+    console.error("[VOT] Failed to initialize database", err);
+    return;
+  }
+
+  debug.log("database initialized");
 
   videoObserver.onVideoAdded.addListener((video) => {
     const site = getSite();

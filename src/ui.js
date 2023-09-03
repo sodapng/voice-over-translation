@@ -52,7 +52,7 @@ export function createInformation(html, valueHtml) {
     container,
     header,
     value
-  }
+  };
 }
 
 export function createButton(html) {
