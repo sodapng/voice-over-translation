@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.4.1-beta5
+// @version 1.4.1-beta6
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -75,6 +75,19 @@
 // @match *://*.bitchute.com/*
 // @match *://*.coursera.org/learn/*
 // @match *://*.udemy.com/course/*
+// @match *://*.tiktok.com/*
+// @match *://proxitok.pabloferreiro.es/*
+// @match *://proxitok.pussthecat.org/*
+// @match *://tok.habedieeh.re/*
+// @match *://proxitok.esmailelbob.xyz/*
+// @match *://proxitok.privacydev.net/*
+// @match *://tok.artemislena.eu/*
+// @match *://tok.adminforge.de/*
+// @match *://tik.hostux.net/*
+// @match *://tt.vern.cc/*
+// @match *://cringe.whatever.social/*
+// @match *://proxitok.lunar.icu/*
+// @match *://proxitok.privacy.com.de/*
 // @connect api.browser.yandex.ru
 // @downloadURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js
 // @grant GM_xmlhttpRequest
@@ -1172,6 +1185,7 @@ const siteTranslates = {
   coub: "https://coub.com/view/",
   bitchute: "https://www.bitchute.com/video/",
   coursera: "https://www.coursera.org/",
+  tiktok: "https://www.tiktok.com/",
 };
 
 const cfOnlyExtensions = (/* unused pure expression or super */ null && ([
@@ -1281,7 +1295,8 @@ const getVideoId = (service) => {
         return url.pathname.match(/(?:videos)\/([^/]+)/)?.[0];
       }
     case "tiktok":
-      return url.pathname.match(/video\/([^/]+)/)?.[1];
+      // return url.pathname.match(/video\/([^/]+)/)?.[1];
+      return url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
     case "vimeo":
       return (
         url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||
@@ -1299,7 +1314,17 @@ const getVideoId = (service) => {
     case "udemy":
       return url.pathname;
     case "facebook":
-      return url.pathname;
+      // ...watch?v=XXX
+      // CHANNEL_ID/videos/VIDEO_ID/
+      // returning "Видео недоступно для перевода"
+
+      // fb.watch/YYY
+      // returning "Возникла ошибка, попробуйте позже"
+      if (url.searchParams.get("v")) {
+        return url.searchParams.get("v");
+      }
+
+      return false;
     case "rutube":
       return url.pathname.match(/(?:video|embed)\/([^/]+)/)?.[1];
     case "coub":
@@ -1716,6 +1741,21 @@ const sitesPiped = [
   "piped.pfcd.me",
   "piped.frontendfriendly.xyz",
 ];
+
+const sitesProxyTok = [
+  "proxitok.pabloferreiro.es",
+  "proxitok.pussthecat.org",
+  "tok.habedieeh.re",
+  "proxitok.esmailelbob.xyz",
+  "proxitok.privacydev.net",
+  "tok.artemislena.eu",
+  "tok.adminforge.de",
+  "tik.hostux.net", // maybe instance doesn't working
+  "tt.vern.cc",
+  "cringe.whatever.social",
+  "proxitok.lunar.icu",
+  "proxitok.privacy.com.de", // maybe instance doesn't working
+]
 
 
 
@@ -2413,6 +2453,10 @@ const selectors = () => {
     gagSelector: ".video-post",
     bilibilicomSelector: ".bpx-player-video-wrap",
     mailSelector: "#b-video-wrapper",
+    courseraSelector: "#video_player",
+    udemySelector: ".vjs-v7",
+    tiktokSelector: "video",
+    proxyTokSelector: ".column.has-text-centered",
   };
 };
 
@@ -4075,7 +4119,6 @@ async function src_main() {
         window.location.hostname.includes("my.mail.ru")
       ) {
         videoData.detectedLanguage = "ru";
-        videoData.responseLanguage = "en";
       } else if (window.location.hostname.includes("bilibili.com")) {
         videoData.detectedLanguage = "zh";
       } else if (window.location.hostname.includes("coursera.org")) {
@@ -5000,7 +5043,7 @@ async function src_main() {
       }
     } else if (window.location.hostname.includes("coursera.org")) {
       // ONLY IF YOU LOGINED TO COURSERA /learn/NAME/lecture/XXXX
-      const el = await waitForElm("#video_player");
+      const el = await waitForElm(config_selectors.courseraSelector);
       if (el) {
         let videoIDNew;
         let videoID = getVideoId("coursera");
@@ -5010,7 +5053,7 @@ async function src_main() {
           if (videoID !== videoIDNew) {
             if (videoIDNew) {
               await translateProccessor(
-                document.querySelector("#video_player"),
+                document.querySelector(config_selectors.courseraSelector),
                 "coursera",
                 null
               );
@@ -5021,7 +5064,7 @@ async function src_main() {
       }
     } else if (window.location.hostname.includes("udemy.com")) {
       // ONLY IF YOU LOGINED TO UDEMY /course/NAME/learn/lecture/XXXX
-      const el = await waitForElm(".vjs-v7");
+      const el = await waitForElm(config_selectors.udemySelector);
       if (el) {
         let videoIDNew;
         let videoID = getVideoId("udemy");
@@ -5029,13 +5072,35 @@ async function src_main() {
         setInterval(async () => {
           videoIDNew = getVideoId("udemy");
           if (videoID !== videoIDNew) {
-            const newEl = await waitForElm(".vjs-v7");
+            const newEl = await waitForElm(config_selectors.udemySelector);
             if (videoIDNew && newEl) {
               await translateProccessor(newEl, "udemy", null);
             }
             videoID = videoIDNew;
           }
         }, 3000);
+      }
+    } else if (window.location.hostname.includes("tiktok.com")) {
+      const el = await waitForElm(config_selectors.tiktokSelector);
+      if (el) {
+        let videoIDNew;
+        let videoID = getVideoId("tiktok");
+        await translateProccessor(el.parentElement, "tiktok", null);
+        setInterval(async () => {
+          videoIDNew = getVideoId("tiktok");
+          if (videoID !== videoIDNew) {
+            const newEl = await waitForElm(config_selectors.tiktokSelector);
+            if (videoIDNew && newEl) {
+              await translateProccessor(newEl.parentElement, "tiktok", null);
+            }
+            videoID = videoIDNew;
+          }
+        }, 3000);
+      }
+    } else if (sitesProxyTok.includes(window.location.hostname)) {
+      const el = await waitForElm(config_selectors.proxyTokSelector);
+      if (el) {
+        await translateProccessor(el, "tiktok", null);
       }
     }
   }
