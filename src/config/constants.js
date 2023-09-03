@@ -50,6 +50,7 @@ const siteTranslates = {
   coub: "https://coub.com/view/",
   bitchute: "https://www.bitchute.com/video/",
   coursera: "https://www.coursera.org/",
+  tiktok: "https://www.tiktok.com/",
 };
 
 const cfOnlyExtensions = [
