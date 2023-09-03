@@ -236,10 +236,10 @@ async function translateProccessor(videoContainer, siteHostname, stop = false) {
       ? document.querySelector(".original.mainPlayerDiv")
       : siteHostname === "pornhub" &&
         window.location.pathname.includes("embed/")
-      ? document.querySelector("body")
-      : window.location.hostname.includes("m.youtube.com")
-      ? document.querySelector("#player-control-container")
-      : videoContainer;
+        ? document.querySelector("body")
+        : window.location.hostname.includes("m.youtube.com")
+          ? document.querySelector("#player-control-container")
+          : videoContainer;
 
   addTranslationBlock(container);
   addTranslationMenu(container);
@@ -1471,8 +1471,15 @@ class VideoHandler {
     this.srcObserver.observe(this.video, {
       attributeFilter: ["src", "currentSrc"]
     });
-    this.initUI();
+    this.init();
     this.translateProccessor();
+  }
+
+  async init() {
+    this.data = await readDB();
+
+    this.initUI();
+    this.initUIEvents();
   }
 
   initUI() {
@@ -1485,14 +1492,6 @@ class VideoHandler {
         e.stopPropagation();
         e.stopImmediatePropagation();
       });
-
-      this.votButton.translateButton.addEventListener("click", () => {
-        console.log("translate"); // TODO
-      });
-  
-      this.votButton.menuButton.addEventListener("click", () => {
-        this.votMenu.container.hidden = !this.votMenu.container.hidden;
-      });
     }
     
     // VOT Menu
@@ -1501,42 +1500,58 @@ class VideoHandler {
       this.container.appendChild(this.votMenu.container);
   
       this.votDownloadButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M480-337q-8 0-15-2.5t-13-8.5L308-492q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T365-549l75 75v-286q0-17 11.5-28.5T480-800q17 0 28.5 11.5T520-760v286l75-75q12-12 28.5-11.5T652-548q11 12 11.5 28T652-492L508-348q-6 6-13 8.5t-15 2.5ZM240-160q-33 0-56.5-23.5T160-240v-80q0-17 11.5-28.5T200-360q17 0 28.5 11.5T240-320v80h480v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80q0 33-23.5 56.5T720-160H240Z"/></svg>`);
-      // this.votDownloadButton.hidden = true;
+      this.votDownloadButton.hidden = true;
       this.votMenu.headerContainer.appendChild(this.votDownloadButton);
   
       this.votSettingsButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M555-80H405q-15 0-26-10t-13-25l-12-93q-13-5-24.5-12T307-235l-87 36q-14 5-28 1t-22-17L96-344q-8-13-5-28t15-24l75-57q-1-7-1-13.5v-27q0-6.5 1-13.5l-75-57q-12-9-15-24t5-28l74-129q7-14 21.5-17.5T220-761l87 36q11-8 23-15t24-12l12-93q2-15 13-25t26-10h150q15 0 26 10t13 25l12 93q13 5 24.5 12t22.5 15l87-36q14-5 28-1t22 17l74 129q8 13 5 28t-15 24l-75 57q1 7 1 13.5v27q0 6.5-2 13.5l75 57q12 9 15 24t-5 28l-74 128q-8 13-22.5 17.5T738-199l-85-36q-11 8-23 15t-24 12l-12 93q-2 15-13 25t-26 10Zm-73-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm0-80q-25 0-42.5-17.5T422-480q0-25 17.5-42.5T482-540q25 0 42.5 17.5T542-480q0 25-17.5 42.5T482-420Zm-2-60Zm-40 320h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Z"/></svg>`);
       this.votMenu.headerContainer.appendChild(this.votSettingsButton);
   
-      this.votTranslationLanguageSelect = ui.createVOTLanguageSelect();
+      this.votTranslationLanguageSelect = ui.createVOTLanguageSelect(
+        [
+          {
+            label: localizationProvider.get("videoLanguage"),
+            value: "default",
+            disabled: true,
+          },
+          ...genOptionsByOBJ(availableLangs, "en"), // TODO: this.videoData.detectedLanguage
+        ],
+        [
+          {
+            label: localizationProvider.get("translationLanguage"),
+            value: "default",
+            disabled: true,
+          },
+          ...genOptionsByOBJ(availableLangs, "ru"), // TODO: this.videoData.responseLanguage
+          {
+            label: "─────────",
+            value: "separator",
+            disabled: true,
+          },
+          ...genOptionsByOBJ(additionalTTS, "ru"), // TODO: this.videoData.responseLanguage
+        ]
+      );
       this.votMenu.bodyContainer.appendChild(this.votTranslationLanguageSelect.container);
   
-      this.votSubtitlesSelect = ui.createSelect(localizationProvider.get("VOTSubtitles"));
+      this.votSubtitlesSelect = ui.createSelect(localizationProvider.get("VOTSubtitles"), [
+        {
+          label: localizationProvider.get("VOTSubtitlesDisabled"),
+          value: "disabled",
+          disabled: false,
+        }
+      ]);
       this.votMenu.bodyContainer.appendChild(this.votSubtitlesSelect.container);
   
-      this.votVideoVolumeSlider = ui.createSlider(localizationProvider.get("VOTVolume"));
+      this.votVideoVolumeSlider = ui.createSlider(`${localizationProvider.get("VOTVolume")}: <strong>${100}%</strong>`, 100); // TODO
+      this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
       this.votMenu.bodyContainer.appendChild(this.votVideoVolumeSlider.container);
-  
-      this.votVideoTranslationVolumeSlider = ui.createSlider(localizationProvider.get("VOTVolumeTranslation"));
+
+      this.votVideoTranslationVolumeSlider = ui.createSlider(`${localizationProvider.get("VOTVolumeTranslation")}: <strong>${this.data?.defaultVolume ?? 100}%</strong>`, this.data?.defaultVolume ?? 100);
+      this.votVideoTranslationVolumeSlider.container.hidden = this.votButton.container.dataset.status !== "success";
       this.votMenu.bodyContainer.appendChild(this.votVideoTranslationVolumeSlider.container);
-  
-      this.resizeObserver = new ResizeObserver((entries) => {
-        entries.forEach((e) => {
-          this.votMenu.container.setAttribute("style", `--vot-container-height: ${e.contentRect.height}px`);
-        });
-      });
-      this.resizeObserver.observe(this.video);
-      this.votMenu.container.setAttribute("style", `--vot-container-height: ${this.video.getBoundingClientRect().height}px`);
-  
+
       this.votMenu.container.addEventListener("click", (e) => {
         e.stopPropagation();
         e.stopImmediatePropagation();
-      });
-  
-      this.votSettingsButton.addEventListener("click", () => {
-        this.votSettingsDialog.container.hidden = !this.votSettingsDialog.container.hidden;
-        document.webkitExitFullscreen && document.webkitExitFullscreen();
-        document.mozCancelFullscreen && document.mozCancelFullscreen();
-        document.exitFullscreen && document.exitFullscreen();
       });
     }
 
@@ -1548,36 +1563,51 @@ class VideoHandler {
       this.votTranslationHeader = ui.createHeader(localizationProvider.get("translationSettings"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votTranslationHeader);
 
-      this.votAutoTranslateCheckbox = ui.createCheckbox(localizationProvider.get("VOTAutoTranslate"));
+      this.votAutoTranslateCheckbox = ui.createCheckbox(localizationProvider.get("VOTAutoTranslate"), this.data?.autoTranslate ?? false);
       this.votSettingsDialog.bodyContainer.appendChild(this.votAutoTranslateCheckbox.container);
 
-      this.votDontTranslateYourLangCheckbox = ui.createCheckbox(localizationProvider.get("VOTDontTranslateYourLang"));
+      this.votDontTranslateYourLangCheckbox = ui.createCheckbox(localizationProvider.get("VOTDontTranslateYourLang"), this.data?.dontTranslateYourLang ?? true);
       this.votSettingsDialog.bodyContainer.appendChild(this.votDontTranslateYourLangCheckbox.container);
 
-      this.votAutoSetVolumeCheckbox = ui.createCheckbox(localizationProvider.get("VOTAutoSetVolume"));
+      this.votAutoSetVolumeCheckbox = ui.createCheckbox(localizationProvider.get("VOTAutoSetVolume"), this.data?.autoSetVolumeYandexStyle ?? true);
       this.votSettingsDialog.bodyContainer.appendChild(this.votAutoSetVolumeCheckbox.container);
 
-      this.votShowVideoSliderCheckbox = ui.createCheckbox(localizationProvider.get("VOTShowVideoSlider"));
+      this.votShowVideoSliderCheckbox = ui.createCheckbox(localizationProvider.get("VOTShowVideoSlider"), this.data?.showVideoSlider ?? false);
       this.votSettingsDialog.bodyContainer.appendChild(this.votShowVideoSliderCheckbox.container);
 
-      this.votSyncVolumeCheckbox = ui.createCheckbox(localizationProvider.get("VOTSyncVolume"));
+      // TODO: Along with the rework of the menu, change to the input field
+      // udemy only
+      this.votUdemyDataButton = ui.createButton(localizationProvider.get("VOTUdemyData"));
+      this.votUdemyDataButton.hidden = this.site.host !== "udemy";
+      this.votSettingsDialog.bodyContainer.appendChild(this.votUdemyDataButton);
+
+      // youtube only
+      this.votSyncVolumeCheckbox = ui.createCheckbox(localizationProvider.get("VOTSyncVolume"), this.data?.syncVolume ?? false);
+      this.votSyncVolumeCheckbox.container.hidden = this.site.host !== "youtube" || this.site.additionalData === "mobile";
       this.votSettingsDialog.bodyContainer.appendChild(this.votSyncVolumeCheckbox.container);
 
-      this.votAudioProxyCheckbox = ui.createCheckbox(localizationProvider.get("VOTAudioProxy"));
+      // cf version only
+      this.votAudioProxyCheckbox = ui.createCheckbox(localizationProvider.get("VOTAudioProxy"), this.data?.audioProxy ?? false);
+      this.votAudioProxyCheckbox.container.hidden = BUILD_MODE !== "cloudflare";
       this.votSettingsDialog.bodyContainer.appendChild(this.votAudioProxyCheckbox.container);
+
+      // SUBTITLES
 
       this.votSubtitlesHeader = ui.createHeader(localizationProvider.get("subtitlesSettings")); // TODO: add localization
       this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesHeader);
 
-      this.votSubtitlesMaxLengthSlider = ui.createSlider(localizationProvider.get("VOTSubtitlesMaxLength"), 300, 50, 300);
+      this.votSubtitlesMaxLengthSlider = ui.createSlider(`${localizationProvider.get("VOTSubtitlesMaxLength")}: <strong>${this.data?.subtitlesMaxLength ?? 300}</strong>`, this.data?.subtitlesMaxLength ?? 300, 50, 300);
       this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesMaxLengthSlider.container);
 
-      this.votSubtitlesHighlightWordsCheckbox = ui.createCheckbox(localizationProvider.get("VOTHighlightWords"));
+      this.votSubtitlesHighlightWordsCheckbox = ui.createCheckbox(localizationProvider.get("VOTHighlightWords"), this.data?.highlightWords ?? false);
       this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesHighlightWordsCheckbox.container);
+
+      // ABOUT
 
       this.votAboutHeader = ui.createHeader(localizationProvider.get("about")); // TODO: add localization
       this.votSettingsDialog.bodyContainer.appendChild(this.votAboutHeader);
 
+      // TODO
       this.votLanguageSelect = ui.createSelect(localizationProvider.get("VOTMenuLanguage")); // TODO: add localization
       this.votSettingsDialog.bodyContainer.appendChild(this.votLanguageSelect.container);
 
@@ -1595,6 +1625,145 @@ class VideoHandler {
 
       this.votResetSettingsButton = ui.createButton(localizationProvider.get("resetSettings"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votResetSettingsButton);
+    }
+  }
+
+  initUIEvents() {
+    // VOT Button
+    {
+      this.votButton.translateButton.addEventListener("click", () => {
+        // TODO
+      });
+  
+      this.votButton.menuButton.addEventListener("click", () => {
+        this.votMenu.container.hidden = !this.votMenu.container.hidden;
+      });
+    }
+    
+    // VOT Menu
+    {
+      this.resizeObserver = new ResizeObserver((entries) => {
+        entries.forEach((e) => {
+          this.votMenu.container.setAttribute("style", `--vot-container-height: ${e.contentRect.height}px`);
+        });
+      });
+      this.resizeObserver.observe(this.video);
+      this.votMenu.container.setAttribute("style", `--vot-container-height: ${this.video.getBoundingClientRect().height}px`);
+
+      this.votDownloadButton.addEventListener("click", () => {
+        // TODO
+      });
+
+      this.votSettingsButton.addEventListener("click", () => {
+        this.votSettingsDialog.container.hidden = !this.votSettingsDialog.container.hidden;
+        document.webkitExitFullscreen && document.webkitExitFullscreen();
+        document.mozCancelFullscreen && document.mozCancelFullscreen();
+        document.exitFullscreen && document.exitFullscreen();
+      });
+
+      this.votTranslationLanguageSelect.fromSelect.addEventListener("change", (e) => {
+        const value = e.target.value;
+        // TODO
+      });
+
+      this.votTranslationLanguageSelect.toSelect.addEventListener("change", async (e) => {
+        this.data.responseLanguage = this.translateToLang = e.target.value;
+        await updateDB({ responseLanguage: e.target.value });
+        debug.log("Response Language value changed. New value: ", this.data.responseLanguage);
+        // TODO
+      });
+
+      this.votSubtitlesSelect.select.addEventListener("change", (e) => {
+        const value = e.target.value;
+        // TODO
+      });
+
+      this.votVideoVolumeSlider.input.addEventListener("input", (e) => {
+        const value = Number(e.target.value);
+        // TODO
+      });
+
+      this.votVideoTranslationVolumeSlider.input.addEventListener("input", async (e) => {
+        this.data.defaultVolume = Number(e.target.value);
+        await updateDB({ defaultVolume: this.data.defaultVolume });
+        // TODO
+      });
+    }
+
+    // VOT Settings
+    {
+      this.votAutoTranslateCheckbox.input.addEventListener("change", async (e) => {
+        this.data.autoTranslate = Number(e.target.checked);
+        await updateDB({ autoTranslate: this.data.autoTranslate });
+        debug.log("autoTranslate value changed. New value: ", this.data.autoTranslate);
+      });
+
+      this.votDontTranslateYourLangCheckbox.input.addEventListener("change", async (e) => {
+        this.data.dontTranslateYourLang = Number(e.target.checked);
+        await updateDB({ dontTranslateYourLang: this.data.dontTranslateYourLang });
+        debug.log("dontTranslateYourLang value changed. New value: ", this.data.dontTranslateYourLang);
+      });
+
+      this.votAutoSetVolumeCheckbox.input.addEventListener("change", async (e) => {
+        this.data.autoSetVolumeYandexStyle = Number(e.target.checked);
+        await updateDB({ autoSetVolumeYandexStyle: this.data.autoSetVolumeYandexStyle });
+        debug.log("autoSetVolumeYandexStyle value changed. New value: ", this.data.autoSetVolumeYandexStyle);
+      });
+
+      this.votShowVideoSliderCheckbox.input.addEventListener("change", async (e) => {
+        this.data.showVideoSlider = Number(e.target.checked);
+        await updateDB({ showVideoSlider: this.data.showVideoSlider });
+        debug.log("showVideoSlider value changed. New value: ", this.data.showVideoSlider);
+        this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
+      });
+
+      // TODO: Along with the rework of the menu, change to the input field
+      this.votUdemyDataButton.addEventListener("click", async () => {
+        const accessToken = prompt(localizationProvider.get("enterUdemyAccessToken"));
+        const udemyData = {
+          accessToken,
+          expires: new Date().getTime(),
+        };
+        await updateDB({ udemyData });
+        this.data.udemyData = udemyData;
+        debug.log("udemyData value changed. New value: ", udemyData);
+        window.location.reload();
+      });
+
+      this.votSyncVolumeCheckbox.input.addEventListener("change", async (e) => {
+        this.data.syncVolume = Number(e.target.checked);
+        await updateDB({ syncVolume: this.data.syncVolume });
+        debug.log("syncVolume value changed. New value: ", this.data.syncVolume);
+      });
+
+      this.votAudioProxyCheckbox.input.addEventListener("change", async (e) => {
+        this.data.audioProxy = Number(e.target.checked);
+        await updateDB({ audioProxy: this.data.audioProxy });
+        debug.log("audioProxy value changed. New value: ", this.data.audioProxy);
+      });
+
+      this.votSubtitlesMaxLengthSlider.input.addEventListener("input", async (e) => {
+        this.data.subtitlesMaxLength = Number(e.target.value);
+        await updateDB({ subtitlesMaxLength: this.data.subtitlesMaxLength });
+        this.votSubtitlesMaxLengthSlider.label.innerHTML = `${localizationProvider.get("VOTSubtitlesMaxLength")}: <strong>${this.data.subtitlesMaxLength}</strong>`;
+        // TODO
+      });
+
+      this.votSubtitlesHighlightWordsCheckbox.input.addEventListener("change", async (e) => {
+        this.data.highlightWords = Number(e.target.checked);
+        await updateDB({ highlightWords: this.data.highlightWords });
+        debug.log("highlightWords value changed. New value: ", this.data.highlightWords);
+        // TODO
+      });
+
+      this.votLanguageSelect.select.addEventListener("change", () => {
+        // TODO
+      });
+
+      this.votResetSettingsButton.addEventListener("click", () => {
+        deleteDB();
+        window.location.reload();
+      });
     }
   }
 
