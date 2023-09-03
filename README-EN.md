@@ -31,6 +31,7 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[[⚠️] Udemy](https://www.udemy.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[TikTok](https://tiktok.com/)**
+- **[ProxyTok](https://proxitok.pabloferreiro.es/)**
 - **[Invidious](https://yewtu.be)**
 - **[Piped](https://piped.video)**
 

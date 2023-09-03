@@ -32,6 +32,7 @@ English version: [Link](https://github.com/ilyhalight/voice-over-translation/blo
 - **[[⚠️] Udemy](https://www.udemy.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[TikTok](https://tiktok.com/)**
+- **[ProxyTok](https://proxitok.pabloferreiro.es/)**
 - **[Invidious](https://yewtu.be)**
 - **[Piped](https://piped.video)**
 
