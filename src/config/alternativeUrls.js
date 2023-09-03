@@ -49,4 +49,19 @@ const sitesPiped = [
   "piped.frontendfriendly.xyz",
 ];
 
-export { sitesInvidious, sitesPiped };
+const sitesProxyTok = [
+  "proxitok.pabloferreiro.es",
+  "proxitok.pussthecat.org",
+  "tok.habedieeh.re",
+  "proxitok.esmailelbob.xyz",
+  "proxitok.privacydev.net",
+  "tok.artemislena.eu",
+  "tok.adminforge.de",
+  "tik.hostux.net", // maybe instance doesn't working
+  "tt.vern.cc",
+  "cringe.whatever.social",
+  "proxitok.lunar.icu",
+  "proxitok.privacy.com.de", // maybe instance doesn't working
+]
+
+export { sitesInvidious, sitesPiped, sitesProxyTok };
