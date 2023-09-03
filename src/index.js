@@ -35,10 +35,7 @@ import requestVideoTranslation from "./rvt.js";
 import {
   getSubtitles,
   fetchSubtitles,
-  addSubtitlesWidget,
-  setSubtitlesWidgetContent,
-  setSubtitlesMaxLength,
-  setSubtitlesHighlightWords,
+  SubtitlesWidget
 } from "./subtitles.js";
 import { courseraUtils } from "./utils/courseraUtils.js";
 import { udemyUtils } from "./utils/udemyUtils.js";
@@ -216,8 +213,9 @@ async function translateProccessor(videoContainer, siteHostname, stop = false) {
   let dbResponseLanguage;
   let dbAudioProxy; // cf version only
   let firstPlay = true;
-  let isDBInited;
+  let isDBInited = true;
   let videoData = "";
+  let subtitlesWidget;
 
   debug.log("videoContainer", videoContainer);
 
@@ -243,14 +241,7 @@ async function translateProccessor(videoContainer, siteHostname, stop = false) {
 
   addTranslationBlock(container);
   addTranslationMenu(container);
-  if (
-    window.location.hostname.includes("youtube.com") &&
-    !window.location.hostname.includes("m.youtube.com")
-  ) {
-    addSubtitlesWidget(container.parentElement);
-  } else {
-    addSubtitlesWidget(container);
-  }
+  subtitlesWidget = new SubtitlesWidget(video, container, { host: "youtube" }); // TEST
   await changeSubtitlesLang("disabled");
 
   const menuOptions = document.querySelector(".translationMenuOptions");
@@ -342,12 +333,9 @@ async function translateProccessor(videoContainer, siteHostname, stop = false) {
       return;
     }
     if (subs === "disabled") {
-      setSubtitlesWidgetContent(video, null);
+      subtitlesWidget.setContent(null);
     } else {
-      setSubtitlesWidgetContent(
-        video,
-        await fetchSubtitles(subtitlesList.at(parseInt(subs)))
-      );
+      subtitlesWidget.setContent(await fetchSubtitles(subtitlesList.at(parseInt(subs))));
     }
   }
 
@@ -437,11 +425,11 @@ async function translateProccessor(videoContainer, siteHostname, stop = false) {
       debug.log("[db] data from db: ", dbData);
 
       if (dbSubtitlesMaxLength !== undefined) {
-        setSubtitlesMaxLength(dbSubtitlesMaxLength);
+        subtitlesWidget.setMaxLength(dbSubtitlesMaxLength);
       }
 
       if (dbHighlightWords !== undefined) {
-        setSubtitlesHighlightWords(dbHighlightWords);
+        subtitlesWidget.setHighlightWords(dbHighlightWords);
       }
 
       if (dbResponseLanguage !== undefined) {
@@ -474,7 +462,7 @@ async function translateProccessor(videoContainer, siteHostname, stop = false) {
           slider.querySelector(
             "#VOTSubtitlesMaxLengthValue"
           ).innerText = `${value}`;
-          setSubtitlesMaxLength(value);
+          subtitlesWidget.setMaxLength(value);
         };
 
         menuOptions.appendChild(slider);
@@ -502,7 +490,7 @@ async function translateProccessor(videoContainer, siteHostname, stop = false) {
             "highlightWords value changed. New value: ",
             dbHighlightWords
           );
-          setSubtitlesHighlightWords(value);
+          subtitlesWidget.setHighlightWords(value);
         };
 
         menuOptions.appendChild(checkbox);
@@ -1477,6 +1465,10 @@ class VideoHandler {
 
   async init() {
     this.data = await readDB();
+    
+    this.subtitlesWidget = new SubtitlesWidget(this.video, this.container, this.site);
+    this.subtitlesWidget.setMaxLength(this.data.subtitlesMaxLength);
+    this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
 
     this.initUI();
     this.initUIEvents();
@@ -1746,14 +1738,14 @@ class VideoHandler {
         this.data.subtitlesMaxLength = Number(e.target.value);
         await updateDB({ subtitlesMaxLength: this.data.subtitlesMaxLength });
         this.votSubtitlesMaxLengthSlider.label.innerHTML = `${localizationProvider.get("VOTSubtitlesMaxLength")}: <strong>${this.data.subtitlesMaxLength}</strong>`;
-        // TODO
+        this.subtitlesWidget.setMaxLength(this.data.subtitlesMaxLength);
       });
 
       this.votSubtitlesHighlightWordsCheckbox.input.addEventListener("change", async (e) => {
         this.data.highlightWords = Number(e.target.checked);
         await updateDB({ highlightWords: this.data.highlightWords });
         debug.log("highlightWords value changed. New value: ", this.data.highlightWords);
-        // TODO
+        this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
       });
 
       this.votLanguageSelect.select.addEventListener("change", () => {
