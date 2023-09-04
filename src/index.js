@@ -1749,6 +1749,7 @@ class VideoHandler {
       });
 
       this.votResetSettingsButton.addEventListener("click", () => {
+        localizationProvider.reset();
         deleteDB();
         window.location.reload();
       });

@@ -16,6 +16,12 @@ export const localizationProvider = new (class {
     this.setLocaleFromJsonString(window.localStorage.getItem("vot-locale"));
   }
 
+  reset() {
+    window.localStorage.removeItem("vot-locale");
+    window.localStorage.removeItem("vot-locale-lang");
+    window.localStorage.removeItem("vot-locale-version");
+  }
+
   async update(force = false) {
     if (
       !force &&
