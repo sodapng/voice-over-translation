@@ -28,8 +28,9 @@ function selectAddOptions(select, options = []) {
 }
 
 export function createHeader(html, level = 4) {
-  const header = document.createElement(`h${level}`);
+  const header = document.createElement("div");
   header.classList.add("vot-header");
+  header.classList.add(`vot-header-level-${level}`);
   header.innerHTML = html;
 
   return header;
@@ -203,7 +204,7 @@ export function createDialog(html) {
   const footerContainer = document.createElement("div");
   footerContainer.classList.add("vot-dialog-footer-container");
 
-  const titleContainer = document.createElement("h2");
+  const titleContainer = document.createElement("div");
   titleContainer.classList.add("vot-dialog-title-container");
 
   const closeButton = createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>`);
@@ -304,7 +305,7 @@ export function createVOTMenu(html) {
   const footerContainer = document.createElement("div");
   footerContainer.classList.add("vot-menu-footer-container");
 
-  const titleContainer = document.createElement("h2");
+  const titleContainer = document.createElement("div");
   titleContainer.classList.add("vot-menu-title-container");
 
   const title = document.createElement("div");

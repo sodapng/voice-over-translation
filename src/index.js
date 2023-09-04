@@ -398,9 +398,11 @@ class VideoHandler {
 
       this.votSettingsButton.addEventListener("click", () => {
         this.votSettingsDialog.container.hidden = !this.votSettingsDialog.container.hidden;
-        document.webkitExitFullscreen && document.webkitExitFullscreen();
-        document.mozCancelFullscreen && document.mozCancelFullscreen();
-        document.exitFullscreen && document.exitFullscreen();
+        if (document.fullscreen === undefined || document.fullscreen) {
+          document.webkitExitFullscreen && document.webkitExitFullscreen();
+          document.mozCancelFullscreen && document.mozCancelFullscreen();
+          document.exitFullscreen && document.exitFullscreen();
+        }
       });
 
       this.votTranslationLanguageSelect.fromSelect.addEventListener("change", async (e) => {
@@ -1103,6 +1105,8 @@ class VideoHandler {
   async handleSrcChanged() {
     debug.log("[VideoHandler] src changed");
     this.stopTranslation();
+
+    this.firstPlay = true;
 
     // Update subtitles
     {

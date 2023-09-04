@@ -7,4 +7,28 @@
   &:not(:first-child) {
     padding-top: 8px;
   }
+  
+  &-level-1 {
+    font-size: 2em;
+  }
+
+  &-level-2 {
+    font-size: 1.5em;
+  }
+
+  &-level-3 {
+    font-size: 1.17em;
+  }
+
+  &-level-4 {
+    font-size: 1em;
+  }
+
+  &-level-5 {
+    font-size: 0.83em;
+  }
+
+  &-level-6 {
+    font-size: 0.67em;
+  }
 }

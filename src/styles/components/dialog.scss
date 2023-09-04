@@ -1,7 +1,8 @@
 .vot-dialog {
   &-container {
     visibility: visible;
-    z-index: 100;
+    position: absolute;
+    z-index: 10000;
 
     &[hidden] {
       display: block !important;
