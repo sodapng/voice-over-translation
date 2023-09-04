@@ -1,8 +1,7 @@
 import { youtubeUtils } from "./utils/youtubeUtils.js";
-import { sleep } from "./utils/utils.js";
+import { sleep, lang } from "./utils/utils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
 import { siteTranslates } from "./config/constants.js";
-import { lang } from "./menu-old.js";
 import requestVideoSubtitles from "./rvs.js";
 import debug from "./utils/debug.js";
 
@@ -317,7 +316,7 @@ export class SubtitlesWidget {
     this.video?.addEventListener("timeupdate", this.onTimeUpdateBound);
   }
 
-  remove() {
+  release() {
     this.video?.removeEventListener("timeupdate", this.onTimeUpdateBound);
 
     document.removeEventListener("mousedown", this.onMouseDownBound);

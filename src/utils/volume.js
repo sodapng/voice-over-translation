@@ -1,6 +1,6 @@
 // element - audio / video element
 function syncVolume(element, sliderVolume, otherSliderVolume, tempVolume) {
-  let finalValue;
+  let finalValue = sliderVolume;
   if (sliderVolume > tempVolume) {
     // sliderVolume = 100
     // tempVolume = 69

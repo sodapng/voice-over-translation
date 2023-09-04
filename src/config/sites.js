@@ -65,7 +65,7 @@ const sites = () => {
       match: /^(www.|m.)?vk.(com|ru)$/,
       selector: ".videoplayer_media",
     },
-    {
+    { // TODO: video selector: ".vp-video-wrapper > .vp-video > .vp-telecine > video"
       host: "vimeo",
       url: "https://vimeo.com/",
       match: /^(player.)?vimeo.com$/,

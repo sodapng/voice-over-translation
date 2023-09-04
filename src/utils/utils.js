@@ -1,5 +1,8 @@
 import { localizationProvider } from "../localization/localizationProvider.js";
 
+const userlang = navigator.language || navigator.userLanguage;
+export const lang = userlang?.substr(0, 2)?.toLowerCase() ?? "en";
+
 if (!String.prototype.format) {
   // https://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format
   // syntax example: "is {0} function".format("format")

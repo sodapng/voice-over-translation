@@ -17,6 +17,9 @@
   font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
   font-size: 16px;
   line-height: 1.5;
+  cursor: default;
+  transition: opacity 0.5s;
+  z-index: 100;
 
   & .vot-separator {
     width: 1px;
