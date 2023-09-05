@@ -11,7 +11,7 @@ import {
   siteTranslates,
   cfOnlyExtensions,
 } from "./config/constants.js";
-import { localizationProvider } from "./localization/localizationProvider.js";
+import { localizationProvider, availableLocales } from "./localization/localizationProvider.js";
 import { initDB, readDB, updateDB, deleteDB } from "./indexedDB.js";
 import ui from "./ui.js";
 import { syncVolume } from "./utils/volume.js";
@@ -334,8 +334,7 @@ class VideoHandler {
       this.votAboutHeader = ui.createHeader(localizationProvider.get("about"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votAboutHeader);
 
-      // TODO
-      this.votLanguageSelect = ui.createSelect(localizationProvider.get("VOTMenuLanguage"));
+      this.votLanguageSelect = ui.createSelect(localizationProvider.get("VOTMenuLanguage"), genOptionsByOBJ(availableLocales, window.localStorage.getItem("vot-locale-lang-override") ?? "auto"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votLanguageSelect.container);
 
       this.votVersionInfo = ui.createInformation(`${localizationProvider.get("VOTVersion")}:`, BUILD_MODE === "cloudflare" ? `cloudflare ${GM_info.script.version}` : GM_info.script.version);
@@ -527,8 +526,8 @@ class VideoHandler {
         this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
       });
 
-      this.votLanguageSelect.select.addEventListener("change", () => {
-        // TODO
+      this.votLanguageSelect.select.addEventListener("change", (e) => {
+        window.localStorage.setItem("vot-locale-lang-override", e.target.value);
       });
 
       this.votResetSettingsButton.addEventListener("click", () => {

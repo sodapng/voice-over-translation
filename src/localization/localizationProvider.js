@@ -5,14 +5,47 @@ const localesVersion = 2;
 const localesUrl =
   "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/src/localization/locales";
 
+export const availableLocales = [
+  "auto",
+  "en",
+  "ru",
+
+  "ar",
+  "bn",
+  "cs",
+  "de",
+  "es",
+  "fa",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "jv",
+  "kk",
+  "ko",
+  "ms",
+  "pt",
+  "tr",
+  "uk",
+  "ur",
+  "vi",
+  "zh",
+];
+
 export const localizationProvider = new (class {
-  lang =
-    (navigator.language || navigator.userLanguage)
-      ?.substr(0, 2)
-      ?.toLowerCase() ?? "en";
+  lang = "en";
   locale = {};
 
   constructor() {
+    const langOverride = window.localStorage.getItem("vot-locale-lang-override");
+    if (langOverride && langOverride !== "auto") {
+      this.lang = langOverride;
+    } else {
+      this.lang = (navigator.language || navigator.userLanguage)
+        ?.substr(0, 2)
+        ?.toLowerCase() ?? "en";
+    }
     this.setLocaleFromJsonString(window.localStorage.getItem("vot-locale"));
   }
 
@@ -20,6 +53,7 @@ export const localizationProvider = new (class {
     window.localStorage.removeItem("vot-locale");
     window.localStorage.removeItem("vot-locale-lang");
     window.localStorage.removeItem("vot-locale-version");
+    window.localStorage.removeItem("vot-locale-lang-override");
   }
 
   async update(force = false) {
