@@ -6,8 +6,7 @@ import { getVideoId, secsToStrTime, lang } from "./utils/utils.js";
 import { autoVolume } from "./config/config.js";
 import {
   sitesInvidious,
-  sitesPiped,
-  sitesProxyTok
+  sitesPiped
 } from "./config/alternativeUrls.js";
 import {
   availableLangs,
@@ -545,7 +544,9 @@ class VideoHandler {
   releaseExtraEvents() {
     clearInterval(this.resizeInterval);
     this.resizeObserver.disconnect();
-    this.syncVolumeObserver.disconnect();
+    if (this.site.host === "youtube" && this.site.additionalData !== "mobile") {
+      this.syncVolumeObserver.disconnect();
+    }
 
     this.extraEvents?.forEach((e) => {
       e.element.removeEventListener(e.event, e.handler);
@@ -1178,6 +1179,8 @@ class VideoHandler {
     this.releaseExtraEvents();
     this.subtitlesWidget.release();
     this.srcObserver.disconnect();
+    this.votButton.container.remove();
+    this.votMenu.container.remove();
   }
 }
 
@@ -1253,7 +1256,7 @@ async function main() {
   });
   videoObserver.onVideoRemoved.addListener((video) => {
     if (videosWrappers.has(video)) {
-      videosWrappers.get(video).remove();
+      videosWrappers.get(video).release();
       videosWrappers.delete(video);
     }
   });
