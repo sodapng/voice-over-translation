@@ -10,6 +10,7 @@
   display: flex;
   align-items: center;
   height: 32px;
+  max-width: 100vw;
   background: rgb(var(--vot-surface-rgb, 255, 255, 255));
   color: var(--vot-helper-theme);
   fill: var(--vot-helper-theme);
@@ -86,6 +87,7 @@
 
     &-label {
       margin-left: 8px;
+      white-space: nowrap;
     }
   }
 

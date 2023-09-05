@@ -38,6 +38,7 @@
   &-content-wrapper {
     display: flex;
     flex-direction: column;
+    min-height: 100px;
     max-height: calc(var(--vot-container-height, 75vh) - (5rem + 32px + 16px) * 2);
     overflow: auto;
   }

@@ -1218,7 +1218,13 @@ async function main() {
   videoObserver.onVideoAdded.addListener((video) => {
     const site = getSite();
     if (!site) return;
-    const container = site.selector ? Object.values(document.querySelectorAll(site.selector)).find(e => e.contains(video)) : video.parentElement;
+    let container;
+    if (site.shadowRoot) {
+      container = site.selector ? Object.values(document.querySelectorAll(site.selector)).find(e => e.shadowRoot.contains(video)) : video.parentElement;
+      container = (container && container.shadowRoot) ? container.parentElement : container;
+    } else {
+      container = site.selector ? Object.values(document.querySelectorAll(site.selector)).find(e => e.contains(video)) : video.parentElement;
+    }
     if (!container) return;
     if (!videosWrappers.has(video)) {
       videosWrappers.set(video, new VideoHandler(video, container, site));

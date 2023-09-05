@@ -2,12 +2,17 @@ import { EventImpl } from "./EventImpl.js";
 
 function filterVideoNodes(e) {
   return Array.from(e).map((e) => {
-    if (e instanceof HTMLVideoElement) return [e];
-    if (e instanceof HTMLElement) {
-      const t = e.querySelectorAll("video");
-      return Array.from(t);
+    const result = [];
+    if (e instanceof HTMLVideoElement) {
+      result.push(e);
     }
-    return [];
+    if (e instanceof HTMLElement) {
+      result.push(...Array.from(e.querySelectorAll("video")));
+    }
+    if (e?.shadowRoot?.querySelectorAll) {
+      result.push(...Array.from(e.shadowRoot.querySelectorAll("video")));
+    }
+    return result;
   }).flat();
 }
 

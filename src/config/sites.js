@@ -13,7 +13,7 @@ const sites = () => {
       host: "youtube",
       url: "https://youtu.be/",
       match: /^m.youtube(-nocookie)?.com$/,
-      selector: "#player-control-container",
+      selector: ".player-container",
     },
     {
       host: "youtube",
@@ -59,6 +59,14 @@ const sites = () => {
     //   match: /^[a-z]+.pornhub.com$/,
     //   selector: ".mgp_videoWrapper",
     // },
+    {
+      additionalData: "mobile",
+      host: "vk",
+      url: "https://vk.com/video?z=",
+      match: /^m.vk.(com|ru)$/,
+      selector: "vk-video-player",
+      shadowRoot: true
+    },
     {
       host: "vk",
       url: "https://vk.com/video?z=",

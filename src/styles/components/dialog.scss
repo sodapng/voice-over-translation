@@ -39,7 +39,7 @@
     bottom: 50%;
     max-width: initial;
     max-height: initial;
-    width: var(--vot-dialog-width, 512px);
+    width: calc(min(var(--vot-dialog-width, 512px), 100%));
     height: fit-content;
     inset-inline-start: 0px;
     inset-inline-end: 0px;
