@@ -11,7 +11,7 @@ English version: [Link](https://github.com/ilyhalight/voice-over-translation/blo
 
 ### Полезные ссылки:
 1. Версия для VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, OrangeMonkey, UserScripts и некоторых браузеров: **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
-2. Версия для терминала: **[Ссылка](https://github.com/ilyhalight/voice-over-translation/tree/master/vot-cli)**
+2. Версия для терминала: **[Ссылка](https://github.com/FOSWLY/vot-cli)**
 3. Вики: **[Link](https://github.com/ilyhalight/voice-over-translation/wiki)**
 
 ## Список поддерживаемых сайтов:
