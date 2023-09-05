@@ -222,7 +222,7 @@ class VideoHandler {
 
     // VOT Menu
     {
-      this.votMenu = ui.createVOTMenu(localizationProvider.get("translationSettings"));
+      this.votMenu = ui.createVOTMenu(localizationProvider.get("VOTSettings"));
       this.container.appendChild(this.votMenu.container);
 
       this.votDownloadButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M480-337q-8 0-15-2.5t-13-8.5L308-492q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T365-549l75 75v-286q0-17 11.5-28.5T480-800q17 0 28.5 11.5T520-760v286l75-75q12-12 28.5-11.5T652-548q11 12 11.5 28T652-492L508-348q-6 6-13 8.5t-15 2.5ZM240-160q-33 0-56.5-23.5T160-240v-80q0-17 11.5-28.5T200-360q17 0 28.5 11.5T240-320v80h480v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80q0 33-23.5 56.5T720-160H240Z"/></svg>`);
@@ -284,7 +284,7 @@ class VideoHandler {
 
     // VOT Settings
     {
-      this.votSettingsDialog = ui.createDialog(localizationProvider.get("VOTSettings")); // TODO: add localization
+      this.votSettingsDialog = ui.createDialog(localizationProvider.get("VOTSettings"));
       document.documentElement.appendChild(this.votSettingsDialog.container);
 
       this.votTranslationHeader = ui.createHeader(localizationProvider.get("translationSettings"));
@@ -319,7 +319,7 @@ class VideoHandler {
 
       // SUBTITLES
 
-      this.votSubtitlesHeader = ui.createHeader(localizationProvider.get("subtitlesSettings")); // TODO: add localization
+      this.votSubtitlesHeader = ui.createHeader(localizationProvider.get("subtitlesSettings"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesHeader);
 
       this.votSubtitlesMaxLengthSlider = ui.createSlider(`${localizationProvider.get("VOTSubtitlesMaxLength")}: <strong>${this.data?.subtitlesMaxLength ?? 300}</strong>`, this.data?.subtitlesMaxLength ?? 300, 50, 300);
@@ -330,23 +330,23 @@ class VideoHandler {
 
       // ABOUT
 
-      this.votAboutHeader = ui.createHeader(localizationProvider.get("about")); // TODO: add localization
+      this.votAboutHeader = ui.createHeader(localizationProvider.get("about"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votAboutHeader);
 
       // TODO
-      this.votLanguageSelect = ui.createSelect(localizationProvider.get("VOTMenuLanguage")); // TODO: add localization
+      this.votLanguageSelect = ui.createSelect(localizationProvider.get("VOTMenuLanguage"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votLanguageSelect.container);
 
-      this.votVersionInfo = ui.createInformation(`${localizationProvider.get("VOTVersion")}:`, BUILD_MODE === "cloudflare" ? `cloudflare ${GM_info.script.version}` : GM_info.script.version); // TODO: add localization
+      this.votVersionInfo = ui.createInformation(`${localizationProvider.get("VOTVersion")}:`, BUILD_MODE === "cloudflare" ? `cloudflare ${GM_info.script.version}` : GM_info.script.version);
       this.votSettingsDialog.bodyContainer.appendChild(this.votVersionInfo.container);
 
-      this.votAuthorsInfo = ui.createInformation(`${localizationProvider.get("VOTAuthors")}:`, GM_info.script.author); // TODO: add localization
+      this.votAuthorsInfo = ui.createInformation(`${localizationProvider.get("VOTAuthors")}:`, GM_info.script.author);
       this.votSettingsDialog.bodyContainer.appendChild(this.votAuthorsInfo.container);
 
-      this.votLoaderInfo = ui.createInformation(`${localizationProvider.get("VOTLoader")}:`, `${GM_info.scriptHandler} v${GM_info.version}`); // TODO: add localization
+      this.votLoaderInfo = ui.createInformation(`${localizationProvider.get("VOTLoader")}:`, `${GM_info.scriptHandler} v${GM_info.version}`);
       this.votSettingsDialog.bodyContainer.appendChild(this.votLoaderInfo.container);
 
-      this.votBrowserInfo = ui.createInformation(`${localizationProvider.get("VOTBrowser")}:`, `${browserInfo.browser.name} ${browserInfo.browser.version} (${browserInfo.os.name} ${browserInfo.os.version})`); // TODO: add localization
+      this.votBrowserInfo = ui.createInformation(`${localizationProvider.get("VOTBrowser")}:`, `${browserInfo.browser.name} ${browserInfo.browser.version} (${browserInfo.os.name} ${browserInfo.os.version})`);
       this.votSettingsDialog.bodyContainer.appendChild(this.votBrowserInfo.container);
 
       this.votResetSettingsButton = ui.createButton(localizationProvider.get("resetSettings"));
