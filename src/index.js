@@ -4,7 +4,11 @@ import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
 import { getVideoId, secsToStrTime, lang } from "./utils/utils.js";
 import { autoVolume } from "./config/config.js";
-import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
+import {
+  sitesInvidious,
+  sitesPiped,
+  sitesProxyTok
+} from "./config/alternativeUrls.js";
 import {
   availableLangs,
   additionalTTS,
@@ -857,7 +861,6 @@ class VideoHandler {
       window.location.hostname.includes("my.mail.ru")
     ) {
       videoData.detectedLanguage = "ru";
-      videoData.responseLanguage = "en";
     } else if (window.location.hostname.includes("bilibili.com")) {
       videoData.detectedLanguage = "zh";
     } else if (window.location.hostname.includes("coursera.org")) {

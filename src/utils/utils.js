@@ -100,7 +100,8 @@ const getVideoId = (service) => {
         return url.pathname.match(/(?:videos)\/([^/]+)/)?.[0];
       }
     case "tiktok":
-      return url.pathname.match(/video\/([^/]+)/)?.[1];
+      // return url.pathname.match(/video\/([^/]+)/)?.[1];
+      return url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
     case "vimeo":
       return (
         url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||
@@ -118,7 +119,17 @@ const getVideoId = (service) => {
     case "udemy":
       return url.pathname;
     case "facebook":
-      return url.pathname;
+      // ...watch?v=XXX
+      // CHANNEL_ID/videos/VIDEO_ID/
+      // returning "Видео недоступно для перевода"
+
+      // fb.watch/YYY
+      // returning "Возникла ошибка, попробуйте позже"
+      if (url.searchParams.get("v")) {
+        return url.searchParams.get("v");
+      }
+
+      return false;
     case "rutube":
       return url.pathname.match(/(?:video|embed)\/([^/]+)/)?.[1];
     case "coub":

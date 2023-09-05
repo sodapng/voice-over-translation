@@ -1,13 +1,7 @@
-import { sitesInvidious, sitesPiped } from "./alternativeUrls.js";
+import { sitesInvidious, sitesPiped, sitesProxyTok } from "./alternativeUrls.js";
 
 const sites = () => {
   return [
-    { // TODO
-      host: "tiktok",
-      url: null,
-      match: /^www.tiktok.com$/,
-      selector: null,
-    },
     {
       additionalData: "mobile",
       host: "youtube",
@@ -20,6 +14,18 @@ const sites = () => {
       url: "https://youtu.be/",
       match: /^(www.)?youtube(-nocookie)?.com$/,
       selector: ".html5-video-container",
+    },
+    {
+      host: "tiktok",
+      url: "https://www.tiktok.com/",
+      match: /^(www.)?tiktok.com$/,
+      selector: null,
+    },
+    {
+      host: "proxytok",
+      url: "https://www.tiktok.com/",
+      match: sitesProxyTok,
+      selector: ".column.has-text-centered",
     },
     {
       additionalData: "mobile",
