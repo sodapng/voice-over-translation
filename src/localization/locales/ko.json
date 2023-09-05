@@ -1,4 +1,5 @@
 {
+  "__version__": 2,
   "recommended": "추천",
   "translateVideo": "비디오 번역",
   "disableTranslate": "끄기",

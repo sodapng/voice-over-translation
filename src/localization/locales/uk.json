@@ -1,4 +1,5 @@
 {
+  "__version__": 2,
   "recommended": "рекомендовано",
   "translateVideo": "Перекласти відео",
   "disableTranslate": "Вимкнути",

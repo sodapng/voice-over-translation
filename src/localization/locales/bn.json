@@ -1,4 +1,5 @@
 {
+  "__version__": 2,
   "recommended": "সুপারিশ করা হয়",
   "translateVideo": "ভিডিও অনুবাদ করুন",
   "disableTranslate": "বন্ধ করুন",

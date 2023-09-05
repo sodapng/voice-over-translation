@@ -1,4 +1,5 @@
 {
+  "__version__": 2,
   "recommended": "recommande",
   "translateVideo": "Traduire la vidéo",
   "disableTranslate": "Désactiver",

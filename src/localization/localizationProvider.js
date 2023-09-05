@@ -42,7 +42,8 @@ export const localizationProvider = new (class {
       .then((text) => {
         window.localStorage.setItem("vot-locale", text);
         this.setLocaleFromJsonString(text);
-        window.localStorage.setItem("vot-locale-version", localesVersion);
+        const version = this.getFromLocale(this.locale, "__version__");
+        if (typeof version === "number") window.localStorage.setItem("vot-locale-version", version);
         window.localStorage.setItem("vot-locale-lang", this.lang);
       })
       .catch((error) => {
