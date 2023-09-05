@@ -1,4 +1,4 @@
-// coursera translation help object
+// coursera & udemy translation help object
 const VideoTranslationHelpObject = new protobuf.Type(
   "VideoTranslationHelpObject"
 )
