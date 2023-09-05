@@ -122,7 +122,13 @@ const getVideoId = (service) => {
     case "rutube":
       return url.pathname.match(/(?:video|embed)\/([^/]+)/)?.[1];
     case "coub":
-      return url.pathname.match(/view\/([^/]+)/)?.[1];
+      if (url.pathname.includes("/view")) {
+        return url.pathname.match(/view\/([^/]+)/)?.[1];
+      } else if (url.pathname.includes("/embed")) {
+        return url.pathname.match(/embed\/([^/]+)/)?.[1];
+      } else {
+        return document.querySelector(".coub.active")?.dataset?.permalink;
+      }
     case "bilibili": {
       const bvid = url.searchParams.get("bvid");
       if (bvid) {
