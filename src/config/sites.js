@@ -81,7 +81,7 @@ const sites = () => {
     },
     {
       host: "nine_gag",
-      utl: "https://9gag.com/gag/",
+      url: "https://9gag.com/gag/",
       match: /^9gag.com$/,
       selector: ".video-post",
     },

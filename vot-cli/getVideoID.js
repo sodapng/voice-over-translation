@@ -57,5 +57,5 @@ function getVideoId (service, url) {
     }
   };
 
-  
+
 export default getVideoId;

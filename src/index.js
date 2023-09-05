@@ -191,6 +191,10 @@ class VideoHandler {
     this.initUI();
     this.initUIEvents();
 
+    this.votButton.container.hidden = !this.video.src && !this.video.currentSrc;
+    !this.video.src && !this.video.currentSrc && (this.votMenu.container.hidden = !this.video.src && !this.video.currentSrc);
+
+    await this.updateSubtitles();
     await this.changeSubtitlesLang("disabled");
     this.setSelectMenuValues(this.videoData.detectedLanguage, this.data.responseLanguage ?? "ru");
     this.translateToLang = this.data.responseLanguage ?? "ru";
@@ -210,23 +214,24 @@ class VideoHandler {
       this.container.appendChild(this.votButton.container);
 
       this.votButton.container.addEventListener("click", (e) => {
+        e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
       });
     }
-    
+
     // VOT Menu
     {
       this.votMenu = ui.createVOTMenu(localizationProvider.get("translationSettings"));
       this.container.appendChild(this.votMenu.container);
-  
+
       this.votDownloadButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M480-337q-8 0-15-2.5t-13-8.5L308-492q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T365-549l75 75v-286q0-17 11.5-28.5T480-800q17 0 28.5 11.5T520-760v286l75-75q12-12 28.5-11.5T652-548q11 12 11.5 28T652-492L508-348q-6 6-13 8.5t-15 2.5ZM240-160q-33 0-56.5-23.5T160-240v-80q0-17 11.5-28.5T200-360q17 0 28.5 11.5T240-320v80h480v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80q0 33-23.5 56.5T720-160H240Z"/></svg>`);
       this.votDownloadButton.hidden = true;
       this.votMenu.headerContainer.appendChild(this.votDownloadButton);
-  
+
       this.votSettingsButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M555-80H405q-15 0-26-10t-13-25l-12-93q-13-5-24.5-12T307-235l-87 36q-14 5-28 1t-22-17L96-344q-8-13-5-28t15-24l75-57q-1-7-1-13.5v-27q0-6.5 1-13.5l-75-57q-12-9-15-24t5-28l74-129q7-14 21.5-17.5T220-761l87 36q11-8 23-15t24-12l12-93q2-15 13-25t26-10h150q15 0 26 10t13 25l12 93q13 5 24.5 12t22.5 15l87-36q14-5 28-1t22 17l74 129q8 13 5 28t-15 24l-75 57q1 7 1 13.5v27q0 6.5-2 13.5l75 57q12 9 15 24t-5 28l-74 128q-8 13-22.5 17.5T738-199l-85-36q-11 8-23 15t-24 12l-12 93q-2 15-13 25t-26 10Zm-73-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm0-80q-25 0-42.5-17.5T422-480q0-25 17.5-42.5T482-540q25 0 42.5 17.5T542-480q0 25-17.5 42.5T482-420Zm-2-60Zm-40 320h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Z"/></svg>`);
       this.votMenu.headerContainer.appendChild(this.votSettingsButton);
-  
+
       this.votTranslationLanguageSelect = ui.createVOTLanguageSelect(
         [
           {
@@ -252,7 +257,7 @@ class VideoHandler {
         ]
       );
       this.votMenu.bodyContainer.appendChild(this.votTranslationLanguageSelect.container);
-  
+
       this.votSubtitlesSelect = ui.createSelect(localizationProvider.get("VOTSubtitles"), [
         {
           label: localizationProvider.get("VOTSubtitlesDisabled"),
@@ -261,7 +266,7 @@ class VideoHandler {
         }
       ]);
       this.votMenu.bodyContainer.appendChild(this.votSubtitlesSelect.container);
-  
+
       this.votVideoVolumeSlider = ui.createSlider(`${localizationProvider.get("VOTVolume")}: <strong>${this.getVideoVolume() * 100}%</strong>`, this.getVideoVolume() * 100);
       this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
       this.votMenu.bodyContainer.appendChild(this.votVideoVolumeSlider.container);
@@ -271,6 +276,7 @@ class VideoHandler {
       this.votMenu.bodyContainer.appendChild(this.votVideoTranslationVolumeSlider.container);
 
       this.votMenu.container.addEventListener("click", (e) => {
+        e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
       });
@@ -361,11 +367,11 @@ class VideoHandler {
         try {
           debug.log("[click translationBtn] trying execute translation");
           const VIDEO_ID = getVideoId(this.site.host);
-  
+
           if (!VIDEO_ID) {
             throw new VOTLocalizedError("VOTNoVideoIDFound");
           }
-  
+
           await this.translateExecutor(VIDEO_ID);
         } catch (err) {
           console.error("[VOT]", err);
@@ -376,22 +382,14 @@ class VideoHandler {
           }
         }
       });
-  
+
       this.votButton.menuButton.addEventListener("click", () => {
         this.votMenu.container.hidden = !this.votMenu.container.hidden;
       });
     }
-    
+
     // VOT Menu
     {
-      this.resizeObserver = new ResizeObserver((entries) => {
-        entries.forEach((e) => {
-          this.votMenu.container.setAttribute("style", `--vot-container-height: ${e.contentRect.height}px`);
-        });
-      });
-      this.resizeObserver.observe(this.video);
-      this.votMenu.container.setAttribute("style", `--vot-container-height: ${this.video.getBoundingClientRect().height}px`);
-
       this.votDownloadButton.addEventListener("click", () => {
         // TODO
       });
@@ -442,11 +440,11 @@ class VideoHandler {
             translateVolume,
             this.tempOriginalVolume
           );
-    
+
           this.votVideoTranslationVolumeSlider.input.value = finalValue;
           this.votVideoTranslationVolumeSlider.label.querySelector("strong").innerHTML = `${finalValue}%`;
           ui.updateSlider(this.votVideoTranslationVolumeSlider.input);
-    
+
           this.tempVolume = finalValue;
           this.tempOriginalVolume = value;
         }
@@ -539,6 +537,8 @@ class VideoHandler {
   }
 
   releaseExtraEvents() {
+    clearInterval(this.resizeInterval);
+    this.resizeObserver.disconnect();
     this.syncVolumeObserver.disconnect();
 
     this.extraEvents?.forEach((e) => {
@@ -564,6 +564,16 @@ class VideoHandler {
       });
     };
 
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((e) => {
+        this.votMenu.container.setAttribute("style", `--vot-container-height: ${e.contentRect.height}px`);
+      });
+    });
+    this.resizeObserver.observe(this.video);
+    this.votMenu.container.setAttribute("style", `--vot-container-height: ${this.video.getBoundingClientRect().height}px`);
+    this.resizeInterval = setInterval(() => {
+      this.votMenu.container.setAttribute("style", `--vot-container-height: ${this.video.getBoundingClientRect().height}px`);
+    }, 500);
     // Sync volume slider with original video (youtube only)
     if (this.site.host === "youtube" && this.site.additionalData !== "mobile") {
       this.syncVolumeObserver = new MutationObserver((mutations) => {
@@ -594,15 +604,17 @@ class VideoHandler {
       const button = this.votButton.container;
       const menu = this.votMenu.container;
       const container = this.container;
+      const settings = this.votSettingsDialog.container;
 
-      const isButton = e === button ? button.contains(e) : false;
-      const isMenu = e === menu ? menu.contains(e) : false;
-      const isVideo = e === container ? container.contains(e) : false;
-  
-      debug.log(`[document click] ${isButton} ${isMenu} ${isVideo}`);
-      if (!(!isButton && !isMenu)) return;
+      const isButton = button.contains(e);
+      const isMenu = menu.contains(e);
+      const isVideo = container.contains(e);
+      const isSettings = settings.contains(e);
+
+      debug.log(`[document click] ${isButton} ${isMenu} ${isVideo} ${isSettings}`);
+      if (!(!isButton && !isMenu && !isSettings)) return;
       if (!isVideo) this.logout(0);
-  
+
       this.votMenu.container.hidden = true;
     });
 
@@ -624,7 +636,7 @@ class VideoHandler {
     addExtraEventListener(this.votButton.container, "mousemove" , this.changeOpacityOnEventBound);
     addExtraEventListener(this.votMenu.container, "mousemove" , this.changeOpacityOnEventBound);
     addExtraEventListeners(document, ["touchstart", "touchmove", "touchend"], this.changeOpacityOnEventBound);
-  
+
     addExtraEventListener(this.video, "abort", () => {
       debug.log("lipsync mode is abort");
       this.stopTranslation();
@@ -636,11 +648,11 @@ class VideoHandler {
         return;
       }
       const VIDEO_ID = getVideoId(this.site.host);
-  
+
       if (!VIDEO_ID) {
         throw new VOTLocalizedError("VOTNoVideoIDFound");
       }
-  
+
       try {
         await this.translateExecutor(VIDEO_ID);
         this.firstPlay = false;
@@ -660,7 +672,7 @@ class VideoHandler {
     if (!this.votMenu.container.hidden) return;
     this.votButton.container.style.opacity = n;
   }
-  
+
   resetTimer() {
     clearTimeout(this.timer);
     this.logout(1);
@@ -668,7 +680,7 @@ class VideoHandler {
       this.logout(0);
     }, 2000);
   }
-  
+
   changeOpacityOnEvent(event) {
     clearTimeout(this.timer);
     this.logout(1);
@@ -715,6 +727,46 @@ class VideoHandler {
     }
 
     await this.changeSubtitlesLang(oldValue);
+  }
+
+  async updateSubtitles() {
+    await this.changeSubtitlesLang("disabled");
+
+    const VIDEO_ID = getVideoId(this.site.host);
+
+    if (!VIDEO_ID) {
+      console.error(
+        `[VOT] ${localizationProvider.getDefault("VOTNoVideoIDFound")}`
+      );
+      this.subtitlesList = [];
+      this.subtitlesListVideoId = null;
+      await this.updateSubtitlesLangSelect();
+      return;
+    }
+
+    if (this.subtitlesListVideoId === VIDEO_ID) {
+      return;
+    }
+
+    if (!this.videoData.detectedLanguage) {
+      this.videoData = await this.getVideoData();
+      await this.setSelectMenuValues(
+        this.videoData.detectedLanguage,
+        this.videoData.responseLanguage
+      );
+    }
+
+    this.subtitlesList = await getSubtitles(
+      this.site.host,
+      VIDEO_ID,
+      this.videoData.detectedLanguage
+    );
+    if (!this.subtitlesList) {
+      await this.changeSubtitlesLang("disabled");
+    } else {
+      this.subtitlesListVideoId = VIDEO_ID;
+    }
+    await this.updateSubtitlesLangSelect();
   }
 
   // Get video volume in 0.00-1.00 format
@@ -1036,7 +1088,7 @@ class VideoHandler {
             break;
         }
 
-        if (!this.video.src) {
+        if (!this.video.src && !this.video.currentSrc) {
           this.stopTranslation();
           return;
         }
@@ -1083,7 +1135,7 @@ class VideoHandler {
 
         this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
         this.votVideoTranslationVolumeSlider.container.hidden = this.votButton.container.dataset.status !== "success";
-        
+
         if (this.data.autoSetVolumeYandexStyle === 1) {
           this.votVideoVolumeSlider.input.value = autoVolume * 100;
           this.votVideoVolumeSlider.label.querySelector("strong").innerHTML = `${autoVolume * 100}%`;
@@ -1108,46 +1160,10 @@ class VideoHandler {
 
     this.firstPlay = true;
 
-    // Update subtitles
-    {
-      await this.changeSubtitlesLang("disabled");
+    this.votButton.container.hidden = !this.video.src && !this.video.currentSrc;
+    !this.video.src && !this.video.currentSrc && (this.votMenu.container.hidden = !this.video.src && !this.video.currentSrc);
 
-      const VIDEO_ID = getVideoId(this.site.host);
-
-      if (!VIDEO_ID) {
-        console.error(
-          `[VOT] ${localizationProvider.getDefault("VOTNoVideoIDFound")}`
-        );
-        this.subtitlesList = [];
-        this.subtitlesListVideoId = null;
-        await this.updateSubtitlesLangSelect();
-        return;
-      }
-
-      if (this.subtitlesListVideoId === VIDEO_ID) {
-        return;
-      }
-
-      if (!this.videoData.detectedLanguage) {
-        this.videoData = await this.getVideoData();
-        await this.setSelectMenuValues(
-          this.videoData.detectedLanguage,
-          this.videoData.responseLanguage
-        );
-      }
-
-      this.subtitlesList = await getSubtitles(
-        this.site.host,
-        VIDEO_ID,
-        this.videoData.detectedLanguage
-      );
-      if (!this.subtitlesList) {
-        await this.changeSubtitlesLang("disabled");
-      } else {
-        this.subtitlesListVideoId = VIDEO_ID;
-      }
-      await this.updateSubtitlesLangSelect();
-    }
+    await this.updateSubtitles();
   }
 
   release() {
@@ -1155,7 +1171,6 @@ class VideoHandler {
     this.stopTranslation();
     this.releaseExtraEvents();
     this.subtitlesWidget.release();
-    this.resizeObserver.disconnect();
     this.srcObserver.disconnect();
   }
 }
@@ -1167,7 +1182,7 @@ function getSite() {
         || (typeof match === "string" && window.location.hostname.includes(match))
         || (typeof match === "function" && match(window.location));
     };
-    if (isMathes(e.match) || (e.match instanceof Array && e.match.some((e) => isMathes(e.match)))) {
+    if (isMathes(e.match) || (e.match instanceof Array && e.match.some((e) => isMathes(e)))) {
       return e.host && e.url;
     }
     return false;

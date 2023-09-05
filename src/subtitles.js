@@ -376,7 +376,7 @@ export class SubtitlesWidget {
   onTimeUpdate() {
     this.update();
   }
-  
+
   setContent(subtitles) {
     if (subtitles && this.video) {
       this.subtitles = subtitles;
@@ -386,7 +386,7 @@ export class SubtitlesWidget {
       this.votSubtitlesContainer.innerHTML = "";
     }
   }
-  
+
   setMaxLength(len) {
     if (typeof len === "number" && len) {
       this.maxLength = len;
@@ -394,7 +394,7 @@ export class SubtitlesWidget {
       this.update();
     }
   }
-  
+
   setHighlightWords(value) {
     if (this.highlightWords !== !!value) {
       this.highlightWords = !!value;
@@ -404,7 +404,7 @@ export class SubtitlesWidget {
 
   update() {
     if (!this.video) return;
-  
+
     let content = "";
     let highlightWords = this.highlightWords && this.subtitles?.containsTokens;
     const time = this.video.currentTime * 1000;

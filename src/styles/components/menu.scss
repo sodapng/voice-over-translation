@@ -26,6 +26,12 @@
     opacity 0.3s,
     transform 0.1s;
 
+  & * {
+    -webkit-box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    box-sizing: border-box !important;
+  }
+
   &[hidden] {
     pointer-events: none;
     display: block !important;
@@ -66,6 +72,7 @@
     font-weight: inherit;
     margin: 0;
     outline: 0;
+    text-align: start;
   }
 
   &-title {
@@ -79,6 +86,8 @@
   }
 
   &-body-container {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;

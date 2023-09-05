@@ -1,4 +1,14 @@
 .vot-segmented-button {
+  &[hidden] {
+    display: none !important;
+  }
+
+  & * {
+    -webkit-box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    box-sizing: border-box !important;
+  }
+
   --vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0);
   --vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87);
   overflow: hidden;
@@ -57,7 +67,7 @@
       background-color: rgb(var(--vot-helper-theme-rgb));
       transition: opacity 0.2s;
     }
-  
+
     &::after {
       background: radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;
       transition:

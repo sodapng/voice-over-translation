@@ -1,4 +1,8 @@
 .vot-textfield {
+  &[hidden] {
+    display: none !important;
+  }
+
   --vot-helper-theme: rgb(var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243)));
   --vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);
   --vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6);
@@ -9,9 +13,12 @@
   font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
   font-size: 16px;
   line-height: 1.5;
+  text-align: start;
 
   & > input,
   & > textarea {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
     margin: 0;
     border-style: solid;
@@ -71,6 +78,8 @@
     & + span::after {
       content: "";
       display: block;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
       box-sizing: border-box;
       margin-top: 6px;
       border-top: solid 1px var(--vot-helper-safari2);

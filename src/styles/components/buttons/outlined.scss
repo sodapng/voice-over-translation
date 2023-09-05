@@ -1,7 +1,13 @@
 .vot-outlined-button {
+  &[hidden] {
+    display: none !important;
+  }
+
   --vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243));
   position: relative;
   display: inline-block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   margin: 0;
   border: solid 1px;
