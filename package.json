@@ -35,7 +35,7 @@
     "build:default-min": "webpack build -c webpack.config.js --env build_type=minify",
     "build": "npm run build:default && npm run build:cloudflare",
     "build:min": "npm run build:default-min && npm run build:cloudflare-min",
-    "format": "prettier --write --ignore-unknown \"{web-server,src}/**/*.{html,css,js,ts,json}\"",
+    "format": "prettier --write --ignore-unknown \"src/**/*.{html,css,js,ts,json}\"",
     "dev": "webpack serve --node-env development",
     "dev:cloudflare": "webpack serve --node-env development --env build_mode=cloudflare",
     "lint": "npx eslint ."

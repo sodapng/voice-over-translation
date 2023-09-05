@@ -28,8 +28,6 @@ module.exports = {
         "no-async-promise-executor": 0
     },
     ignorePatterns: [
-        "vot-cli/*",
-        "web-server/*",
         "dist/*",
     ],
     globals: {
