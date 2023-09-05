@@ -152,6 +152,7 @@ class VideoHandler {
   videoData = "";
   firstPlay = true;
   audio = new Audio();
+  downloadTranslationUrl = null;
 
   autoRetry;
   volumeOnStart;
@@ -391,7 +392,9 @@ class VideoHandler {
     // VOT Menu
     {
       this.votDownloadButton.addEventListener("click", () => {
-        // TODO
+        if (this.downloadTranslationUrl) {
+          window.open(this.downloadTranslationUrl, "_blank").focus();
+        }
       });
 
       this.votSettingsButton.addEventListener("click", () => {
@@ -973,6 +976,7 @@ class VideoHandler {
     this.votVideoVolumeSlider.container.hidden = true;
     this.votVideoTranslationVolumeSlider.container.hidden = true;
     this.votDownloadButton.hidden = true;
+    this.downloadTranslationUrl = null;
     this.transformBtn("none", localizationProvider.get("translateVideo"));
     if (this.volumeOnStart) {
       debug.log(`Volume on start: ${this.volumeOnStart}`);
@@ -1143,7 +1147,7 @@ class VideoHandler {
         }
 
         this.votDownloadButton.hidden = false;
-        // TODO: urlOrError
+        this.downloadTranslationUrl = urlOrError;
       }
     );
   }
