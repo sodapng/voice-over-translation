@@ -45,7 +45,7 @@ function waitForElm(selector) {
 
 const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
-const getVideoId = (service) => {
+const getVideoId = (service, video) => {
   const url = new URL(window.location.href);
 
   switch (service) {
@@ -99,9 +99,27 @@ const getVideoId = (service) => {
       } else {
         return url.pathname.match(/(?:videos)\/([^/]+)/)?.[0];
       }
-    case "tiktok":
+    case "proxytok":
       // return url.pathname.match(/video\/([^/]+)/)?.[1];
       return url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
+    case "tiktok":
+      {
+        // let id = url.pathname.match(/video\/([^/]+)/)?.[1];
+        let id = url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
+        if (!id) {
+          const playerEl = video.closest(".xgplayer-playing, .tiktok-web-player");
+          const itemEl = playerEl?.closest("div[data-e2e=\"recommend-list-item-container\"]");
+          const authorEl = itemEl?.querySelector("a[data-e2e=\"video-author-avatar\"]");
+          if (playerEl && authorEl) {
+            const videoId = playerEl.id?.match(/^xgwrapper-[0-9]+-(.*)$/)?.at(1);
+            const author = authorEl.href?.match(/.*(@.*)$/)?.at(1);
+            if (videoId && author) {
+              id = `${author}/video/${videoId}`;
+            }
+          }
+        }
+        return id;
+      }
     case "vimeo":
       return (
         url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||

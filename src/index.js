@@ -368,7 +368,7 @@ class VideoHandler {
 
         try {
           debug.log("[click translationBtn] trying execute translation");
-          const VIDEO_ID = getVideoId(this.site.host);
+          const VIDEO_ID = getVideoId(this.site.host, this.video);
 
           if (!VIDEO_ID) {
             throw new VOTLocalizedError("VOTNoVideoIDFound");
@@ -653,7 +653,7 @@ class VideoHandler {
       if (!(this.firstPlay && this.data.autoTranslate === 1)) {
         return;
       }
-      const VIDEO_ID = getVideoId(this.site.host);
+      const VIDEO_ID = getVideoId(this.site.host, this.video);
 
       if (!VIDEO_ID) {
         throw new VOTLocalizedError("VOTNoVideoIDFound");
@@ -738,7 +738,7 @@ class VideoHandler {
   async updateSubtitles() {
     await this.changeSubtitlesLang("disabled");
 
-    const VIDEO_ID = getVideoId(this.site.host);
+    const VIDEO_ID = getVideoId(this.site.host, this.video);
 
     if (!VIDEO_ID) {
       console.error(
@@ -841,7 +841,7 @@ class VideoHandler {
 
     videoData.translationHelp = null; // ! should be null for ALL websites except coursera and udemy !
     videoData.duration = this.video?.duration || 343; // ! if 0 - we get 400 error
-    videoData.videoId = getVideoId(this.site.host);
+    videoData.videoId = getVideoId(this.site.host, this.video);
     videoData.detectedLanguage = this.translateFromLang;
     videoData.responseLanguage = this.translateToLang;
 
@@ -1029,7 +1029,7 @@ class VideoHandler {
       translationHelp,
       (success, urlOrError) => {
         debug.log("[exec callback] translateVideo");
-        if (getVideoId(this.site.host) !== VIDEO_ID) return;
+        if (getVideoId(this.site.host, this.video) !== VIDEO_ID) return;
         if (!success) {
           if (urlOrError?.name === "VOTLocalizedError") {
             this.transformBtn("error", urlOrError.localizedMessage);
