@@ -1,7 +1,6 @@
 import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { sleep, lang } from "./utils/utils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
-import { siteTranslates } from "./config/constants.js";
 import requestVideoSubtitles from "./rvs.js";
 import debug from "./utils/debug.js";
 
@@ -172,9 +171,9 @@ export async function fetchSubtitles(subtitlesObject) {
   return subtitles;
 }
 
-export async function getSubtitles(siteHostname, videoId, requestLang) {
+export async function getSubtitles(site, videoId, requestLang) {
   const ytSubtitles =
-    siteHostname === "youtube" ? youtubeUtils.getSubtitles() : [];
+    site.host === "youtube" ? youtubeUtils.getSubtitles() : [];
   let resolved = false;
   const yaSubtitles = await Promise.race([
     new Promise(async (resolve) => {
@@ -187,7 +186,7 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
     }),
     new Promise((resolve) => {
       requestVideoSubtitles(
-        `${siteTranslates[siteHostname]}${videoId}`,
+        `${site.url}${videoId}`,
         requestLang,
         (success, response) => {
           debug.log("[exec callback] Requesting video subtitles");

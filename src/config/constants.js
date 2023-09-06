@@ -33,26 +33,6 @@ const additionalTTS = [
   "kk",
 ];
 
-const siteTranslates = {
-  youtube: "https://youtu.be/",
-  twitch: "https://twitch.tv/",
-  vimeo: "https://vimeo.com/",
-  nine_gag: "https://9gag.com/gag/",
-  vk: "https://vk.com/video?z=",
-  xvideos: "https://www.xvideos.com/",
-  pornhub: "https://rt.pornhub.com/view_video.php?viewkey=",
-  udemy: "https://www.udemy.com/",
-  twitter: "https://twitter.com/i/status/",
-  facebook: "https://www.facebook.com/",
-  rutube: "https://rutube.ru/video/",
-  bilibili: "https://www.bilibili.com/video/",
-  mail_ru: "https://my.mail.ru/",
-  coub: "https://coub.com/view/",
-  bitchute: "https://www.bitchute.com/video/",
-  coursera: "https://www.coursera.org/",
-  tiktok: "https://www.tiktok.com/",
-};
-
 const cfOnlyExtensions = [
   "Violentmonkey",
   "FireMonkey",
@@ -61,4 +41,4 @@ const cfOnlyExtensions = [
   "OrangeMonkey",
 ];
 
-export { availableLangs, additionalTTS, siteTranslates, cfOnlyExtensions };
+export { availableLangs, additionalTTS, cfOnlyExtensions };

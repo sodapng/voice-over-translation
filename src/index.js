@@ -11,7 +11,6 @@ import {
 import {
   availableLangs,
   additionalTTS,
-  siteTranslates,
   cfOnlyExtensions,
 } from "./config/constants.js";
 import { localizationProvider, availableLocales } from "./localization/localizationProvider.js";
@@ -166,7 +165,7 @@ class VideoHandler {
   subtitlesListVideoId = null;
 
   constructor(video, container, site) {
-    debug.log("[VideoHandler] add video:", video, "container:", container);
+    debug.log("[VideoHandler] add video:", video, "container:", container, this);
     this.video = video;
     this.container = container;
     this.site = site;
@@ -308,7 +307,7 @@ class VideoHandler {
 
       // udemy only
       this.votUdemyDataTextfield = ui.createTextfield(localizationProvider.get("VOTUdemyData"), this.data?.udemyData?.accessToken ?? "");
-      this.votUdemyDataTextfield.hidden = this.site.host !== "udemy";
+      this.votUdemyDataTextfield.container.hidden = this.site.host !== "udemy";
       this.votSettingsDialog.bodyContainer.appendChild(this.votUdemyDataTextfield.container);
 
       // youtube only
@@ -764,7 +763,7 @@ class VideoHandler {
     }
 
     this.subtitlesList = await getSubtitles(
-      this.site.host,
+      this.site,
       VIDEO_ID,
       this.videoData.detectedLanguage
     );
@@ -1018,7 +1017,7 @@ class VideoHandler {
     translationHelp
   ) {
     console.log("[VOT] Video Data: ", this.videoData);
-    const videoURL = `${siteTranslates[this.site.host]}${VIDEO_ID}`;
+    const videoURL = `${this.site.url}${VIDEO_ID}`;
     if (["udemy", "coursera"].includes(this.site.host) && !translationHelp) {
       throw new VOTLocalizedError("VOTTranslationHelpNull");
     }
@@ -1162,13 +1161,22 @@ class VideoHandler {
   }
 
   async handleSrcChanged() {
-    debug.log("[VideoHandler] src changed");
+    debug.log("[VideoHandler] src changed", this);
     this.stopTranslation();
 
     this.firstPlay = true;
 
     this.votButton.container.hidden = !this.video.src && !this.video.currentSrc;
     !this.video.src && !this.video.currentSrc && (this.votMenu.container.hidden = !this.video.src && !this.video.currentSrc);
+
+    if (!this.site.selector) {
+      this.container = this.video.parentElement;
+    }
+
+    if (!this.container.contains(this.votButton.container)) {
+      this.container.appendChild(this.votButton.container);
+      this.container.appendChild(this.votMenu.container);
+    }
 
     await this.updateSubtitles();
   }
