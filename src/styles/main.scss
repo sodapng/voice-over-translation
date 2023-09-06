@@ -20,8 +20,14 @@
 @import "./subtitles.scss";
 
 :root {
+  --vot-font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;
+
   --vot-primary-rgb: 139, 180, 245;
   --vot-onprimary-rgb: 32, 33, 36;
   --vot-surface-rgb: 32, 33, 36;
   --vot-onsurface-rgb: 227, 227, 227;
+
+  --vot-subtitles-background: rgba(var(--vot-surface-rgb, 46, 47, 52), 0.8);
+  --vot-subtitles-color: rgb(var(--vot-onsurface-rgb, 227, 227, 227));
+  --vot-subtitles-passed-color: rgb(var(--vot-primary-rgb, 33, 150, 243));
 }
