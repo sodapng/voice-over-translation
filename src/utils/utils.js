@@ -53,7 +53,7 @@ const getVideoId = (service, video) => {
     case "invidious":
     case "youtube":
       return (
-        url.pathname.match(/(?:watch|embed)\/([^/]+)/)?.[1] ||
+        url.pathname.match(/(?:watch|embed|shorts)\/([^/]+)/)?.[1] ||
         url.searchParams.get("v")
       );
     case "vk":

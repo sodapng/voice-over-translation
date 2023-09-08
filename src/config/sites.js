@@ -7,6 +7,13 @@ const sites = () => {
       host: "youtube",
       url: "https://youtu.be/",
       match: /^m.youtube(-nocookie)?.com$/,
+      selector: "shorts-video #player",
+    },
+    {
+      additionalData: "mobile",
+      host: "youtube",
+      url: "https://youtu.be/",
+      match: /^m.youtube(-nocookie)?.com$/,
       selector: ".player-container",
     },
     {

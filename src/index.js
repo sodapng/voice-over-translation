@@ -1164,6 +1164,8 @@ class VideoHandler {
     debug.log("[VideoHandler] src changed", this);
     this.stopTranslation();
 
+    this.videoData = await this.getVideoData();
+
     this.firstPlay = true;
 
     this.votButton.container.hidden = !this.video.src && !this.video.currentSrc;
@@ -1179,6 +1181,9 @@ class VideoHandler {
     }
 
     await this.updateSubtitles();
+    await this.changeSubtitlesLang("disabled");
+    this.setSelectMenuValues(this.videoData.detectedLanguage, this.data.responseLanguage ?? "ru");
+    this.translateToLang = this.data.responseLanguage ?? "ru";
   }
 
   release() {
