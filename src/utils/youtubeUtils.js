@@ -66,13 +66,11 @@ function getPlayerData() {
 }
 
 function getVideoVolume() {
-  return document.querySelector(".html5-video-player")?.getVolume() / 100;
+  return getPlayer()?.getVolume() / 100;
 }
 
 function setVideoVolume(volume) {
-  return document
-    .querySelector(".html5-video-player")
-    ?.setVolume(Math.round(volume * 100));
+  return getPlayer()?.setVolume(Math.round(volume * 100));
 }
 
 function getSubtitles() {
