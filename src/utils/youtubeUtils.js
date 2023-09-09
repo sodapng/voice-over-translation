@@ -46,9 +46,7 @@ function getPlayer() {
     : document.querySelector("#shorts-player");
   }
 
-  return isMobile()
-    ? document.querySelector("#app")
-    : document.querySelector("#movie_player");
+  return document.querySelector("#movie_player");
 }
 
 function getPlayerResponse() {
