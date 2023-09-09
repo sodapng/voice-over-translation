@@ -20,7 +20,7 @@ const sites = () => {
       host: "youtube",
       url: "https://youtu.be/",
       match: /^(www.)?youtube(-nocookie)?.com$/,
-      selector: ".html5-video-container",
+      selector: ".html5-video-container:not(#inline-player *)",
     },
     {
       host: "tiktok",

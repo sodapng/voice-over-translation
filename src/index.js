@@ -1052,7 +1052,8 @@ class VideoHandler {
               60_000
             );
           }
-          throw urlOrError;
+          console.error("[VOT]", urlOrError);
+          return;
         }
 
         this.audio.src = urlOrError;
