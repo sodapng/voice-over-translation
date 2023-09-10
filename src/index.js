@@ -2,7 +2,7 @@ import "./styles/main.scss";
 import { VOTLocalizedError } from "./utils/VOTLocalizedError.js";
 import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
-import { getVideoId, secsToStrTime, lang, isPiPAvailable } from "./utils/utils.js";
+import { getVideoId, secsToStrTime, lang, isPiPAvailable, sleep } from "./utils/utils.js";
 import { autoVolume } from "./config/config.js";
 import {
   sitesInvidious,
@@ -182,6 +182,8 @@ class VideoHandler {
   }
 
   async init() {
+    if (this.initialized) return;
+
     this.data = await readDB() ?? {};
     this.videoData = await this.getVideoData();
 
@@ -203,6 +205,8 @@ class VideoHandler {
     this.translateToLang = this.data.responseLanguage ?? "ru";
 
     this.initExtraEvents();
+
+    this.initialized = true;
   }
 
   transformBtn(status = "none", text) {
@@ -564,9 +568,9 @@ class VideoHandler {
 
   releaseExtraEvents() {
     clearInterval(this.resizeInterval);
-    this.resizeObserver.disconnect();
+    this.resizeObserver?.disconnect();
     if (this.site.host === "youtube" && this.site.additionalData !== "mobile") {
-      this.syncVolumeObserver.disconnect();
+      this.syncVolumeObserver?.disconnect();
     }
 
     this.extraEvents?.forEach((e) => {
@@ -659,7 +663,7 @@ class VideoHandler {
     } else {
       eContainer = this.container;
     }
-    addExtraEventListeners(eContainer, ["mousemove", "mouseout"], this.resetTimerBound);
+    if (eContainer) addExtraEventListeners(eContainer, ["mousemove", "mouseout"], this.resetTimerBound);
 
     addExtraEventListener(this.votButton.container, "mousemove" , this.changeOpacityOnEventBound);
     addExtraEventListener(this.votMenu.container, "mousemove" , this.changeOpacityOnEventBound);
@@ -1183,8 +1187,32 @@ class VideoHandler {
     this.syncVideoVolumeSlider();
   }
 
+  async waitInitialization() {
+    let resolved = false;
+    return await Promise.race([
+      new Promise(async (resolve) => {
+        await sleep(1000);
+        if (!resolved) {
+          console.error("[VOT] Initialization timeout");
+        }
+        resolved = true;
+        resolve(false);
+      }),
+      new Promise(async (resolve) => {
+        while (!this.initialized) {
+          await sleep(100);
+        }
+        resolved = true;
+        resolve(true);
+      })
+    ]);
+  }
+
   async handleSrcChanged() {
     debug.log("[VideoHandler] src changed", this);
+
+    if (!await this.waitInitialization()) return;
+
     this.stopTranslation();
 
     this.videoData = await this.getVideoData();
@@ -1209,8 +1237,12 @@ class VideoHandler {
     this.translateToLang = this.data.responseLanguage ?? "ru";
   }
 
-  release() {
+  async release() {
     debug.log("[VideoHandler] release");
+
+    if (!await this.waitInitialization()) return;
+    this.initialized = false;
+
     this.stopTranslation();
     this.releaseExtraEvents();
     this.subtitlesWidget.release();
@@ -1220,12 +1252,12 @@ class VideoHandler {
   }
 }
 
-function getSite() {
-  return sites.find((e) => {
+function getSites() {
+  return sites.filter((e) => {
     const isMathes = (match) => {
       return (match instanceof RegExp && match.test(window.location.hostname))
         || (typeof match === "string" && window.location.hostname.includes(match))
-        || (typeof match === "function" && match(window.location));
+        || (typeof match === "function" && match(new URL(window.location)));
     };
     if (isMathes(e.match) || (e.match instanceof Array && e.match.some((e) => isMathes(e)))) {
       return e.host && e.url;
@@ -1276,23 +1308,25 @@ async function main() {
   debug.log("database initialized");
 
   videoObserver.onVideoAdded.addListener((video) => {
-    const site = getSite();
-    if (!site) return;
-    let container;
-    if (site.shadowRoot) {
-      container = site.selector ? Object.values(document.querySelectorAll(site.selector)).find(e => e.shadowRoot.contains(video)) : video.parentElement;
-      container = (container && container.shadowRoot) ? container.parentElement : container;
-    } else {
-      container = site.selector ? Object.values(document.querySelectorAll(site.selector)).find(e => e.contains(video)) : video.parentElement;
-    }
-    if (!container) return;
-    if (!videosWrappers.has(video)) {
-      videosWrappers.set(video, new VideoHandler(video, container, site));
+    for (const site of getSites()) {
+      if (!site) continue;
+      let container;
+      if (site.shadowRoot) {
+        container = site.selector ? Object.values(document.querySelectorAll(site.selector)).find(e => e.shadowRoot.contains(video)) : video.parentElement;
+        container = (container && container.shadowRoot) ? container.parentElement : container;
+      } else {
+        container = site.selector ? Object.values(document.querySelectorAll(site.selector)).find(e => e.contains(video)) : video.parentElement;
+      }
+      if (!container) continue;
+      if (!videosWrappers.has(video)) {
+        videosWrappers.set(video, new VideoHandler(video, container, site));
+        break;
+      }
     }
   });
-  videoObserver.onVideoRemoved.addListener((video) => {
+  videoObserver.onVideoRemoved.addListener(async (video) => {
     if (videosWrappers.has(video)) {
-      videosWrappers.get(video).release();
+      await videosWrappers.get(video).release();
       videosWrappers.delete(video);
     }
   });

@@ -299,7 +299,7 @@ export class SubtitlesWidget {
       this.container = container;
     }
 
-    this.votSubtitlesContainer = document.createElement("div");
+    this.votSubtitlesContainer = document.createElement("vot-block");
     this.votSubtitlesContainer.classList.add("vot-subtitles-widget");
     this.container.appendChild(this.votSubtitlesContainer);
 
@@ -477,7 +477,7 @@ export class SubtitlesWidget {
     if (content !== this.lastContent) {
       this.lastContent = content;
       this.votSubtitlesContainer.innerHTML = content
-        ? `<div class="vot-subtitles">${content.replace("\\n", "<br>")}</div>`
+        ? `<vot-block class="vot-subtitles">${content.replace("\\n", "<br>")}</vot-block>`
         : "";
     }
   }

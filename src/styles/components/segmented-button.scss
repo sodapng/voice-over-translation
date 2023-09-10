@@ -33,12 +33,20 @@
   z-index: 100;
 
   & .vot-separator {
+    &[hidden] {
+      display: none !important;
+    }
+
     width: 1px;
     height: 50%;
     background: rgba(var(--vot-helper-theme-rgb), 0.1);
   }
 
   & .vot-segment {
+    &[hidden] {
+      display: none !important;
+    }
+
     position: relative;
     overflow: hidden;
     display: flex;

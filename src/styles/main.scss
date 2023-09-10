@@ -31,3 +31,7 @@
   --vot-subtitles-color: rgb(var(--vot-onsurface-rgb, 227, 227, 227));
   --vot-subtitles-passed-color: rgb(var(--vot-primary-rgb, 33, 150, 243));
 }
+
+vot-block {
+  display: block;
+}

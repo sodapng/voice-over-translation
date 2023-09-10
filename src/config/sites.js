@@ -57,21 +57,15 @@ const sites = () => {
       host: "pornhub",
       url: "https://rt.pornhub.com/view_video.php?viewkey=",
       match: /^[a-z]+.pornhub.com$/,
-      selector: ".original.mainPlayerDiv",
+      selector: ".mainPlayerDiv > video-element > div",
     },
     {
       additionalData: "embed",
       host: "pornhub",
       url: "https://rt.pornhub.com/view_video.php?viewkey=",
-      match: /^[a-z]+.pornhub.com$/,
-      selector: "body",
+      match: (url) => url.host.includes("pornhub.com") && url.pathname.startsWith("/embed/"),
+      selector: "#player",
     },
-    // {
-    //   host: "pornhub",
-    //   url: "https://rt.pornhub.com/view_video.php?viewkey=",
-    //   match: /^[a-z]+.pornhub.com$/,
-    //   selector: ".mgp_videoWrapper",
-    // },
     {
       additionalData: "mobile",
       host: "vk",
@@ -126,7 +120,7 @@ const sites = () => {
     {
       host: "bilibili",
       url: "https://www.bilibili.com/video/",
-      match: /^(www|m).bilibili.com$/,
+      match: /^(www|m|player).bilibili.com$/,
       selector: ".bpx-player-video-wrap",
     },
     {
@@ -151,13 +145,13 @@ const sites = () => {
     { // ONLY IF YOU LOGINED TO COURSERA /learn/NAME/lecture/XXXX
       host: "coursera",
       url: "https://www.coursera.org/",
-      match: /^coursera.org$/,
+      match: /coursera.org$/,
       selector: "#video_player",
     },
     { // ONLY IF YOU LOGINED TO UDEMY /course/NAME/learn/lecture/XXXX
       host: "udemy",
       url: "https://www.udemy.com/",
-      match: /^udemy.com$/,
+      match: /udemy.com$/,
       selector: ".vjs-v7",
     },
     { // Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc

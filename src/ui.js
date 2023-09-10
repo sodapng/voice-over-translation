@@ -28,7 +28,7 @@ function selectAddOptions(select, options = []) {
 }
 
 export function createHeader(html, level = 4) {
-  const header = document.createElement("div");
+  const header = document.createElement("vot-block");
   header.classList.add("vot-header");
   header.classList.add(`vot-header-level-${level}`);
   header.innerHTML = html;
@@ -37,13 +37,13 @@ export function createHeader(html, level = 4) {
 }
 
 export function createInformation(html, valueHtml) {
-  const container = document.createElement("div");
+  const container = document.createElement("vot-block");
   container.classList.add("vot-info");
 
-  const header = document.createElement("div");
+  const header = document.createElement("vot-block");
   header.innerHTML = html;
 
-  const value = document.createElement("div");
+  const value = document.createElement("vot-block");
   value.innerHTML = valueHtml;
 
   container.appendChild(header);
@@ -114,7 +114,7 @@ export function updateSlider(input) {
 }
 
 export function createSlider(html, value = 50, min = 0, max = 100) {
-  const container = document.createElement("div");
+  const container = document.createElement("vot-block");
   container.classList.add("vot-slider");
 
   const input = document.createElement("input");
@@ -140,7 +140,7 @@ export function createSlider(html, value = 50, min = 0, max = 100) {
 }
 
 export function createSelect(html, options = []) {
-  const container = document.createElement("div");
+  const container = document.createElement("vot-block");
   container.classList.add("vot-select");
 
   const label = document.createElement("span");
@@ -161,7 +161,7 @@ export function createSelect(html, options = []) {
 }
 
 export function createTextfield(html, value = "", multiline = false) {
-  const container = document.createElement("div");
+  const container = document.createElement("vot-block");
   container.classList.add("vot-textfield");
 
   const input = document.createElement(multiline ? "textarea" : "input");
@@ -182,29 +182,29 @@ export function createTextfield(html, value = "", multiline = false) {
 }
 
 export function createDialog(html) {
-  const container = document.createElement("div");
+  const container = document.createElement("vot-block");
   container.classList.add("vot-dialog-container");
   container.hidden = true;
 
-  const backdrop = document.createElement("div");
+  const backdrop = document.createElement("vot-block");
   backdrop.classList.add("vot-dialog-backdrop");
 
-  const dialog = document.createElement("div");
+  const dialog = document.createElement("vot-block");
   dialog.classList.add("vot-dialog");
 
-  const contentWrapper = document.createElement("div");
+  const contentWrapper = document.createElement("vot-block");
   contentWrapper.classList.add("vot-dialog-content-wrapper");
 
-  const headerContainer = document.createElement("div");
+  const headerContainer = document.createElement("vot-block");
   headerContainer.classList.add("vot-dialog-header-container");
 
-  const bodyContainer = document.createElement("div");
+  const bodyContainer = document.createElement("vot-block");
   bodyContainer.classList.add("vot-dialog-body-container");
 
-  const footerContainer = document.createElement("div");
+  const footerContainer = document.createElement("vot-block");
   footerContainer.classList.add("vot-dialog-footer-container");
 
-  const titleContainer = document.createElement("div");
+  const titleContainer = document.createElement("vot-block");
   titleContainer.classList.add("vot-dialog-title-container");
 
   const closeButton = createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>`);
@@ -214,7 +214,7 @@ export function createDialog(html) {
     container.hidden = true;
   };
 
-  const title = document.createElement("div");
+  const title = document.createElement("vot-block");
   title.classList.add("vot-dialog-title");
   title.innerHTML = html;
 
@@ -243,7 +243,7 @@ export function createDialog(html) {
 }
 
 export function createVOTButton(html) {
-  const container = document.createElement("div");
+  const container = document.createElement("vot-block");
   container.classList.add("vot-segmented-button");
 
   const translateButton = document.createElement("button");
@@ -251,14 +251,14 @@ export function createVOTButton(html) {
   translateButton.classList.add("vot-translate-button");
   translateButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m604-202-35 97q-4 11-14 18t-22 7q-20 0-32.5-16.5T496-133l152-402q5-11 15-18t22-7h30q12 0 22 7t15 18l152 403q8 19-4 35.5T868-80q-13 0-22.5-7.5T831-107l-33-95H604Zm24-70h144l-70-198h-4l-70 198ZM360-400 188-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l174-174q-38-42-66.5-87T190-640h84q18 36 38.5 65t49.5 61q44-48 73-98.5T484-720H80q-17 0-28.5-11.5T40-760q0-17 11.5-28.5T80-800h240v-40q0-17 11.5-28.5T360-880q17 0 28.5 11.5T400-840v40h240q17 0 28.5 11.5T680-760q0 17-11.5 28.5T640-720h-76q-21 71-57 138t-89 126l96 98-30 82-124-124Z"/></svg>`;
 
-  const separator = document.createElement("div");
+  const separator = document.createElement("vot-block");
   separator.classList.add("vot-separator");
 
   const pipButton = document.createElement("button");
   pipButton.classList.add("vot-segment-only-icon");
   pipButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M120-520q-17 0-28.5-11.5T80-560q0-17 11.5-28.5T120-600h104L80-743q-12-12-12-28.5T80-800q12-12 28.5-12t28.5 12l143 144v-104q0-17 11.5-28.5T320-800q17 0 28.5 11.5T360-760v200q0 17-11.5 28.5T320-520H120Zm40 360q-33 0-56.5-23.5T80-240v-160q0-17 11.5-28.5T120-440q17 0 28.5 11.5T160-400v160h280q17 0 28.5 11.5T480-200q0 17-11.5 28.5T440-160H160Zm680-280q-17 0-28.5-11.5T800-480v-240H480q-17 0-28.5-11.5T440-760q0-17 11.5-28.5T480-800h320q33 0 56.5 23.5T880-720v240q0 17-11.5 28.5T840-440ZM600-160q-17 0-28.5-11.5T560-200v-120q0-17 11.5-28.5T600-360h240q17 0 28.5 11.5T880-320v120q0 17-11.5 28.5T840-160H600Z"/></svg>`;
 
-  const separator2 = document.createElement("div");
+  const separator2 = document.createElement("vot-block");
   separator2.classList.add("vot-separator");
 
   const menuButton = document.createElement("button");
@@ -288,26 +288,26 @@ export function createVOTButton(html) {
 }
 
 export function createVOTMenu(html) {
-  const container = document.createElement("div");
+  const container = document.createElement("vot-block");
   container.classList.add("vot-menu");
   container.hidden = true;
 
-  const contentWrapper = document.createElement("div");
+  const contentWrapper = document.createElement("vot-block");
   contentWrapper.classList.add("vot-menu-content-wrapper");
 
-  const headerContainer = document.createElement("div");
+  const headerContainer = document.createElement("vot-block");
   headerContainer.classList.add("vot-menu-header-container");
 
-  const bodyContainer = document.createElement("div");
+  const bodyContainer = document.createElement("vot-block");
   bodyContainer.classList.add("vot-menu-body-container");
 
-  const footerContainer = document.createElement("div");
+  const footerContainer = document.createElement("vot-block");
   footerContainer.classList.add("vot-menu-footer-container");
 
-  const titleContainer = document.createElement("div");
+  const titleContainer = document.createElement("vot-block");
   titleContainer.classList.add("vot-menu-title-container");
 
-  const title = document.createElement("div");
+  const title = document.createElement("vot-block");
   title.classList.add("vot-menu-title");
   title.innerHTML = html;
 
@@ -330,19 +330,19 @@ export function createVOTMenu(html) {
 }
 
 export function createVOTLanguageSelect(fromOptions = [], toOptions = []) {
-  const container = document.createElement("div");
+  const container = document.createElement("vot-block");
   container.classList.add("vot-lang-select");
 
-  const from = document.createElement("div");
+  const from = document.createElement("vot-block");
   from.classList.add("vot-select");
 
   const fromSelect = document.createElement("select");
 
-  const icon = document.createElement("div");
+  const icon = document.createElement("vot-block");
   icon.classList.add("vot-lang-select-icon");
   icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M647-440H200q-17 0-28.5-11.5T160-480q0-17 11.5-28.5T200-520h447L451-716q-12-12-11.5-28t12.5-28q12-11 28-11.5t28 11.5l264 264q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L508-188q-11 11-27.5 11T452-188q-12-12-12-28.5t12-28.5l195-195Z"/></svg>`;
 
-  const to = document.createElement("div");
+  const to = document.createElement("vot-block");
   to.classList.add("vot-select");
 
   const toSelect = document.createElement("select");
