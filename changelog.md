@@ -4,7 +4,7 @@
 # 1.4.1-beta7
 - Фикс [#285](https://github.com/ilyhalight/voice-over-translation/issues/285), [#283](https://github.com/ilyhalight/voice-over-translation/issues/283), [#282](https://github.com/ilyhalight/voice-over-translation/issues/282) ([#297](https://github.com/ilyhalight/voice-over-translation/pull/297))
 - Добавлено 2 новых языка устанавливаемых как язык видео (Латышский и Литовский - [#297](https://github.com/ilyhalight/voice-over-translation/pull/297))
-- Добавлено 38 новых языка для TTS (`az`, `sq`, `am`, `hy`, `af`, `eu`, `my`, `bg`, `bs`, `cy`, `hu`, `gl`, `el`, `zu`, `kn`, `ca`, `km`, `lo`, `mk`, `ml`, `mt`, `mn`, `ne`, `nl`, `pa`, `ro`, `sr`, `si`, `sk`, `sl`, `sw`, `su`, `hr`, `et`, `da`, `fi`, `uz`, `pl`, `sv` - [#297](https://github.com/ilyhalight/voice-over-translation/pull/297))
+- Добавлено 38 новых языков для TTS (`az`, `sq`, `am`, `hy`, `af`, `eu`, `my`, `bg`, `bs`, `cy`, `hu`, `gl`, `el`, `zu`, `kn`, `ca`, `km`, `lo`, `mk`, `ml`, `mt`, `mn`, `ne`, `nl`, `pa`, `ro`, `sr`, `si`, `sk`, `sl`, `sw`, `su`, `hr`, `et`, `da`, `fi`, `uz`, `pl`, `sv` - [#297](https://github.com/ilyhalight/voice-over-translation/pull/297))
 - Улучшено форматирование ссылок на YouTube, теперь, язык должен определяться точнее ([#297](https://github.com/ilyhalight/voice-over-translation/pull/297))
 - Добавлена поддержка нового встраиваемого плеера Bilibili (player.bilibili.com)
 - vot-cli был перенесен в отдельный **[репозиторий](https://github.com/FOSWLY/vot-cli)**
