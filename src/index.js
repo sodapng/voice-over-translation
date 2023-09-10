@@ -1737,7 +1737,7 @@ async function main() {
         await translateProccessor(el, "rutube", null);
       }
     } else if (window.location.hostname.includes("bilibili.com")) {
-      if (window.location.pathname.includes("/video/")) {
+      if (window.location.pathname.includes("/video/") || window.location.hostname.includes("player.bilibili.com")) {
         const el = await waitForElm(selectors.bilibilicomSelector);
         if (el) {
           await translateProccessor(el, "bilibili.com", null);
