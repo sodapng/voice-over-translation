@@ -52,7 +52,9 @@
   "VOTVersion": "إصدار",
   "VOTLoader": "محمل",
   "VOTBrowser": "المتصفح",
+  "VOTShowPiPButton": "إظهار زر PiP",
   "langs": {
+    "auto": "تلقائيا",
     "az": "الأذربيجانية",
     "hy": "الأرمنية",
     "as": "الأسامية",

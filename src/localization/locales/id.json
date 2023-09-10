@@ -52,7 +52,9 @@
   "VOTVersion": "Versi",
   "VOTLoader": "Pemuat",
   "VOTBrowser": "Peramban",
+  "VOTShowPiPButton": "Tampilkan tombol PiP",
   "langs": {
+    "auto": "Secara otomatis",
     "az": "Azerbaijan",
     "ay": "Aymara",
     "ak": "Akan",

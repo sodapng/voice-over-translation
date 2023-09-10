@@ -1,7 +1,7 @@
 import defaultLocale from "./locales/en.json";
 import debug from "../utils/debug.js";
 
-const localesVersion = 2;
+const localesVersion = 3;
 const localesUrl =
   "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/src/localization/locales";
 

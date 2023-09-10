@@ -52,7 +52,9 @@
   "VOTVersion": "ورژن",
   "VOTLoader": "لوڈر",
   "VOTBrowser": "براؤزر",
+  "VOTShowPiPButton": "PiP بٹن دکھائیں۔",
   "langs": {
+    "auto": "خود بخود",
     "az": "آذربائیجانی",
     "ay": "ایمارا",
     "ak": "اکان",

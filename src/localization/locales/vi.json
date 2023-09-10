@@ -52,7 +52,9 @@
   "VOTVersion": "Phiên bản",
   "VOTLoader": "Trình tải",
   "VOTBrowser": "Trình duyệt",
+  "VOTShowPiPButton": "Hiển thị nút PiP",
   "langs": {
+    "auto": "Tự động",
     "az": "Azerbaijan",
     "ay": "Aymara",
     "ak": "Akan",

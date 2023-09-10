@@ -52,7 +52,9 @@
   "VOTVersion": "Versión",
   "VOTLoader": "Cargador",
   "VOTBrowser": "Navegador",
+  "VOTShowPiPButton": "Mostrar botón PiP",
   "langs": {
+    "auto": "Automáticamente",
     "af": "Afrikáans",
     "ay": "Aimara",
     "ak": "Akan",

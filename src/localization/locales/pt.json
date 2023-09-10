@@ -52,7 +52,9 @@
   "VOTVersion": "Versão",
   "VOTLoader": "Carregador",
   "VOTBrowser": "Navegador",
+  "VOTShowPiPButton": "Mostrar botão PiP",
   "langs": {
+    "auto": "Automaticamente",
     "az": "Azerbaijano",
     "ay": "Aymara",
     "ak": "Akan",

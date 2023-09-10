@@ -52,7 +52,9 @@
   "VOTVersion": "Нұсқа",
   "VOTLoader": "Жүктеуші",
   "VOTBrowser": "Браузер",
+  "VOTShowPiPButton": "PiP түймесін көрсету",
   "langs": {
+    "auto": "Автоматты түрде",
     "az": "Әзербайжан",
     "ay": "Аймара",
     "ak": "Акан",

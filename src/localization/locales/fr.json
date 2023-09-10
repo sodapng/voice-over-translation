@@ -52,7 +52,9 @@
   "VOTVersion": "Version",
   "VOTLoader": "Chargeur",
   "VOTBrowser": "Navigateur",
+  "VOTShowPiPButton": "Afficher le bouton PiP",
   "langs": {
+    "auto": "Automatiquement",
     "af": "Afrikaans",
     "ak": "Akan",
     "sq": "Albanais",

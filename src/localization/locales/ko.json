@@ -52,7 +52,9 @@
   "VOTVersion": "버전",
   "VOTLoader": "짐을 싣는 사람",
   "VOTBrowser": "브라우저",
+  "VOTShowPiPButton": "PiP 버튼 표시",
   "langs": {
+    "auto": "자동으로",
     "lg": "간다어",
     "gl": "갈리시아어",
     "gn": "과라니어",

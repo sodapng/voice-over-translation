@@ -52,7 +52,9 @@
   "VOTVersion": "Sürüm",
   "VOTLoader": "Yükleyici",
   "VOTBrowser": "Tarayıcı",
+  "VOTShowPiPButton": "PiP düğmesini göster",
   "langs": {
+    "auto": "Otomatik olarak",
     "az": "Azerice",
     "ay": "Aymara",
     "ak": "Akanca",

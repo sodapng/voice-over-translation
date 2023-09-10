@@ -52,7 +52,9 @@
   "VOTVersion": "संस्करण",
   "VOTLoader": "लोडर",
   "VOTBrowser": "ब्राउज़र",
+  "VOTShowPiPButton": "PiP बटन दिखाएँ",
   "langs": {
+    "auto": "खुद ब खुद",
     "az": "अज़रबैजानी",
     "ay": "आयमारा",
     "ak": "आकान",

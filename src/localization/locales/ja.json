@@ -52,7 +52,9 @@
   "VOTVersion": "バージョン",
   "VOTLoader": "ローダ",
   "VOTBrowser": "ブラウザ",
+  "VOTShowPiPButton": "PiP ボタンを表示",
   "langs": {
+    "auto": "自動的に",
     "is": "アイスランド語",
     "ay": "アイマラ語",
     "ga": "アイルランド語",

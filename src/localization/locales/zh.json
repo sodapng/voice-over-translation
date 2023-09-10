@@ -52,7 +52,9 @@
   "VOTVersion": "版本",
   "VOTLoader": "装载机",
   "VOTBrowser": "浏览器",
+  "VOTShowPiPButton": "显示画中画按钮",
   "langs": {
+    "auto": "自动地",
     "sq": "阿尔巴尼亚语",
     "ak": "阿肯语",
     "ar": "阿拉伯语",

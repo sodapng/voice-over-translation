@@ -52,7 +52,9 @@
   "VOTVersion": "Verze",
   "VOTLoader": "Nakladač",
   "VOTBrowser": "Prohlížeč",
+  "VOTShowPiPButton": "Zobrazit tlačítko PiP",
   "langs": {
+    "auto": "Automaticky",
     "az": "Ázerbájdžánština",
     "ay": "Ajmarština",
     "ak": "Akanština",

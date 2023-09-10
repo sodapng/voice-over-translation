@@ -52,7 +52,9 @@
   "VOTVersion": "সংস্করণ",
   "VOTLoader": "লোডার",
   "VOTBrowser": "ব্রাউজার",
+  "VOTShowPiPButton": "PiP বোতাম দেখান",
   "langs": {
+    "auto": "স্বয়ংক্রিয়ভাবে",
     "az": "আজারবাইজানী",
     "ay": "আইমারা",
     "ak": "আকান",
