@@ -2,7 +2,7 @@ import { lang } from "./utils/utils.js";
 import { localizationProvider } from "./localization/localizationProvider.js";
 
 // --- IndexedDB functions start:
-const dbVersion = 4; // current db version
+const dbVersion = 5; // current db version
 const dbData = [
   {
     key: "settings",
@@ -27,6 +27,9 @@ const dbData = [
       expires: 0,
     },
   },
+  {
+    showPiPButton: 0,
+  }
 ];
 
 function openDB(name) {
@@ -216,6 +219,7 @@ async function updateDB({
   highlightWords,
   responseLanguage,
   udemyData,
+  showPiPButton,
 }) {
   return new Promise((resolve, reject) => {
     if (
@@ -229,7 +233,8 @@ async function updateDB({
       typeof subtitlesMaxLength === "number" ||
       typeof highlightWords === "number" ||
       typeof responseLanguage === "string" ||
-      typeof udemyData === "object"
+      typeof udemyData === "object" ||
+      typeof showPiPButton === "number"
     ) {
       const openRequest = openDB("VOT");
 
@@ -318,6 +323,10 @@ async function updateDB({
 
           if (typeof udemyData === "object") {
             data.udemyData = udemyData;
+          }
+
+          if (typeof showPiPButton === "number") {
+            data.showPiPButton = showPiPButton;
           }
 
           const requestUpdate = objectStore.put(data);

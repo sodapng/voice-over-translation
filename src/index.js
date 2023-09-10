@@ -2,7 +2,7 @@ import "./styles/main.scss";
 import { VOTLocalizedError } from "./utils/VOTLocalizedError.js";
 import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
-import { getVideoId, secsToStrTime, lang } from "./utils/utils.js";
+import { getVideoId, secsToStrTime, lang, isPiPAvailable } from "./utils/utils.js";
 import { autoVolume } from "./config/config.js";
 import {
   sitesInvidious,
@@ -216,6 +216,9 @@ class VideoHandler {
       this.votButton = ui.createVOTButton(localizationProvider.get("translateVideo"));
       this.container.appendChild(this.votButton.container);
 
+      this.votButton.pipButton.hidden = !isPiPAvailable() || !this.data?.showPiPButton;
+      this.votButton.separator2.hidden = !isPiPAvailable() || !this.data?.showPiPButton;
+
       this.votButton.container.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -339,6 +342,9 @@ class VideoHandler {
       this.votLanguageSelect = ui.createSelect(localizationProvider.get("VOTMenuLanguage"), genOptionsByOBJ(availableLocales, window.localStorage.getItem("vot-locale-lang-override") ?? "auto"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votLanguageSelect.container);
 
+      this.votShowPiPButtonCheckbox = ui.createCheckbox(localizationProvider.get("VOTShowPiPButton"), this.data?.showPiPButton ?? false);
+      this.votSettingsDialog.bodyContainer.appendChild(this.votShowPiPButtonCheckbox.container);
+
       this.votVersionInfo = ui.createInformation(`${localizationProvider.get("VOTVersion")}:`, BUILD_MODE === "cloudflare" ? `cloudflare ${GM_info.script.version}` : GM_info.script.version);
       this.votSettingsDialog.bodyContainer.appendChild(this.votVersionInfo.container);
 
@@ -382,6 +388,14 @@ class VideoHandler {
           } else {
             this.transformBtn("error", err);
           }
+        }
+      });
+
+      this.votButton.pipButton.addEventListener("click", async () => {
+        if (this.video !== document.pictureInPictureElement) {
+          await this.video.requestPictureInPicture();
+        } else {
+          await document.exitPictureInPicture();
         }
       });
 
@@ -530,6 +544,14 @@ class VideoHandler {
 
       this.votLanguageSelect.select.addEventListener("change", (e) => {
         window.localStorage.setItem("vot-locale-lang-override", e.target.value);
+      });
+
+      this.votShowPiPButtonCheckbox.input.addEventListener("change", async (e) => {
+        this.data.showPiPButton = Number(e.target.checked);
+        await updateDB({ showPiPButton: this.data.showPiPButton });
+        debug.log("showPiPButton value changed. New value: ", this.data.showPiPButton);
+        this.votButton.pipButton.hidden = !isPiPAvailable() || !this.data.showPiPButton;
+        this.votButton.separator2.hidden = !isPiPAvailable() || !this.data.showPiPButton;
       });
 
       this.votResetSettingsButton.addEventListener("click", () => {

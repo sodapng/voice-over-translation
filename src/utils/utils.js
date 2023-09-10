@@ -226,4 +226,8 @@ async function detectLang(cleanText) {
   return await response.text();
 }
 
-export { waitForElm, sleep, getVideoId, secsToStrTime, detectLang, langTo6391 };
+function isPiPAvailable() {
+  return "pictureInPictureEnabled" in document && document.pictureInPictureEnabled;
+}
+
+export { waitForElm, sleep, getVideoId, secsToStrTime, detectLang, langTo6391, isPiPAvailable };
