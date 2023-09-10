@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.4.1-beta6
+// @version 1.4.1-beta7
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -1544,7 +1544,7 @@ const youtubeUtils = {
 };
 
 ;// CONCATENATED MODULE: ./src/yandexProtobuf.js
-// coursera translation help object
+// coursera & udemy translation help object
 const VideoTranslationHelpObject = new protobuf.Type(
   "VideoTranslationHelpObject"
 )
@@ -4986,7 +4986,7 @@ async function src_main() {
         await translateProccessor(el, "rutube", null);
       }
     } else if (window.location.hostname.includes("bilibili.com")) {
-      if (window.location.pathname.includes("/video/")) {
+      if (window.location.pathname.includes("/video/") || window.location.hostname.includes("player.bilibili.com")) {
         const el = await waitForElm(config_selectors.bilibilicomSelector);
         if (el) {
           await translateProccessor(el, "bilibili.com", null);
