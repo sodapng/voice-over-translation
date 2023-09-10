@@ -24,14 +24,17 @@ async function getLanguage(player, response, title, description, author) {
     }
   }
   // If there is no caption track, use detect to get the language code from the text
-  const text = [title, description, author].join(" ");
+  const text = [description, title, author].join(" ");
   // Remove anything that is not a letter or a space in any language
   const cleanText = text
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(/https?:\/\/\S+/g, "")
-    .replace(/[^\p{L}\s]/gu, "")
-    .slice(0, 250);
+  .split('\n')
+  .filter(line => !line.match(/https?:\/\/\S+/))
+  .join('\n')
+  .replace(/#\S+/g, "")
+  .replace(/[^\p{L}\s]/gu, "")
+  .replace(/\s+/g, " ")
+  .trim()
+  .slice(0, 250);
   return await detectLang(cleanText);
 }
 

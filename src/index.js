@@ -1859,10 +1859,8 @@ async function main() {
   await initWebsite();
 }
 
-localizationProvider.update();
-
-window.addEventListener("DOMContentLoaded", () => {
-  main().catch((e) => {
-    console.error("[VOT]", e);
-  });
-});
+try {
+  await Promise.allSettled([localizationProvider.update(), main()]);
+} catch (e) {
+  console.error("[VOT]", e);
+}

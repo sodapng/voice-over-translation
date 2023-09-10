@@ -19,10 +19,10 @@
     "css-loader": "^6.8.1",
     "eslint": "^8.47.0",
     "eslint-webpack-plugin": "^4.0.1",
-    "prettier": "^2.8.2",
+    "prettier": "^3.0.2",
     "style-loader": "^3.3.3",
-    "tslib": "^2.5.3",
-    "webpack": "^5.81.0",
+    "tslib": "^2.6.2",
+    "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
     "webpack-userscript": "^3.2.2"
