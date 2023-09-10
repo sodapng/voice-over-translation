@@ -347,6 +347,7 @@ class VideoHandler {
       this.votSettingsDialog.bodyContainer.appendChild(this.votLanguageSelect.container);
 
       this.votShowPiPButtonCheckbox = ui.createCheckbox(localizationProvider.get("VOTShowPiPButton"), this.data?.showPiPButton ?? false);
+      this.votShowPiPButtonCheckbox.container.hidden = !isPiPAvailable();
       this.votSettingsDialog.bodyContainer.appendChild(this.votShowPiPButtonCheckbox.container);
 
       this.votVersionInfo = ui.createInformation(`${localizationProvider.get("VOTVersion")}:`, BUILD_MODE === "cloudflare" ? `cloudflare ${GM_info.script.version}` : GM_info.script.version);
