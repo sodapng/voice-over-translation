@@ -19,10 +19,10 @@
   }
 
   & > .vot-select {
-    flex: 1;
+    flex: 1 !important;
 
     & > select {
-      width: 100%;
+      width: 100% !important;
     }
   }
 }

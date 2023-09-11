@@ -44,7 +44,14 @@ const sites = () => {
     {
       host: "twitch",
       url: "https://twitch.tv/",
-      match: /^(www.)?twitch.tv$/,
+      match: (url) => url.host.includes("clips.twitch.tv")
+        || (url.host.includes("player.twitch.tv") 
+          && url.searchParams.get("channel") === null)
+        || (url.host.includes("twitch.tv") 
+          && (url.pathname.startsWith("/videos")
+            || url.pathname.startsWith("/embed")
+            || url.pathname.includes("/clip")
+          )),
       selector: ".video-ref",
     },
     {

@@ -57,7 +57,7 @@ export function createInformation(html, valueHtml) {
 }
 
 export function createButton(html) {
-  const button = document.createElement("button");
+  const button = document.createElement("vot-block");
   button.classList.add("vot-button");
   button.innerHTML = html;
 
@@ -65,7 +65,7 @@ export function createButton(html) {
 }
 
 export function createTextButton(html) {
-  const button = document.createElement("button");
+  const button = document.createElement("vot-block");
   button.classList.add("vot-text-button");
   button.innerHTML = html;
 
@@ -73,7 +73,7 @@ export function createTextButton(html) {
 }
 
 export function createOutlinedButton(html) {
-  const button = document.createElement("button");
+  const button = document.createElement("vot-block");
   button.classList.add("vot-outlined-button");
   button.innerHTML = html;
 
@@ -81,7 +81,7 @@ export function createOutlinedButton(html) {
 }
 
 export function createIconButton(html) {
-  const button = document.createElement("button");
+  const button = document.createElement("vot-block");
   button.classList.add("vot-icon-button");
   button.innerHTML = html;
 
@@ -246,7 +246,7 @@ export function createVOTButton(html) {
   const container = document.createElement("vot-block");
   container.classList.add("vot-segmented-button");
 
-  const translateButton = document.createElement("button");
+  const translateButton = document.createElement("vot-block");
   translateButton.classList.add("vot-segment");
   translateButton.classList.add("vot-translate-button");
   translateButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m604-202-35 97q-4 11-14 18t-22 7q-20 0-32.5-16.5T496-133l152-402q5-11 15-18t22-7h30q12 0 22 7t15 18l152 403q8 19-4 35.5T868-80q-13 0-22.5-7.5T831-107l-33-95H604Zm24-70h144l-70-198h-4l-70 198ZM360-400 188-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l174-174q-38-42-66.5-87T190-640h84q18 36 38.5 65t49.5 61q44-48 73-98.5T484-720H80q-17 0-28.5-11.5T40-760q0-17 11.5-28.5T80-800h240v-40q0-17 11.5-28.5T360-880q17 0 28.5 11.5T400-840v40h240q17 0 28.5 11.5T680-760q0 17-11.5 28.5T640-720h-76q-21 71-57 138t-89 126l96 98-30 82-124-124Z"/></svg>`;
@@ -254,14 +254,14 @@ export function createVOTButton(html) {
   const separator = document.createElement("vot-block");
   separator.classList.add("vot-separator");
 
-  const pipButton = document.createElement("button");
+  const pipButton = document.createElement("vot-block");
   pipButton.classList.add("vot-segment-only-icon");
   pipButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M120-520q-17 0-28.5-11.5T80-560q0-17 11.5-28.5T120-600h104L80-743q-12-12-12-28.5T80-800q12-12 28.5-12t28.5 12l143 144v-104q0-17 11.5-28.5T320-800q17 0 28.5 11.5T360-760v200q0 17-11.5 28.5T320-520H120Zm40 360q-33 0-56.5-23.5T80-240v-160q0-17 11.5-28.5T120-440q17 0 28.5 11.5T160-400v160h280q17 0 28.5 11.5T480-200q0 17-11.5 28.5T440-160H160Zm680-280q-17 0-28.5-11.5T800-480v-240H480q-17 0-28.5-11.5T440-760q0-17 11.5-28.5T480-800h320q33 0 56.5 23.5T880-720v240q0 17-11.5 28.5T840-440ZM600-160q-17 0-28.5-11.5T560-200v-120q0-17 11.5-28.5T600-360h240q17 0 28.5 11.5T880-320v120q0 17-11.5 28.5T840-160H600Z"/></svg>`;
 
   const separator2 = document.createElement("vot-block");
   separator2.classList.add("vot-separator");
 
-  const menuButton = document.createElement("button");
+  const menuButton = document.createElement("vot-block");
   menuButton.classList.add("vot-segment-only-icon");
   menuButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>`;
 

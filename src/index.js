@@ -164,6 +164,8 @@ class VideoHandler {
   subtitlesList = [];
   subtitlesListVideoId = null;
 
+  videoLastSrcObject = null;
+
   constructor(video, container, site) {
     debug.log("[VideoHandler] add video:", video, "container:", container, this);
     this.video = video;
@@ -174,6 +176,12 @@ class VideoHandler {
     this.srcObserver.observe(this.video, {
       attributeFilter: ["src", "currentSrc"]
     });
+    this.srcObjectInterval = setInterval(async () => {
+      if (this.videoLastSrcObject !== this.video.srcObject) {
+        this.videoLastSrcObject = this.video.srcObject;
+        await this.handleSrcChanged();
+      }
+    }, 100);
     this.stopTranslationBound = this.stopTranslation.bind(this);
     this.handleVideoEventBound = this.handleVideoEvent.bind(this);
     this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
@@ -196,8 +204,9 @@ class VideoHandler {
     this.initUI();
     this.initUIEvents();
 
-    this.votButton.container.hidden = !this.video.src && !this.video.currentSrc;
-    !this.video.src && !this.video.currentSrc && (this.votMenu.container.hidden = !this.video.src && !this.video.currentSrc);
+    const hide = !this.video.src && !this.video.currentSrc && !this.video.srcObject;
+    this.votButton.container.hidden = hide;
+    hide && (this.votMenu.container.hidden = hide);
 
     await this.updateSubtitles();
     await this.changeSubtitlesLang("disabled");
@@ -1122,7 +1131,7 @@ class VideoHandler {
             break;
         }
 
-        if (!this.video.src && !this.video.currentSrc) {
+        if (!this.video.src && !this.video.currentSrc && !this.video.srcObject) {
           this.stopTranslation();
           return;
         }
@@ -1220,8 +1229,9 @@ class VideoHandler {
 
     this.firstPlay = true;
 
-    this.votButton.container.hidden = !this.video.src && !this.video.currentSrc;
-    !this.video.src && !this.video.currentSrc && (this.votMenu.container.hidden = !this.video.src && !this.video.currentSrc);
+    const hide = !this.video.src && !this.video.currentSrc && !this.video.srcObject;
+    this.votButton.container.hidden = hide;
+    hide && (this.votMenu.container.hidden = hide);
 
     if (!this.site.selector) {
       this.container = this.video.parentElement;
@@ -1248,6 +1258,7 @@ class VideoHandler {
     this.releaseExtraEvents();
     this.subtitlesWidget.release();
     this.srcObserver.disconnect();
+    clearInterval(this.srcObjectInterval);
     this.votButton.container.remove();
     this.votMenu.container.remove();
   }
