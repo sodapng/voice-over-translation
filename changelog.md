@@ -1,6 +1,10 @@
 <!-- TODO: Сделать вкладку с настройками (версия, настройка языка меню (автоперезагрузка при смене языка), переместить туда сброс настроек) -->
 <!-- TODO: Сделать 15% громкости видео регулируемым значением через слайдер -->
 
+# 1.4.1-beta8 (final)
+- Исправлено время жизни токена на Udemy. Из-за бага токен считался истекшим после 45 минут, а не после 30 дней
+- Добавлен альтернативный способ получения ссылки на видеофайл Udemy
+
 # 1.4.1-beta7
 - Фикс [#285](https://github.com/ilyhalight/voice-over-translation/issues/285), [#283](https://github.com/ilyhalight/voice-over-translation/issues/283), [#282](https://github.com/ilyhalight/voice-over-translation/issues/282) ([#297](https://github.com/ilyhalight/voice-over-translation/pull/297))
 - Добавлено 39 новых языков перевода меню ([#297](https://github.com/ilyhalight/voice-over-translation/pull/297))
