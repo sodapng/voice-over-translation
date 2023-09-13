@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.4.1-beta7
+// @version 1.4.1-beta8
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -4502,7 +4502,7 @@ debug.log = (...text) => {
 
 
 const udemyAPIURL = "https://www.udemy.com/api-2.0";
-const accessTokenLife = 2_592_000; // 30 days
+const accessTokenLife = 2_592_000_000; // 30 days
 
 async function getCourseLang(courseId) {
   const response = await fetch(
@@ -4551,7 +4551,7 @@ function getSubtitlesFileURL(captions, responseLang) {
   return subtitle?.url;
 }
 
-function getVideoFileURL(sources) {
+function getVideoFileURLFromAPI(sources) {
   const source = sources?.find((src) => src.type === "video/mp4");
   return source?.src;
 }
@@ -4577,6 +4577,10 @@ function getLectureId() {
 
 function getPlayer() {
   return document.querySelector(".vjs-v7");
+}
+
+function getVideoURLFromPlayer() {
+  return getPlayer()?.querySelector('video').src;
 }
 
 // Get the video data from the player
@@ -4605,7 +4609,7 @@ async function getVideoData(udemyData, responseLang = "en") {
   }
 
   const duration = lectureData?.asset?.length || data?.cache_?.duration;
-  const videoURL = getVideoFileURL(lectureData?.asset?.media_sources);
+  const videoURL = getVideoFileURLFromAPI(lectureData?.asset?.media_sources) || getVideoURLFromPlayer();
   const subtitlesURL = getSubtitlesFileURL(
     lectureData?.asset?.captions,
     responseLang
