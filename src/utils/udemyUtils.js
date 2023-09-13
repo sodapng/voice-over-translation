@@ -4,7 +4,7 @@ import { langTo6391 } from "./utils.js";
 import { localizationProvider } from "../localization/localizationProvider.js";
 
 const udemyAPIURL = "https://www.udemy.com/api-2.0";
-const accessTokenLife = 2_592_000; // 30 days
+const accessTokenLife = 2_592_000_000; // 30 days
 
 async function getCourseLang(courseId) {
   const response = await fetch(
@@ -53,7 +53,7 @@ function getSubtitlesFileURL(captions, responseLang) {
   return subtitle?.url;
 }
 
-function getVideoFileURL(sources) {
+function getVideoFileURLFromAPI(sources) {
   const source = sources?.find((src) => src.type === "video/mp4");
   return source?.src;
 }
@@ -79,6 +79,10 @@ function getLectureId() {
 
 function getPlayer() {
   return document.querySelector(".vjs-v7");
+}
+
+function getVideoURLFromPlayer() {
+  return getPlayer()?.querySelector('video').src;
 }
 
 // Get the video data from the player
@@ -107,7 +111,7 @@ async function getVideoData(udemyData, responseLang = "en") {
   }
 
   const duration = lectureData?.asset?.length || data?.cache_?.duration;
-  const videoURL = getVideoFileURL(lectureData?.asset?.media_sources);
+  const videoURL = getVideoFileURLFromAPI(lectureData?.asset?.media_sources) || getVideoURLFromPlayer();
   const subtitlesURL = getSubtitlesFileURL(
     lectureData?.asset?.captions,
     responseLang
