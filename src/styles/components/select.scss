@@ -1,0 +1,95 @@
+.vot-select {
+  &[hidden] {
+    display: none !important;
+  }
+
+  --vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;
+  --vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;
+  --vot-helper-safari3: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;
+  --vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243)) !important;
+  --vot-helper-ontheme: var(--vot-ontheme-rgb, var(--vot-onprimary-rgb, 255, 255, 255)) !important;
+  z-index: 0 !important;
+  position: relative !important;
+  display: inline-block;
+  color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;
+  font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  text-align: start !important;
+
+  & > span {
+    line-height: 32px !important;
+    margin-right: 12px !important;
+  }
+
+  & > select {
+    -webkit-box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+    border-color: var(--vot-helper-safari2) !important;
+    border-radius: 4px !important;
+    padding: 5px 3px 5px !important;
+    max-width: 150px !important;
+    width: calc(100% / 2 - 16px) !important;
+    height: 32px !important;
+    color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;
+    -webkit-text-fill-color: currentColor !important;
+    /* Safari */
+    background-color: transparent !important;
+    box-shadow:
+      inset 1px 0 transparent,
+      inset -1px 0 transparent,
+      inset 0 -1px transparent !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    caret-color: rgb(var(--vot-helper-theme)) !important;
+    transition:
+      border 0.2s,
+      box-shadow 0.2s !important;
+    cursor: pointer !important;
+    float: right !important;
+
+    & > option {
+      background: var(--vot-select-option-background, #1d1d1f) !important;
+    }
+  }
+
+  &:hover {
+    & > select {
+      border-color: var(--vot-helper-safari3) !important;
+    }
+
+    & > select:not(:focus):invalid {
+      border-color: var(--vot-helper-safari3) !important;
+    }
+  }
+
+  & > select:focus {
+    border-color: rgb(var(--vot-helper-theme)) !important;
+    box-shadow:
+      inset 1px 0 rgb(var(--vot-helper-theme)),
+      inset 0 1px rgb(var(--vot-helper-theme)),
+      inset -1px 0 rgb(var(--vot-helper-theme)),
+      inset 0 -1px rgb(var(--vot-helper-theme)) !important;
+    outline: none !important;
+  }
+
+  & > select:disabled {
+    border-color: var(--vot-helper-safari1) !important;
+    color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;
+    pointer-events: none !important;
+  }
+}
+
+/* Faster transition in Safari for less noticable fractional font-size issue */
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    .vot-select > select {
+      transition-duration: 0.1s !important;
+    }
+  }
+}

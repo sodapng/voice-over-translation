@@ -1,64 +1,1292 @@
-import "./styles/main.css";
+import "./styles/main.scss";
 import { VOTLocalizedError } from "./utils/VOTLocalizedError.js";
 import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
-import { waitForElm, getVideoId, sleep, secsToStrTime } from "./utils/utils.js";
+import { getVideoId, secsToStrTime, lang, isPiPAvailable, sleep } from "./utils/utils.js";
 import { autoVolume } from "./config/config.js";
 import {
   sitesInvidious,
-  sitesPiped,
-  sitesProxyTok
+  sitesPiped
 } from "./config/alternativeUrls.js";
 import {
   availableLangs,
   additionalTTS,
-  siteTranslates,
   cfOnlyExtensions,
 } from "./config/constants.js";
-import { localizationProvider } from "./localization/localizationProvider.js";
+import { localizationProvider, availableLocales } from "./localization/localizationProvider.js";
 import { initDB, readDB, updateDB, deleteDB } from "./indexedDB.js";
-import {
-  transformBtn,
-  addTranslationBlock,
-  createTranslationMenu,
-  createMenuCheckbox,
-  createMenuSlider,
-  createMenuSelect,
-  genOptionsByOBJ,
-  lang,
-} from "./menu.js";
+import ui from "./ui.js";
 import { syncVolume } from "./utils/volume.js";
 import { workerHost } from "./config/config-cloudflare.js";
-import regexes from "./config/regexes.js";
-import selectors from "./config/selectors.js";
 import debug from "./utils/debug.js";
+
+import Bowser from "bowser";
 
 import requestVideoTranslation from "./rvt.js";
 import {
   getSubtitles,
   fetchSubtitles,
-  addSubtitlesWidget,
-  setSubtitlesWidgetContent,
-  setSubtitlesMaxLength,
-  setSubtitlesHighlightWords,
+  SubtitlesWidget
 } from "./subtitles.js";
 import { courseraUtils } from "./utils/courseraUtils.js";
 import { udemyUtils } from "./utils/udemyUtils.js";
 
+import { VideoObserver } from "./utils/VideoObserver.js";
+import sites from "./config/sites.js";
+
+const browserInfo = Bowser.getParser(window.navigator.userAgent).getResult();
+
 const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 
-// translate properties
-let translateFromLang = "en"; // default language of video
+const videoLipSyncEvents = ["playing", "ratechange", "play", "waiting", "pause"];
 
-let translateToLang = lang; // default language of audio response
+function genOptionsByOBJ(obj, conditionString) {
+  console.log(obj);
+  const test = obj.map((code) => ({
+    label: localizationProvider.get(`langs`)[code] ?? code.toUpperCase(),
+    value: code,
+    selected: conditionString === code,
+  }));
+  console.log(test);
+  return test;
+}
 
-let ytData = "";
-let subtitlesList = [];
-let subtitlesListVideoId = null;
+// // translate properties
+// let translateFromLang = "en"; // default language of video
+// let translateToLang = lang; // default language of audio response
+
+// let ytData = "";
+
+// let subtitlesList = [];
+// let subtitlesListVideoId = null;
+
+// let timer;
+// const audio = new Audio();
+// let opacityRatio = 0.9;
+// let openedMenu = false;
+
+if (BUILD_MODE === "cloudflare") {
+  var translationPanding = false;
+}
+
+function translateVideo(
+  url,
+  duration,
+  requestLang,
+  responseLang,
+  translationHelp,
+  callback
+) {
+  debug.log(
+    `Translate video (url: ${url}, duration: ${duration}, requestLang: ${requestLang}, responseLang: ${responseLang})`
+  );
+
+  debug.log("translationHelp:", translationHelp);
+
+  if (BUILD_MODE === "cloudflare" && translationPanding) {
+    debug.log("translationPanding return");
+    return;
+  }
+
+  translationPanding = true;
+
+  requestVideoTranslation(
+    url,
+    duration,
+    requestLang,
+    responseLang,
+    translationHelp,
+    (success, response) => {
+      translationPanding = false;
+
+      debug.log("[exec callback] Requesting video translation");
+      if (!success) {
+        callback(false, localizationProvider.get("requestTranslationFailed"));
+        return;
+      }
+
+      const translateResponse =
+        yandexProtobuf.decodeTranslationResponse(response);
+      console.log("[VOT] Translation response: ", translateResponse);
+
+      switch (translateResponse.status) {
+        case 0:
+          callback(false, translateResponse.message);
+          break;
+        case 1:
+          callback(
+            !!translateResponse.url,
+            translateResponse.url ||
+              localizationProvider.get("audioNotReceived")
+          );
+          break;
+        case 2:
+          callback(
+            false,
+            translateResponse.remainingTime
+              ? secsToStrTime(translateResponse.remainingTime)
+              : localizationProvider.get("translationTakeFewMinutes")
+          );
+          break;
+        case 3:
+          /*
+            Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода.
+            В конечном итоге, это занимает слишком много времени,
+            как-будто сервер не понимает, что данное видео уже недавно было переведено
+            и заместо возвращения готовой ссылки на перевод начинает переводить видео заново
+            при чём у него это получается за очень длительное время.
+          */
+          callback(false, localizationProvider.get("videoBeingTranslated"));
+          break;
+      }
+    }
+  );
+}
+
+class VideoHandler {
+  // translate properties
+  translateFromLang = "en"; // default language of video
+  translateToLang = lang; // default language of audio response
+
+  timer;
+
+  ytData = "";
+  videoData = "";
+  firstPlay = true;
+  audio = new Audio();
+  downloadTranslationUrl = null;
+
+  autoRetry;
+  volumeOnStart;
+  tempOriginalVolume;
+  tempVolume;
+
+  subtitlesList = [];
+  subtitlesListVideoId = null;
+
+  videoLastSrcObject = null;
+
+  constructor(video, container, site) {
+    debug.log("[VideoHandler] add video:", video, "container:", container, this);
+    this.video = video;
+    this.container = container;
+    this.site = site;
+    this.handleSrcChangedBound = this.handleSrcChanged.bind(this);
+    this.srcObserver = new MutationObserver(this.handleSrcChangedBound);
+    this.srcObserver.observe(this.video, {
+      attributeFilter: ["src", "currentSrc"]
+    });
+    this.srcObjectInterval = setInterval(async () => {
+      if (this.videoLastSrcObject !== this.video.srcObject) {
+        this.videoLastSrcObject = this.video.srcObject;
+        await this.handleSrcChanged();
+      }
+    }, 100);
+    this.stopTranslationBound = this.stopTranslation.bind(this);
+    this.handleVideoEventBound = this.handleVideoEvent.bind(this);
+    this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
+    this.resetTimerBound = this.resetTimer.bind(this);
+    this.init();
+  }
+
+  async init() {
+    if (this.initialized) return;
+
+    this.data = await readDB() ?? {};
+    this.videoData = await this.getVideoData();
+
+    debug.log("[db] data from db: ", this.data);
+
+    this.subtitlesWidget = new SubtitlesWidget(this.video, this.container, this.site);
+    this.subtitlesWidget.setMaxLength(this.data.subtitlesMaxLength);
+    this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
+
+    this.initUI();
+    this.initUIEvents();
+
+    const hide = !this.video.src && !this.video.currentSrc && !this.video.srcObject;
+    this.votButton.container.hidden = hide;
+    hide && (this.votMenu.container.hidden = hide);
+
+    await this.updateSubtitles();
+    await this.changeSubtitlesLang("disabled");
+    this.setSelectMenuValues(this.videoData.detectedLanguage, this.data.responseLanguage ?? "ru");
+    this.translateToLang = this.data.responseLanguage ?? "ru";
+
+    this.initExtraEvents();
+
+    this.initialized = true;
+  }
+
+  transformBtn(status = "none", text) {
+    this.votButton.container.dataset.status = status;
+    this.votButton.label.innerHTML = text;
+  }
+
+  initUI() {
+    // VOT Button
+    {
+      this.votButton = ui.createVOTButton(localizationProvider.get("translateVideo"));
+      this.container.appendChild(this.votButton.container);
+
+      this.votButton.pipButton.hidden = !isPiPAvailable() || !this.data?.showPiPButton;
+      this.votButton.separator2.hidden = !isPiPAvailable() || !this.data?.showPiPButton;
+
+      this.votButton.container.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      });
+    }
+
+    // VOT Menu
+    {
+      this.votMenu = ui.createVOTMenu(localizationProvider.get("VOTSettings"));
+      this.container.appendChild(this.votMenu.container);
+
+      this.votDownloadButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M480-337q-8 0-15-2.5t-13-8.5L308-492q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T365-549l75 75v-286q0-17 11.5-28.5T480-800q17 0 28.5 11.5T520-760v286l75-75q12-12 28.5-11.5T652-548q11 12 11.5 28T652-492L508-348q-6 6-13 8.5t-15 2.5ZM240-160q-33 0-56.5-23.5T160-240v-80q0-17 11.5-28.5T200-360q17 0 28.5 11.5T240-320v80h480v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80q0 33-23.5 56.5T720-160H240Z"/></svg>`);
+      this.votDownloadButton.hidden = true;
+      this.votMenu.headerContainer.appendChild(this.votDownloadButton);
+
+      this.votSettingsButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M555-80H405q-15 0-26-10t-13-25l-12-93q-13-5-24.5-12T307-235l-87 36q-14 5-28 1t-22-17L96-344q-8-13-5-28t15-24l75-57q-1-7-1-13.5v-27q0-6.5 1-13.5l-75-57q-12-9-15-24t5-28l74-129q7-14 21.5-17.5T220-761l87 36q11-8 23-15t24-12l12-93q2-15 13-25t26-10h150q15 0 26 10t13 25l12 93q13 5 24.5 12t22.5 15l87-36q14-5 28-1t22 17l74 129q8 13 5 28t-15 24l-75 57q1 7 1 13.5v27q0 6.5-2 13.5l75 57q12 9 15 24t-5 28l-74 128q-8 13-22.5 17.5T738-199l-85-36q-11 8-23 15t-24 12l-12 93q-2 15-13 25t-26 10Zm-73-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm0-80q-25 0-42.5-17.5T422-480q0-25 17.5-42.5T482-540q25 0 42.5 17.5T542-480q0 25-17.5 42.5T482-420Zm-2-60Zm-40 320h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Z"/></svg>`);
+      this.votMenu.headerContainer.appendChild(this.votSettingsButton);
+
+      this.votTranslationLanguageSelect = ui.createVOTLanguageSelect(
+        [
+          {
+            label: localizationProvider.get("videoLanguage"),
+            value: "default",
+            disabled: true,
+          },
+          ...genOptionsByOBJ(availableLangs, this.videoData.detectedLanguage),
+        ],
+        [
+          {
+            label: localizationProvider.get("translationLanguage"),
+            value: "default",
+            disabled: true,
+          },
+          ...genOptionsByOBJ(availableLangs, this.videoData.responseLanguage),
+          {
+            label: "─────────",
+            value: "separator",
+            disabled: true,
+          },
+          ...genOptionsByOBJ(additionalTTS, this.videoData.responseLanguage),
+        ]
+      );
+      this.votMenu.bodyContainer.appendChild(this.votTranslationLanguageSelect.container);
+
+      this.votSubtitlesSelect = ui.createSelect(localizationProvider.get("VOTSubtitles"), [
+        {
+          label: localizationProvider.get("VOTSubtitlesDisabled"),
+          value: "disabled",
+          disabled: false,
+        }
+      ]);
+      this.votMenu.bodyContainer.appendChild(this.votSubtitlesSelect.container);
+
+      this.votVideoVolumeSlider = ui.createSlider(`${localizationProvider.get("VOTVolume")}: <strong>${this.getVideoVolume() * 100}%</strong>`, this.getVideoVolume() * 100);
+      this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
+      this.votMenu.bodyContainer.appendChild(this.votVideoVolumeSlider.container);
+
+      this.votVideoTranslationVolumeSlider = ui.createSlider(`${localizationProvider.get("VOTVolumeTranslation")}: <strong>${this.data?.defaultVolume ?? 100}%</strong>`, this.data?.defaultVolume ?? 100);
+      this.votVideoTranslationVolumeSlider.container.hidden = this.votButton.container.dataset.status !== "success";
+      this.votMenu.bodyContainer.appendChild(this.votVideoTranslationVolumeSlider.container);
+
+      this.votMenu.container.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      });
+    }
+
+    // VOT Settings
+    {
+      this.votSettingsDialog = ui.createDialog(localizationProvider.get("VOTSettings"));
+      document.documentElement.appendChild(this.votSettingsDialog.container);
+
+      this.votTranslationHeader = ui.createHeader(localizationProvider.get("translationSettings"));
+      this.votSettingsDialog.bodyContainer.appendChild(this.votTranslationHeader);
+
+      this.votAutoTranslateCheckbox = ui.createCheckbox(localizationProvider.get("VOTAutoTranslate"), this.data?.autoTranslate ?? false);
+      this.votSettingsDialog.bodyContainer.appendChild(this.votAutoTranslateCheckbox.container);
+
+      this.votDontTranslateYourLangCheckbox = ui.createCheckbox(localizationProvider.get("VOTDontTranslateYourLang"), this.data?.dontTranslateYourLang ?? true);
+      this.votSettingsDialog.bodyContainer.appendChild(this.votDontTranslateYourLangCheckbox.container);
+
+      this.votAutoSetVolumeCheckbox = ui.createCheckbox(`${localizationProvider.get("VOTAutoSetVolume")} ${autoVolume * 100}%`, this.data?.autoSetVolumeYandexStyle ?? true);
+      this.votSettingsDialog.bodyContainer.appendChild(this.votAutoSetVolumeCheckbox.container);
+
+      this.votShowVideoSliderCheckbox = ui.createCheckbox(localizationProvider.get("VOTShowVideoSlider"), this.data?.showVideoSlider ?? false);
+      this.votSettingsDialog.bodyContainer.appendChild(this.votShowVideoSliderCheckbox.container);
+
+      // udemy only
+      this.votUdemyDataTextfield = ui.createTextfield(localizationProvider.get("VOTUdemyData"), this.data?.udemyData?.accessToken ?? "");
+      this.votUdemyDataTextfield.container.hidden = this.site.host !== "udemy";
+      this.votSettingsDialog.bodyContainer.appendChild(this.votUdemyDataTextfield.container);
+
+      // youtube only
+      this.votSyncVolumeCheckbox = ui.createCheckbox(localizationProvider.get("VOTSyncVolume"), this.data?.syncVolume ?? false);
+      this.votSyncVolumeCheckbox.container.hidden = this.site.host !== "youtube" || this.site.additionalData === "mobile";
+      this.votSettingsDialog.bodyContainer.appendChild(this.votSyncVolumeCheckbox.container);
+
+      // cf version only
+      this.votAudioProxyCheckbox = ui.createCheckbox(localizationProvider.get("VOTAudioProxy"), this.data?.audioProxy ?? false);
+      this.votAudioProxyCheckbox.container.hidden = BUILD_MODE !== "cloudflare";
+      this.votSettingsDialog.bodyContainer.appendChild(this.votAudioProxyCheckbox.container);
+
+      // SUBTITLES
+
+      this.votSubtitlesHeader = ui.createHeader(localizationProvider.get("subtitlesSettings"));
+      this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesHeader);
+
+      this.votSubtitlesMaxLengthSlider = ui.createSlider(`${localizationProvider.get("VOTSubtitlesMaxLength")}: <strong>${this.data?.subtitlesMaxLength ?? 300}</strong>`, this.data?.subtitlesMaxLength ?? 300, 50, 300);
+      this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesMaxLengthSlider.container);
+
+      this.votSubtitlesHighlightWordsCheckbox = ui.createCheckbox(localizationProvider.get("VOTHighlightWords"), this.data?.highlightWords ?? false);
+      this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesHighlightWordsCheckbox.container);
+
+      // ABOUT
+
+      this.votAboutHeader = ui.createHeader(localizationProvider.get("about"));
+      this.votSettingsDialog.bodyContainer.appendChild(this.votAboutHeader);
+
+      this.votLanguageSelect = ui.createSelect(localizationProvider.get("VOTMenuLanguage"), genOptionsByOBJ(availableLocales, window.localStorage.getItem("vot-locale-lang-override") ?? "auto"));
+      this.votSettingsDialog.bodyContainer.appendChild(this.votLanguageSelect.container);
+
+      this.votShowPiPButtonCheckbox = ui.createCheckbox(localizationProvider.get("VOTShowPiPButton"), this.data?.showPiPButton ?? false);
+      this.votShowPiPButtonCheckbox.container.hidden = !isPiPAvailable();
+      this.votSettingsDialog.bodyContainer.appendChild(this.votShowPiPButtonCheckbox.container);
+
+      this.votVersionInfo = ui.createInformation(`${localizationProvider.get("VOTVersion")}:`, BUILD_MODE === "cloudflare" ? `cloudflare ${GM_info.script.version}` : GM_info.script.version);
+      this.votSettingsDialog.bodyContainer.appendChild(this.votVersionInfo.container);
+
+      this.votAuthorsInfo = ui.createInformation(`${localizationProvider.get("VOTAuthors")}:`, GM_info.script.author);
+      this.votSettingsDialog.bodyContainer.appendChild(this.votAuthorsInfo.container);
+
+      this.votLoaderInfo = ui.createInformation(`${localizationProvider.get("VOTLoader")}:`, `${GM_info.scriptHandler} v${GM_info.version}`);
+      this.votSettingsDialog.bodyContainer.appendChild(this.votLoaderInfo.container);
+
+      this.votBrowserInfo = ui.createInformation(`${localizationProvider.get("VOTBrowser")}:`, `${browserInfo.browser.name} ${browserInfo.browser.version} (${browserInfo.os.name} ${browserInfo.os.version})`);
+      this.votSettingsDialog.bodyContainer.appendChild(this.votBrowserInfo.container);
+
+      this.votResetSettingsButton = ui.createButton(localizationProvider.get("resetSettings"));
+      this.votSettingsDialog.bodyContainer.appendChild(this.votResetSettingsButton);
+    }
+  }
+
+  initUIEvents() {
+    // VOT Button
+    {
+      this.votButton.translateButton.addEventListener("click", async () => {
+        if (this.audio.src) {
+          debug.log("[click translationBtn] audio.src is not empty");
+          this.stopTraslate();
+          return;
+        }
+
+        try {
+          debug.log("[click translationBtn] trying execute translation");
+          const VIDEO_ID = getVideoId(this.site.host, this.video);
+
+          if (!VIDEO_ID) {
+            throw new VOTLocalizedError("VOTNoVideoIDFound");
+          }
+
+          await this.translateExecutor(VIDEO_ID);
+        } catch (err) {
+          console.error("[VOT]", err);
+          if (err?.name === "VOTLocalizedError") {
+            this.transformBtn("error", err.localizedMessage);
+          } else {
+            this.transformBtn("error", err);
+          }
+        }
+      });
+
+      this.votButton.pipButton.addEventListener("click", async () => {
+        if (this.video !== document.pictureInPictureElement) {
+          await this.video.requestPictureInPicture();
+        } else {
+          await document.exitPictureInPicture();
+        }
+      });
+
+      this.votButton.menuButton.addEventListener("click", () => {
+        this.votMenu.container.hidden = !this.votMenu.container.hidden;
+      });
+    }
+
+    // VOT Menu
+    {
+      this.votDownloadButton.addEventListener("click", () => {
+        if (this.downloadTranslationUrl) {
+          window.open(this.downloadTranslationUrl, "_blank").focus();
+        }
+      });
+
+      this.votSettingsButton.addEventListener("click", () => {
+        this.votSettingsDialog.container.hidden = !this.votSettingsDialog.container.hidden;
+        if (document.fullscreen === undefined || document.fullscreen) {
+          document.webkitExitFullscreen && document.webkitExitFullscreen();
+          document.mozCancelFullscreen && document.mozCancelFullscreen();
+          document.exitFullscreen && document.exitFullscreen();
+        }
+      });
+
+      this.votTranslationLanguageSelect.fromSelect.addEventListener("change", async (e) => {
+        debug.log("[onchange] select from language", e.target.value);
+        this.videoData = await this.getVideoData();
+        await this.setSelectMenuValues(
+          e.target.value,
+          this.videoData.responseLanguage
+        );
+      });
+
+      this.votTranslationLanguageSelect.toSelect.addEventListener("change", async (e) => {
+        debug.log("[onchange] select to language", e.target.value);
+        this.data.responseLanguage = this.translateToLang = e.target.value;
+        await updateDB({ responseLanguage: this.data.responseLanguage });
+        debug.log("Response Language value changed. New value: ", this.data.responseLanguage);
+        this.videoData = await this.getVideoData();
+        await this.setSelectMenuValues(
+          this.videoData.detectedLanguage,
+          this.data.responseLanguage
+        );
+      });
+
+      this.votSubtitlesSelect.select.addEventListener("change", async (e) => {
+        await this.changeSubtitlesLang(e.target.value);
+      });
+
+      this.votVideoVolumeSlider.input.addEventListener("input", (e) => {
+        const value = Number(e.target.value);
+        this.votVideoVolumeSlider.label.querySelector("strong").innerHTML = `${value}%`;
+        this.setVideoVolume(value / 100);
+        if (this.data.syncVolume === 1) {
+          const translateVolume = Number(this.votVideoTranslationVolumeSlider.input.value);
+          const finalValue = syncVolume(
+            this.audio,
+            value,
+            translateVolume,
+            this.tempOriginalVolume
+          );
+
+          this.votVideoTranslationVolumeSlider.input.value = finalValue;
+          this.votVideoTranslationVolumeSlider.label.querySelector("strong").innerHTML = `${finalValue}%`;
+          ui.updateSlider(this.votVideoTranslationVolumeSlider.input);
+
+          this.tempVolume = finalValue;
+          this.tempOriginalVolume = value;
+        }
+      });
+
+      this.votVideoTranslationVolumeSlider.input.addEventListener("input", async (e) => {
+        this.data.defaultVolume = Number(e.target.value);
+        await updateDB({ defaultVolume: this.data.defaultVolume });
+        this.votVideoTranslationVolumeSlider.label.querySelector("strong").innerHTML = `${this.data.defaultVolume}%`;
+        this.audio.volume = this.data.defaultVolume / 100;
+        if (this.data.syncVolume === 1) {
+          this.syncTranslationWithVideo(this.data.defaultVolume);
+        }
+      });
+    }
+
+    // VOT Settings
+    {
+      this.votAutoTranslateCheckbox.input.addEventListener("change", async (e) => {
+        this.data.autoTranslate = Number(e.target.checked);
+        await updateDB({ autoTranslate: this.data.autoTranslate });
+        debug.log("autoTranslate value changed. New value: ", this.data.autoTranslate);
+      });
+
+      this.votDontTranslateYourLangCheckbox.input.addEventListener("change", async (e) => {
+        this.data.dontTranslateYourLang = Number(e.target.checked);
+        await updateDB({ dontTranslateYourLang: this.data.dontTranslateYourLang });
+        debug.log("dontTranslateYourLang value changed. New value: ", this.data.dontTranslateYourLang);
+      });
+
+      this.votAutoSetVolumeCheckbox.input.addEventListener("change", async (e) => {
+        this.data.autoSetVolumeYandexStyle = Number(e.target.checked);
+        await updateDB({ autoSetVolumeYandexStyle: this.data.autoSetVolumeYandexStyle });
+        debug.log("autoSetVolumeYandexStyle value changed. New value: ", this.data.autoSetVolumeYandexStyle);
+      });
+
+      this.votShowVideoSliderCheckbox.input.addEventListener("change", async (e) => {
+        this.data.showVideoSlider = Number(e.target.checked);
+        await updateDB({ showVideoSlider: this.data.showVideoSlider });
+        debug.log("showVideoSlider value changed. New value: ", this.data.showVideoSlider);
+        this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
+      });
+
+      this.votUdemyDataTextfield.input.addEventListener("change", async (e) => {
+        this.data.udemyData = {
+          accessToken: e.target.value,
+          expires: new Date().getTime(),
+        };
+        await updateDB({ udemyData: this.data.udemyData });
+        debug.log("udemyData value changed. New value: ", this.data.udemyData);
+        window.location.reload();
+      });
+
+      this.votSyncVolumeCheckbox.input.addEventListener("change", async (e) => {
+        this.data.syncVolume = Number(e.target.checked);
+        await updateDB({ syncVolume: this.data.syncVolume });
+        debug.log("syncVolume value changed. New value: ", this.data.syncVolume);
+      });
+
+      this.votAudioProxyCheckbox.input.addEventListener("change", async (e) => {
+        this.data.audioProxy = Number(e.target.checked);
+        await updateDB({ audioProxy: this.data.audioProxy });
+        debug.log("audioProxy value changed. New value: ", this.data.audioProxy);
+      });
+
+      this.votSubtitlesMaxLengthSlider.input.addEventListener("input", async (e) => {
+        this.data.subtitlesMaxLength = Number(e.target.value);
+        await updateDB({ subtitlesMaxLength: this.data.subtitlesMaxLength });
+        this.votSubtitlesMaxLengthSlider.label.querySelector("strong").innerHTML = `${this.data.subtitlesMaxLength}`;
+        this.subtitlesWidget.setMaxLength(this.data.subtitlesMaxLength);
+      });
+
+      this.votSubtitlesHighlightWordsCheckbox.input.addEventListener("change", async (e) => {
+        this.data.highlightWords = Number(e.target.checked);
+        await updateDB({ highlightWords: this.data.highlightWords });
+        debug.log("highlightWords value changed. New value: ", this.data.highlightWords);
+        this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
+      });
+
+      this.votLanguageSelect.select.addEventListener("change", (e) => {
+        window.localStorage.setItem("vot-locale-lang-override", e.target.value);
+      });
+
+      this.votShowPiPButtonCheckbox.input.addEventListener("change", async (e) => {
+        this.data.showPiPButton = Number(e.target.checked);
+        await updateDB({ showPiPButton: this.data.showPiPButton });
+        debug.log("showPiPButton value changed. New value: ", this.data.showPiPButton);
+        this.votButton.pipButton.hidden = !isPiPAvailable() || !this.data.showPiPButton;
+        this.votButton.separator2.hidden = !isPiPAvailable() || !this.data.showPiPButton;
+      });
+
+      this.votResetSettingsButton.addEventListener("click", () => {
+        localizationProvider.reset();
+        deleteDB();
+        window.location.reload();
+      });
+    }
+  }
+
+  releaseExtraEvents() {
+    clearInterval(this.resizeInterval);
+    this.resizeObserver?.disconnect();
+    if (this.site.host === "youtube" && this.site.additionalData !== "mobile") {
+      this.syncVolumeObserver?.disconnect();
+    }
+
+    this.extraEvents?.forEach((e) => {
+      e.element.removeEventListener(e.event, e.handler);
+    });
+  }
+
+  initExtraEvents() {
+    this.extraEvents = [];
+
+    const addExtraEventListener = (element, event, handler) => {
+      this.extraEvents.push({
+        element,
+        event,
+        handler
+      });
+      element.addEventListener(event, handler);
+    };
+
+    const addExtraEventListeners = (element, events, handler) => {
+      events.forEach((event) => {
+        addExtraEventListener(element, event, handler);
+      });
+    };
+
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((e) => {
+        this.votMenu.container.setAttribute("style", `--vot-container-height: ${e.contentRect.height}px`);
+      });
+    });
+    this.resizeObserver.observe(this.video);
+    this.votMenu.container.setAttribute("style", `--vot-container-height: ${this.video.getBoundingClientRect().height}px`);
+    this.resizeInterval = setInterval(() => {
+      this.votMenu.container.setAttribute("style", `--vot-container-height: ${this.video.getBoundingClientRect().height}px`);
+    }, 500);
+    // Sync volume slider with original video (youtube only)
+    if (this.site.host === "youtube" && this.site.additionalData !== "mobile") {
+      this.syncVolumeObserver = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (
+            mutation.type === "attributes" &&
+            mutation.attributeName === "aria-valuenow"
+          ) {
+            this.syncVideoVolumeSlider();
+          }
+        });
+      });
+
+      const ytpVolumePanel = document.querySelector(".ytp-volume-panel");
+      if (ytpVolumePanel) {
+        this.syncVolumeObserver.observe(ytpVolumePanel, {
+          attributes: true,
+          childList: false,
+          subtree: true,
+          attributeOldValue: true,
+        });
+      }
+    }
+
+    document.addEventListener("click", (event) => {
+      const e = event.target;
+
+      const button = this.votButton.container;
+      const menu = this.votMenu.container;
+      const container = this.container;
+      const settings = this.votSettingsDialog.container;
+
+      const isButton = button.contains(e);
+      const isMenu = menu.contains(e);
+      const isVideo = container.contains(e);
+      const isSettings = settings.contains(e);
+
+      debug.log(`[document click] ${isButton} ${isMenu} ${isVideo} ${isSettings}`);
+      if (!(!isButton && !isMenu && !isSettings)) return;
+      if (!isVideo) this.logout(0);
+
+      this.votMenu.container.hidden = true;
+    });
+
+    let eContainer;
+    if (this.site.host === "pornhub") {
+      if (this.site.additionalData === "embed") {
+        eContainer = document.querySelector("#player");
+      } else {
+        // const e = document.querySelector(".original.mainPlayerDiv > video-element > div");
+        eContainer = this.container.querySelector("video-element > div");
+      }
+    } else if (this.site.host === "twitter") {
+      eContainer = document.querySelector('div[data-testid="videoPlayer"');
+    } else {
+      eContainer = this.container;
+    }
+    if (eContainer) addExtraEventListeners(eContainer, ["mousemove", "mouseout"], this.resetTimerBound);
+
+    addExtraEventListener(this.votButton.container, "mousemove" , this.changeOpacityOnEventBound);
+    addExtraEventListener(this.votMenu.container, "mousemove" , this.changeOpacityOnEventBound);
+    addExtraEventListeners(document, ["touchstart", "touchmove", "touchend"], this.changeOpacityOnEventBound);
+
+    addExtraEventListener(this.video, "abort", () => {
+      debug.log("lipsync mode is abort");
+      this.stopTranslation();
+      this.videoData = "";
+    });
+
+    addExtraEventListener(this.video, "progress", async () => {
+      if (!(this.firstPlay && this.data.autoTranslate === 1)) {
+        return;
+      }
+      const VIDEO_ID = getVideoId(this.site.host, this.video);
+
+      if (!VIDEO_ID) {
+        throw new VOTLocalizedError("VOTNoVideoIDFound");
+      }
+
+      try {
+        await this.translateExecutor(VIDEO_ID);
+        this.firstPlay = false;
+      } catch (err) {
+        console.error("[VOT]", err);
+        if (err?.name === "VOTLocalizedError") {
+          this.transformBtn("error", err.localizedMessage);
+        } else {
+          this.transformBtn("error", err);
+        }
+        this.firstPlay = false;
+      }
+    });
+  }
+
+  logout(n) {
+    if (!this.votMenu.container.hidden) return;
+    this.votButton.container.style.opacity = n;
+  }
+
+  resetTimer() {
+    clearTimeout(this.timer);
+    this.logout(1);
+    this.timer = setTimeout(() => {
+      this.logout(0);
+    }, 2000);
+  }
+
+  changeOpacityOnEvent(event) {
+    clearTimeout(this.timer);
+    this.logout(1);
+    event.stopPropagation();
+  }
+
+  async changeSubtitlesLang(subs) {
+    debug.log("[onchange] subtitles", subs);
+    this.votSubtitlesSelect.select.value = subs;
+    if (subs === "disabled") {
+      this.subtitlesWidget.setContent(null);
+    } else {
+      this.subtitlesWidget.setContent(await fetchSubtitles(this.subtitlesList.at(parseInt(subs))));
+    }
+  }
+
+  async updateSubtitlesLangSelect() {
+    const oldValue = this.votSubtitlesSelect.select.value;
+    this.votSubtitlesSelect.select.innerHTML = "";
+
+    const disabledOption = document.createElement("option");
+    disabledOption.value = "disabled";
+    disabledOption.innerHTML = localizationProvider.get("VOTSubtitlesDisabled");
+    this.votSubtitlesSelect.select.append(disabledOption);
+
+    for (let i = 0; i < this.subtitlesList.length; i++) {
+      const s = this.subtitlesList[i];
+      const option = document.createElement("option");
+      option.value = i;
+      option.innerHTML =
+        (localizationProvider.get("langs")[s.language] ??
+          s.language.toUpperCase()) +
+        (s.translatedFromLanguage
+          ? ` ${localizationProvider.get("VOTTranslatedFrom")} ${
+              localizationProvider.get("langs")[s.translatedFromLanguage] ??
+              s.translatedFromLanguage.toUpperCase()
+            }`
+          : "") +
+        (s.source !== "yandex" ? ` ${s.source}` : "") +
+        (s.isAutoGenerated
+          ? ` (${localizationProvider.get("VOTAutogenerated")})`
+          : "");
+          this.votSubtitlesSelect.select.append(option);
+    }
+
+    await this.changeSubtitlesLang(oldValue);
+  }
+
+  async updateSubtitles() {
+    await this.changeSubtitlesLang("disabled");
+
+    const VIDEO_ID = getVideoId(this.site.host, this.video);
+
+    if (!VIDEO_ID) {
+      console.error(
+        `[VOT] ${localizationProvider.getDefault("VOTNoVideoIDFound")}`
+      );
+      this.subtitlesList = [];
+      this.subtitlesListVideoId = null;
+      await this.updateSubtitlesLangSelect();
+      return;
+    }
+
+    if (this.subtitlesListVideoId === VIDEO_ID) {
+      return;
+    }
+
+    if (!this.videoData.detectedLanguage) {
+      this.videoData = await this.getVideoData();
+      await this.setSelectMenuValues(
+        this.videoData.detectedLanguage,
+        this.videoData.responseLanguage
+      );
+    }
+
+    this.subtitlesList = await getSubtitles(
+      this.site,
+      VIDEO_ID,
+      this.videoData.detectedLanguage
+    );
+    if (!this.subtitlesList) {
+      await this.changeSubtitlesLang("disabled");
+    } else {
+      this.subtitlesListVideoId = VIDEO_ID;
+    }
+    await this.updateSubtitlesLangSelect();
+  }
+
+  // Get video volume in 0.00-1.00 format
+  getVideoVolume() {
+    let videoVolume = this.video?.volume;
+    if (this.site.host === "youtube") {
+      videoVolume = youtubeUtils.getVideoVolume() || videoVolume;
+    }
+    return videoVolume;
+  }
+
+  // Set video volume in 0.00-1.00 format
+  setVideoVolume(volume) {
+    if (this.site.host === "youtube") {
+      return youtubeUtils.setVideoVolume(volume);
+    }
+    this.video.volume = volume;
+  }
+
+  // Sync volume slider with original video (youtube only)
+  syncVideoVolumeSlider() {
+    const newSlidersVolume = Math.round(this.getVideoVolume() * 100);
+
+    this.votVideoVolumeSlider.input.value = newSlidersVolume;
+    this.votVideoVolumeSlider.label.querySelector("strong").innerHTML = `${newSlidersVolume}%`;
+    ui.updateSlider(this.votVideoVolumeSlider.input);
+
+    if (this.data.syncVolume === 1) {
+      this.tempOriginalVolume = Number(newSlidersVolume);
+    }
+  }
+
+  setSelectMenuValues(from, to) {
+    this.votTranslationLanguageSelect.fromSelect.value = from;
+    this.votTranslationLanguageSelect.toSelect.value = to;
+    console.log(`[VOT] Set translation from ${from} to ${to}`);
+    this.videoData.detectedLanguage = from;
+    this.videoData.responseLanguage = to;
+  }
+
+  // A helper function to sync translation volume with video volume
+  syncTranslationWithVideo(translationValue) {
+    // Get the video volume value
+    const videoVolume = Number(this.votVideoVolumeSlider.input.value);
+
+    // Calculate the synced video volume based on the translation volume
+    const finalValue = syncVolume(
+      this.video,
+      translationValue,
+      videoVolume,
+      this.tempVolume
+    );
+
+    // Set the video volume slider value to the synced value
+    this.votVideoVolumeSlider.input.value = finalValue;
+    this.votVideoVolumeSlider.label.querySelector("strong").innerHTML = `${finalValue}%`;
+    ui.updateSlider(this.votVideoVolumeSlider.input);
+
+    // Update the temp variables for future syncing
+    this.tempOriginalVolume = finalValue;
+    this.tempVolume = translationValue;
+  }
+
+  async getVideoData() {
+    const videoData = {};
+
+    videoData.translationHelp = null; // ! should be null for ALL websites except coursera and udemy !
+    videoData.duration = this.video?.duration || 343; // ! if 0 - we get 400 error
+    videoData.videoId = getVideoId(this.site.host, this.video);
+    videoData.detectedLanguage = this.translateFromLang;
+    videoData.responseLanguage = this.translateToLang;
+
+    if (!videoData.videoId) {
+      this.ytData = {};
+      return videoData;
+    }
+
+    if (window.location.hostname.includes("youtube.com")) {
+      this.ytData = await youtubeUtils.getVideoData();
+      if (this.ytData.author !== "") {
+        videoData.detectedLanguage = this.ytData.detectedLanguage;
+        videoData.responseLanguage = this.translateToLang;
+      }
+    } else if (
+      window.location.hostname.includes("rutube") ||
+      window.location.hostname.includes("my.mail.ru")
+    ) {
+      videoData.detectedLanguage = "ru";
+    } else if (window.location.hostname.includes("bilibili.com")) {
+      videoData.detectedLanguage = "zh";
+    } else if (window.location.hostname.includes("coursera.org")) {
+      const courseraData = await courseraUtils.getVideoData(this.translateToLang);
+      videoData.duration = courseraData.duration || videoData.duration; // courseraData.duration sometimes it can be equal to NaN
+      videoData.detectedLanguage = courseraData.detectedLanguage;
+      videoData.translationHelp = courseraData.translationHelp;
+    } else if (window.location.hostname.includes("udemy.com")) {
+      const udemyData = await udemyUtils.getVideoData(
+        this.data.udemyData,
+        this.translateToLang
+      );
+      videoData.duration = udemyData.duration || videoData.duration;
+      videoData.detectedLanguage = udemyData.detectedLanguage;
+      videoData.translationHelp = udemyData.translationHelp;
+    }
+
+    return videoData;
+  }
+
+  videoValidator() {
+    if (this.site.host === "youtube") {
+      debug.log("VideoValidator videoData: ", this.videoData);
+      if (
+        this.data.dontTranslateYourLang === 1 &&
+        this.videoData.detectedLanguage === lang &&
+        this.videoData.responseLanguage === lang
+      ) {
+        throw new VOTLocalizedError("VOTDisableFromYourLang");
+      }
+      if (this.ytData.isPremiere) {
+        throw new VOTLocalizedError("VOTPremiere");
+      }
+      if (this.ytData.isLive) {
+        throw new VOTLocalizedError("VOTLiveNotSupported");
+      }
+      if (this.videoData.duration > 14_400) {
+        throw new VOTLocalizedError("VOTVideoIsTooLong");
+      }
+    }
+    return true;
+  }
+
+  lipSync(mode = false) {
+    debug.log("lipsync video", this.video);
+    if (!this.video) {
+      return;
+    }
+    this.audio.currentTime = this.video.currentTime;
+    this.audio.playbackRate = this.video.playbackRate;
+
+    if (!mode) {
+      debug.log("lipsync mode is not set");
+      return;
+    }
+
+    if (mode === "play") {
+      debug.log("lipsync mode is play");
+      const audioPromise = this.audio.play();
+      if (audioPromise !== undefined) {
+        audioPromise.catch((e) => {
+          console.error("[VOT]", e);
+          if (e.name === "NotAllowedError") {
+            this.transformBtn(
+              "error",
+              localizationProvider.get("grantPermissionToAutoPlay")
+            );
+            throw new VOTLocalizedError("grantPermissionToAutoPlay");
+          } else if (e.name === "NotSupportedError") {
+            this.transformBtn(
+              "error",
+              sitesChromiumBlocked.includes(window.location.hostname)
+                ? localizationProvider.get("neededAdditionalExtension")
+                : localizationProvider.get("audioFormatNotSupported")
+            );
+            throw sitesChromiumBlocked.includes(window.location.hostname)
+              ? new VOTLocalizedError("neededAdditionalExtension")
+              : new VOTLocalizedError("audioFormatNotSupported");
+          }
+        });
+      }
+      return;
+    }
+    if (mode === "pause") {
+      debug.log("lipsync mode is pause");
+      this.audio.pause();
+    }
+    if (mode === "stop") {
+      debug.log("lipsync mode is stop");
+      this.audio.pause();
+    }
+    if (mode === "waiting") {
+      debug.log("lipsync mode is waiting");
+      this.audio.pause();
+    }
+    if (mode === "playing") {
+      debug.log("lipsync mode is playing");
+      this.audio.play();
+    }
+  }
+
+  // Define a function to handle common events
+  handleVideoEvent(event) {
+    debug.log(`video ${event.type}`);
+    this.lipSync(event.type);
+  }
+
+  // Default actions on stop translate
+  stopTraslate() {
+    videoLipSyncEvents.forEach((e) => this.video.removeEventListener(e, this.handleVideoEventBound));
+    this.audio.pause();
+    //! video.removeEventListener(".translate", stopTraslate, false); // why???
+    this.audio.src = "";
+    this.audio.removeAttribute("src");
+    this.votVideoVolumeSlider.container.hidden = true;
+    this.votVideoTranslationVolumeSlider.container.hidden = true;
+    this.votDownloadButton.hidden = true;
+    this.downloadTranslationUrl = null;
+    this.transformBtn("none", localizationProvider.get("translateVideo"));
+    if (this.volumeOnStart) {
+      debug.log(`Volume on start: ${this.volumeOnStart}`);
+      if (this.site.host === "youtube") {
+        youtubeUtils.setVideoVolume(this.volumeOnStart);
+      } else {
+        this.video.volume = this.volumeOnStart;
+      }
+    }
+  }
+
+  async translateExecutor(VIDEO_ID) {
+    if (!this.videoData.detectedLanguage) {
+      this.videoData = await this.getVideoData();
+      this.setSelectMenuValues(
+        this.videoData.detectedLanguage,
+        this.videoData.responseLanguage
+      );
+    }
+    debug.log("Run videoValidator");
+    this.videoValidator();
+    debug.log("Run translateFunc");
+    this.translateFunc(
+      VIDEO_ID,
+      this.videoData.detectedLanguage,
+      this.videoData.responseLanguage,
+      this.videoData.translationHelp
+    );
+  }
+
+  // Define a function to translate a video and handle the callback
+  translateFunc(
+    VIDEO_ID,
+    requestLang,
+    responseLang,
+    translationHelp
+  ) {
+    console.log("[VOT] Video Data: ", this.videoData);
+    const videoURL = `${this.site.url}${VIDEO_ID}`;
+    if (["udemy", "coursera"].includes(this.site.host) && !translationHelp) {
+      throw new VOTLocalizedError("VOTTranslationHelpNull");
+    }
+    translateVideo(
+      videoURL,
+      this.videoData.duration,
+      requestLang,
+      responseLang,
+      translationHelp,
+      (success, urlOrError) => {
+        debug.log("[exec callback] translateVideo");
+        if (getVideoId(this.site.host, this.video) !== VIDEO_ID) return;
+        if (!success) {
+          if (urlOrError?.name === "VOTLocalizedError") {
+            this.transformBtn("error", urlOrError.localizedMessage);
+          } else {
+            this.transformBtn("error", urlOrError);
+          }
+          // if the error line contains information that the translation is being performed, then we wait
+          if (
+            urlOrError.includes(localizationProvider.get("translationTake"))
+          ) {
+            clearTimeout(this.autoRetry);
+            this.autoRetry = setTimeout(
+              () =>
+                this.translateFunc(
+                  VIDEO_ID,
+                  requestLang,
+                  responseLang,
+                  translationHelp
+                ),
+              60_000
+            );
+          }
+          console.error("[VOT]", urlOrError);
+          return;
+        }
+
+        this.audio.src = urlOrError;
+
+        // cf version only
+        if (
+          BUILD_MODE === "cloudflare" &&
+          this.data.audioProxy === 1 &&
+          urlOrError.startsWith("https://")
+        ) {
+          const audioPath = urlOrError.replace(
+            "https://vtrans.s3-private.mds.yandex.net/tts/prod/",
+            ""
+          );
+          const proxiedAudioUrl = `https://${workerHost}/video-translation/audio-proxy/${audioPath}`;
+          console.log(`[VOT] Audio proxied via ${proxiedAudioUrl}`);
+          this.audio.src = proxiedAudioUrl;
+        }
+
+        this.volumeOnStart = this.getVideoVolume();
+        if (typeof this.data.defaultVolume === "number") {
+          this.audio.volume = this.data.defaultVolume / 100;
+        }
+        if (
+          typeof this.data.autoSetVolumeYandexStyle === "number" &&
+          this.data.autoSetVolumeYandexStyle
+        ) {
+          this.setVideoVolume(autoVolume);
+        }
+
+        switch (this.site.host) {
+          case "twitter":
+            document
+              .querySelector('div[data-testid="app-bar-back"][role="button"]')
+              .addEventListener("click", this.stopTranslationBound);
+            break;
+          case "invidious":
+          case "piped":
+            break;
+        }
+
+        if (!this.video.src && !this.video.currentSrc && !this.video.srcObject) {
+          this.stopTranslation();
+          return;
+        }
+
+        const siteHostnames = [
+          "twitch",
+          "vimeo",
+          "facebook",
+          "rutube",
+          "twitter",
+          "bilibili",
+          "mail_ru",
+        ];
+        for (let i = 0; i < siteHostnames.length; i++) {
+          if (this.site.host === siteHostnames[i]) {
+            const mutationObserver = new MutationObserver(
+              (mutations) => {
+                mutations.forEach((mutation) => {
+                  if (
+                    mutation.type === "attributes" &&
+                    mutation.attributeName === "src" &&
+                    mutation.target === this.video &&
+                    mutation.target.src !== ""
+                  ) {
+                    this.stopTranslation();
+                    this.firstPlay = true;
+                  }
+                });
+              }
+            );
+            mutationObserver.observe(this.container, {
+              attributes: true,
+              childList: false,
+              subtree: true,
+              attributeOldValue: true,
+            });
+            break;
+          }
+        }
+
+        if (this.video && !this.video.paused) this.lipSync("play");
+        videoLipSyncEvents.forEach((e) => this.video.addEventListener(e, this.handleVideoEventBound));
+        this.transformBtn("success", localizationProvider.get("disableTranslate"));
+
+        this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
+        this.votVideoTranslationVolumeSlider.container.hidden = this.votButton.container.dataset.status !== "success";
+
+        if (this.data.autoSetVolumeYandexStyle === 1) {
+          this.votVideoVolumeSlider.input.value = autoVolume * 100;
+          this.votVideoVolumeSlider.label.querySelector("strong").innerHTML = `${autoVolume * 100}%`;
+          ui.updateSlider(this.votVideoVolumeSlider.input);
+        }
+
+        this.votDownloadButton.hidden = false;
+        this.downloadTranslationUrl = urlOrError;
+      }
+    );
+  }
+
+  // Define a function to stop translation and clean up
+  stopTranslation() {
+    this.stopTraslate();
+    this.syncVideoVolumeSlider();
+  }
+
+  async waitInitialization() {
+    let resolved = false;
+    return await Promise.race([
+      new Promise(async (resolve) => {
+        await sleep(1000);
+        if (!resolved) {
+          console.error("[VOT] Initialization timeout");
+        }
+        resolved = true;
+        resolve(false);
+      }),
+      new Promise(async (resolve) => {
+        while (!this.initialized) {
+          await sleep(100);
+        }
+        resolved = true;
+        resolve(true);
+      })
+    ]);
+  }
+
+  async handleSrcChanged() {
+    debug.log("[VideoHandler] src changed", this);
+
+    if (!await this.waitInitialization()) return;
+
+    this.stopTranslation();
+
+    this.videoData = await this.getVideoData();
+
+    this.firstPlay = true;
+
+    const hide = !this.video.src && !this.video.currentSrc && !this.video.srcObject;
+    this.votButton.container.hidden = hide;
+    hide && (this.votMenu.container.hidden = hide);
+
+    if (!this.site.selector) {
+      this.container = this.video.parentElement;
+    }
+
+    if (!this.container.contains(this.votButton.container)) {
+      this.container.appendChild(this.votButton.container);
+      this.container.appendChild(this.votMenu.container);
+    }
+
+    await this.updateSubtitles();
+    await this.changeSubtitlesLang("disabled");
+    this.setSelectMenuValues(this.videoData.detectedLanguage, this.data.responseLanguage ?? "ru");
+    this.translateToLang = this.data.responseLanguage ?? "ru";
+  }
+
+  async release() {
+    debug.log("[VideoHandler] release");
+
+    if (!await this.waitInitialization()) return;
+    this.initialized = false;
+
+    this.stopTranslation();
+    this.releaseExtraEvents();
+    this.subtitlesWidget.release();
+    this.srcObserver.disconnect();
+    clearInterval(this.srcObjectInterval);
+    this.votButton.container.remove();
+    this.votMenu.container.remove();
+  }
+}
+
+function getSites() {
+  return sites.filter((e) => {
+    const isMathes = (match) => {
+      return (match instanceof RegExp && match.test(window.location.hostname))
+        || (typeof match === "string" && window.location.hostname.includes(match))
+        || (typeof match === "function" && match(new URL(window.location)));
+    };
+    if (isMathes(e.match) || (e.match instanceof Array && e.match.some((e) => isMathes(e)))) {
+      return e.host && e.url;
+    }
+    return false;
+  });
+}
+
+const videoObserver = new VideoObserver();
+const videosWrappers = new WeakMap();
 
 async function main() {
   debug.log("Loading extension...");
-  debug.log(`Selected menu language: ${lang}`);
+
+  await localizationProvider.update();
+
+  debug.log(`Selected menu language: ${localizationProvider.lang}`);
 
   if (
     BUILD_MODE !== "cloudflare" &&
@@ -79,1788 +1307,44 @@ async function main() {
 
   debug.log("Extension compatibility passed...");
 
-  let timer;
-  const audio = new Audio();
-  let opacityRatio = 0.9;
-  let openedMenu = false;
-
-  if (BUILD_MODE === "cloudflare") {
-    var translationPanding = false;
-  }
-
-  function logout(n) {
-    if (openedMenu) return;
-
-    document.querySelector(".translationBlock").style.opacity = n;
-  }
-
-  function resetTimer() {
-    clearTimeout(timer);
-    logout(1);
-    timer = setTimeout(() => {
-      logout(0);
-    }, 2000);
-  }
-
-  function changeOpacityOnEvent(event, timer, opacityRatio) {
-    clearTimeout(timer);
-    logout(opacityRatio);
-    event.stopPropagation();
-  }
-
-  const deleteAudioSrc = async () => {
-    audio.src = "";
-    audio.removeAttribute("src");
-  };
-
-  // Add menu container
-  function addTranslationMenu(element) {
-    if (element.querySelector(".translationMenuContent")) return;
-
-    const container = createTranslationMenu();
-    element.appendChild(container);
-
-    // click to translation menu icon
-    document
-      .querySelector(".translationMenu")
-      ?.addEventListener("click", (event) => {
-        event.stopPropagation();
-        const content = document.querySelector(".translationMenuContent");
-        content.style.display = openedMenu ? "none" : "block";
-        content.style.opacity = opacityRatio;
-        openedMenu = !openedMenu;
-      });
-
-    document
-      .querySelector(".translationDropDB")
-      .addEventListener("click", (event) => {
-        event.stopPropagation();
-        deleteDB();
-        location.reload();
-      });
-
-    debug.log("Added translation menu to ", element);
-  }
-
-  function translateVideo(
-    url,
-    duration,
-    requestLang,
-    responseLang,
-    translationHelp,
-    callback
-  ) {
-    debug.log(
-      `Translate video (url: ${url}, duration: ${duration}, requestLang: ${requestLang}, responseLang: ${responseLang})`
-    );
-
-    debug.log("translationHelp:", translationHelp);
-
-    if (BUILD_MODE === "cloudflare" && translationPanding) {
-      debug.log("translationPanding return");
+  try {
+    if (!await initDB()) {
+      console.error("[VOT] Failed to initialize database");
       return;
     }
-
-    translationPanding = true;
-
-    requestVideoTranslation(
-      url,
-      duration,
-      requestLang,
-      responseLang,
-      translationHelp,
-      (success, response) => {
-        translationPanding = false;
-
-        debug.log("[exec callback] Requesting video translation");
-        if (!success) {
-          callback(false, localizationProvider.get("requestTranslationFailed"));
-          return;
-        }
-
-        const translateResponse =
-          yandexProtobuf.decodeTranslationResponse(response);
-        console.log("[VOT] Translation response: ", translateResponse);
-
-        switch (translateResponse.status) {
-          case 0:
-            callback(false, translateResponse.message);
-            break;
-          case 1:
-            callback(
-              !!translateResponse.url,
-              translateResponse.url ||
-                localizationProvider.get("audioNotReceived")
-            );
-            break;
-          case 2:
-            callback(
-              false,
-              translateResponse.remainingTime
-                ? secsToStrTime(translateResponse.remainingTime)
-                : localizationProvider.get("translationTakeFewMinutes")
-            );
-            break;
-          case 3:
-            /*
-              Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода.
-              В конечном итоге, это занимает слишком много времени,
-              как-будто сервер не понимает, что данное видео уже недавно было переведено
-              и заместо возвращения готовой ссылки на перевод начинает переводить видео заново
-              при чём у него это получается за очень длительное время.
-            */
-            callback(false, localizationProvider.get("videoBeingTranslated"));
-            break;
-        }
-      }
-    );
+  } catch (err) {
+    console.error("[VOT] Failed to initialize database", err);
+    return;
   }
 
-  async function translateProccessor(videoContainer, siteHostname, siteEvent) {
-    debug.log("[translateProccessor] execute on element: ", videoContainer);
+  debug.log("database initialized");
 
-    let video;
-    let autoRetry;
-    let volumeOnStart;
-    let tempOriginalVolume;
-    let tempVolume;
-    let dbSubtitlesMaxLength;
-    let dbHighlightWords;
-    let dbAutoTranslate;
-    let dbDefaultVolume;
-    let dbShowVideoSlider;
-    let dbAutoSetVolumeYandexStyle;
-    let dontTranslateYourLang;
-    let dbSyncVolume;
-    let dbUdemyData;
-    let dbResponseLanguage;
-    let dbAudioProxy; // cf version only
-    let firstPlay = true;
-    let isDBInited;
-    let videoData = "";
-
-    debug.log("videoContainer", videoContainer);
-
-    video =
-      siteHostname === "vimeo"
-        ? videoContainer.querySelector(
-            ".vp-video-wrapper > .vp-video > .vp-telecine > video"
-          )
-        : videoContainer.querySelector("video");
-
-    debug.log("video", video);
-
-    const container =
-      siteHostname === "pornhub" &&
-      window.location.pathname.includes("view_video.php")
-        ? document.querySelector(".original.mainPlayerDiv")
-        : siteHostname === "pornhub" &&
-          window.location.pathname.includes("embed/")
-        ? document.querySelector("body")
-        : window.location.hostname.includes("m.youtube.com")
-        ? document.querySelector("#player-control-container")
-        : videoContainer;
-
-    addTranslationBlock(container);
-    addTranslationMenu(container);
-    if (
-      window.location.hostname.includes("youtube.com") &&
-      !window.location.hostname.includes("m.youtube.com")
-    ) {
-      addSubtitlesWidget(container.parentElement);
-    } else {
-      addSubtitlesWidget(container);
-    }
-    await changeSubtitlesLang("disabled");
-
-    try {
-      isDBInited = await initDB();
-    } catch (err) {
-      console.error(
-        "[VOT] Failed to initialize database settings. All changes made will not be saved",
-        err
-      );
-    }
-
-    const menuOptions = document.querySelector(".translationMenuOptions");
-    if (menuOptions && !menuOptions.querySelector("#VOTTranslateFromLang")) {
-      const selectFromLangOptions = [
-        {
-          label: localizationProvider.get("videoLanguage"),
-          value: "default",
-          disabled: true,
-        },
-        ...genOptionsByOBJ(availableLangs, videoData.detectedLanguage),
-      ];
-
-      const selectToLangOptions = [
-        {
-          label: localizationProvider.get("translationLanguage"),
-          value: "default",
-          disabled: true,
-        },
-        ...genOptionsByOBJ(availableLangs, videoData.responseLanguage),
-        {
-          label: "─────────",
-          value: "separator",
-          disabled: true,
-        },
-        ...genOptionsByOBJ(additionalTTS, videoData.responseLanguage),
-      ];
-
-      const selectFromLang = createMenuSelect(
-        "VOTTranslateFromLang",
-        selectFromLangOptions
-      );
-
-      const selectToLang = createMenuSelect(
-        "VOTTranslateToLang",
-        selectToLangOptions
-      ).firstElementChild;
-
-      selectFromLang.id = "VOTSelectLanguages";
-      selectFromLang.innerHTML += `
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16m0 0l-6 6m6-6l-6-6"/>
-        </svg>
-      `;
-
-      selectFromLang.appendChild(selectToLang);
-      menuOptions.appendChild(selectFromLang);
-
-      menuOptions
-        .querySelector("#VOTTranslateFromLang")
-        .addEventListener("change", async (event) => {
-          debug.log("[onchange] select from language", event.target.value);
-          videoData = await getVideoData();
-          await setSelectMenuValues(
-            event.target.value,
-            videoData.responseLanguage
-          );
-        });
-
-      menuOptions
-        .querySelector("#VOTTranslateToLang")
-        .addEventListener("change", async (event) => {
-          debug.log("[onchange] select to language", event.target.value);
-          if (isDBInited) {
-            translateToLang = event.target.value;
-            await updateDB({ responseLanguage: event.target.value });
-            debug.log(
-              "Response Language value changed. New value: ",
-              event.target.value
-            );
-          }
-          videoData = await getVideoData();
-          await setSelectMenuValues(
-            videoData.detectedLanguage,
-            event.target.value
-          );
-        });
-    }
-
-    async function changeSubtitlesLang(subs) {
-      debug.log("[onchange] subtitles", subs);
-      const select = document
-        .querySelector(".translationMenuOptions")
-        ?.querySelector("#VOTSubtitlesLang");
-      select && (select.value = subs);
-      if (!video) {
-        console.error("[VOT] video not found");
-        select && (select.value = "disabled");
-        return;
-      }
-      if (subs === "disabled") {
-        setSubtitlesWidgetContent(video, null);
+  videoObserver.onVideoAdded.addListener((video) => {
+    for (const site of getSites()) {
+      if (!site) continue;
+      let container;
+      if (site.shadowRoot) {
+        container = site.selector ? Object.values(document.querySelectorAll(site.selector)).find(e => e.shadowRoot.contains(video)) : video.parentElement;
+        container = (container && container.shadowRoot) ? container.parentElement : container;
       } else {
-        setSubtitlesWidgetContent(
-          video,
-          await fetchSubtitles(subtitlesList.at(parseInt(subs)))
-        );
+        container = site.selector ? Object.values(document.querySelectorAll(site.selector)).find(e => e.contains(video)) : video.parentElement;
+      }
+      if (!container) continue;
+      if (!videosWrappers.has(video)) {
+        videosWrappers.set(video, new VideoHandler(video, container, site));
+        break;
       }
     }
-
-    async function updateSubtitlesLangSelect() {
-      const select = document
-        .querySelector(".translationMenuOptions")
-        ?.querySelector("#VOTSubtitlesLang");
-
-      if (!select) {
-        console.error("[VOT] #VOTSubtitlesLang not found");
-        return;
-      }
-
-      const oldValue = select.value;
-      select.innerHTML = "";
-
-      const disabledOption = document.createElement("option");
-      disabledOption.value = "disabled";
-      disabledOption.innerHTML = localizationProvider.get(
-        "VOTSubtitlesDisabled"
-      );
-      select.append(disabledOption);
-
-      for (let i = 0; i < subtitlesList.length; i++) {
-        const s = subtitlesList[i];
-        const option = document.createElement("option");
-        option.value = i;
-        option.innerHTML =
-          (localizationProvider.get("langs")[s.language] ??
-            s.language.toUpperCase()) +
-          (s.translatedFromLanguage
-            ? ` ${localizationProvider.get("VOTTranslatedFrom")} ${
-                localizationProvider.get("langs")[s.translatedFromLanguage] ??
-                s.translatedFromLanguage.toUpperCase()
-              }`
-            : "") +
-          (s.source !== "yandex" ? ` ${s.source}` : "") +
-          (s.isAutoGenerated
-            ? ` (${localizationProvider.get("VOTAutogenerated")})`
-            : "");
-        select.append(option);
-      }
-
-      await changeSubtitlesLang(oldValue);
+  });
+  videoObserver.onVideoRemoved.addListener(async (video) => {
+    if (videosWrappers.has(video)) {
+      await videosWrappers.get(video).release();
+      videosWrappers.delete(video);
     }
-
-    if (menuOptions && !menuOptions.querySelector("#VOTSubtitlesLang")) {
-      const options = [
-        {
-          label: localizationProvider.get("VOTSubtitlesDisabled"),
-          value: "disabled",
-          disabled: false,
-        },
-      ];
-
-      const select = createMenuSelect("VOTSubtitlesLang", options);
-
-      select.id = "VOTSubtitlesLangContainer";
-      const span = document.createElement("span");
-      span.textContent = localizationProvider.get("VOTSubtitles");
-      select.prepend(span);
-
-      menuOptions.appendChild(select);
-
-      menuOptions
-        .querySelector("#VOTSubtitlesLang")
-        .addEventListener("change", async (event) => {
-          await changeSubtitlesLang(event.target.value);
-        });
-    }
-
-    if (isDBInited) {
-      const dbData = await readDB();
-      if (dbData) {
-        dbSubtitlesMaxLength = dbData.subtitlesMaxLength;
-        dbHighlightWords = dbData.highlightWords;
-        dbAutoTranslate = dbData.autoTranslate;
-        dbDefaultVolume = dbData.defaultVolume;
-        dbShowVideoSlider = dbData.showVideoSlider;
-        dbAutoSetVolumeYandexStyle = dbData.autoSetVolumeYandexStyle;
-        dontTranslateYourLang = dbData.dontTranslateYourLang;
-        dbResponseLanguage = dbData.responseLanguage;
-        dbAudioProxy = dbData.audioProxy; // cf version only
-        dbSyncVolume = dbData.syncVolume; // youtube only
-        dbUdemyData = dbData.udemyData; // udemy only
-
-        debug.log("[db] data from db: ", dbData);
-
-        if (dbSubtitlesMaxLength !== undefined) {
-          setSubtitlesMaxLength(dbSubtitlesMaxLength);
-        }
-
-        if (dbHighlightWords !== undefined) {
-          setSubtitlesHighlightWords(dbHighlightWords);
-        }
-
-        if (dbResponseLanguage !== undefined) {
-          videoData = await getVideoData();
-          setSelectMenuValues(videoData.detectedLanguage, dbResponseLanguage);
-          translateToLang = dbResponseLanguage;
-        }
-
-        if (
-          dbSubtitlesMaxLength !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTSubtitlesMaxLengthSlider")
-        ) {
-          const slider = createMenuSlider(
-            "VOTSubtitlesMaxLengthSlider",
-            dbSubtitlesMaxLength,
-            `${localizationProvider.get(
-              "VOTSubtitlesMaxLength"
-            )}: <b id="VOTSubtitlesMaxLengthValue">${dbSubtitlesMaxLength}</b>`,
-            50,
-            300
-          );
-
-          slider.querySelector("#VOTSubtitlesMaxLengthSlider").oninput = async (
-            event
-          ) => {
-            const value = Number(event.target.value);
-            await updateDB({ subtitlesMaxLength: value });
-            dbSubtitlesMaxLength = value;
-            slider.querySelector(
-              "#VOTSubtitlesMaxLengthValue"
-            ).innerText = `${value}`;
-            setSubtitlesMaxLength(value);
-          };
-
-          menuOptions.appendChild(slider);
-        }
-
-        if (
-          dbHighlightWords !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTHighlightWords")
-        ) {
-          const checkbox = createMenuCheckbox(
-            "VOTHighlightWords",
-            dbHighlightWords,
-            localizationProvider.get("VOTHighlightWords")
-          );
-
-          checkbox.querySelector("#VOTHighlightWords").onclick = async (
-            event
-          ) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await updateDB({ highlightWords: value });
-            dbHighlightWords = value;
-            debug.log(
-              "highlightWords value changed. New value: ",
-              dbHighlightWords
-            );
-            setSubtitlesHighlightWords(value);
-          };
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (
-          dbAutoTranslate !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTAutoTranslate")
-        ) {
-          const checkbox = createMenuCheckbox(
-            "VOTAutoTranslate",
-            dbAutoTranslate,
-            localizationProvider.get("VOTAutoTranslate") +
-              (siteHostname === "vk" ||
-              window.location.hostname.includes("m.twitch.tv")
-                ? ` <strong>(${localizationProvider.get(
-                    "recommended"
-                  )})</strong>`
-                : "")
-          );
-
-          checkbox.querySelector("#VOTAutoTranslate").onclick = async (
-            event
-          ) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await updateDB({ autoTranslate: value });
-            dbAutoTranslate = value;
-            debug.log(
-              "autoTranslate value changed. New value: ",
-              dbAutoTranslate
-            );
-          };
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (
-          window.location.hostname.includes("youtube.com") &&
-          dontTranslateYourLang !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTDontTranslateYourLang")
-        ) {
-          const checkbox = createMenuCheckbox(
-            "VOTDontTranslateYourLang",
-            dontTranslateYourLang,
-            localizationProvider.get("VOTDontTranslateYourLang")
-          );
-
-          checkbox.querySelector("#VOTDontTranslateYourLang").onclick = async (
-            event
-          ) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await updateDB({ dontTranslateYourLang: value });
-            dontTranslateYourLang = value;
-            debug.log(
-              "dontTranslateYourLang value changed. New value: ",
-              dontTranslateYourLang
-            );
-          };
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (
-          dbAutoSetVolumeYandexStyle !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTAutoSetVolume")
-        ) {
-          const checkbox = createMenuCheckbox(
-            "VOTAutoSetVolume",
-            dbAutoSetVolumeYandexStyle,
-            localizationProvider.get("VOTAutoSetVolume") +
-              `${autoVolume * 100}%`
-          );
-
-          checkbox.querySelector("#VOTAutoSetVolume").onclick = async (
-            event
-          ) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await updateDB({ autoSetVolumeYandexStyle: value });
-            dbAutoSetVolumeYandexStyle = value;
-            debug.log(
-              "autoSetVolumeYandexStyle value changed. New value: ",
-              dbAutoSetVolumeYandexStyle
-            );
-          };
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (
-          dbShowVideoSlider !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTShowVideoSlider")
-        ) {
-          const checkbox = createMenuCheckbox(
-            "VOTShowVideoSlider",
-            dbShowVideoSlider,
-            localizationProvider.get("VOTShowVideoSlider")
-          );
-
-          checkbox.querySelector("#VOTShowVideoSlider").onclick = async (
-            event
-          ) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await updateDB({ showVideoSlider: value });
-            dbShowVideoSlider = value;
-            debug.log(
-              "showVideoSlider value changed. New value: ",
-              dbShowVideoSlider
-            );
-            if (
-              dbShowVideoSlider === 1 &&
-              document.querySelector(".translationBtn").dataset.state ===
-                "success"
-            ) {
-              addVideoSlider();
-            } else {
-              document.querySelector("#VOTVideoSlider")?.parentElement.remove();
-            }
-          };
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (
-          window.location.hostname.includes("youtube.com") &&
-          !window.location.hostname.includes("m.youtube.com") &&
-          dbSyncVolume !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTSyncVolume")
-        ) {
-          const checkbox = createMenuCheckbox(
-            "VOTSyncVolume",
-            dbSyncVolume,
-            localizationProvider.get("VOTSyncVolume")
-          );
-
-          checkbox.querySelector("#VOTSyncVolume").onclick = async (event) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await updateDB({ syncVolume: value });
-            dbSyncVolume = value;
-            debug.log("syncVolume value changed. New value: ", dbSyncVolume);
-          };
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        // cf version only
-        if (
-          BUILD_MODE === "cloudflare" &&
-          dbAudioProxy !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTAudioProxy")
-        ) {
-          const checkbox = createMenuCheckbox(
-            "VOTAudioProxy",
-            dbAudioProxy,
-            localizationProvider.get("VOTAudioProxy")
-          );
-
-          checkbox.querySelector("#VOTAudioProxy").onclick = async (event) => {
-            event.stopPropagation();
-            const value = Number(event.target.checked);
-            await updateDB({ audioProxy: value });
-            dbAudioProxy = value;
-            debug.log("audioProxy value changed. New value: ", dbAudioProxy);
-          };
-
-          menuOptions.appendChild(checkbox);
-        }
-
-        if (
-          window.location.hostname.includes("udemy.com") &&
-          dbUdemyData !== undefined &&
-          menuOptions &&
-          !menuOptions.querySelector("#VOTUdemyData")
-        ) {
-          // TODO: Along with the rework of the menu, change to the input field
-          const btn = document.createElement("button");
-          btn.classList.add("translationUdemyData");
-          btn.innerText = localizationProvider.get("VOTUdemyData");
-          btn.onclick = async (event) => {
-            event.stopPropagation();
-            const accessToken = prompt(
-              localizationProvider.get("enterUdemyAccessToken")
-            );
-            const udemyData = {
-              accessToken,
-              expires: new Date().getTime(),
-            };
-            await updateDB({ udemyData });
-            dbUdemyData = udemyData;
-            debug.log("udemyData value changed. New value: ", dbUdemyData);
-            window.location.reload();
-          };
-          menuOptions.appendChild(btn);
-        }
-      }
-    }
-
-    transformBtn("none", localizationProvider.get("translateVideo"));
-
-    if (
-      window.location.hostname.includes("youtube.com") &&
-      !window.location.hostname.includes("m.youtube.com")
-    ) {
-      const syncVolumeObserver = new MutationObserver(async function (
-        mutations
-      ) {
-        mutations.forEach(async function (mutation) {
-          if (
-            mutation.type === "attributes" &&
-            mutation.attributeName === "aria-valuenow" &&
-            document.querySelector("#VOTVideoSlider")
-          ) {
-            syncVideoVolumeSlider();
-          }
-        });
-      });
-
-      const ytpVolumePanel = document.querySelector(".ytp-volume-panel");
-      if (ytpVolumePanel) {
-        syncVolumeObserver.observe(ytpVolumePanel, {
-          attributes: true,
-          childList: false,
-          subtree: true,
-          attributeOldValue: true,
-        });
-      }
-    }
-
-    async function setSelectMenuValues(from, to) {
-      if (!document.querySelector("#VOTSelectLanguages")) {
-        return;
-      }
-      document.querySelector("#VOTTranslateFromLang").value = from;
-      document.querySelector("#VOTTranslateToLang").value = to;
-      console.log(`[VOT] Set translation from ${from} to ${to}`);
-      videoData.detectedLanguage = from;
-      videoData.responseLanguage = to;
-    }
-
-    async function stopTraslate() {
-      // Default actions on stop translate
-      audio.pause();
-      video.removeEventListener(".translate", stopTraslate, false);
-      await deleteAudioSrc();
-      document.querySelector("#VOTVideoSlider")?.parentElement.remove();
-      document.querySelector("#VOTTranslationSlider")?.parentElement.remove();
-      const downloadBtn = document.querySelector(".translationDownload");
-      if (downloadBtn) {
-        downloadBtn.href = "";
-        downloadBtn.style.display = "none";
-      }
-      transformBtn("none", localizationProvider.get("translateVideo"));
-      if (volumeOnStart) {
-        debug.log(`Volume on start: ${volumeOnStart}`);
-        if (window.location.hostname.includes("youtube.com")) {
-          document
-            .querySelector(".html5-video-player")
-            .setVolume(volumeOnStart * 100);
-        } else {
-          video.volume = volumeOnStart;
-        }
-      }
-    }
-
-    async function syncVideoVolumeSlider() {
-      // Sync volume slider with original video (youtube only)
-      const newSlidersVolume = Math.round(getVideoVolume() * 100);
-
-      const videoSlider = document.querySelector("#VOTVideoSlider");
-
-      if (!videoSlider) {
-        return;
-      }
-      videoSlider.value = newSlidersVolume;
-
-      const videoVolumeLabel = document.querySelector("#VOTOriginalVolume");
-
-      if (videoVolumeLabel) {
-        videoVolumeLabel.innerText = `${newSlidersVolume}%`;
-      }
-
-      if (dbSyncVolume === 1) {
-        tempOriginalVolume = Number(newSlidersVolume);
-      }
-    }
-
-    function getVideoVolume() {
-      /**
-       * Get video volume in 0.00-1.00 format
-       */
-      let videoVolume = video?.volume;
-      if (window.location.hostname.includes("youtube.com")) {
-        videoVolume = youtubeUtils.getVideoVolume() || videoVolume;
-      }
-      return videoVolume;
-    }
-
-    function setVideoVolume(volume) {
-      /**
-       * Set video volume in 0.00-1.00 format
-       */
-      if (window.location.hostname.includes("youtube.com")) {
-        return youtubeUtils.setVideoVolume(volume);
-      }
-
-      video.volume = volume;
-    }
-
-    async function getVideoData() {
-      const videoData = {};
-
-      videoData.translationHelp = null; // ! should be null for ALL websites except coursera and udemy !
-      videoData.duration = video?.duration || 343; // ! if 0 - we get 400 error
-      videoData.videoId = getVideoId(siteHostname);
-      videoData.detectedLanguage = translateFromLang;
-      videoData.responseLanguage = translateToLang;
-
-      if (window.location.hostname.includes("youtube.com")) {
-        ytData = await youtubeUtils.getVideoData();
-        if (ytData.author !== "") {
-          videoData.detectedLanguage = ytData.detectedLanguage;
-          videoData.responseLanguage = translateToLang;
-        }
-      } else if (
-        window.location.hostname.includes("rutube") ||
-        window.location.hostname.includes("my.mail.ru")
-      ) {
-        videoData.detectedLanguage = "ru";
-      } else if (window.location.hostname.includes("bilibili.com")) {
-        videoData.detectedLanguage = "zh";
-      } else if (window.location.hostname.includes("coursera.org")) {
-        const courseraData = await courseraUtils.getVideoData(translateToLang);
-        videoData.duration = courseraData.duration || videoData.duration; // courseraData.duration sometimes it can be equal to NaN
-        videoData.detectedLanguage = courseraData.detectedLanguage;
-        videoData.translationHelp = courseraData.translationHelp;
-      } else if (window.location.hostname.includes("udemy.com")) {
-        const udemyData = await udemyUtils.getVideoData(
-          dbUdemyData,
-          translateToLang
-        );
-        videoData.duration = udemyData.duration || videoData.duration;
-        videoData.detectedLanguage = udemyData.detectedLanguage;
-        videoData.translationHelp = udemyData.translationHelp;
-      }
-
-      return videoData;
-    }
-
-    const lipSync = async (mode = false) => {
-      debug.log("lipsync video", video);
-      if (!video) {
-        return;
-      }
-      audio.currentTime = video.currentTime;
-      audio.playbackRate = video.playbackRate;
-
-      if (!mode) {
-        debug.log("lipsync mode is not set");
-        return;
-      }
-
-      if (mode === "play") {
-        debug.log("lipsync mode is play");
-        const audioPromise = audio.play();
-        if (audioPromise !== undefined) {
-          audioPromise.catch((e) => {
-            console.error("[VOT]", e);
-            if (e.name === "NotAllowedError") {
-              transformBtn(
-                "error",
-                localizationProvider.get("grantPermissionToAutoPlay")
-              );
-              throw new VOTLocalizedError("grantPermissionToAutoPlay");
-            } else if (e.name === "NotSupportedError") {
-              transformBtn(
-                "error",
-                sitesChromiumBlocked.includes(window.location.hostname)
-                  ? localizationProvider.get("neededAdditionalExtension")
-                  : localizationProvider.get("audioFormatNotSupported")
-              );
-              throw sitesChromiumBlocked.includes(window.location.hostname)
-                ? new VOTLocalizedError("neededAdditionalExtension")
-                : new VOTLocalizedError("audioFormatNotSupported");
-            }
-          });
-        }
-        return;
-      }
-      if (mode === "pause") {
-        debug.log("lipsync mode is pause");
-        audio.pause();
-      }
-      if (mode === "stop") {
-        debug.log("lipsync mode is stop");
-        audio.pause();
-      }
-      if (mode === "waiting") {
-        debug.log("lipsync mode is waiting");
-        audio.pause();
-      }
-      if (mode === "playing") {
-        debug.log("lipsync mode is playing");
-        audio.play();
-      }
-    };
-
-    function addVideoSlider() {
-      if (
-        dbShowVideoSlider !== 1 ||
-        document.querySelector("#VOTVideoSlider") ||
-        document.querySelector(".translationBtn").dataset.state !== "success"
-      ) {
-        return;
-      }
-
-      const newVolume = getVideoVolume() * 100;
-      tempOriginalVolume = newVolume;
-
-      const slider = createMenuSlider(
-        "VOTVideoSlider",
-        newVolume,
-        `${localizationProvider.get(
-          "VOTVolume"
-        )}: <b class = "volumePercent" id="VOTOriginalVolume">${newVolume}%</b>`
-      );
-
-      slider.querySelector("#VOTVideoSlider").oninput = async (event) => {
-        const { value } = event.target;
-        setVideoVolume(value / 100);
-        slider.querySelector("#VOTOriginalVolume").innerText = `${value}%`;
-
-        if (dbSyncVolume !== 1) {
-          return;
-        }
-
-        // Sync translation volume slider with video volume slider
-        const translateVolumeSlider = document.querySelector(
-          "#VOTTranslationSlider"
-        );
-
-        if (!translateVolumeSlider) {
-          return;
-        }
-        const translateVolume = Number(translateVolumeSlider.value);
-        const finalValue = syncVolume(
-          audio,
-          value,
-          translateVolume,
-          tempOriginalVolume
-        );
-
-        translateVolumeSlider.value = finalValue;
-
-        const translateVolumeLabel = document.querySelector(
-          "#VOTTranslationVolume"
-        );
-
-        if (translateVolumeLabel) {
-          translateVolumeLabel.innerText = `${finalValue}%`;
-        }
-
-        tempVolume = finalValue;
-        tempOriginalVolume = value;
-      };
-
-      const menuOptions = document.querySelector(".translationMenuOptions");
-      menuOptions.appendChild(slider);
-    }
-
-    async function addTranslationSlider() {
-      // Return early if slider already exists or translation is not successful
-      if (
-        document.querySelector("#VOTTranslationSlider") ||
-        document.querySelector(".translationBtn").dataset.state !== "success"
-      ) {
-        return;
-      }
-
-      // Use dbDefaultVolume or 100 as the default translation volume
-      const defaultTranslateVolume =
-        typeof dbDefaultVolume === "number" ? dbDefaultVolume : 100;
-      tempOriginalVolume = defaultTranslateVolume;
-
-      // Create a slider element with the default volume and label
-      const slider = createMenuSlider(
-        "VOTTranslationSlider",
-        defaultTranslateVolume,
-        `${localizationProvider.get(
-          "VOTVolumeTranslation"
-        )}: <b class = "volumePercent" id="VOTTranslationVolume">${defaultTranslateVolume}%</b>`
-      );
-
-      // Add an input event listener to the slider
-      slider.querySelector("#VOTTranslationSlider").oninput = async ({
-        target: { value },
-      }) => {
-        // Set the audio volume to the slider value
-        audio.volume = value / 100;
-
-        // Update the volume label
-        document.querySelector("#VOTTranslationVolume").innerText = `${value}%`;
-
-        // Update the database with the new volume value
-        await updateDB({ defaultVolume: Number(value) });
-        dbDefaultVolume = Number(value);
-
-        // Sync translation volume with video volume if dbSyncVolume is 1
-        if (dbSyncVolume === 1) {
-          syncTranslationWithVideo(value);
-        }
-      };
-
-      // Append the slider to the menu options
-      const menuOptions = document.querySelector(".translationMenuOptions");
-      menuOptions.appendChild(slider);
-    }
-
-    // A helper function to sync translation volume with video volume
-    function syncTranslationWithVideo(translationValue) {
-      // Get the video volume slider element
-      const videoVolumeSlider = document.querySelector("#VOTVideoSlider");
-
-      if (!videoVolumeSlider) {
-        return;
-      }
-      // Get the video volume value
-      const videoVolume = Number(videoVolumeSlider.value);
-
-      // Calculate the synced video volume based on the translation volume
-      const finalValue = syncVolume(
-        video,
-        translationValue,
-        videoVolume,
-        tempVolume
-      );
-
-      // Set the video volume slider value to the synced value
-      videoVolumeSlider.value = finalValue;
-
-      // Update the video volume label
-      const videoVolumeLabel = document.querySelector("#VOTOriginalVolume");
-      if (videoVolumeLabel) videoVolumeLabel.innerText = `${finalValue}%`;
-
-      // Update the temp variables for future syncing
-      tempOriginalVolume = finalValue;
-      tempVolume = translationValue;
-    }
-
-    async function videoValidator() {
-      if (window.location.hostname.includes("youtube.com")) {
-        debug.log("VideoValidator videoData: ", videoData);
-        if (
-          dontTranslateYourLang === 1 &&
-          videoData.detectedLanguage === lang &&
-          videoData.responseLanguage === lang
-        ) {
-          throw new VOTLocalizedError("VOTDisableFromYourLang");
-        }
-        if (ytData.isPremiere) {
-          throw new VOTLocalizedError("VOTPremiere");
-        }
-        if (ytData.isLive) {
-          throw new VOTLocalizedError("VOTLiveNotSupported");
-        }
-        if (videoData.duration > 14_400) {
-          throw new VOTLocalizedError("VOTVideoIsTooLong");
-        }
-      }
-      return true;
-    }
-
-    const translateExecutor = async (VIDEO_ID) => {
-      if (!videoData.detectedLanguage) {
-        videoData = await getVideoData();
-        await setSelectMenuValues(
-          videoData.detectedLanguage,
-          videoData.responseLanguage
-        );
-      }
-      debug.log("Run videoValidator");
-      await videoValidator();
-      debug.log("Run translateFunc");
-      await translateFunc(
-        VIDEO_ID,
-        videoData.detectedLanguage,
-        videoData.responseLanguage,
-        videoData.translationHelp
-      );
-    };
-
-    // Define a function to handle common events
-    async function handleVideoEvent(event) {
-      debug.log(`video ${event.type}`);
-      await lipSync(event.type);
-    }
-
-    // Define a function to stop translation and clean up
-    async function stopTranslation() {
-      await stopTraslate();
-      await syncVideoVolumeSlider();
-    }
-
-    // Define a function to translate a video and handle the callback
-    async function translateFunc(
-      VIDEO_ID,
-      requestLang,
-      responseLang,
-      translationHelp
-    ) {
-      console.log("[VOT] Video Data: ", videoData);
-      const videoURL = `${siteTranslates[siteHostname]}${VIDEO_ID}`;
-      if (["udemy", "coursera"].includes(siteHostname) && !translationHelp) {
-        throw new VOTLocalizedError("VOTTranslationHelpNull");
-      }
-      translateVideo(
-        videoURL,
-        videoData.duration,
-        requestLang,
-        responseLang,
-        translationHelp,
-        async (success, urlOrError) => {
-          debug.log("[exec callback] translateVideo");
-          if (getVideoId(siteHostname) !== VIDEO_ID) return;
-          if (!success) {
-            if (urlOrError?.name === "VOTLocalizedError") {
-              transformBtn("error", urlOrError.localizedMessage);
-            } else {
-              transformBtn("error", urlOrError);
-            }
-            // if the error line contains information that the translation is being performed, then we wait
-            if (
-              urlOrError.includes(localizationProvider.get("translationTake"))
-            ) {
-              clearTimeout(autoRetry);
-              autoRetry = setTimeout(
-                () =>
-                  translateFunc(
-                    VIDEO_ID,
-                    requestLang,
-                    responseLang,
-                    translationHelp
-                  ),
-                60_000
-              );
-            }
-            throw urlOrError;
-          }
-
-          audio.src = urlOrError;
-
-          // cf version only
-          if (
-            BUILD_MODE === "cloudflare" &&
-            dbAudioProxy === 1 &&
-            urlOrError.startsWith("https://")
-          ) {
-            const audioPath = urlOrError.replace(
-              "https://vtrans.s3-private.mds.yandex.net/tts/prod/",
-              ""
-            );
-            const proxiedAudioUrl = `https://${workerHost}/video-translation/audio-proxy/${audioPath}`;
-            console.log(`[VOT] Audio proxied via ${proxiedAudioUrl}`);
-            audio.src = proxiedAudioUrl;
-          }
-
-          volumeOnStart = getVideoVolume();
-          if (typeof dbDefaultVolume === "number") {
-            audio.volume = dbDefaultVolume / 100;
-          }
-          if (
-            typeof dbAutoSetVolumeYandexStyle === "number" &&
-            dbAutoSetVolumeYandexStyle
-          ) {
-            setVideoVolume(autoVolume);
-          }
-
-          switch (siteHostname) {
-            case "twitter":
-              document
-                .querySelector('div[data-testid="app-bar-back"][role="button"]')
-                .addEventListener("click", stopTranslation);
-              break;
-            case "invidious":
-            case "piped":
-              break;
-            default:
-              if (siteEvent !== null) {
-                document.body.addEventListener(siteEvent, stopTranslation);
-              }
-              break;
-          }
-
-          const siteHostnames = [
-            "twitch",
-            "vimeo",
-            "facebook",
-            "rutube",
-            "twitter",
-            "bilibili.com",
-            "mail.ru",
-          ];
-          for (let i = 0; i < siteHostnames.length; i++) {
-            if (siteHostname === siteHostnames[i]) {
-              const mutationObserver = new MutationObserver(
-                async (mutations) => {
-                  mutations.forEach(async (mutation) => {
-                    if (
-                      mutation.type === "attributes" &&
-                      mutation.attributeName === "src" &&
-                      mutation.target === video &&
-                      mutation.target.src !== ""
-                    ) {
-                      stopTranslation();
-                      firstPlay = true;
-                    }
-                  });
-                }
-              );
-              mutationObserver.observe(videoContainer, {
-                attributes: true,
-                childList: false,
-                subtree: true,
-                attributeOldValue: true,
-              });
-              break;
-            }
-          }
-
-          if (video && !video.paused) lipSync("play");
-          const videos = document.querySelectorAll("video");
-          const events = ["playing", "ratechange", "play", "waiting", "pause"];
-          videos.forEach((v) =>
-            events.forEach((e) => v.addEventListener(e, handleVideoEvent))
-          );
-          transformBtn("success", localizationProvider.get("disableTranslate"));
-          addVideoSlider();
-          await addTranslationSlider();
-
-          const VOTVideoSlider = document.querySelector("#VOTVideoSlider");
-          if (VOTVideoSlider) VOTVideoSlider.value = autoVolume * 100;
-
-          const VOTOriginalVolume =
-            document.querySelector("#VOTOriginalVolume");
-          if (VOTOriginalVolume) {
-            VOTOriginalVolume.innerText = `${autoVolume * 100}%`;
-          }
-
-          const downloadBtn = document.querySelector(".translationDownload");
-          downloadBtn.href = urlOrError;
-          downloadBtn.style.display = "initial";
-        }
-      );
-    }
-
-    document.addEventListener("click", async (event) => {
-      const block = document.querySelector(".translationBlock");
-      const menuContainer = document.querySelector(".translationMenuContent");
-      const isBlock =
-        block || event.target === block ? block.contains(event.target) : false;
-      const isContent =
-        menuContainer || event.target === menuContainer
-          ? menuContainer.contains(event.target)
-          : false;
-      const isVideo =
-        videoContainer || event.target === videoContainer
-          ? videoContainer.contains(event.target)
-          : false;
-
-      debug.log(`[document click] ${isBlock} ${isContent} ${isVideo}`);
-      if (!(!isBlock && !isContent)) return;
-      if (!isVideo) logout(0);
-
-      menuContainer.style.display = "none";
-      openedMenu = false;
-    });
-
-    const addEventListeners = (element, events, handler) => {
-      events.forEach((event) =>
-        element.addEventListener(event, async (event) => {
-          await handler(event);
-        })
-      );
-    };
-
-    if (siteHostname === "pornhub") {
-      if (window.location.pathname.includes("view_video.php")) {
-        const videoElement = document.querySelector(
-          ".original.mainPlayerDiv > video-element > div"
-        );
-        addEventListeners(videoElement, ["mousemove", "mouseout"], resetTimer);
-      } else if (window.location.pathname.includes("embed/")) {
-        const playerElement = document.querySelector("#player");
-        addEventListeners(playerElement, ["mousemove", "mouseout"], resetTimer);
-      }
-    } else if (siteHostname === "twitter") {
-      const videoPlayerElement = document.querySelector(
-        'div[data-testid="videoPlayer"'
-      );
-      addEventListeners(
-        videoPlayerElement,
-        ["mousemove", "mouseout"],
-        resetTimer
-      );
-    } else {
-      addEventListeners(videoContainer, ["mousemove", "mouseout"], resetTimer);
-    }
-
-    document
-      .querySelector(".translationBlock")
-      .addEventListener("mousemove", (event) =>
-        changeOpacityOnEvent(event, timer, opacityRatio)
-      );
-    document
-      .querySelector(".translationMenuContent")
-      .addEventListener("mousemove", (event) =>
-        changeOpacityOnEvent(event, timer, opacityRatio)
-      );
-
-    document.addEventListener("touchstart", (event) =>
-      changeOpacityOnEvent(event, timer, opacityRatio)
-    );
-    document.addEventListener("touchmove", (event) =>
-      changeOpacityOnEvent(event, timer, opacityRatio)
-    );
-    document.addEventListener("touchend", (event) =>
-      changeOpacityOnEvent(event, timer, opacityRatio)
-    );
-    document.querySelectorAll("video").forEach((video) => {
-      video.addEventListener("abort", async () => {
-        debug.log("lipsync mode is abort");
-        await stopTranslation();
-        videoData = "";
-      });
-    });
-
-    document
-      .querySelector(".translationBtn")
-      .addEventListener("click", async (event) => {
-        debug.log("[click translationBtn] before all functions & methods");
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-
-        // check if the audio source is not empty
-        if (audio.src) {
-          debug.log("[click translationBtn] audio.src is not empty");
-          await stopTraslate();
-          return;
-        }
-
-        try {
-          debug.log("[click translationBtn] trying execute translation");
-          const VIDEO_ID = getVideoId(siteHostname);
-
-          if (!VIDEO_ID) {
-            throw new VOTLocalizedError("VOTNoVideoIDFound");
-          }
-
-          await translateExecutor(VIDEO_ID);
-        } catch (err) {
-          console.error("[VOT]", err);
-          if (err?.name === "VOTLocalizedError") {
-            transformBtn("error", err.localizedMessage);
-          } else {
-            transformBtn("error", err);
-          }
-        }
-      });
-
-    video.addEventListener("progress", async (event) => {
-      event.stopPropagation();
-
-      if (!(firstPlay && dbAutoTranslate === 1)) {
-        return;
-      }
-      const VIDEO_ID = getVideoId(siteHostname);
-
-      if (!VIDEO_ID) {
-        throw new VOTLocalizedError("VOTNoVideoIDFound");
-      }
-
-      try {
-        await translateExecutor(VIDEO_ID);
-        firstPlay = false;
-      } catch (err) {
-        console.error("[VOT]", err);
-        if (err?.name === "VOTLocalizedError") {
-          transformBtn("error", err.localizedMessage);
-        } else {
-          transformBtn("error", err);
-        }
-        firstPlay = false;
-      }
-    });
-
-    document
-      .querySelector(".translationMenu")
-      .addEventListener("click", async (event) => {
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-
-        const select = document
-          .querySelector(".translationMenuOptions")
-          ?.querySelector("#VOTSubtitlesLang");
-
-        if (!openedMenu || !select) {
-          return;
-        }
-
-        const VIDEO_ID = getVideoId(siteHostname);
-
-        if (!VIDEO_ID) {
-          console.error(
-            `[VOT] ${localizationProvider.getDefault("VOTNoVideoIDFound")}`
-          );
-          subtitlesList = [];
-          subtitlesListVideoId = null;
-          await updateSubtitlesLangSelect();
-          return;
-        }
-
-        if (subtitlesListVideoId === VIDEO_ID) {
-          return;
-        }
-
-        if (!videoData.detectedLanguage) {
-          videoData = await getVideoData();
-          await setSelectMenuValues(
-            videoData.detectedLanguage,
-            videoData.responseLanguage
-          );
-        }
-
-        subtitlesList = await getSubtitles(
-          siteHostname,
-          VIDEO_ID,
-          videoData.detectedLanguage
-        );
-        if (!subtitlesList) {
-          await changeSubtitlesLang("disabled");
-        } else {
-          subtitlesListVideoId = VIDEO_ID;
-        }
-        await updateSubtitlesLangSelect();
-      });
-  }
-
-  async function initWebsite() {
-    debug.log("Runned initWebsite function");
-    if (regexes.youtubeRegex.test(window.location.hostname)) {
-      if (window.location.pathname.includes("embed")) {
-        const videoContainer = document.querySelector(".html5-video-container");
-        await translateProccessor(videoContainer, "youtube", null);
-        return;
-      }
-
-      debug.log("[initWebsite] Found a match with youtube hostname");
-      const ytPageEnter = () => {
-        const videoContainer = document.querySelector(
-          selectors.youtubeSelector
-        );
-        if (videoContainer) {
-          debug.log("[exec] translateProccessor youtube on page enter");
-          translateProccessor(videoContainer, "youtube", "yt-translate-stop");
-        } else {
-          if (!ytplayer || !ytplayer.config) {
-            debug.log("[exec] ytplayer is null");
-            return;
-          }
-          ytplayer.config.args.jsapicallback = () => {
-            debug.log(
-              "[exec] translateProccessor youtube on page enter (ytplayer.config.args.jsapicallback)"
-            );
-            translateProccessor(videoContainer, "youtube", "yt-translate-stop");
-          };
-        }
-      };
-
-      document.addEventListener("spfdone", ytPageEnter);
-      document.addEventListener("yt-navigate-finish", ytPageEnter);
-
-      const ytPageLeave = () => {
-        document.body.dispatchEvent(new Event("yt-translate-stop"));
-      };
-
-      document.addEventListener("spfrequest", ytPageLeave);
-      document.addEventListener("yt-navigate-start", ytPageLeave);
-
-      if (window.location.hostname.includes("m.youtube.com")) {
-        let ytmobile = await waitForElm("#player");
-        if (ytmobile) {
-          await sleep(2300);
-          await translateProccessor(ytmobile, "youtube", "yt-translate-stop");
-
-          const mutationObserver = new MutationObserver(async (mutations) => {
-            for (const mutation of mutations) {
-              if (
-                mutation.type === "attributes" &&
-                mutation.attributeName === "src"
-              ) {
-                ytmobile = await waitForElm("#player");
-                await sleep(2300);
-                await translateProccessor(
-                  ytmobile,
-                  "youtube",
-                  "yt-translate-stop"
-                );
-              }
-            }
-          });
-
-          mutationObserver.observe(ytmobile, {
-            attributes: true,
-            childList: true,
-            subtree: true,
-            attributeOldValue: true,
-          });
-        }
-        const ytPageLeave = () => {
-          document.body.dispatchEvent(new Event("yt-translate-stop"));
-        };
-        document.addEventListener("spfdone", ytPageLeave);
-        document.addEventListener("yt-navigate-finish", ytPageLeave);
-        document.addEventListener("spfrequest", ytPageLeave);
-        document.addEventListener("yt-navigate-start", ytPageLeave);
-      }
-      return;
-    }
-    if (window.location.hostname.includes("twitch.tv")) {
-      debug.log("[initWebsite] Found a match with twitch.tv");
-      if (
-        window.location.hostname.includes("m.twitch.tv") &&
-        (window.location.pathname.includes("/videos/") ||
-          window.location.pathname.includes("/clip/"))
-      ) {
-        debug.log("[initWebsite] Matched Twitch Mobile");
-        const el = await waitForElm(selectors.twitchMobileSelector);
-        if (el) {
-          await sleep(200);
-          const twitchMobileSelector = document.querySelector(
-            selectors.twitchMobileSelector
-          );
-          await translateProccessor(twitchMobileSelector, "twitch", null);
-
-          const mutationObserver = new MutationObserver(async (mutations) => {
-            for (const mutation of mutations) {
-              if (
-                mutation.type === "attributes" &&
-                mutation.attributeName === "src" &&
-                mutation.target === twitchMobileSelector?.querySelector("video")
-              ) {
-                await sleep(1000);
-                await translateProccessor(twitchMobileSelector, "twitch", null);
-              }
-            }
-          });
-
-          mutationObserver.observe(twitchMobileSelector, {
-            attributes: true,
-            childList: true,
-            subtree: true,
-            attributeOldValue: true,
-          });
-        }
-      } else if (
-        window.location.hostname.includes("player.twitch.tv") ||
-        window.location.hostname.includes("clips.twitch.tv") ||
-        window.location.pathname.includes("/videos/") ||
-        window.location.pathname.includes("/clip/")
-      ) {
-        debug.log("[initWebsite] Matched Twitch Desktop");
-        const el = await waitForElm(selectors.twitchSelector);
-        if (el) {
-          await sleep(200);
-          await translateProccessor(el, "twitch", null);
-        }
-      }
-      debug.log("[initWebsite] Exit function in the twitch section");
-      return;
-    }
-    if (window.location.hostname.includes("xvideos.com")) {
-      debug.log("[entered] xvideos");
-      await sleep(1000);
-      await translateProccessor(
-        document.querySelector(".video-bg-pic"),
-        "xvideos",
-        null
-      );
-      return;
-    }
-    if (window.location.hostname.includes("pornhub.com")) {
-      debug.log("[entered] pornhub");
-      await sleep(1000);
-      await translateProccessor(
-        document.querySelector(".mgp_videoWrapper"),
-        "pornhub",
-        null
-      );
-      return;
-    }
-    if (sitesInvidious.includes(window.location.hostname)) {
-      // Need an additional extension to work in chrome-like browsers
-      debug.log("[entered] invidious");
-      await translateProccessor(
-        document.querySelector("#player"),
-        "youtube",
-        null
-      );
-    } else if (sitesPiped.includes(window.location.hostname)) {
-      // Need an additional extension to work in chrome-like browsers
-      debug.log("[entered] piped");
-      const el = await waitForElm(selectors.pipedSelector);
-      if (el) {
-        let videoIDNew;
-        let videoID = getVideoId("youtube");
-        await translateProccessor(el, "youtube", "piped");
-        setInterval(async () => {
-          videoIDNew = getVideoId("youtube");
-          if (videoID !== videoIDNew) {
-            if (videoIDNew) {
-              await translateProccessor(
-                document.querySelector(selectors.pipedSelector),
-                "youtube",
-                "piped"
-              );
-            }
-            videoID = videoIDNew;
-          }
-        }, 3000);
-      }
-    } else if (/^(www.|m.)?vk.(com|ru)$/.test(window.location.hostname)) {
-      debug.log("[entered] vk.com");
-      const el = await waitForElm(selectors.vkSelector);
-      if (el) {
-        await translateProccessor(
-          document.querySelector(selectors.vkSelector),
-          "vk",
-          null
-        );
-        let videoIDVKNew;
-        let videoIDVK = getVideoId("vk");
-        setInterval(async () => {
-          videoIDVKNew = getVideoId("vk");
-          if (videoIDVK !== videoIDVKNew) {
-            if (videoIDVKNew) {
-              const el = await waitForElm(selectors.vkSelector);
-              if (el) {
-                await translateProccessor(el, "vk", null);
-              }
-            }
-            videoIDVK = videoIDVKNew;
-          }
-        }, 3000);
-      }
-    } else if (window.location.hostname.includes("vimeo.com")) {
-      debug.log("[entered] vimeo.com");
-      const el = await waitForElm(selectors.vimeoSelector);
-      if (el) {
-        await sleep(1000);
-        await translateProccessor(
-          document.querySelector(selectors.vimeoSelector),
-          "vimeo",
-          null
-        );
-      }
-    } else if (window.location.hostname.includes("9gag.com")) {
-      await sleep(1000);
-      await translateProccessor(
-        document.querySelector(selectors.gagSelector),
-        "9gag",
-        null
-      );
-    } else if (window.location.hostname.includes("coub.com")) {
-      await sleep(1000);
-      await translateProccessor(
-        document.querySelector(".viewer__player"),
-        "coub",
-        null
-      );
-    } else if (window.location.hostname.includes("bitchute.com")) {
-      await sleep(1000);
-      await translateProccessor(
-        document.querySelector(".plyr__video-wrapper"),
-        "bitchute",
-        null
-      );
-    } else if (window.location.hostname.includes("rutube.ru")) {
-      const elementSelector = window.location.pathname.includes("/play/embed")
-        ? "#app > div > div"
-        : ".video-player > div > div > div:nth-child(2)";
-
-      const el = await waitForElm(elementSelector);
-      if (el) {
-        await translateProccessor(el, "rutube", null);
-      }
-    } else if (window.location.hostname.includes("bilibili.com")) {
-      if (window.location.pathname.includes("/video/") || window.location.hostname.includes("player.bilibili.com")) {
-        const el = await waitForElm(selectors.bilibilicomSelector);
-        if (el) {
-          await translateProccessor(el, "bilibili.com", null);
-        }
-      } else if (
-        window.location.pathname.includes(
-          "/blackboard/webplayer/embed-old.html"
-        )
-      ) {
-        const el = await waitForElm("video");
-        if (el) {
-          await translateProccessor(el.parentElement, "bilibili.com", null);
-        }
-      }
-    } else if (window.location.hostname.includes("twitter.com")) {
-      const el = await waitForElm(selectors.twitterSelector);
-      if (el) {
-        let videoIDNew;
-        let videoID = getVideoId("twitter");
-        await translateProccessor(el, "twitter", null);
-        setInterval(async () => {
-          videoIDNew = getVideoId("twitter");
-          if (videoID !== videoIDNew) {
-            if (videoIDNew) {
-              await translateProccessor(
-                document.querySelector(selectors.twitterSelector),
-                "twitter",
-                null
-              );
-            }
-            videoID = videoIDNew;
-          }
-        }, 3000);
-      }
-    } else if (window.location.hostname.includes("my.mail.ru")) {
-      const el = await waitForElm(selectors.mailSelector);
-      if (el) {
-        let videoIDNew;
-        let videoID = getVideoId("mail.ru");
-        await translateProccessor(el, "mail.ru", null);
-        setInterval(async () => {
-          videoIDNew = getVideoId("mail.ru");
-          if (videoID !== videoIDNew) {
-            if (videoIDNew) {
-              await translateProccessor(
-                document.querySelector(selectors.mailSelector),
-                "mail.ru",
-                null
-              );
-            }
-            videoID = videoIDNew;
-          }
-        }, 3000);
-      }
-    } else if (window.location.hostname.includes("coursera.org")) {
-      // ONLY IF YOU LOGINED TO COURSERA /learn/NAME/lecture/XXXX
-      const el = await waitForElm(selectors.courseraSelector);
-      if (el) {
-        let videoIDNew;
-        let videoID = getVideoId("coursera");
-        await translateProccessor(el, "coursera", null);
-        setInterval(async () => {
-          videoIDNew = getVideoId("coursera");
-          if (videoID !== videoIDNew) {
-            if (videoIDNew) {
-              await translateProccessor(
-                document.querySelector(selectors.courseraSelector),
-                "coursera",
-                null
-              );
-            }
-            videoID = videoIDNew;
-          }
-        }, 3000);
-      }
-    } else if (window.location.hostname.includes("udemy.com")) {
-      // ONLY IF YOU LOGINED TO UDEMY /course/NAME/learn/lecture/XXXX
-      const el = await waitForElm(selectors.udemySelector);
-      if (el) {
-        let videoIDNew;
-        let videoID = getVideoId("udemy");
-        await translateProccessor(el, "udemy", null);
-        setInterval(async () => {
-          videoIDNew = getVideoId("udemy");
-          if (videoID !== videoIDNew) {
-            const newEl = await waitForElm(selectors.udemySelector);
-            if (videoIDNew && newEl) {
-              await translateProccessor(newEl, "udemy", null);
-            }
-            videoID = videoIDNew;
-          }
-        }, 3000);
-      }
-    } else if (window.location.hostname.includes("tiktok.com")) {
-      const el = await waitForElm(selectors.tiktokSelector);
-      if (el) {
-        let videoIDNew;
-        let videoID = getVideoId("tiktok");
-        await translateProccessor(el.parentElement, "tiktok", null);
-        setInterval(async () => {
-          videoIDNew = getVideoId("tiktok");
-          if (videoID !== videoIDNew) {
-            const newEl = await waitForElm(selectors.tiktokSelector);
-            if (videoIDNew && newEl) {
-              await translateProccessor(newEl.parentElement, "tiktok", null);
-            }
-            videoID = videoIDNew;
-          }
-        }, 3000);
-      }
-    } else if (sitesProxyTok.includes(window.location.hostname)) {
-      const el = await waitForElm(selectors.proxyTokSelector);
-      if (el) {
-        await translateProccessor(el, "tiktok", null);
-      }
-    }
-  }
-
-  await initWebsite();
+  });
+  videoObserver.enable();
 }
 
-try {
-  await Promise.allSettled([localizationProvider.update(), main()]);
-} catch (e) {
+main().catch((e) => {
   console.error("[VOT]", e);
-}
+});

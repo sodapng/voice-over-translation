@@ -43,31 +43,35 @@ function isMobile() {
 }
 
 function getPlayer() {
-  return isMobile()
-    ? document.querySelector("#app")
-    : document.querySelector("#movie_player");
+  if (window.location.pathname.startsWith("/shorts/")) {
+    return isMobile()
+    ? document.querySelector("#movie_player")
+    : document.querySelector("#shorts-player");
+  }
+
+  return document.querySelector("#movie_player");
 }
 
 function getPlayerResponse() {
   const player = getPlayer();
-  if (isMobile()) return player?.data?.playerResponse ?? null;
-  return player?.getPlayerResponse?.call() ?? null;
+  if (player?.getPlayerResponse)
+    return player?.getPlayerResponse?.call() ?? null;
+  return player?.data?.playerResponse ?? null;
 }
 
 function getPlayerData() {
   const player = getPlayer();
-  if (isMobile()) return player?.data?.playerResponse?.videoDetails ?? null;
-  return player?.getVideoData?.call() ?? null;
+  if (player?.getVideoData)
+    return player?.getVideoData?.call() ?? null;
+  return player?.data?.playerResponse?.videoDetails ?? null;
 }
 
 function getVideoVolume() {
-  return document.querySelector(".html5-video-player")?.getVolume() / 100;
+  return getPlayer()?.getVolume() / 100;
 }
 
 function setVideoVolume(volume) {
-  return document
-    .querySelector(".html5-video-player")
-    ?.setVolume(Math.round(volume * 100));
+  return getPlayer()?.setVolume(Math.round(volume * 100));
 }
 
 function getSubtitles() {

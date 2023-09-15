@@ -1,5 +1,8 @@
 import { localizationProvider } from "../localization/localizationProvider.js";
 
+const userlang = navigator.language || navigator.userLanguage;
+export const lang = userlang?.substr(0, 2)?.toLowerCase() ?? "en";
+
 if (!String.prototype.format) {
   // https://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format
   // syntax example: "is {0} function".format("format")
@@ -42,13 +45,15 @@ function waitForElm(selector) {
 
 const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
-const getVideoId = (service) => {
+const getVideoId = (service, video) => {
   const url = new URL(window.location.href);
 
   switch (service) {
+    case "piped":
+    case "invidious":
     case "youtube":
       return (
-        url.pathname.match(/(?:watch|embed)\/([^/]+)/)?.[1] ||
+        url.pathname.match(/(?:watch|embed|shorts)\/([^/]+)/)?.[1] ||
         url.searchParams.get("v")
       );
     case "vk":
@@ -63,6 +68,7 @@ const getVideoId = (service) => {
       } else {
         return false;
       }
+    case "nine_gag":
     case "9gag":
     case "gag":
       return url.pathname.match(/gag\/([^/]+)/)?.[1];
@@ -93,9 +99,27 @@ const getVideoId = (service) => {
       } else {
         return url.pathname.match(/(?:videos)\/([^/]+)/)?.[0];
       }
-    case "tiktok":
+    case "proxytok":
       // return url.pathname.match(/video\/([^/]+)/)?.[1];
       return url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
+    case "tiktok":
+      {
+        // let id = url.pathname.match(/video\/([^/]+)/)?.[1];
+        let id = url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
+        if (!id) {
+          const playerEl = video.closest(".xgplayer-playing, .tiktok-web-player");
+          const itemEl = playerEl?.closest("div[data-e2e=\"recommend-list-item-container\"]");
+          const authorEl = itemEl?.querySelector("a[data-e2e=\"video-author-avatar\"]");
+          if (playerEl && authorEl) {
+            const videoId = playerEl.id?.match(/^xgwrapper-[0-9]+-(.*)$/)?.at(1);
+            const author = authorEl.href?.match(/.*(@.*)$/)?.at(1);
+            if (videoId && author) {
+              id = `${author}/video/${videoId}`;
+            }
+          }
+        }
+        return id;
+      }
     case "vimeo":
       return (
         url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||
@@ -127,8 +151,14 @@ const getVideoId = (service) => {
     case "rutube":
       return url.pathname.match(/(?:video|embed)\/([^/]+)/)?.[1];
     case "coub":
-      return url.pathname.match(/view\/([^/]+)/)?.[1];
-    case "bilibili.com": {
+      if (url.pathname.includes("/view")) {
+        return url.pathname.match(/view\/([^/]+)/)?.[1];
+      } else if (url.pathname.includes("/embed")) {
+        return url.pathname.match(/embed\/([^/]+)/)?.[1];
+      } else {
+        return document.querySelector(".coub.active")?.dataset?.permalink;
+      }
+    case "bilibili": {
       const bvid = url.searchParams.get("bvid");
       if (bvid) {
         return bvid;
@@ -140,7 +170,7 @@ const getVideoId = (service) => {
         return vid;
       }
     }
-    case "mail.ru":
+    case "mail_ru":
       if (url.pathname.startsWith("/v/") || url.pathname.startsWith("/mail/")) {
         return url.pathname;
       } else if (url.pathname.match(/video\/embed\/([^/]+)/)) {
@@ -196,4 +226,8 @@ async function detectLang(cleanText) {
   return await response.text();
 }
 
-export { waitForElm, sleep, getVideoId, secsToStrTime, detectLang, langTo6391 };
+function isPiPAvailable() {
+  return "pictureInPictureEnabled" in document && document.pictureInPictureEnabled;
+}
+
+export { waitForElm, sleep, getVideoId, secsToStrTime, detectLang, langTo6391, isPiPAvailable };

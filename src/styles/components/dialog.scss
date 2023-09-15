@@ -1,0 +1,179 @@
+.vot-dialog {
+  &-container {
+    visibility: visible;
+    position: absolute;
+    z-index: 10000;
+
+    &[hidden] {
+      display: block !important;
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    & * {
+      -webkit-box-sizing: border-box !important;
+      -moz-box-sizing: border-box !important;
+      box-sizing: border-box !important;
+    }
+  }
+
+  &-backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    opacity: 1;
+    transition: opacity 0.3s;
+
+    [hidden] > & {
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
+
+  & {
+    --vot-helper-surface-rgb: var(--vot-surface-rgb, 255, 255, 255);
+    --vot-helper-surface: rgb(var(--vot-helper-surface-rgb));
+    --vot-helper-onsurface-rgb: var(--vot-onsurface-rgb, 0, 0, 0);
+    --vot-helper-onsurface: rgba(var(--vot-helper-onsurface-rgb), 0.87);
+    display: block;
+    position: fixed;
+    top: 50%;
+    bottom: 50%;
+    max-width: initial;
+    max-height: initial;
+    width: calc(min(var(--vot-dialog-width, 512px), 100%));
+    height: fit-content;
+    inset-inline-start: 0px;
+    inset-inline-end: 0px;
+    inset-block-start: 0px;
+    inset-block-end: 0px;
+    border-radius: 8px;
+    margin: auto;
+    padding: 0;
+    background-color: var(--vot-helper-surface);
+    color: var(--vot-helper-onsurface);
+    box-shadow:
+      0 0 16px rgba(0, 0, 0, 0.12),
+      0 16px 16px rgba(0, 0, 0, 0.24);
+    font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+    font-size: 16px;
+    line-height: 1.5;
+    user-select: none;
+    visibility: visible;
+    overflow: auto;
+    overflow-y: hidden;
+
+    opacity: 1;
+    transform-origin: center;
+    transform: scale(1);
+    transition:
+      opacity 0.3s,
+      transform 0.1s;
+
+    [hidden] > & {
+      pointer-events: none;
+      opacity: 0;
+      transform: scale(0.5);
+      transition:
+        opacity 0.1s,
+        transform 0.2s;
+    }
+  }
+
+  &-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    max-height: 75vh;
+    overflow: auto;
+  }
+
+  &-header-container {
+    flex-shrink: 0;
+    align-items: flex-start;
+    display: flex;
+    min-height: 31px;
+
+    &:empty {
+      padding: 0 0 20px 0;
+    }
+
+    & > .vot-icon-button {
+      margin-inline-end: 4px;
+      margin-top: 4px;
+    }
+  }
+
+  &-title-container {
+    display: flex;
+    flex: 1;
+    font-size: inherit;
+    font-weight: inherit;
+    margin: 0;
+    outline: 0;
+  }
+
+  &-title {
+    flex: 1;
+    font-size: calc(15 / 13 * 100%);
+    font-weight: bold;
+    line-height: 1;
+    padding-bottom: 16px;
+    padding-inline-end: 20px;
+    padding-inline-start: 20px;
+    padding-top: 20px;
+  }
+
+  &-body-container {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: 1.375rem;
+    overflow: auto;
+    padding: 0 20px;
+    gap: 16px;
+    overscroll-behavior: contain;
+
+    scrollbar-color: rgba(var(--vot-helper-onsurface-rgb), 0.1) var(--vot-helper-surface) !important;
+
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-track {
+      height: 12px !important;
+      width: 12px !important;
+      background: var(--vot-helper-surface) !important;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(var(--vot-helper-onsurface-rgb), 0.1) !important;
+      -webkit-border-radius: 1ex !important;
+      border: 5px solid var(--vot-helper-surface) !important;
+
+      &:hover {
+        border: 3px solid var(--vot-helper-surface) !important;
+      }
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: var(--vot-helper-surface) !important;
+    }
+  }
+
+  &-footer-container {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 16px;
+    padding-inline-end: 16px;
+    padding-inline-start: 16px;
+    padding-top: 16px;
+
+    &:empty {
+      padding: 20px 0 0 0;
+    }
+  }
+}

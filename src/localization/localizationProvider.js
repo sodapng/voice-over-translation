@@ -1,19 +1,59 @@
 import defaultLocale from "./locales/en.json";
 import debug from "../utils/debug.js";
 
-const localesVersion = 1;
+const localesVersion = 3;
 const localesUrl =
   "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/src/localization/locales";
 
+export const availableLocales = [
+  "auto",
+  "en",
+  "ru",
+
+  "ar",
+  "bn",
+  "cs",
+  "de",
+  "es",
+  "fa",
+  "fr",
+  "hi",
+  "id",
+  "it",
+  "ja",
+  "jv",
+  "kk",
+  "ko",
+  "ms",
+  "pt",
+  "tr",
+  "uk",
+  "ur",
+  "vi",
+  "zh",
+];
+
 export const localizationProvider = new (class {
-  lang =
-    (navigator.language || navigator.userLanguage)
-      ?.substr(0, 2)
-      ?.toLowerCase() ?? "en";
+  lang = "en";
   locale = {};
 
   constructor() {
+    const langOverride = window.localStorage.getItem("vot-locale-lang-override");
+    if (langOverride && langOverride !== "auto") {
+      this.lang = langOverride;
+    } else {
+      this.lang = (navigator.language || navigator.userLanguage)
+        ?.substr(0, 2)
+        ?.toLowerCase() ?? "en";
+    }
     this.setLocaleFromJsonString(window.localStorage.getItem("vot-locale"));
+  }
+
+  reset() {
+    window.localStorage.removeItem("vot-locale");
+    window.localStorage.removeItem("vot-locale-lang");
+    window.localStorage.removeItem("vot-locale-version");
+    window.localStorage.removeItem("vot-locale-lang-override");
   }
 
   async update(force = false) {
@@ -36,7 +76,8 @@ export const localizationProvider = new (class {
       .then((text) => {
         window.localStorage.setItem("vot-locale", text);
         this.setLocaleFromJsonString(text);
-        window.localStorage.setItem("vot-locale-version", localesVersion);
+        const version = this.getFromLocale(this.locale, "__version__");
+        if (typeof version === "number") window.localStorage.setItem("vot-locale-version", version);
         window.localStorage.setItem("vot-locale-lang", this.lang);
       })
       .catch((error) => {
