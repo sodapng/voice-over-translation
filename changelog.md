@@ -3,6 +3,29 @@
 - Переписана логика загрузки
 - Добавлена возможность проигрывания нескольких переводов одновремено
 - Добавлена возможность кастомизации цветов расширения через Stylish, Stulus и другие подобные расширения
+
+  Пример изменения цветов меню на зеленый:
+  ```css
+
+  /* ==UserStyle==
+  @name         VOT-GREEN
+  @version      16.09.2023
+  @namespace    vot-green
+  @description  LLL
+  @author       Toil
+  @license      No License
+  ==/UserStyle== */
+
+  :root {
+    --vot-primary-rgb: 201, 245, 180 ;
+  }
+
+  .vot-segmented-button[data-status="success"] .vot-translate-button {
+    color: rgb(201, 245, 180);
+    fill: rgb(201, 245, 180);
+  }
+  ```
+
 - Добавлено версионирование переводов
 - Добавлена поддержка YT Shorts
 - Добавлена возможность включить кнопку PiP для браузеров в которых она поддерживается (хромиум)
@@ -13,7 +36,8 @@
 - Возможно что-то еще, про что я забыл написать
 
 TODO: Обновить локализацию следующих файлов:
-
+<details>
+<summary>список файлов для обновления</summary>
 locales\af.json
 locales\am.json
 locales\az.json
@@ -53,6 +77,9 @@ locales\sv.json
 locales\sw.json
 locales\uz.json
 locales\zu.json
+</details>
+
+
 
 
 # 1.4.1 (release)
