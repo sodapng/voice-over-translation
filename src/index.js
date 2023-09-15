@@ -41,14 +41,14 @@ const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 const videoLipSyncEvents = ["playing", "ratechange", "play", "waiting", "pause"];
 
 function genOptionsByOBJ(obj, conditionString) {
-  console.log(obj);
-  const test = obj.map((code) => ({
+  // console.log(obj);
+  return obj.map((code) => ({
     label: localizationProvider.get(`langs`)[code] ?? code.toUpperCase(),
     value: code,
     selected: conditionString === code,
   }));
-  console.log(test);
-  return test;
+  // console.log(test);
+  // return test;
 }
 
 // // translate properties
