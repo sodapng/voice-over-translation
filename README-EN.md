@@ -90,6 +90,36 @@ npm i
 1. I recommend allowing autoplay of "audio and video" to avoid errors when working with the extension
 2. The extension cannot translate videos longer than 4 hours (translator API limitation)
 
+## Customization of appearance:
+
+The extension supports customization of the appearance using Stylus, Stylish and other similar extensions
+
+Example of changing styles:
+```css
+
+/* ==UserStyle==
+@name         VOT-styles
+@version      16.09.2023
+@namespace    vot-styles
+@description  LLL
+@author       Toil
+@license      No License
+==/UserStyle== */
+
+:root {
+ --vot-font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;
+
+ --vot-primary-rgb: 139, 180, 245;
+ --vot-onprimary-rgb: 32, 33, 36;
+ --vot-surface-rgb: 32, 33, 36;
+ --vot-onsurface-rgb: 227, 227, 227;
+
+ --vot-subtitles-background: rgba(var(--vot-surface-rgb, 46, 47, 52), 0.8);
+ --vot-subtitles-color: rgb(var(--vot-onsurface-rgb, 227, 227, 227));
+ --vot-subtitles-passed-color: rgb(var(--vot-primary-rgb, 33, 150, 243));
+}
+```
+
 ## The extension has been tested in the following browsers:
 | Status | Browser | Browser Version | Platform | Extension
 |---|---|---|---|---

@@ -95,6 +95,36 @@ npm i
 1. Рекомендую разрешить автовоспроизведение "аудио и видео", чтобы избежать ошибок при работе расширения
 2. Расширение не может переводить видео длиной более 4 часов (ограничение API переводчика)
 
+## Кастомизация внешнего вида:
+
+Расширение поддерживает кастомизацию внешнего вида с помощью Stylus, Stylish и других подобных расширений
+
+Пример изменения стилей:
+```css
+
+/* ==UserStyle==
+@name         VOT-styles
+@version      16.09.2023
+@namespace    vot-styles
+@description  LLL
+@author       Toil
+@license      No License
+==/UserStyle== */
+
+:root {
+ --vot-font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;
+
+ --vot-primary-rgb: 139, 180, 245;
+ --vot-onprimary-rgb: 32, 33, 36;
+ --vot-surface-rgb: 32, 33, 36;
+ --vot-onsurface-rgb: 227, 227, 227;
+
+ --vot-subtitles-background: rgba(var(--vot-surface-rgb, 46, 47, 52), 0.8);
+ --vot-subtitles-color: rgb(var(--vot-onsurface-rgb, 227, 227, 227));
+ --vot-subtitles-passed-color: rgb(var(--vot-primary-rgb, 33, 150, 243));
+}
+```
+
 ## Расширение протестировано в следующих браузерах:
 | Статус | Браузер | Версия браузера | Платформа | Расширение
 |---|---|---|---|---
