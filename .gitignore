@@ -1,4 +1,5 @@
 src/localization/locales/generate_phrase.py
+src/localization/locales/regenerate_locales.py
 
 .vscode
 .pytest_cache
