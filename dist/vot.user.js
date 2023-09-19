@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.5.0-beta1
+// @version 1.5.0-beta2
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -3046,15 +3046,26 @@ async function getCourseData(courseId) {
   return resJSON?.elements?.[0];
 }
 
-function getSubtitlesFileURL(responseLang, tracks) {
-  const subtitle = tracks.find(
-    (caption) => langTo6391(caption.srclang) === responseLang
-  );
+function getSubtitlesFileURL(captions, detectedLanguage, responseLang) {
+  let subtitle = captions?.find(
+      (caption) => langTo6391(caption.srclang) === detectedLanguage
+    )
+
+  if (!subtitle) {
+    subtitle = captions?.find(
+      (caption) => langTo6391(caption.srclang) === responseLang
+    ) || captions?.[0];
+
+  }
+
   return subtitle?.src;
 }
 
 function getVideoFileURL(sources) {
-  const source = sources.find((src) => src.type === "video/mp4");
+  const source = sources?.find(
+    (src) => src.type === "video/webm" || src.type === "video/mp4"
+  );
+
   return source?.src;
 }
 
@@ -3084,8 +3095,10 @@ async function courseraUtils_getVideoData(responseLang = "en") {
     detectedLanguage = "en";
   }
 
-  const subtitlesURL = getSubtitlesFileURL(responseLang, tracks);
-  if (subtitlesURL) {
+  const subtitlesURL = getSubtitlesFileURL(tracks, detectedLanguage, responseLang);
+  debug/* default */.Z.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
+
+  if (subtitlesURL && videoURL) {
     translationHelp = [
       {
         target: "video_file_url",
@@ -3096,6 +3109,8 @@ async function courseraUtils_getVideoData(responseLang = "en") {
         targetUrl: `https://www.coursera.org${subtitlesURL}`,
       },
     ];
+  } else {
+    console.error(`Failed to find subtitlesURL or videoURL. videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
   }
 
   const videoData = {
@@ -3164,15 +3179,25 @@ async function getLectureData(udemyData, courseId, lectureId) {
   return await response.json();
 }
 
-function udemyUtils_getSubtitlesFileURL(captions, responseLang) {
-  const subtitle = captions?.find(
-    (caption) => langTo6391(caption.locale_id) === responseLang
-  );
+function udemyUtils_getSubtitlesFileURL(captions, detectedLanguage, responseLang) {
+  let subtitle = captions?.find(
+      (caption) => langTo6391(caption.locale_id) === detectedLanguage
+    )
+
+  if (!subtitle) {
+    subtitle = captions?.find(
+      (caption) => langTo6391(caption.locale_id) === responseLang
+    ) || captions?.[0];
+  }
+
   return subtitle?.url;
 }
 
 function getVideoFileURLFromAPI(sources) {
-  const source = sources?.find((src) => src.type === "video/mp4");
+  const source = sources?.find(
+    (src) => src.type === "video/webm" || src.type === "video/mp4"
+  );
+
   return source?.src;
 }
 
@@ -3200,7 +3225,8 @@ function udemyUtils_getPlayer() {
 }
 
 function getVideoURLFromPlayer() {
-  return udemyUtils_getPlayer()?.querySelector('video').src;
+  const src = udemyUtils_getPlayer()?.querySelector('video').src;
+  return src.startsWith('blob:') ? false : src;
 }
 
 // Get the video data from the player
@@ -3232,8 +3258,10 @@ async function udemyUtils_getVideoData(udemyData, responseLang = "en") {
   const videoURL = getVideoFileURLFromAPI(lectureData?.asset?.media_sources) || getVideoURLFromPlayer();
   const subtitlesURL = udemyUtils_getSubtitlesFileURL(
     lectureData?.asset?.captions,
+    detectedLanguage,
     responseLang
   );
+
   debug/* default */.Z.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
 
   if (subtitlesURL && videoURL) {
@@ -3247,6 +3275,8 @@ async function udemyUtils_getVideoData(udemyData, responseLang = "en") {
         targetUrl: subtitlesURL,
       },
     ];
+  } else {
+    console.error(`Failed to find subtitlesURL or videoURL. videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
   }
 
   const videoData = {
