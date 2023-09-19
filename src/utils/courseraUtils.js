@@ -10,15 +10,26 @@ async function getCourseData(courseId) {
   return resJSON?.elements?.[0];
 }
 
-function getSubtitlesFileURL(responseLang, tracks) {
-  const subtitle = tracks.find(
-    (caption) => langTo6391(caption.srclang) === responseLang
-  );
+function getSubtitlesFileURL(captions, detectedLanguage, responseLang) {
+  let subtitle = captions?.find(
+      (caption) => langTo6391(caption.srclang) === detectedLanguage
+    )
+
+  if (!subtitle) {
+    subtitle = captions?.find(
+      (caption) => langTo6391(caption.srclang) === responseLang
+    ) || captions?.[0];
+
+  }
+
   return subtitle?.src;
 }
 
 function getVideoFileURL(sources) {
-  const source = sources.find((src) => src.type === "video/mp4");
+  const source = sources?.find(
+    (src) => src.type === "video/webm" || src.type === "video/mp4"
+  );
+
   return source?.src;
 }
 
@@ -48,8 +59,10 @@ async function getVideoData(responseLang = "en") {
     detectedLanguage = "en";
   }
 
-  const subtitlesURL = getSubtitlesFileURL(responseLang, tracks);
-  if (subtitlesURL) {
+  const subtitlesURL = getSubtitlesFileURL(tracks, detectedLanguage, responseLang);
+  debug.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
+
+  if (subtitlesURL && videoURL) {
     translationHelp = [
       {
         target: "video_file_url",
@@ -60,6 +73,8 @@ async function getVideoData(responseLang = "en") {
         targetUrl: `https://www.coursera.org${subtitlesURL}`,
       },
     ];
+  } else {
+    console.error(`Failed to find subtitlesURL or videoURL. videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
   }
 
   const videoData = {

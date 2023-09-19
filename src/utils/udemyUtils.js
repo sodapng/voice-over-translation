@@ -46,15 +46,25 @@ async function getLectureData(udemyData, courseId, lectureId) {
   return await response.json();
 }
 
-function getSubtitlesFileURL(captions, responseLang) {
-  const subtitle = captions?.find(
-    (caption) => langTo6391(caption.locale_id) === responseLang
-  );
+function getSubtitlesFileURL(captions, detectedLanguage, responseLang) {
+  let subtitle = captions?.find(
+      (caption) => langTo6391(caption.locale_id) === detectedLanguage
+    )
+
+  if (!subtitle) {
+    subtitle = captions?.find(
+      (caption) => langTo6391(caption.locale_id) === responseLang
+    ) || captions?.[0];
+  }
+
   return subtitle?.url;
 }
 
 function getVideoFileURLFromAPI(sources) {
-  const source = sources?.find((src) => src.type === "video/mp4");
+  const source = sources?.find(
+    (src) => src.type === "video/webm" || src.type === "video/mp4"
+  );
+
   return source?.src;
 }
 
@@ -82,7 +92,8 @@ function getPlayer() {
 }
 
 function getVideoURLFromPlayer() {
-  return getPlayer()?.querySelector('video').src;
+  const src = getPlayer()?.querySelector('video').src;
+  return src.startsWith('blob:') ? false : src;
 }
 
 // Get the video data from the player
@@ -114,8 +125,10 @@ async function getVideoData(udemyData, responseLang = "en") {
   const videoURL = getVideoFileURLFromAPI(lectureData?.asset?.media_sources) || getVideoURLFromPlayer();
   const subtitlesURL = getSubtitlesFileURL(
     lectureData?.asset?.captions,
+    detectedLanguage,
     responseLang
   );
+
   debug.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
 
   if (subtitlesURL && videoURL) {
@@ -129,6 +142,8 @@ async function getVideoData(udemyData, responseLang = "en") {
         targetUrl: subtitlesURL,
       },
     ];
+  } else {
+    console.error(`Failed to find subtitlesURL or videoURL. videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
   }
 
   const videoData = {
