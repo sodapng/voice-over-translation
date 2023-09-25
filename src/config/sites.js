@@ -157,7 +157,7 @@ const sites = () => {
     },
     { // ONLY IF YOU LOGINED TO UDEMY /course/NAME/learn/lecture/XXXX
       host: "udemy",
-      url: "https://www.udemy.com/",
+      url: "https://www.udemy.com",
       match: /udemy.com$/,
       selector: ".vjs-v7",
     },
