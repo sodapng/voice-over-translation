@@ -84,8 +84,11 @@
     "*://proxitok.privacy.com.de/*"
   ],
   "require": [
-    "https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/light/protobuf.min.js"
+    "https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/light/protobuf.min.js",
+    "https://raw.githubusercontent.com/dailymotion/hls.js/master/dist/hls.min.js"
   ],
   "grant": ["GM_xmlhttpRequest", "GM_info"],
-  "connect": ["api.browser.yandex.ru"]
+  "connect": [
+    "api.browser.yandex.ru"
+  ]
 }
