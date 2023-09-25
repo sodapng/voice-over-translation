@@ -46,7 +46,12 @@ export default (env) => {
   }
 
   function get_name_by_build_mode(name) {
-    return build_mode === 'cloudflare' ? name.replace('[VOT]', '[VOT Cloudflare]') : name;
+    let finalName = build_mode === 'cloudflare' ? name.replace('[VOT]', '[VOT Cloudflare]') : name;
+
+    if (dev) {
+      finalName = '[DEBUG] ' + finalName;
+    }
+    return finalName;
   }
 
   return {
@@ -105,9 +110,6 @@ export default (env) => {
           const headers = getHeaders('headers.json');
 
           let version = headers.version;
-          if (dev) {
-            headers["version"] = `${version}-build.[buildNo]`;
-          }
 
           if (build_mode === 'cloudflare') {
             headers['name'] = '[VOT Cloudflare] - Voice Over Translation';
@@ -115,6 +117,11 @@ export default (env) => {
             headers['namespace'] = 'vot-cloudflare';
             headers['updateURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
             headers['downloadURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
+          }
+
+          if (dev) {
+            headers['version'] = `${version}-build.[buildNo]`;
+            headers['name'] = '[DEBUG] ' + headers['name'];
           }
 
           return headers;
