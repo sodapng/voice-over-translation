@@ -1110,10 +1110,10 @@ class VideoHandler {
 
     if (isStream) {
       debug.log("Executed stream translation");
-      if (BUILD_MODE === "cloudflare") {
-        // Temporarily stream translation is only available in the main version
-        throw new VOTLocalizedError("VOTCloudflareDoesntSupportStreams");
-      }
+      // if (BUILD_MODE === "cloudflare") {
+      //   // Temporarily stream translation is only available in the main version
+      //   throw new VOTLocalizedError("VOTCloudflareDoesntSupportStreams");
+      // }
 
       translateStream(
         videoURL,
