@@ -23,6 +23,8 @@ import debug from "./utils/debug.js";
 import Bowser from "bowser";
 
 import requestVideoTranslation from "./rvt.js";
+import requestStreamTranslation from "./rst.js";
+import requestStreamPing from "./rsp.js";
 import {
   getSubtitles,
   fetchSubtitles,
@@ -41,14 +43,11 @@ const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 const videoLipSyncEvents = ["playing", "ratechange", "play", "waiting", "pause"];
 
 function genOptionsByOBJ(obj, conditionString) {
-  // console.log(obj);
   return obj.map((code) => ({
     label: localizationProvider.get(`langs`)[code] ?? code.toUpperCase(),
     value: code,
     selected: conditionString === code,
   }));
-  // console.log(test);
-  // return test;
 }
 
 // // translate properties
@@ -143,6 +142,48 @@ function translateVideo(
   );
 }
 
+
+function translateStream(
+  url,
+  requestLang,
+  responseLang,
+  callback
+) {
+  debug.log(
+    `Translate stream (url: ${url}, requestLang: ${requestLang}, responseLang: ${responseLang})`
+  );
+
+  requestStreamTranslation(
+    url,
+    requestLang,
+    responseLang,
+    (success, response) => {
+      debug.log("[exec callback] Requesting stream translation");
+      if (!success) {
+        callback(false, localizationProvider.get("requestTranslationFailed"));
+        return;
+      }
+
+      const streamResponse =
+        yandexProtobuf.decodeStreamResponse(response);
+      console.log("[VOT] Stream Translation response: ", streamResponse);
+
+      switch (streamResponse.interval) {
+        case 10:
+          callback(false, streamResponse.interval, localizationProvider.get("translationTakeFewMinutes"))
+          break;
+        case 20:
+          callback(true, streamResponse.interval, streamResponse || localizationProvider.get("audioNotReceived"))
+          break;
+        case 0:
+          // stream removed or ended
+          callback(false, streamResponse.interval, localizationProvider.get("streamNoConnectionToServer"));
+          break;
+      }
+    }
+  );
+}
+
 class VideoHandler {
   // translate properties
   translateFromLang = "en"; // default language of video
@@ -154,9 +195,15 @@ class VideoHandler {
   videoData = "";
   firstPlay = true;
   audio = new Audio();
+  hls = Hls.isSupported() ? new Hls({
+    debug: DEBUG_MODE, // turn it on manually if necessary
+    lowLatencyMode: true,
+    backBufferLength: 90
+  }) : undefined; // debug enabled only in dev mode
   downloadTranslationUrl = null;
 
   autoRetry;
+  streamPing;
   volumeOnStart;
   tempOriginalVolume;
   tempVolume;
@@ -876,6 +923,7 @@ class VideoHandler {
     const videoData = {};
 
     videoData.translationHelp = null; // ! should be null for ALL websites except coursera and udemy !
+    videoData.isStream = false; // by default, we request the translation of the video
     videoData.duration = this.video?.duration || 343; // ! if 0 - we get 400 error
     videoData.videoId = getVideoId(this.site.host, this.video);
     videoData.detectedLanguage = this.translateFromLang;
@@ -888,6 +936,7 @@ class VideoHandler {
 
     if (window.location.hostname.includes("youtube.com")) {
       this.ytData = await youtubeUtils.getVideoData();
+      videoData.isStream = this.ytData.isLive;
       if (this.ytData.author !== "") {
         videoData.detectedLanguage = this.ytData.detectedLanguage;
         videoData.responseLanguage = this.translateToLang;
@@ -930,10 +979,10 @@ class VideoHandler {
       if (this.ytData.isPremiere) {
         throw new VOTLocalizedError("VOTPremiere");
       }
-      if (this.ytData.isLive) {
-        throw new VOTLocalizedError("VOTLiveNotSupported");
-      }
-      if (this.videoData.duration > 14_400) {
+      // if (this.ytData.isLive) {
+      //   throw new VOTLocalizedError("VOTLiveNotSupported");
+      // }
+      if (!this.ytData.isLive && this.videoData.duration > 14_400) {
         throw new VOTLocalizedError("VOTVideoIsTooLong");
       }
     }
@@ -1024,6 +1073,7 @@ class VideoHandler {
         this.video.volume = this.volumeOnStart;
       }
     }
+    clearInterval(this.streamPing);
   }
 
   async translateExecutor(VIDEO_ID) {
@@ -1036,9 +1086,11 @@ class VideoHandler {
     }
     debug.log("Run videoValidator");
     this.videoValidator();
+
     debug.log("Run translateFunc");
     this.translateFunc(
       VIDEO_ID,
+      this.videoData.isStream,
       this.videoData.detectedLanguage,
       this.videoData.responseLanguage,
       this.videoData.translationHelp
@@ -1048,15 +1100,169 @@ class VideoHandler {
   // Define a function to translate a video and handle the callback
   translateFunc(
     VIDEO_ID,
+    isStream,
     requestLang,
     responseLang,
     translationHelp
   ) {
     console.log("[VOT] Video Data: ", this.videoData);
     const videoURL = `${this.site.url}${VIDEO_ID}`;
+
+    if (isStream) {
+      debug.log("Executed stream translation");
+      if (BUILD_MODE === "cloudflare") {
+        // Temporarily stream translation is only available in the main version
+        throw new VOTLocalizedError("VOTCloudflareDoesntSupportStreams");
+      }
+
+      translateStream(
+        videoURL,
+        requestLang,
+        responseLang,
+        (success, reqInterval, resOrError) => {
+          debug.log("[exec callback] translateStream callback");
+          if (getVideoId(this.site.host, this.video) !== VIDEO_ID) return;
+          if (!success || !resOrError.translatedInfo) {
+            if (resOrError?.name === "VOTLocalizedError") {
+              this.transformBtn("error", resOrError.localizedMessage);
+            } else {
+              this.transformBtn("error", resOrError);
+            }
+
+            if (reqInterval === 10) {
+              // if wait translating
+              clearTimeout(this.autoRetry);
+              this.autoRetry = setTimeout(
+                () =>
+                  this.translateFunc(
+                    VIDEO_ID,
+                    isStream,
+                    requestLang,
+                    responseLang,
+                    translationHelp
+                  ),
+                  reqInterval * 1000
+              );
+            }
+
+            return;
+          }
+
+          this.transformBtn("success", localizationProvider.get("disableTranslate"));
+
+          console.log(resOrError)
+          const pingId = resOrError.pingId;
+          console.log(`Stream pingId: ${pingId}`)
+          // if you don't make ping requests, then the translation of the stream dies
+          this.streamPing = setInterval(
+            async () =>
+              await requestStreamPing(pingId, (result) => console.log('Stream ping result: ', result)),
+              reqInterval * 1000
+          );
+
+          // const streamURL = "https://stream.ram.radio/audio/ram.stream_aac/playlist.m3u8";
+          const streamURL = resOrError.translatedInfo.url;
+          // const timestamp = Date.now(); // get timestamp
+
+          debug.log("Test hls support")
+          if (this.hls) {
+            // !!!! NORMAL HLS.JS FOR SOME REASON, IT DOES NOT WORK NORMALLY IN USER SCRIPTS!!! WE USE ONLY DAILYMOTION HLS.JS
+            // * In normal hls.js after the end of playing the first buffered fragment, the player gets stuck. In Dailymotion hls.js there is no such problem
+            this.hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+              debug.log('audio and hls.js are now bound together !');
+            });
+            this.hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+              debug.log(
+                'manifest loaded, found ' + data.levels.length + ' quality level',
+              );
+            });
+            this.hls.loadSource(streamURL);
+            this.hls.attachMedia(this.audio);
+            this.hls.on(Hls.Events.ERROR, function (event, data) {
+              if (data.fatal) {
+                switch (data.type) {
+                  case Hls.ErrorTypes.MEDIA_ERROR:
+                    console.log('fatal media error encountered, try to recover');
+                    this.hls.recoverMediaError();
+                    break;
+                  case Hls.ErrorTypes.NETWORK_ERROR:
+                    console.error('fatal network error encountered', data);
+                    // All retries and media options have been exhausted.
+                    // Immediately trying to restart loading could cause loop loading.
+                    // Consider modifying loading policies to best fit your asset and network
+                    // conditions (manifestLoadPolicy, playlistLoadPolicy, fragLoadPolicy).
+                    break;
+                  default:
+                    // cannot recover
+                    this.hls.destroy();
+                    break;
+                }
+              }
+            });
+            debug.log(this.hls)
+          } else if (this.audio.canPlayType('application/vnd.apple.mpegurl')) {
+            // safari
+            this.audio.src = streamURL;
+          } else {
+            // browser doesn't support m3u8 (hls unsupported and it's not a safari)
+            throw new VOTLocalizedError("audioFormatNotSupported");
+          }
+
+
+          // const streamTime = youtubeUtils.getStreamTime(this.video)
+
+          // youtubeUtils.videoSeekTo(this.video, streamTime.absoluteTime - (resOrError.translatedInfo.timestamp / 1000));
+
+
+          // console.log("video times", this.video.duration, this.video.currentTime);
+          // console.log("stream times", streamTime.currentTime, streamTime.absoluteTime);
+          // console.log("trans info times", resOrError.translatedInfo.timestamp);
+
+          youtubeUtils.videoSeek(this.video, 10); // 10 is the most successful number for streaming. With it, the audio is not so far behind the original
+
+          // TODO: Remove code repetition
+          this.volumeOnStart = this.getVideoVolume();
+          if (typeof this.data.defaultVolume === "number") {
+            this.audio.volume = this.data.defaultVolume / 100;
+          }
+
+          if (
+            typeof this.data.autoSetVolumeYandexStyle === "number" &&
+            this.data.autoSetVolumeYandexStyle
+          ) {
+            this.setVideoVolume(autoVolume);
+          }
+
+          if (!this.video.src && !this.video.currentSrc && !this.video.srcObject) {
+            this.stopTranslation();
+            return;
+          }
+
+          if (this.video && !this.video.paused) this.lipSync("play");
+          // this.audio.play();
+          videoLipSyncEvents.forEach((e) => this.video.addEventListener(e, this.handleVideoEventBound));
+
+          this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
+          this.votVideoTranslationVolumeSlider.container.hidden = this.votButton.container.dataset.status !== "success";
+
+          if (this.data.autoSetVolumeYandexStyle === 1) {
+            this.votVideoVolumeSlider.input.value = autoVolume * 100;
+            this.votVideoVolumeSlider.label.querySelector("strong").innerHTML = `${autoVolume * 100}%`;
+            ui.updateSlider(this.votVideoVolumeSlider.input);
+          }
+
+          this.votDownloadButton.hidden = false;
+          this.downloadTranslationUrl = streamURL;
+        }
+      )
+
+      return;
+    }
+
     if (["udemy", "coursera"].includes(this.site.host) && !translationHelp) {
       throw new VOTLocalizedError("VOTTranslationHelpNull");
     }
+
     translateVideo(
       videoURL,
       this.videoData.duration,
@@ -1064,7 +1270,7 @@ class VideoHandler {
       responseLang,
       translationHelp,
       (success, urlOrError) => {
-        debug.log("[exec callback] translateVideo");
+        debug.log("[exec callback] translateVideo callback");
         if (getVideoId(this.site.host, this.video) !== VIDEO_ID) return;
         if (!success) {
           if (urlOrError?.name === "VOTLocalizedError") {
@@ -1081,6 +1287,7 @@ class VideoHandler {
               () =>
                 this.translateFunc(
                   VIDEO_ID,
+                  isStream,
                   requestLang,
                   responseLang,
                   translationHelp
