@@ -74,6 +74,56 @@ function setVideoVolume(volume) {
   return getPlayer()?.setVolume(Math.round(volume * 100));
 }
 
+function checkStreamTime(streamTime) {
+  // TODO: remove
+  const absTime = streamTime.absoluteTime;
+  return !(absTime || !Number.isFinite(absTime) || absTime <= 0) && Math.abs(Date.now() - 1000 * absTime) < 86400000 && 0 !== streamTime.currentTime;
+  // return !(void 0 === (t = e.absoluteTime) || !Number.isFinite(t) || t <= 0) && Math.abs(Date.now() - 1e3 * t) < 864e5 && 0 !== e.currentTime;
+}
+
+function getStreamTime(video) {
+  // TODO: remove
+  const player = getPlayer();
+  const progressState = player?.getProgressState?.call()
+  let absoluteTime = player?.getMediaReferenceTime ? player?.getMediaReferenceTime?.call() : progressState?.ingestionTime;
+  const currentTime = progressState?.seekableEnd || video.currentTime;
+
+  // getStreamTimes -> ue()
+  // СЕЙЧАС ВРЕМЯ ТРАНСЛЯЦИИ УСТАНАВЛИВАЕТСЯ НЕПРАВИЛЬНО И ПЕРЕВОД ЗАЛАГИВАЕТ
+
+  const streamTime = {
+    absoluteTime,
+    currentTime
+  }
+
+  return checkStreamTime(streamTime), streamTime
+}
+
+function videoSeek(video, time) {
+  // * TIME IN MS
+  debug.log("videoSeek", time)
+  // const player = getPlayer();
+  // if (!player) {
+  //   console.error("player not found")
+  //   return false;
+  // }
+
+  // const streamTime = getStreamTime(video);
+  // console.log("videoSeek", video.currentTime - time )
+  // const finalTime = streamTime.currentTime - time
+  // const finalTime = video.currentTime - time;
+  const preTime = getPlayer()?.getProgressState()?.seekableEnd || video.currentTime;
+  const finalTime = preTime - time; // we always throw it to the end of the stream - time
+  video.currentTime = finalTime
+
+  // return player.seekTo.call(time, true);
+}
+
+function streamToLive() {
+  // TODO: remove
+  return getPlayer()?.seekToStreamTime();
+}
+
 function getSubtitles() {
   const response = getPlayerResponse();
   let captionTracks =
@@ -146,4 +196,7 @@ export const youtubeUtils = {
   getSubtitles,
   getVideoData,
   setVideoVolume,
+  getStreamTime,
+  videoSeek,
+  streamToLive
 };
