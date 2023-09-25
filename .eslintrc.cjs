@@ -33,6 +33,7 @@ module.exports = {
     globals: {
         // IMPORTED SCRIPTS
         "protobuf": "readonly",
+        "Hls": "readonly",
         // WEBPACK ENVIRONMENT
         "BUILD_MODE": "readonly",
         "DEBUG_MODE": "readonly",
