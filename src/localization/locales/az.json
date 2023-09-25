@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Moduleargs tapılmadığı üçün udemy modulunun məlumatlarını əldə etmək mümkün olmadı",
   "VOTTranslationHelpNull": "Tərcümə üçün lazım olan məlumatları əldə etmək mümkün olmadı",
   "enterUdemyAccessToken": "Udemy giriş tokenini daxil edin",
-  "VOTUdemyData": "Udemy Məlumatları"
+  "VOTUdemyData": "Udemy Məlumatları",
+  "streamNoConnectionToServer": "Server bağlantısı yoxdur",
+  "VOTCloudflareDoesntSupportStreams": "Cloudflare skriptinin versiyası axını dəstəkləmir"
 }

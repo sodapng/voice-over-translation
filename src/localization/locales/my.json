@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "ModuleArgs ကိုမတွေ့ရှိခဲ့သောကြောင့် udemy module data ကိုမရရှိနိုင်ခဲ့ပါ။",
   "VOTTranslationHelpNull": "ဘာသာပြန်ဖို့လိုအပ်တဲ့ဒေတာကိုမရနိုင်ခဲ့ဘူး။",
   "enterUdemyAccessToken": "Udemy Access Token ကိုထည့်သွင်းပါ",
-  "VOTUdemyData": "Udemy ဒေတာ"
+  "VOTUdemyData": "Udemy ဒေတာ",
+  "streamNoConnectionToServer": "ဆာဗာနှင့်ချိတ်ဆက်မှုမရှိပါ။",
+  "VOTCloudflareDoesntSupportStreams": "Cloudflare ဗားရှင်းသည် stream ဘာသာပြန်မှုကိုမထောက်ပံ့ပါ။"
 }

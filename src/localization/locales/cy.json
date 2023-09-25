@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Methwyd cael data modiwl udemy oherwydd y ffaith na chanfuwyd ModuleArgs",
   "VOTTranslationHelpNull": "Methu cael y data sydd ei angen ar gyfer y cyfieithiad",
   "enterUdemyAccessToken": "Rhowch Docyn Mynediad Udemy",
-  "VOTUdemyData": "Udemy Data"
+  "VOTUdemyData": "Udemy Data",
+  "streamNoConnectionToServer": "Nid oes cysylltiad i'r defnyddiwr",
+  "VOTCloudflareDoesntSupportStreams": "Nid yw'r Fersiwn Cloudflare o'r sgript yn cefnogi cyfieithu ffrwd"
 }

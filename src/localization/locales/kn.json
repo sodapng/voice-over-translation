@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "ModuleArgs ಕಂಡುಬಂದಿಲ್ಲ ಎಂಬ ಕಾರಣದಿಂದಾಗಿ udemy ಮಾಡ್ಯೂಲ್ ಡೇಟಾವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ",
   "VOTTranslationHelpNull": "ಭಾಷಾಂತರಕ್ಕೆ ಅಗತ್ಯವಿರುವ ದತ್ತಾಂಶವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ",
   "enterUdemyAccessToken": "Udemy ಪ್ರವೇಶ ಟೋಕನ್ ಅನ್ನು ನಮೂದಿಸಿ",
-  "VOTUdemyData": "Udemy ಡೇಟಾ"
+  "VOTUdemyData": "Udemy ಡೇಟಾ",
+  "streamNoConnectionToServer": "ಸರ್ವರ್ಗೆ ಸಂಪರ್ಕವಿಲ್ಲ",
+  "VOTCloudflareDoesntSupportStreams": "ಸ್ಕ್ರಿಪ್ಟ್ Cloudflare ಆವೃತ್ತಿ ಸ್ಟ್ರೀಮ್ ಅನುವಾದ ಬೆಂಬಲಿಸುವುದಿಲ್ಲ"
 }

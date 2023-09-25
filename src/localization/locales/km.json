@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "មិនអាចទទួលបានទិន្នន័យម៉ូឌុល udemy ដោយសារតែការពិតដែលថា moduleargs មិនត្រូវបានរកឃើញ",
   "VOTTranslationHelpNull": "មិនអាចទទួលបានទិន្នន័យដែលបានទាមទារសម្រាប់ការបកប្រែ",
   "enterUdemyAccessToken": "បញ្ចូលសញ្ញាសម្ងាត់ចូលដំណើរការ Udemy",
-  "VOTUdemyData": "ទិន្នន័យ Udemy"
+  "VOTUdemyData": "ទិន្នន័យ Udemy",
+  "streamNoConnectionToServer": "មិនមានការតភ្ជាប់ទៅម៉ាស៊ីនបម្រើទេ",
+  "VOTCloudflareDoesntSupportStreams": "កំណែ Cloudflare នៃស្គ្រីបមិនគាំទ្រការបកប្រែស្ទ្រីម"
 }

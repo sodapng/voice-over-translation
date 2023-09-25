@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Moduleargs олдоогүй тул udemy модулийн өгөгдлийг авч чадсангүй",
   "VOTTranslationHelpNull": "Орчуулахад шаардлагатай мэдээллийг авч чадсангүй",
   "enterUdemyAccessToken": "Udemy Хандалтын Токен Оруулна Уу",
-  "VOTUdemyData": "Udemy Мэдээлэл"
+  "VOTUdemyData": "Udemy Мэдээлэл",
+  "streamNoConnectionToServer": "Сервертэй холбогдох боломжгүй",
+  "VOTCloudflareDoesntSupportStreams": "Скриптийн Cloudflare хувилбар нь урсгалын орчуулгыг дэмждэггүй"
 }

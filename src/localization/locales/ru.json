@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Не удалось получить данные модуля udemy из-за того, что ModuleArgs не найден",
   "VOTTranslationHelpNull": "Не удалось получить данные, необходимые для перевода",
   "enterUdemyAccessToken": "Введите токен доступа Udemy",
-  "VOTUdemyData": "Данные Udemy"
+  "VOTUdemyData": "Данные Udemy",
+  "streamNoConnectionToServer": "Нет подключения к серверу",
+  "VOTCloudflareDoesntSupportStreams": "Версия скрипта Cloudflare не поддерживает перевод трансляций"
 }

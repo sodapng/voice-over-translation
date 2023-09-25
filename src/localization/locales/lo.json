@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "ບໍ່ສາມາດໄດ້ຮັບຂໍ້ມູນໂມດູນ udemy ເນື່ອງຈາກຄວາມຈິງທີ່ວ່າ ModuleArgs ບໍ່ພົບ",
   "VOTTranslationHelpNull": "ບໍ່ສາມາດໄດ້ຮັບຂໍ້ມູນທີ່ຕ້ອງການສໍາລັບການແປພາສາ",
   "enterUdemyAccessToken": "ກະລຸນາໃສ່ Token ການເຂົ້າເຖິງ Udemy",
-  "VOTUdemyData": "ຂໍ້ມູນ Udemy"
+  "VOTUdemyData": "ຂໍ້ມູນ Udemy",
+  "streamNoConnectionToServer": "ບໍ່ມີການເຊື່ອມຕໍ່ກັບ server",
+  "VOTCloudflareDoesntSupportStreams": "ສະບັບ Cloudflare ຂອງ script ບໍ່ໄດ້ສະຫນັບສະຫນູນການແປພາສານ້ໍາ"
 }

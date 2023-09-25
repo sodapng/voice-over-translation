@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "ModuleArgs bulunamadığı için udemy modül verileri alınamadı",
   "VOTTranslationHelpNull": "Çeviri için gereken veriler alınamadı",
   "enterUdemyAccessToken": "Udemy Erişim Belirtecini Girin",
-  "VOTUdemyData": "Udemy Verileri"
+  "VOTUdemyData": "Udemy Verileri",
+  "streamNoConnectionToServer": "Sunucuya bağlantı yok",
+  "VOTCloudflareDoesntSupportStreams": "Komut dosyasının Cloudflare sürümü akış çevirisini desteklemiyor"
 }

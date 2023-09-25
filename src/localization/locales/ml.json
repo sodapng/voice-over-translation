@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "മോഡുലാർഗുകൾ കണ്ടെത്തിയില്ലാത്തതിനാൽ ഉഡെമി മൊഡ്യൂൾ ഡാറ്റ ലഭ്യമാക്കാൻ കഴിഞ്ഞില്ല",
   "VOTTranslationHelpNull": "പരിഭാഷയ്ക്ക് ആവശ്യമായ ഡാറ്റ ലഭ്യമാക്കുവാന് സാധ്യമായില്ല",
   "enterUdemyAccessToken": "ഉഡെമി ആക്സസ് ടോക്കൺ നൽകുക",
-  "VOTUdemyData": "ഉഡെമി ഡാറ്റ"
+  "VOTUdemyData": "ഉഡെമി ഡാറ്റ",
+  "streamNoConnectionToServer": "സെർവറുമായി ബന്ധമില്ല",
+  "VOTCloudflareDoesntSupportStreams": "സ്ക്രിപ്റ്റിന്റെ ക്ലൌഡ്ഫ്ലെയർ പതിപ്പ് സ്ട്രീം വിവർത്തനത്തെ പിന്തുണയ്ക്കുന്നില്ല"
 }

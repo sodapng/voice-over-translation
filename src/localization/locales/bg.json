@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Не може да се получи информация за модула поради факта, че модулът не е намерен",
   "VOTTranslationHelpNull": "Грешка при получаване на данните, необходими за превода",
   "enterUdemyAccessToken": "Въведете Жетон За Достъп",
-  "VOTUdemyData": "Данни Udemy"
+  "VOTUdemyData": "Данни Udemy",
+  "streamNoConnectionToServer": "Няма връзка със сървъра",
+  "VOTCloudflareDoesntSupportStreams": "Версията на скрипта не поддържа поток превод"
 }

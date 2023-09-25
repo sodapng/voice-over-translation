@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Nie można uzyskać danych modułu udemy ze względu na fakt, że ModuleArgs nie został znaleziony",
   "VOTTranslationHelpNull": "Nie można uzyskać danych wymaganych do tłumaczenia",
   "enterUdemyAccessToken": "Wprowadź Token Dostępu Udemy",
-  "VOTUdemyData": "Dane Udemy"
+  "VOTUdemyData": "Dane Udemy",
+  "streamNoConnectionToServer": "Nie ma połączenia z serwerem",
+  "VOTCloudflareDoesntSupportStreams": "Wersja skryptu Cloudflare nie obsługuje tłumaczenia strumieniowego"
 }

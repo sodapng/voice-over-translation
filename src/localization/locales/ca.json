@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "No s'han pogut obtenir dades del mòdul udemy a causa del Fet Que No S'ha trobat ModuleArgs",
   "VOTTranslationHelpNull": "No s ' han pogut obtenir les dades necessàries per a la traducció",
   "enterUdemyAccessToken": "Introduïu El Testimoni D ' Accés A Udemy",
-  "VOTUdemyData": "Dades Udemy"
+  "VOTUdemyData": "Dades Udemy",
+  "streamNoConnectionToServer": "No hi ha connexió amb el servidor",
+  "VOTCloudflareDoesntSupportStreams": "La versió De Cloudflare de l'script no admet la traducció de flux"
 }

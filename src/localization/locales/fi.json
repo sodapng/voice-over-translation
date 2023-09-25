@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Udemy-moduulin tietoja ei saatu, koska Moduleargsia ei löytynyt",
   "VOTTranslationHelpNull": "Ei voitu saada tarvittavat tiedot kääntää",
   "enterUdemyAccessToken": "Enter Udemy Access Token",
-  "VOTUdemyData": "Udemy Data"
+  "VOTUdemyData": "Udemy Data",
+  "streamNoConnectionToServer": "Palvelimeen ei ole yhteyttä",
+  "VOTCloudflareDoesntSupportStreams": "Skriptin Cloudflare-versio ei tue stream-käännöstä"
 }

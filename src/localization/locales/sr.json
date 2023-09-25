@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Није могуће добити податке о Удеми модулу јер Модулеаргс није пронађен",
   "VOTTranslationHelpNull": "Није могуће добити податке потребне за превод",
   "enterUdemyAccessToken": "Унесите Удеми приступни токен",
-  "VOTUdemyData": "Удеми Подаци"
+  "VOTUdemyData": "Удеми Подаци",
+  "streamNoConnectionToServer": "Нема везе са сервером",
+  "VOTCloudflareDoesntSupportStreams": "Цлоудфларе верзија скрипте не подржава стриминг"
 }

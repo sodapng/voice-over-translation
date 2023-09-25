@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Ma setgħetx tikseb dejta tal modulu udemy minħabba l fatt Li Modulargs ma nstabx",
   "VOTTranslationHelpNull": "Ma setgħetx tikseb id-dejta meħtieġa għat-traduzzjoni",
   "enterUdemyAccessToken": "Daħħal It-Token Tal-Aċċess Udemy",
-  "VOTUdemyData": "Dejta Udemy"
+  "VOTUdemyData": "Dejta Udemy",
+  "streamNoConnectionToServer": "M'hemm l ebda konnessjoni mas server",
+  "VOTCloudflareDoesntSupportStreams": "Il verżjoni Cloudflare tal iskrittura ma tappoġġjax traduzzjoni stream"
 }

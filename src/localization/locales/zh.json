@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "由于找不到ModuleArgs，无法获取udemy模块数据",
   "VOTTranslationHelpNull": "无法获得翻译所需的数据",
   "enterUdemyAccessToken": "输入Udemy访问令牌",
-  "VOTUdemyData": "Udemy数据"
+  "VOTUdemyData": "Udemy数据",
+  "streamNoConnectionToServer": "没有连接到服务器",
+  "VOTCloudflareDoesntSupportStreams": "Cloudflare版本的脚本不支持流翻译"
 }

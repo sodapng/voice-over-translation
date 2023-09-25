@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "मोड्युल आर्ग फेला नपरेको कारणले उडेमी मोड्युल डेटा प्राप्त गर्न सकेन",
   "VOTTranslationHelpNull": "अनुवादका लागि आवश्यक डेटा प्राप्त गर्न सकेन",
   "enterUdemyAccessToken": "उडेमी पहुँच टोकन प्रविष्ट गर्नुहोस्",
-  "VOTUdemyData": "उडेमी डाटा"
+  "VOTUdemyData": "उडेमी डाटा",
+  "streamNoConnectionToServer": "सर्भरसँग कुनै सम्बन्ध छैन",
+  "VOTCloudflareDoesntSupportStreams": "स्क्रिप्टको क्लाउडफ्लेयर संस्करणले स्ट्रिम अनुवादलाई समर्थन गर्दैन"
 }

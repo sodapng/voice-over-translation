@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Udemy մոդուլի տվյալները հնարավոր չէ ստանալ, քանի որ ModuleArgs-ը չի գտնվել",
   "VOTTranslationHelpNull": "Հնարավոր չէ ստանալ փոխանցման համար անհրաժեշտ տվյալները",
   "enterUdemyAccessToken": "Մուտքագրեք Udemy մուտքի նշանը",
-  "VOTUdemyData": "Udemy-Ի Տվյալները"
+  "VOTUdemyData": "Udemy-Ի Տվյալները",
+  "streamNoConnectionToServer": "Սերվերի միացում չկա",
+  "VOTCloudflareDoesntSupportStreams": "Cloudflare սցենարի տարբերակը չի աջակցում հոսքային հոսքին"
 }

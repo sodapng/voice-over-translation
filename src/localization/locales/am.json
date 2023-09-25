@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "ሞጁሎች ባለመገኘታቸው ምክንያት የኡዲሚ ሞዱል ውሂብ ማግኘት አልተቻለም ። ",
   "VOTTranslationHelpNull": "ለመተርጎም የሚያስፈልገውን መረጃ ማግኘት አልተቻለም",
   "enterUdemyAccessToken": "የኡዲሚ መዳረሻ ማስመሰያ ያስገቡ",
-  "VOTUdemyData": "የተጠቃሚዎች በይነ-ተገናኝነት"
+  "VOTUdemyData": "የተጠቃሚዎች በይነ-ተገናኝነት",
+  "streamNoConnectionToServer": "ከአገልጋዩ ጋር ምንም ግንኙነት የለም ። ",
+  "VOTCloudflareDoesntSupportStreams": "የስክሪፕቱ ክላውድላሬ ስሪት የዥረት ትርጉምን አይደግፍም ። "
 }

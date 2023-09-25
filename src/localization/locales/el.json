@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Δεν ήταν δυνατή η λήψη δεδομένων μονάδας udemy λόγω του γεγονότος ότι το ModuleArgs δεν βρέθηκε",
   "VOTTranslationHelpNull": "Δεν ήταν δυνατή η λήψη των δεδομένων που απαιτούνται για τη μετάφραση",
   "enterUdemyAccessToken": "Εισαγάγετε Το Διακριτικό Πρόσβασης Udemy",
-  "VOTUdemyData": "Δεδομένα Udemy"
+  "VOTUdemyData": "Δεδομένα Udemy",
+  "streamNoConnectionToServer": "Δεν υπάρχει σύνδεση με το διακομιστή",
+  "VOTCloudflareDoesntSupportStreams": "Η έκδοση Cloudflare του σεναρίου δεν υποστηρίζει μετάφραση ροής"
 }

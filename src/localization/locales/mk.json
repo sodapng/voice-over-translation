@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Не можев да добијам податоци за модулот удеми поради фактот Што Модулоте пронајдени",
   "VOTTranslationHelpNull": "Не можев да ги добијам податоците потребни за преводот",
   "enterUdemyAccessToken": "Внесете Удеми Пристап Токен",
-  "VOTUdemyData": "Удеми Податоци"
+  "VOTUdemyData": "Удеми Податоци",
+  "streamNoConnectionToServer": "Нема врска со серверот",
+  "VOTCloudflareDoesntSupportStreams": "Верзијата За Облак На сценариото не поддржува превод на поток"
 }

@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Ora bisa entuk data modul udemy amarga Kasunyatan Manawa ModuleArgs ora ditemokake",
   "VOTTranslationHelpNull": "Ora bisa njaluk data sing dibutuhake kanggo translate",
   "enterUdemyAccessToken": "Masuk Token Akses Udemy",
-  "VOTUdemyData": "Data Udemy"
+  "VOTUdemyData": "Data Udemy",
+  "streamNoConnectionToServer": "Ora ana sambungan menyang server",
+  "VOTCloudflareDoesntSupportStreams": "Versi Cloudflare saka naskah ora ndhukung terjemahan aliran"
 }

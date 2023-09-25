@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Kon Udemy-modulegegevens niet verkrijgen vanwege het feit dat ModuleArgs niet werd gevonden",
   "VOTTranslationHelpNull": "Kon de gegevens die nodig zijn voor de vertaling niet krijgen",
   "enterUdemyAccessToken": "Enter Udemy Access Token",
-  "VOTUdemyData": "Udemy Data"
+  "VOTUdemyData": "Udemy Data",
+  "streamNoConnectionToServer": "Er is geen verbinding met de server",
+  "VOTCloudflareDoesntSupportStreams": "De Cloudflare-versie van het script ondersteunt geen streamvertaling"
 }

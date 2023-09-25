@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Impossible d'obtenir les données du module udemy en raison du fait que ModuleArgs n'a pas été trouvé",
   "VOTTranslationHelpNull": "Impossible d'obtenir les données requises pour la traduction",
   "enterUdemyAccessToken": "Entrez le Jeton d'accès Udemy",
-  "VOTUdemyData": "Données Udemy"
+  "VOTUdemyData": "Données Udemy",
+  "streamNoConnectionToServer": "Il n'y a pas de connexion au serveur",
+  "VOTCloudflareDoesntSupportStreams": "La version Cloudflare du script ne prend pas en charge la traduction de flux"
 }

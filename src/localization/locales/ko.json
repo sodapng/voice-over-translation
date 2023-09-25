@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "오류 코드에 관한 문제로 트리거됩니다.",
   "VOTTranslationHelpNull": "번역에 필요한 데이터를 가져올 수 없습니다",
   "enterUdemyAccessToken": "액세스 토큰 입력",
-  "VOTUdemyData": "데이터"
+  "VOTUdemyData": "데이터",
+  "streamNoConnectionToServer": "서버에 연결이 없습니다",
+  "VOTCloudflareDoesntSupportStreams": "이 스크립트의 클라우드 플레어 버전은 스트림 번역을 지원하지 않습니다"
 }

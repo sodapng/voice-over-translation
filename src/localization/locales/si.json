@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "ModuleArgs සොයාගත නොහැකි වීම නිසා udemy මොඩියුල දත්ත ලබා ගැනීමට නොහැකි විය",
   "VOTTranslationHelpNull": "පරිවර්තනය සඳහා අවශ්ය දත්ත ලබා ගැනීමට නොහැකි විය",
   "enterUdemyAccessToken": "Udemy ප්රවේශ සංකේතය ඇතුලත් කරන්න",
-  "VOTUdemyData": "උඩෙමි දත්ත"
+  "VOTUdemyData": "උඩෙමි දත්ත",
+  "streamNoConnectionToServer": "සර්වර් එකට කිසිම සම්බන්ධයක් නෑ",
+  "VOTCloudflareDoesntSupportStreams": "Script එකේ Cloudflare අනුවාදය stream translation වලට සහය නොදක්වයි"
 }

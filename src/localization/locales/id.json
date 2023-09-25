@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Tidak dapat memperoleh data modul udemy karena fakta bahwa ModuleArgs tidak ditemukan",
   "VOTTranslationHelpNull": "Tidak dapat memperoleh data yang diperlukan untuk terjemahan",
   "enterUdemyAccessToken": "Masukkan Token Akses Udemy",
-  "VOTUdemyData": "Udemy Data"
+  "VOTUdemyData": "Udemy Data",
+  "streamNoConnectionToServer": "Tidak ada koneksi ke server",
+  "VOTCloudflareDoesntSupportStreams": "Skrip versi Cloudflare tidak mendukung terjemahan aliran"
 }

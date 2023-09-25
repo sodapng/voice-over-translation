@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Moduleargs табылмағандықтан udemy Модулінің деректерін алу мүмкін болмады",
   "VOTTranslationHelpNull": "Аударуға қажетті деректерді алу мүмкін болмады",
   "enterUdemyAccessToken": "Udemy кіру таңбалауышын енгізіңіз",
-  "VOTUdemyData": "Udemy Деректері"
+  "VOTUdemyData": "Udemy Деректері",
+  "streamNoConnectionToServer": "Серверге қосылу жоқ",
+  "VOTCloudflareDoesntSupportStreams": "Cloudflare сценарийінің нұсқасы ағынды қолдамайды"
 }

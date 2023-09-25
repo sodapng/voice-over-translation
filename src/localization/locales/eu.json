@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Ezin izan da udemy moduluaren daturik lortu ModuleArgs aurkitu ez delako",
   "VOTTranslationHelpNull": "Ezin izan dira itzulpenerako behar diren datuak lortu",
   "enterUdemyAccessToken": "Sartu Udemy Sarbide-Tokena",
-  "VOTUdemyData": "Udemy Datuak"
+  "VOTUdemyData": "Udemy Datuak",
+  "streamNoConnectionToServer": "Ez dago konexiorik zerbitzariarekin",
+  "VOTCloudflareDoesntSupportStreams": "Gidoiaren hodei-izpi bertsioak ez du stream itzulpena onartzen"
 }

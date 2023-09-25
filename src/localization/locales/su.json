@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Teu bisa meunangkeun data modul udemy alatan kanyataan Yén ModuleArgs teu kapanggih",
   "VOTTranslationHelpNull": "Teu bisa meunangkeun data diperlukeun pikeun narjamahkeun",
   "enterUdemyAccessToken": "Asupkeun Udemy Aksés Token",
-  "VOTUdemyData": "Data Udemy"
+  "VOTUdemyData": "Data Udemy",
+  "streamNoConnectionToServer": "Teu aya sambungan ka server",
+  "VOTCloudflareDoesntSupportStreams": "Versi Cloudflare tina naskah henteu ngadukung tarjamahan aliran"
 }

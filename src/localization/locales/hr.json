@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Nije moguće dohvatiti podatke modula A. M. jer nije pronađen nijedan A. M.",
   "VOTTranslationHelpNull": "Nije moguće dohvatiti podatke potrebne za prijevod",
   "enterUdemyAccessToken": "Unesite pristupni token",
-  "VOTUdemyData": "Podaci Udemy"
+  "VOTUdemyData": "Podaci Udemy",
+  "streamNoConnectionToServer": "Nema veze s poslužiteljem",
+  "VOTCloudflareDoesntSupportStreams": "Verzija skripte ae ne podržava streaming uživo"
 }

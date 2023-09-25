@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "لا يمكن الحصول على بيانات وحدة أوديمي يرجع ذلك إلى حقيقة أن مودوليرجس لم يتم العثور على",
   "VOTTranslationHelpNull": "تعذر الحصول على البيانات المطلوبة للترجمة",
   "enterUdemyAccessToken": "أدخل رمز الوصول أوديمي",
-  "VOTUdemyData": "بيانات أوديمي"
+  "VOTUdemyData": "بيانات أوديمي",
+  "streamNoConnectionToServer": "لا يوجد اتصال بالخادم",
+  "VOTCloudflareDoesntSupportStreams": "النسخة كلودفلاري من البرنامج النصي لا يدعم ترجمة تيار"
 }

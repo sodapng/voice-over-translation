@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "ModuleArgsが見つからなかったため、udemyモジュールのデータを取得できませんでした",
   "VOTTranslationHelpNull": "翻訳に必要なデータを取得できませんでした",
   "enterUdemyAccessToken": "Udemyアクセストークンを入力します",
-  "VOTUdemyData": "Udemyデータ"
+  "VOTUdemyData": "Udemyデータ",
+  "streamNoConnectionToServer": "サーバーへの接続がありません",
+  "VOTCloudflareDoesntSupportStreams": "Cloudflareバージョンのスクリプトでは、ストリーム翻訳はサポートされていません"
 }

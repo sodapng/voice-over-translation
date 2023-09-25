@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "इस तथ्य के कारण उदमी मॉड्यूल डेटा प्राप्त नहीं कर सका कि मॉड्यूलएआरजीएस नहीं मिला था",
   "VOTTranslationHelpNull": "अनुवाद के लिए आवश्यक डेटा प्राप्त नहीं कर सका",
   "enterUdemyAccessToken": "उदमी एक्सेस टोकन दर्ज करें",
-  "VOTUdemyData": "उदमी डेटा"
+  "VOTUdemyData": "उदमी डेटा",
+  "streamNoConnectionToServer": "सर्वर से कोई संबंध नहीं है",
+  "VOTCloudflareDoesntSupportStreams": "स्क्रिप्ट का क्लाउडफ्लेयर संस्करण स्ट्रीम अनुवाद का समर्थन नहीं करता है"
 }

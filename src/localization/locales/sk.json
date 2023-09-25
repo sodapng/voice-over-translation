@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Nepodarilo sa získať udemy modul dáta vzhľadom k tomu, že ModuleArgs nebol nájdený",
   "VOTTranslationHelpNull": "Nepodarilo sa získať údaje potrebné pre preklad",
   "enterUdemyAccessToken": "Zadajte Prístupový Token Udemy",
-  "VOTUdemyData": "Udemy Data"
+  "VOTUdemyData": "Udemy Data",
+  "streamNoConnectionToServer": "Neexistuje žiadne pripojenie k serveru",
+  "VOTCloudflareDoesntSupportStreams": "Verzia skriptu Cloudflare nepodporuje preklad streamu"
 }

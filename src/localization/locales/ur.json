@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "حقیقت یہ ہے کہ ModuleArgs نہیں ملا تھا کی وجہ سے udemy ماڈیول ڈیٹا حاصل نہیں کر سکا",
   "VOTTranslationHelpNull": "ترجمہ کے لیے درکار ڈیٹا حاصل نہیں کر سکا ۔ ",
   "enterUdemyAccessToken": "Udemy رسائی ٹوکن درج کریں",
-  "VOTUdemyData": "اڈیمی ڈیٹا"
+  "VOTUdemyData": "اڈیمی ڈیٹا",
+  "streamNoConnectionToServer": "سرور سے کوئی تعلق نہیں ہے",
+  "VOTCloudflareDoesntSupportStreams": "اسکرپٹ کا کلاؤڈ فلیئر ورژن اسٹریم ٹرانسلیشن کی حمایت نہیں کرتا ہے ۔ "
 }

@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Nuk mund të marrë të dhënat e modulit udemy për shkak të faktit Se ModuleArgs nuk u gjet",
   "VOTTranslationHelpNull": "Nuk mund të merrte të dhënat e kërkuara për përkthimin",
   "enterUdemyAccessToken": "Shkruani Udemy Access Token",
-  "VOTUdemyData": "Të Dhënat E Udemy"
+  "VOTUdemyData": "Të Dhënat E Udemy",
+  "streamNoConnectionToServer": "Nuk ka lidhje me serverin",
+  "VOTCloudflareDoesntSupportStreams": "Versioni Cloudflare i shkrimit nuk mbështet përkthimin e rrjedhës"
 }

@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "ਉਡੇਮੀ ਮੋਡੀਊਲ ਡਾਟਾ ਪ੍ਰਾਪਤ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ ਕਿਉਂਕਿ ਮੋਡੀਊਲ ਆਰਜੀਐਸ ਨਹੀਂ ਮਿਲਿਆ ਸੀ",
   "VOTTranslationHelpNull": "ਅਨੁਵਾਦ ਲਈ ਲੋੜੀਂਦਾ ਡਾਟਾ ਪ੍ਰਾਪਤ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ",
   "enterUdemyAccessToken": "ਉਡੇਮੀ ਐਕਸੈਸ ਟੋਕਨ ਦਰਜ ਕਰੋ",
-  "VOTUdemyData": "ਉਡੇਮੀ ਡਾਟਾ"
+  "VOTUdemyData": "ਉਡੇਮੀ ਡਾਟਾ",
+  "streamNoConnectionToServer": "ਸਰਵਰ ਨਾਲ ਕੋਈ ਕੁਨੈਕਸ਼ਨ ਨਹੀਂ",
+  "VOTCloudflareDoesntSupportStreams": "ਸਕ੍ਰਿਪਟ ਦਾ ਕਲਾਉਡਫਲੇਅਰ ਵਰਜਨ ਸਟ੍ਰੀਮ ਅਨੁਵਾਦ ਦਾ ਸਮਰਥਨ ਨਹੀਂ ਕਰਦਾ"
 }

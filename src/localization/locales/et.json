@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Udemy mooduli andmeid ei õnnestunud saada, kuna Moduleargsi ei leitud",
   "VOTTranslationHelpNull": "Tõlkimiseks vajalikke andmeid ei õnnestunud saada",
   "enterUdemyAccessToken": "Sisestage Udemy Juurdepääsuluba",
-  "VOTUdemyData": "Udemy Andmed"
+  "VOTUdemyData": "Udemy Andmed",
+  "streamNoConnectionToServer": "Serveriga pole ühendust",
+  "VOTCloudflareDoesntSupportStreams": "Skripti Cloudflare versioon ei toeta voo tõlkimist"
 }

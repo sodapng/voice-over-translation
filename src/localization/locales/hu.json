@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Nem sikerült megszerezni az udemy modul adatait, mivel a ModuleArgs nem található",
   "VOTTranslationHelpNull": "Nem sikerült megszerezni a fordításhoz szükséges adatokat",
   "enterUdemyAccessToken": "Adja Meg Az Udemy Hozzáférési Tokent",
-  "VOTUdemyData": "Udemy Adatok"
+  "VOTUdemyData": "Udemy Adatok",
+  "streamNoConnectionToServer": "Nincs kapcsolat a szerverrel",
+  "VOTCloudflareDoesntSupportStreams": "A szkript Cloudflare verziója nem támogatja a stream fordítást"
 }

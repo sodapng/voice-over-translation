@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Không thể lấy dữ liệu mô-đun udemy do Thực tế Là Không tìm Thấy Mô-Đun",
   "VOTTranslationHelpNull": "Không thể nhận được dữ liệu cần thiết cho bản dịch",
   "enterUdemyAccessToken": "Nhập Mã Thông Báo Truy Cập Udemy",
-  "VOTUdemyData": "Dữ Liệu Udemy"
+  "VOTUdemyData": "Dữ Liệu Udemy",
+  "streamNoConnectionToServer": "Không có kết nối đến máy chủ",
+  "VOTCloudflareDoesntSupportStreams": "Phiên Bản Cloudflare của tập lệnh không hỗ trợ dịch luồng"
 }

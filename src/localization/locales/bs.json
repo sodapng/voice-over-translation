@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Nisam mogao dobaviti podatke udemy modula zbog činjenice da ModuleArgs nije pronađen",
   "VOTTranslationHelpNull": "Nisam mogao dobaviti podatke potrebne za prijevod",
   "enterUdemyAccessToken": "Unesite Udemy Token Za Pristup",
-  "VOTUdemyData": "Udemy Podaci"
+  "VOTUdemyData": "Udemy Podaci",
+  "streamNoConnectionToServer": "Nema veze sa serverom",
+  "VOTCloudflareDoesntSupportStreams": "Cloudflare verzija skripte ne podržava prijevod toka"
 }

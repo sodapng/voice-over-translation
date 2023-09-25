@@ -186,5 +186,7 @@
   "udemyModuleArgsNotFound": "Udemy-Moduldaten konnten nicht abgerufen werden, da Modulargs nicht gefunden wurde",
   "VOTTranslationHelpNull": "Die für die Übersetzung erforderlichen Daten konnten nicht abgerufen werden",
   "enterUdemyAccessToken": "Geben Sie das Udemy-Zugriffstoken ein",
-  "VOTUdemyData": "Udemy-Daten"
+  "VOTUdemyData": "Udemy-Daten",
+  "streamNoConnectionToServer": "Es besteht keine Verbindung zum Server",
+  "VOTCloudflareDoesntSupportStreams": "Die Cloudflare-Version des Skripts unterstützt keine Stream-Übersetzung"
 }
