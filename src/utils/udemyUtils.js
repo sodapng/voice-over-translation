@@ -92,8 +92,8 @@ function getPlayer() {
 }
 
 function getVideoURLFromPlayer() {
-  const src = getPlayer()?.querySelector('video').src;
-  return src.startsWith('blob:') ? false : src;
+  const src = getPlayer()?.querySelector('video')?.src;
+  return src?.startsWith('blob:') ? false : src;
 }
 
 // Get the video data from the player
