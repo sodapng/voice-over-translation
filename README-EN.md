@@ -1,6 +1,7 @@
 # Voice-over-translation
 
-Русская версия: [Link](https://github.com/ilyhalight/voice-over-translation/blob/master/README.md)
+[![ru](https://img.shields.io/badge/%D1%8F%D0%B7%D1%8B%D0%BA-%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9%20%F0%9F%87%B7%F0%9F%87%BA-white)](README.md)
+[![en](https://img.shields.io/badge/lang-English%20%F0%9F%87%AC%F0%9F%87%A7-white)](README-EN.md)
 
 The voice-over translation of the video is now available not only in YandexBrowser. Very grateful, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)** & **[SashaXser](https://github.com/SashaXser)**. Thanks <3
 
@@ -31,7 +32,7 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[[⚠️] Udemy](https://www.udemy.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[TikTok](https://tiktok.com/)**
-- **[ProxyTok](https://proxitok.pabloferreiro.es/)**
+- **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[Invidious](https://yewtu.be)**
 - **[Piped](https://piped.video)**
 

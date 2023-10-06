@@ -1,6 +1,7 @@
 # Закадровый перевод видео
 
-English version: [Link](https://github.com/ilyhalight/voice-over-translation/blob/master/README-EN.md)
+[![en](https://img.shields.io/badge/lang-English%20%F0%9F%87%AC%F0%9F%87%A7-white)](README-EN.md)
+[![ru](https://img.shields.io/badge/%D1%8F%D0%B7%D1%8B%D0%BA-%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9%20%F0%9F%87%B7%F0%9F%87%BA-white)](README.md)
 
 Закадровый перевод видео, теперь, доступен не только в YandexBrowser.
 Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)** & **[SashaXser](https://github.com/SashaXser)**. Спасиб <3
@@ -32,7 +33,7 @@ English version: [Link](https://github.com/ilyhalight/voice-over-translation/blo
 - **[[⚠️] Udemy](https://www.udemy.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[TikTok](https://tiktok.com/)**
-- **[ProxyTok](https://proxitok.pabloferreiro.es/)**
+- **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[Invidious](https://yewtu.be)**
 - **[Piped](https://piped.video)**
 
@@ -129,7 +130,7 @@ npm i
 | Статус | Браузер | Версия браузера | Платформа | Расширение
 |---|---|---|---|---
 | ⠀✅ | Firefox Developer Edition | v106 — v117, 64 bit | Windows | Tampermonkey
-| ⠀✅ | Firefox | v116.0.2 | Windows, Linux, Android | Tampermonkey
+| ⠀✅ | Firefox | v116.0.2 | Windows, Linux, Android | Tampermonkey, Violetmonkey
 | ⠀✅ | Firefox Nightly | v118.0a1 | Windows, Android | Tampermonkey
 | ⠀✅ | LibreWolf | v100.0.2-1 | Windows | Tampermonkey
 | ⠀✅ | Brave | v106.0.5249.91 | Windows | Tampermonkey
