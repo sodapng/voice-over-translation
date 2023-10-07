@@ -172,6 +172,12 @@ const sites = () => {
       url: "https://youtu.be/",
       match: sitesPiped,
       selector: ".shaka-video-container",
+    },
+    { // TODO: FIX RUMBLE DOUBLE BUTTON ON TRANSLATED VIDEO
+      host: "rumble",
+      url: "https://rumble.com",
+      match: /^rumble.com$/,
+      selector: ".videoPlayer-Rumble-cls > div",
     }
   ];
 };
