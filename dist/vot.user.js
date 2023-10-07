@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.5.0-beta3
+// @version 1.5.0-beta4
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -88,6 +88,7 @@
 // @match *://cringe.whatever.social/*
 // @match *://proxitok.lunar.icu/*
 // @match *://proxitok.privacy.com.de/*
+// @match *://rumble.com/*
 // @connect api.browser.yandex.ru
 // @downloadURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js
 // @grant GM_xmlhttpRequest
@@ -96,7 +97,7 @@
 // @icon https://translate.yandex.ru/icons/favicon.ico
 // @namespace vot
 // @require https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/light/protobuf.min.js
-// @require https://raw.githubusercontent.com/dailymotion/hls.js/master/dist/hls.min.js
+// @require https://cdn.jsdelivr.net/npm/hls.js@1
 // @updateURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js
 // ==/UserScript==
 
@@ -234,6 +235,32 @@ module.exports = function (cssWithMappingToString) {
 module.exports = function (i) {
   return i[1];
 };
+
+/***/ }),
+
+/***/ "./node_modules/requestidlecallback-polyfill/index.js":
+/***/ (() => {
+
+window.requestIdleCallback =
+    window.requestIdleCallback ||
+    function(cb) {
+        var start = Date.now();
+        return setTimeout(function() {
+            cb({
+                didTimeout: false,
+                timeRemaining: function() {
+                    return Math.max(0, 50 - (Date.now() - start));
+                },
+            });
+        }, 1);
+    };
+
+window.cancelIdleCallback =
+    window.cancelIdleCallback ||
+    function(id) {
+        clearTimeout(id);
+    };
+
 
 /***/ }),
 
@@ -500,10 +527,12 @@ module.exports = styleTagTransform;
 /* harmony export */   I1: () => (/* binding */ yandexHmacKey),
 /* harmony export */   IM: () => (/* binding */ autoVolume),
 /* harmony export */   Rr: () => (/* binding */ yandexUserAgent),
+/* harmony export */   e6: () => (/* binding */ m3u8ProxyHost),
 /* harmony export */   iF: () => (/* binding */ workerHost)
 /* harmony export */ });
 // CONFIGURATION
 const workerHost = "api.browser.yandex.ru";
+const m3u8ProxyHost = "m3u8proxy.toil-dump.workers.dev";
 const yandexHmacKey = "xtGCyGdTY2Jy6OMEKdTuXev3Twhkamgm";
 const yandexUserAgent =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 YaBrowser/23.7.1.1140 Yowser/2.5 Safari/537.36";
@@ -1099,6 +1128,8 @@ const getVideoId = (service, video) => {
     case "twitter":
       return url.pathname.match(/status\/([^/]+)/)?.[1];
     case "udemy":
+      return url.pathname;
+    case "rumble":
       return url.pathname;
     case "facebook":
       // ...watch?v=XXX
@@ -3229,7 +3260,7 @@ async function courseraUtils_getVideoData(responseLang = "en") {
   }
 
   const subtitlesURL = getSubtitlesFileURL(tracks, detectedLanguage, responseLang);
-  debug/* default */.Z.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
+  console.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
 
   if (subtitlesURL && videoURL) {
     translationHelp = [
@@ -3378,7 +3409,7 @@ async function udemyUtils_getVideoData(udemyData, responseLang = "en") {
   const courseLang = await getCourseLang(courseId);
   debug/* default */.Z.log("courseLang Data:", courseLang);
   const lectureData = await getLectureData(udemyData, courseId, lectureId);
-  debug/* default */.Z.log("lecture Data:", lectureData);
+  console.log("lecture Data:", lectureData);
 
   let detectedLanguage = courseLang?.locale?.locale;
   detectedLanguage = detectedLanguage ? langTo6391(detectedLanguage) : "en";
@@ -3395,7 +3426,7 @@ async function udemyUtils_getVideoData(udemyData, responseLang = "en") {
     responseLang
   );
 
-  debug/* default */.Z.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
+  console.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
 
   if (subtitlesURL && videoURL) {
     translationHelp = [
@@ -3432,6 +3463,8 @@ const udemyUtils = {
   getLectureData,
 };
 
+// EXTERNAL MODULE: ./node_modules/requestidlecallback-polyfill/index.js
+var requestidlecallback_polyfill = __webpack_require__("./node_modules/requestidlecallback-polyfill/index.js");
 ;// CONCATENATED MODULE: ./src/utils/EventImpl.js
 class EventImpl {
   constructor() {
@@ -3467,6 +3500,7 @@ class EventImpl {
 }
 
 ;// CONCATENATED MODULE: ./src/utils/VideoObserver.js
+
 
 
 function filterVideoNodes(e) {
@@ -3695,6 +3729,12 @@ const sites = () => {
       url: "https://youtu.be/",
       match: sitesPiped,
       selector: ".shaka-video-container",
+    },
+    { // TODO: FIX RUMBLE DOUBLE BUTTON ON TRANSLATED VIDEO
+      host: "rumble",
+      url: "https://rumble.com",
+      match: /^rumble.com$/,
+      selector: ".videoPlayer-Rumble-cls > div",
     }
   ];
 };
@@ -3889,6 +3929,7 @@ class VideoHandler {
     backBufferLength: 90
   }) : undefined; // debug enabled only in dev mode
   downloadTranslationUrl = null;
+  downloadSubtitlesUrl = null;
 
   autoRetry;
   streamPing;
@@ -3982,6 +4023,10 @@ class VideoHandler {
       this.votDownloadButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M480-337q-8 0-15-2.5t-13-8.5L308-492q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T365-549l75 75v-286q0-17 11.5-28.5T480-800q17 0 28.5 11.5T520-760v286l75-75q12-12 28.5-11.5T652-548q11 12 11.5 28T652-492L508-348q-6 6-13 8.5t-15 2.5ZM240-160q-33 0-56.5-23.5T160-240v-80q0-17 11.5-28.5T200-360q17 0 28.5 11.5T240-320v80h480v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80q0 33-23.5 56.5T720-160H240Z"/></svg>`);
       this.votDownloadButton.hidden = true;
       this.votMenu.headerContainer.appendChild(this.votDownloadButton);
+
+      this.votDownloadSubtitlesButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 0 24 24"><path d="M4 20q-.825 0-1.413-.588T2 18V6q0-.825.588-1.413T4 4h16q.825 0 1.413.588T22 6v12q0 .825-.588 1.413T20 20H4Zm2-4h8v-2H6v2Zm10 0h2v-2h-2v2ZM6 12h2v-2H6v2Zm4 0h8v-2h-8v2Z"/></svg>`);
+      this.votDownloadSubtitlesButton.hidden = true;
+      this.votMenu.headerContainer.appendChild(this.votDownloadSubtitlesButton);
 
       this.votSettingsButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M555-80H405q-15 0-26-10t-13-25l-12-93q-13-5-24.5-12T307-235l-87 36q-14 5-28 1t-22-17L96-344q-8-13-5-28t15-24l75-57q-1-7-1-13.5v-27q0-6.5 1-13.5l-75-57q-12-9-15-24t5-28l74-129q7-14 21.5-17.5T220-761l87 36q11-8 23-15t24-12l12-93q2-15 13-25t26-10h150q15 0 26 10t13 25l12 93q13 5 24.5 12t22.5 15l87-36q14-5 28-1t22 17l74 129q8 13 5 28t-15 24l-75 57q1 7 1 13.5v27q0 6.5-2 13.5l75 57q12 9 15 24t-5 28l-74 128q-8 13-22.5 17.5T738-199l-85-36q-11 8-23 15t-24 12l-12 93q-2 15-13 25t-26 10Zm-73-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm0-80q-25 0-42.5-17.5T422-480q0-25 17.5-42.5T482-540q25 0 42.5 17.5T542-480q0 25-17.5 42.5T482-420Zm-2-60Zm-40 320h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Z"/></svg>`);
       this.votMenu.headerContainer.appendChild(this.votSettingsButton);
@@ -4158,6 +4203,13 @@ class VideoHandler {
       this.votDownloadButton.addEventListener("click", () => {
         if (this.downloadTranslationUrl) {
           window.open(this.downloadTranslationUrl, "_blank").focus();
+        }
+      });
+
+      this.votDownloadSubtitlesButton.addEventListener("click", () => {
+        console.log(this.downloadSubtitlesUrl)
+        if (this.downloadSubtitlesUrl) {
+          window.open(this.downloadSubtitlesUrl, "_blank").focus();
         }
       });
 
@@ -4469,8 +4521,13 @@ class VideoHandler {
     this.votSubtitlesSelect.select.value = subs;
     if (subs === "disabled") {
       this.subtitlesWidget.setContent(null);
+      this.votDownloadSubtitlesButton.hidden = true;
+      this.downloadSubtitlesUrl = null;
     } else {
-      this.subtitlesWidget.setContent(await fetchSubtitles(this.subtitlesList.at(parseInt(subs))));
+      const fetchedSubs = await fetchSubtitles(this.subtitlesList.at(parseInt(subs)));
+      this.subtitlesWidget.setContent(fetchedSubs);
+      this.votDownloadSubtitlesButton.hidden = false;
+      this.downloadSubtitlesUrl = this.subtitlesList.at(parseInt(subs))?.url;
     }
   }
 
@@ -4849,13 +4906,13 @@ class VideoHandler {
           );
 
           // const streamURL = "https://stream.ram.radio/audio/ram.stream_aac/playlist.m3u8";
-          const streamURL = resOrError.translatedInfo.url;
+          debug/* default */.Z.log(resOrError.translatedInfo.url)
+          const streamURL = `https://${config/* m3u8ProxyHost */.e6}/?all=yes&origin=${encodeURIComponent('https://strm.yandex.ru')}&referer=${encodeURIComponent('https://strm.yandex.ru')}&url=${encodeURIComponent(resOrError.translatedInfo.url)}`;
+          debug/* default */.Z.log(streamURL)
           // const timestamp = Date.now(); // get timestamp
 
           debug/* default */.Z.log("Test hls support")
           if (this.hls) {
-            // !!!! NORMAL HLS.JS FOR SOME REASON, IT DOES NOT WORK NORMALLY IN USER SCRIPTS!!! WE USE ONLY DAILYMOTION HLS.JS
-            // * In normal hls.js after the end of playing the first buffered fragment, the player gets stuck. In Dailymotion hls.js there is no such problem
             this.hls.on(Hls.Events.MEDIA_ATTACHED, function () {
               debug/* default */.Z.log('audio and hls.js are now bound together !');
             });
@@ -5029,6 +5086,7 @@ class VideoHandler {
           "twitter",
           "bilibili",
           "mail_ru",
+          "rumble",
         ];
         for (let i = 0; i < siteHostnames.length; i++) {
           if (this.site.host === siteHostnames[i]) {
@@ -5207,6 +5265,11 @@ async function src_main() {
   videoObserver.onVideoAdded.addListener((video) => {
     for (const site of getSites()) {
       if (!site) continue;
+
+      // fix multiply translation buttons in rumble.com
+      // only main video has poster
+      if (site.host === 'rumble' && !video.poster) continue;
+
       let container;
       if (site.shadowRoot) {
         container = site.selector ? Object.values(document.querySelectorAll(site.selector)).find(e => e.shadowRoot.contains(video)) : video.parentElement;
