@@ -1,3 +1,4 @@
+import 'requestidlecallback-polyfill';
 import { EventImpl } from "./EventImpl.js";
 
 function filterVideoNodes(e) {
