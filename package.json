@@ -43,6 +43,7 @@
     "lint": "npx eslint ."
   },
   "dependencies": {
-    "bowser": "^2.11.0"
+    "bowser": "^2.11.0",
+    "requestidlecallback-polyfill": "^1.0.2"
   }
 }
