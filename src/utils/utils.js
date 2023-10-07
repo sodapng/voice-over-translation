@@ -136,6 +136,8 @@ const getVideoId = (service, video) => {
       return url.pathname.match(/status\/([^/]+)/)?.[1];
     case "udemy":
       return url.pathname;
+    case "rumble":
+      return url.pathname;
     case "facebook":
       // ...watch?v=XXX
       // CHANNEL_ID/videos/VIDEO_ID/
