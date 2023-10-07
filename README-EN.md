@@ -1,6 +1,7 @@
 # Voice-over-translation
 
-Русская версия: [Link](https://github.com/ilyhalight/voice-over-translation/blob/master/README.md)
+[![ru](https://img.shields.io/badge/%D1%8F%D0%B7%D1%8B%D0%BA-%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9%20%F0%9F%87%B7%F0%9F%87%BA-white)](README.md)
+[![en](https://img.shields.io/badge/lang-English%20%F0%9F%87%AC%F0%9F%87%A7-white)](README-EN.md)
 
 The voice-over translation of the video is now available not only in YandexBrowser. Very grateful, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)** & **[SashaXser](https://github.com/SashaXser)**. Thanks <3
 
@@ -9,8 +10,8 @@ The voice-over translation of the video is now available not only in YandexBrows
 2. **[«Install the Script»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js)** (**[Cloudflare version](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**)
 
 ### Useful links:
-1. Version for VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, OrangeMonkey, UserScripts and some browsers: **[Link](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
-2. Terminal version: **[Link](https://github.com/FOSWLY/vot-cli)**
+1. Version for VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, OrangeMonkey, UserScripts and some browsers (cloudflare-version): **[Link](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
+2. Terminal version (vot-cli): **[Link](https://github.com/FOSWLY/vot-cli)**
 3. Wiki: **[Link](https://github.com/ilyhalight/voice-over-translation/wiki)**
 
 ## List of supported sites:
@@ -22,22 +23,25 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[9GAG](https://9gag.com/gag/)**
 - **[Rutube](https://rutube.ru/)**
 - **[Bilibili](https://bilibili.com/)**
-- **[Видео Mail.ru](https://my.mail.ru/video)**
+- **[[❔] Video Mail.ru](https://my.mail.ru/video)**
 - **[Vimeo](https://vimeo.com/)**
-- **[XVideos](https://xvideos.com/)**
+- **[[⚠️] XVideos](https://xvideos.com/)**
 - **[PornHub](https://rt.pornhub.com/)**
 - **[Bitchute](https://www.bitchute.com/)**
 - **[Coursera](https://www.coursera.org/)**
 - **[[⚠️] Udemy](https://www.udemy.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[TikTok](https://tiktok.com/)**
-- **[ProxyTok](https://proxitok.pabloferreiro.es/)**
-- **[Invidious](https://yewtu.be)**
-- **[Piped](https://piped.video)**
+- **[Rumble](https://rumble.com/)**
+- **[ProxiTok](https://proxitok.pabloferreiro.es/)**
+- **[[⚠️] Invidious](https://yewtu.be)**
+- **[[⚠️] Piped](https://piped.video)**
 
-⚠️ - Requires additional actions, more in **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki)**
+⚠️ - Requires additional actions, more in **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki/%5BEN%5D-Supported-sites)**
 
 ❌ - Doesn't work
+
+❔ - Yandex support may be disabled
 
 ## List of functionality:
 1. Translation from one of the available languages into Russian. The language is detected automatically, if the language is not in the list or it was not possible to determine it, then a translation from English is used.
@@ -46,7 +50,7 @@ You can see all the restrictions related to site support in [wiki](https://githu
 4. Slider to change the video volume
 5. Automatically set the video volume (as in Yandex browser)
 6. [YouTube Only] Sync translation volume with video volume
-7. [YouTube Only] Restrict translation of Russian-language videos
+7. [YouTube Only] Restrict the translation of videos from your native language
 
 ## How to build an extension?
 1. Install NodeJS 18+

@@ -1,6 +1,7 @@
 # Закадровый перевод видео
 
-English version: [Link](https://github.com/ilyhalight/voice-over-translation/blob/master/README-EN.md)
+[![en](https://img.shields.io/badge/lang-English%20%F0%9F%87%AC%F0%9F%87%A7-white)](README-EN.md)
+[![ru](https://img.shields.io/badge/%D1%8F%D0%B7%D1%8B%D0%BA-%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9%20%F0%9F%87%B7%F0%9F%87%BA-white)](README.md)
 
 Закадровый перевод видео, теперь, доступен не только в YandexBrowser.
 Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)** & **[SashaXser](https://github.com/SashaXser)**. Спасиб <3
@@ -10,8 +11,8 @@ English version: [Link](https://github.com/ilyhalight/voice-over-translation/blo
 2. **[«Установите Скрипт»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js)** (**[Cloudflare version](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**)
 
 ### Полезные ссылки:
-1. Версия для VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, OrangeMonkey, UserScripts и некоторых браузеров: **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
-2. Версия для терминала: **[Ссылка](https://github.com/FOSWLY/vot-cli)**
+1. Версия для VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, OrangeMonkey, UserScripts и некоторых браузеров (cloudflare-version): **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
+2. Версия для терминала (vot-cli): **[Ссылка](https://github.com/FOSWLY/vot-cli)**
 3. Вики: **[Link](https://github.com/ilyhalight/voice-over-translation/wiki)**
 
 ## Список поддерживаемых сайтов:
@@ -23,22 +24,25 @@ English version: [Link](https://github.com/ilyhalight/voice-over-translation/blo
 - **[9GAG](https://9gag.com/gag/)**
 - **[Rutube](https://rutube.ru/)**
 - **[Bilibili](https://bilibili.com/)**
-- **[Видео Mail.ru](https://my.mail.ru/video)**
+- **[[❔] Видео Mail.ru](https://my.mail.ru/video)**
 - **[Vimeo](https://vimeo.com/)**
-- **[XVideos](https://xvideos.com/)**
+- **[[⚠️] XVideos](https://xvideos.com/)**
 - **[PornHub](https://rt.pornhub.com/)**
 - **[Bitchute](https://www.bitchute.com/)**
 - **[Coursera](https://www.coursera.org/)**
 - **[[⚠️] Udemy](https://www.udemy.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[TikTok](https://tiktok.com/)**
-- **[ProxyTok](https://proxitok.pabloferreiro.es/)**
-- **[Invidious](https://yewtu.be)**
-- **[Piped](https://piped.video)**
+- **[Rumble](https://rumble.com/)**
+- **[ProxiTok](https://proxitok.pabloferreiro.es/)**
+- **[[⚠️] Invidious](https://yewtu.be)**
+- **[[⚠️] Piped](https://piped.video)**
 
-⚠️ - Требует дополнительных действий, подробнее в **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki)**
+⚠️ - Требует дополнительных действий, подробнее в **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki/%5BRU%5D-Supported-sites)**
 
-❌ - Не работает
+❌ - Не поддерживается
+
+❔ - Возможно отключена поддержка со стороны Яндекса
 
 ## Список функционала:
 1. Перевод с одного из доступных языков на русский. Язык определяется автоматически, если языка нету в списке или не удалось его определить, то используется перевод с английского.
@@ -47,7 +51,7 @@ English version: [Link](https://github.com/ilyhalight/voice-over-translation/blo
 4. Слайдер для изменения громкости видео
 5. Автоматически выставлять громкость видео (как в Яндекс браузере)
 6. [YouTube Only] Синхронизация громкости перевода с громкостью видео
-7. [YouTube Only] Ограничить перевод русскоязычных видео
+7. [YouTube Only] Ограничить перевод видео с родного языка
 
 ## Как собрать расширение?
 1. Установите NodeJS 18+
