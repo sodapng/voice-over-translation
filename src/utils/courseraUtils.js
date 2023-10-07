@@ -60,7 +60,7 @@ async function getVideoData(responseLang = "en") {
   }
 
   const subtitlesURL = getSubtitlesFileURL(tracks, detectedLanguage, responseLang);
-  debug.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
+  console.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
 
   if (subtitlesURL && videoURL) {
     translationHelp = [

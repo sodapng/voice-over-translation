@@ -112,7 +112,7 @@ async function getVideoData(udemyData, responseLang = "en") {
   const courseLang = await getCourseLang(courseId);
   debug.log("courseLang Data:", courseLang);
   const lectureData = await getLectureData(udemyData, courseId, lectureId);
-  debug.log("lecture Data:", lectureData);
+  console.log("lecture Data:", lectureData);
 
   let detectedLanguage = courseLang?.locale?.locale;
   detectedLanguage = detectedLanguage ? langTo6391(detectedLanguage) : "en";
@@ -129,7 +129,7 @@ async function getVideoData(udemyData, responseLang = "en") {
     responseLang
   );
 
-  debug.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
+  console.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
 
   if (subtitlesURL && videoURL) {
     translationHelp = [
