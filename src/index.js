@@ -927,12 +927,12 @@ class VideoHandler {
       ) {
         throw new VOTLocalizedError("VOTDisableFromYourLang");
       }
-      if (this.ytData.isPremiere) {
-        throw new VOTLocalizedError("VOTPremiere");
-      }
-      if (this.ytData.isLive) {
-        throw new VOTLocalizedError("VOTLiveNotSupported");
-      }
+      // if (this.ytData.isPremiere) {
+      //   throw new VOTLocalizedError("VOTPremiere");
+      // }
+      // if (this.ytData.isLive) {
+      //   throw new VOTLocalizedError("VOTLiveNotSupported");
+      // }
       if (this.videoData.duration > 14_400) {
         throw new VOTLocalizedError("VOTVideoIsTooLong");
       }
