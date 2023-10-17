@@ -226,7 +226,7 @@ async function detectLang(cleanText) {
     });
     return await response.text();
   } catch (error) {
-    console.log("Error getting lang from text:", error)
+    console.error("Error getting lang from text:", error)
     return "en";
   }
 }
