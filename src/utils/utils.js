@@ -221,11 +221,16 @@ function langTo6391(lang) {
 }
 
 async function detectLang(cleanText) {
-  const response = await fetch("https://rust-server-531j.onrender.com/detect", {
-    method: "POST",
-    body: cleanText,
-  });
-  return await response.text();
+  try {
+    const response = await fetch("https://rust-server-531j.onrender.com/detect", {
+      method: "POST",
+      body: cleanText,
+    });
+    return await response.text();
+  } catch (error) {
+    console.error("Error getting lang from text:", error)
+    return "en";
+  }
 }
 
 function isPiPAvailable() {
