@@ -14,7 +14,7 @@ const dbData = [
     dontTranslateYourLang: 1,
   },
   {
-    audioProxy: 0,
+    audioProxy: lang === "uk" && BUILD_MODE === "cloudflare" ? 1 : 0, // #376 (To bypass blocking of Yandex servers)
   },
   {
     subtitlesMaxLength: 300,
