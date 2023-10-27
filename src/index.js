@@ -497,7 +497,7 @@ class VideoHandler {
       this.votTranslationLanguageSelect.fromSelect.addEventListener("change", async (e) => {
         debug.log("[onchange] select from language", e.target.value);
         this.videoData = await this.getVideoData();
-        await this.setSelectMenuValues(
+        this.setSelectMenuValues(
           e.target.value,
           this.videoData.responseLanguage
         );
@@ -509,7 +509,7 @@ class VideoHandler {
         await updateDB({ responseLanguage: this.data.responseLanguage });
         debug.log("Response Language value changed. New value: ", this.data.responseLanguage);
         this.videoData = await this.getVideoData();
-        await this.setSelectMenuValues(
+        this.setSelectMenuValues(
           this.videoData.detectedLanguage,
           this.data.responseLanguage
         );
@@ -856,7 +856,7 @@ class VideoHandler {
 
     if (!this.videoData.detectedLanguage) {
       this.videoData = await this.getVideoData();
-      await this.setSelectMenuValues(
+      this.setSelectMenuValues(
         this.videoData.detectedLanguage,
         this.videoData.responseLanguage
       );
