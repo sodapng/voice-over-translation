@@ -282,13 +282,13 @@ export function createVOTMenu(html) {
   };
 }
 
-export function createVOTDropdown(dropdownTitle, dialogTitle, items, options = {}) {
+export function createVOTSelect(selectTitle, dialogTitle, items, options = {}) {
   const onSelectCb = options.onSelectCb || function() {};
   const labelText = options.labelText || '';
   let selectedItems = [];
 
   const container = document.createElement("vot-block");
-  container.classList.add("vot-dropdown");
+  container.classList.add("vot-select");
 
   if (labelText) {
     const label = document.createElement('span');
@@ -297,33 +297,33 @@ export function createVOTDropdown(dropdownTitle, dialogTitle, items, options = {
   }
 
   const outer = document.createElement("vot-block");
-  outer.classList.add("vot-dropdown-outer");
+  outer.classList.add("vot-select-outer");
 
   const title = document.createElement("span");
-  title.classList.add("vot-dropdown-title")
-  title.innerText = dropdownTitle;
+  title.classList.add("vot-select-title")
+  title.innerText = selectTitle;
 
-  if (dropdownTitle === undefined) {
+  if (selectTitle === undefined) {
     title.innerText = items.find(i => i.selected === true)?.label;
   }
 
   const arrowIcon = document.createElement("vot-block");
-  arrowIcon.classList.add("vot-dropdown-arrow-icon");
+  arrowIcon.classList.add("vot-select-arrow-icon");
   arrowIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24"><path d="M12 14.975q-.2 0-.375-.062T11.3 14.7l-4.6-4.6q-.275-.275-.275-.7t.275-.7q.275-.275.7-.275t.7.275l3.9 3.9l3.9-3.9q.275-.275.7-.275t.7.275q.275.275.275.7t-.275.7l-4.6 4.6q-.15.15-.325.213t-.375.062Z"/></svg>`
 
   outer.append(title, arrowIcon);
   outer.onclick = () => {
-    const votDropdownDialog = createDialog(dialogTitle);
-    votDropdownDialog.container.classList.add('vot-dialog-temp');
-    votDropdownDialog.container.hidden = false;
-    document.documentElement.appendChild(votDropdownDialog.container);
+    const votSelectDialog = createDialog(dialogTitle);
+    votSelectDialog.container.classList.add('vot-dialog-temp');
+    votSelectDialog.container.hidden = false;
+    document.documentElement.appendChild(votSelectDialog.container);
 
     const contentList = document.createElement("vot-block");
-    contentList.classList.add("vot-dropdown-content-list");
+    contentList.classList.add("vot-select-content-list");
 
     for (const item of items) {
       const contentItem = document.createElement("vot-block");
-      contentItem.classList.add("vot-dropdown-content-item");
+      contentItem.classList.add("vot-select-content-item");
       contentItem.innerText = item.label;
       contentItem.dataset.votSelected = item.selected;
       contentItem.dataset.votValue = item.value;
@@ -362,12 +362,12 @@ export function createVOTDropdown(dropdownTitle, dialogTitle, items, options = {
         ));
     }
 
-    votDropdownDialog.bodyContainer.append(votSearchLangTextfield.container, contentList);
+    votSelectDialog.bodyContainer.append(votSearchLangTextfield.container, contentList);
     selectedItems = contentList.childNodes;
 
     // remove the modal so that they do not accumulate
-    votDropdownDialog.backdrop.onclick = votDropdownDialog.closeButton.onclick = () => {
-      votDropdownDialog.container.remove();
+    votSelectDialog.backdrop.onclick = votSelectDialog.closeButton.onclick = () => {
+      votSelectDialog.container.remove();
       selectedItems = [];
     };
   }
@@ -413,21 +413,21 @@ export function createVOTLanguageSelect(options) {
   const container = document.createElement("vot-block");
   container.classList.add("vot-lang-select");
 
-  const fromDropdown = createVOTDropdown(fromTitle, fromDialogTitle, fromItems, { onSelectCb: fromOnSelectCB });
+  const fromSelect = createVOTSelect(fromTitle, fromDialogTitle, fromItems, { onSelectCb: fromOnSelectCB });
 
   const icon = document.createElement("vot-block");
   icon.classList.add("vot-lang-select-icon");
   icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M647-440H200q-17 0-28.5-11.5T160-480q0-17 11.5-28.5T200-520h447L451-716q-12-12-11.5-28t12.5-28q12-11 28-11.5t28 11.5l264 264q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L508-188q-11 11-27.5 11T452-188q-12-12-12-28.5t12-28.5l195-195Z"/></svg>`;
 
-  const toDropdown = createVOTDropdown(toTitle, toDialogTitle, toItems, { onSelectCb: toOnSelectCB });
+  const toSelect = createVOTSelect(toTitle, toDialogTitle, toItems, { onSelectCb: toOnSelectCB });
 
-  container.append(fromDropdown.container, icon, toDropdown.container);
+  container.append(fromSelect.container, icon, toSelect.container);
 
   return {
     container,
-    fromDropdown,
+    fromSelect,
     icon,
-    toDropdown
+    toSelect
   };
 }
 
@@ -445,7 +445,7 @@ export default {
   createDialog,
   createVOTButton,
   createVOTMenu,
-  createVOTDropdown,
+  createVOTSelect,
   createVOTLanguageSelect,
   updateSlider
 };
