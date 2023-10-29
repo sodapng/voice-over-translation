@@ -7,6 +7,7 @@
   --vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   color: var(--vot-helper-theme);
   fill: var(--vot-helper-theme);
 
@@ -16,13 +17,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  & > .vot-select {
-    flex: 1 !important;
-
-    & > select {
-      width: 100% !important;
-    }
   }
 }

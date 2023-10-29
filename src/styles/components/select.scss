@@ -3,93 +3,79 @@
     display: none !important;
   }
 
-  --vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;
-  --vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;
-  --vot-helper-safari3: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;
-  --vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243)) !important;
-  --vot-helper-ontheme: var(--vot-ontheme-rgb, var(--vot-onprimary-rgb, 255, 255, 255)) !important;
-  z-index: 0 !important;
-  position: relative !important;
-  display: inline-block;
-  color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;
-  font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;
-  font-size: 16px !important;
-  line-height: 1.5 !important;
-  text-align: start !important;
+  --vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0) !important;
+  --vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87) !important;
+  --vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;
+  --vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: start;
 
-  & > span {
-    line-height: 32px !important;
-    margin-right: 12px !important;
-  }
+  color: var(--vot-helper-theme);
+  fill: var(--vot-helper-theme);
 
-  & > select {
-    -webkit-box-sizing: border-box !important;
-    -moz-box-sizing: border-box !important;
-    box-sizing: border-box !important;
-    margin: 0 !important;
+  &-outer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 120px;
+    width: 120px;
+    padding: 0 5px;
     border-style: solid !important;
     border-width: 1px !important;
-    border-color: var(--vot-helper-safari2) !important;
-    border-radius: 4px !important;
-    padding: 5px 3px 5px !important;
-    max-width: 150px !important;
-    width: calc(100% / 2 - 16px) !important;
-    height: 32px !important;
-    color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;
-    -webkit-text-fill-color: currentColor !important;
-    /* Safari */
-    background-color: transparent !important;
-    box-shadow:
-      inset 1px 0 transparent,
-      inset -1px 0 transparent,
-      inset 0 -1px transparent !important;
-    font-family: inherit !important;
-    font-size: inherit !important;
-    line-height: inherit !important;
-    caret-color: rgb(var(--vot-helper-theme)) !important;
-    transition:
-      border 0.2s,
-      box-shadow 0.2s !important;
-    cursor: pointer !important;
-    float: right !important;
-
-    & > option {
-      background: var(--vot-select-option-background, #1d1d1f) !important;
-    }
-  }
-
-  &:hover {
-    & > select {
-      border-color: var(--vot-helper-safari3) !important;
-    }
-
-    & > select:not(:focus):invalid {
-      border-color: var(--vot-helper-safari3) !important;
-    }
-  }
-
-  & > select:focus {
-    border-color: rgb(var(--vot-helper-theme)) !important;
-    box-shadow:
-      inset 1px 0 rgb(var(--vot-helper-theme)),
-      inset 0 1px rgb(var(--vot-helper-theme)),
-      inset -1px 0 rgb(var(--vot-helper-theme)),
-      inset 0 -1px rgb(var(--vot-helper-theme)) !important;
-    outline: none !important;
-  }
-
-  & > select:disabled {
     border-color: var(--vot-helper-safari1) !important;
-    color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;
-    pointer-events: none !important;
+    border-radius: 4px !important;
+    cursor: pointer;
+    transition: border 0.2s !important;
+    &:hover {
+      border-color: var(--vot-helper-safari2) !important;
+    }
   }
-}
 
-/* Faster transition in Safari for less noticable fractional font-size issue */
-@media not all and (min-resolution: 0.001dpcm) {
-  @supports (-webkit-appearance: none) {
-    .vot-select > select {
-      transition-duration: 0.1s !important;
+
+  &-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-arrow-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-content-list {
+    display: flex;
+    flex-direction: column;
+
+    .vot-select-content-item {
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      &:not([inert]):hover {
+        // background-color: rgb(38, 40, 45);
+        background-color: rgb(42, 44, 49);
+      }
+      &[data-vot-selected="true"] {
+        color: rgb(var(--vot-primary-rgb, 33, 150, 243));
+        background-color: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.2);
+        &:hover {
+          background-color: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.1) !important;
+        }
+      }
+      &[data-vot-disabled="true"] {
+        cursor: default;
+      }
+      &[hidden] {
+        display: none !important;
+      }
     }
   }
 }
