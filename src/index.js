@@ -304,38 +304,65 @@ class VideoHandler {
       this.votMenu.headerContainer.appendChild(this.votSettingsButton);
 
       this.votTranslationLanguageSelect = ui.createVOTLanguageSelect(
-        [
-          {
-            label: localizationProvider.get("videoLanguage"),
-            value: "default",
-            disabled: true,
+        {
+          fromTitle: localizationProvider.get("langs")[this.video.detectedLanguage],
+          fromDialogTitle: localizationProvider.get("videoLanguage"),
+          fromItems: genOptionsByOBJ(availableLangs, this.videoData.detectedLanguage),
+          fromOnSelectCB: async (e) => {
+            debug.log('[fromOnSelectCB] select from language', e.target.dataset.votValue)
+            this.videoData = await this.getVideoData();
+            this.setSelectMenuValues(
+              e.target.dataset.votValue,
+              this.videoData.responseLanguage
+            );
           },
-          ...genOptionsByOBJ(availableLangs, this.videoData.detectedLanguage),
-        ],
-        [
-          {
-            label: localizationProvider.get("translationLanguage"),
-            value: "default",
-            disabled: true,
-          },
-          ...genOptionsByOBJ(availableLangs, this.videoData.responseLanguage),
-          {
-            label: "─────────",
-            value: "separator",
-            disabled: true,
-          },
-          ...genOptionsByOBJ(additionalTTS, this.videoData.responseLanguage),
-        ]
-      );
+          toTitle: localizationProvider.get("langs")[this.video.responseLanguage],
+          toDialogTitle: localizationProvider.get("translationLanguage"),
+          toItems: [
+            ...genOptionsByOBJ(availableLangs, this.videoData.responseLanguage),
+            {
+              label: "─────────",
+              value: "separator",
+              disabled: true,
+            },
+            ...genOptionsByOBJ(additionalTTS, this.videoData.responseLanguage),
+          ],
+          toOnSelectCB: async (e) => {
+            const newLang = e.target.dataset.votValue;
+            debug.log("[toOnSelectCB] select to language", newLang);
+            this.data.responseLanguage = this.translateToLang = newLang;
+            await updateDB({ responseLanguage: this.data.responseLanguage });
+            debug.log("Response Language value changed. New value: ", this.data.responseLanguage);
+            this.videoData = await this.getVideoData();
+            this.setSelectMenuValues(
+              this.videoData.detectedLanguage,
+              this.data.responseLanguage
+            );
+          }
+        }
+      )
+
       this.votMenu.bodyContainer.appendChild(this.votTranslationLanguageSelect.container);
 
-      this.votSubtitlesSelect = ui.createSelect(localizationProvider.get("VOTSubtitles"), [
+      this.votSubtitlesSelect = ui.createVOTSelect(
+        localizationProvider.get("VOTSubtitlesDisabled"),
+        localizationProvider.get("VOTSubtitles"),
+        [
+          {
+            label: localizationProvider.get("VOTSubtitlesDisabled"),
+            value: "disabled",
+            selected: true,
+            disabled: false,
+          }
+        ],
         {
-          label: localizationProvider.get("VOTSubtitlesDisabled"),
-          value: "disabled",
-          disabled: false,
+          onSelectCb: async (e) => {
+            await this.changeSubtitlesLang(e.target.dataset.votValue);
+          },
+          labelText: localizationProvider.get("VOTSubtitles")
         }
-      ]);
+      )
+
       this.votMenu.bodyContainer.appendChild(this.votSubtitlesSelect.container);
 
       this.votVideoVolumeSlider = ui.createSlider(`${localizationProvider.get("VOTVolume")}: <strong>${this.getVideoVolume() * 100}%</strong>`, this.getVideoVolume() * 100);
@@ -404,7 +431,18 @@ class VideoHandler {
       this.votAboutHeader = ui.createHeader(localizationProvider.get("about"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votAboutHeader);
 
-      this.votLanguageSelect = ui.createSelect(localizationProvider.get("VOTMenuLanguage"), genOptionsByOBJ(availableLocales, window.localStorage.getItem("vot-locale-lang-override") ?? "auto"));
+      this.votLanguageSelect = ui.createVOTSelect(
+        localizationProvider.get("langs")[window.localStorage.getItem("vot-locale-lang-override") ?? "auto"],
+        localizationProvider.get("VOTMenuLanguage"),
+        genOptionsByOBJ(availableLocales, window.localStorage.getItem("vot-locale-lang-override") ?? "auto"),
+        {
+          onSelectCb: (e) => {
+            window.localStorage.setItem("vot-locale-lang-override", e.target.dataset.votValue);
+          },
+          labelText: localizationProvider.get("VOTMenuLanguage")
+        }
+      )
+
       this.votSettingsDialog.bodyContainer.appendChild(this.votLanguageSelect.container);
 
       this.votShowPiPButtonCheckbox = ui.createCheckbox(localizationProvider.get("VOTShowPiPButton"), this.data?.showPiPButton ?? false);
@@ -492,31 +530,6 @@ class VideoHandler {
           document.mozCancelFullscreen && document.mozCancelFullscreen();
           document.exitFullscreen && document.exitFullscreen();
         }
-      });
-
-      this.votTranslationLanguageSelect.fromSelect.addEventListener("change", async (e) => {
-        debug.log("[onchange] select from language", e.target.value);
-        this.videoData = await this.getVideoData();
-        this.setSelectMenuValues(
-          e.target.value,
-          this.videoData.responseLanguage
-        );
-      });
-
-      this.votTranslationLanguageSelect.toSelect.addEventListener("change", async (e) => {
-        debug.log("[onchange] select to language", e.target.value);
-        this.data.responseLanguage = this.translateToLang = e.target.value;
-        await updateDB({ responseLanguage: this.data.responseLanguage });
-        debug.log("Response Language value changed. New value: ", this.data.responseLanguage);
-        this.videoData = await this.getVideoData();
-        this.setSelectMenuValues(
-          this.videoData.detectedLanguage,
-          this.data.responseLanguage
-        );
-      });
-
-      this.votSubtitlesSelect.select.addEventListener("change", async (e) => {
-        await this.changeSubtitlesLang(e.target.value);
       });
 
       this.votVideoVolumeSlider.input.addEventListener("input", (e) => {
@@ -615,10 +628,6 @@ class VideoHandler {
         this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
       });
 
-      this.votLanguageSelect.select.addEventListener("change", (e) => {
-        window.localStorage.setItem("vot-locale-lang-override", e.target.value);
-      });
-
       this.votShowPiPButtonCheckbox.input.addEventListener("change", async (e) => {
         this.data.showPiPButton = Number(e.target.checked);
         await updateDB({ showPiPButton: this.data.showPiPButton });
@@ -706,14 +715,16 @@ class VideoHandler {
       const menu = this.votMenu.container;
       const container = this.container;
       const settings = this.votSettingsDialog.container;
+      const tempDialog = document.querySelector('.vot-dialog-temp');
 
       const isButton = button.contains(e);
       const isMenu = menu.contains(e);
       const isVideo = container.contains(e);
       const isSettings = settings.contains(e);
+      const isTempDialog = tempDialog?.contains(e) ?? false;
 
-      debug.log(`[document click] ${isButton} ${isMenu} ${isVideo} ${isSettings}`);
-      if (!(!isButton && !isMenu && !isSettings)) return;
+      debug.log(`[document click] ${isButton} ${isMenu} ${isVideo} ${isSettings} ${isTempDialog}`);
+      if (!(!isButton && !isMenu && !isSettings && !isTempDialog)) return;
       if (!isVideo) this.logout(0);
 
       this.votMenu.container.hidden = true;
@@ -737,6 +748,14 @@ class VideoHandler {
     addExtraEventListener(this.votButton.container, "mousemove" , this.changeOpacityOnEventBound);
     addExtraEventListener(this.votMenu.container, "mousemove" , this.changeOpacityOnEventBound);
     addExtraEventListeners(document, ["touchstart", "touchmove", "touchend"], this.changeOpacityOnEventBound);
+
+    // fix youtube hold to fast
+    addExtraEventListener(this.votButton.container, "mousedown", (e) => {
+      e.stopImmediatePropagation();
+    })
+    addExtraEventListener(this.votMenu.container, "mousedown", (e) => {
+      e.stopImmediatePropagation();
+    })
 
     addExtraEventListener(this.video, "abort", () => {
       debug.log("lipsync mode is abort");
@@ -790,8 +809,9 @@ class VideoHandler {
 
   async changeSubtitlesLang(subs) {
     debug.log("[onchange] subtitles", subs);
-    this.votSubtitlesSelect.select.value = subs;
+    this.votSubtitlesSelect.setSelected(subs)
     if (subs === "disabled") {
+      this.votSubtitlesSelect.setTitle(localizationProvider.get("VOTSubtitlesDisabled"));
       this.subtitlesWidget.setContent(null);
       this.votDownloadSubtitlesButton.hidden = true;
       this.downloadSubtitlesUrl = null;
@@ -804,35 +824,35 @@ class VideoHandler {
   }
 
   async updateSubtitlesLangSelect() {
-    const oldValue = this.votSubtitlesSelect.select.value;
-    this.votSubtitlesSelect.select.innerHTML = "";
+    const updatedOptions = [
+      {
+        label: localizationProvider.get("VOTSubtitlesDisabled"),
+        value: "disabled",
+        selected: true,
+        disabled: false,
+      },
+      ...this.subtitlesList.map((s, idx) => ({
+        label: (localizationProvider.get("langs")[s.language] ??
+            s.language.toUpperCase()) +
+          (s.translatedFromLanguage
+            ? ` ${localizationProvider.get("VOTTranslatedFrom")} ${
+                localizationProvider.get("langs")[s.translatedFromLanguage] ??
+                s.translatedFromLanguage.toUpperCase()
+              }`
+            : "") +
+          (s.source !== "yandex" ? ` ${s.source}` : "") +
+          (s.isAutoGenerated
+            ? ` (${localizationProvider.get("VOTAutogenerated")})`
+            : ""),
+        value: idx,
+        selected: false,
+        disabled: false
+      }))
+    ]
 
-    const disabledOption = document.createElement("option");
-    disabledOption.value = "disabled";
-    disabledOption.innerHTML = localizationProvider.get("VOTSubtitlesDisabled");
-    this.votSubtitlesSelect.select.append(disabledOption);
+    this.votSubtitlesSelect.updateItems(updatedOptions);
 
-    for (let i = 0; i < this.subtitlesList.length; i++) {
-      const s = this.subtitlesList[i];
-      const option = document.createElement("option");
-      option.value = i;
-      option.innerHTML =
-        (localizationProvider.get("langs")[s.language] ??
-          s.language.toUpperCase()) +
-        (s.translatedFromLanguage
-          ? ` ${localizationProvider.get("VOTTranslatedFrom")} ${
-              localizationProvider.get("langs")[s.translatedFromLanguage] ??
-              s.translatedFromLanguage.toUpperCase()
-            }`
-          : "") +
-        (s.source !== "yandex" ? ` ${s.source}` : "") +
-        (s.isAutoGenerated
-          ? ` (${localizationProvider.get("VOTAutogenerated")})`
-          : "");
-          this.votSubtitlesSelect.select.append(option);
-    }
-
-    await this.changeSubtitlesLang(oldValue);
+    await this.changeSubtitlesLang(updatedOptions[0].value);
   }
 
   async updateSubtitles() {
@@ -906,8 +926,10 @@ class VideoHandler {
   }
 
   setSelectMenuValues(from, to) {
-    this.votTranslationLanguageSelect.fromSelect.value = from;
-    this.votTranslationLanguageSelect.toSelect.value = to;
+    this.votTranslationLanguageSelect.fromSelect.setTitle(localizationProvider.get('langs')[from]);
+    this.votTranslationLanguageSelect.toSelect.setTitle(localizationProvider.get('langs')[to]);
+    this.votTranslationLanguageSelect.fromSelect.setSelected(from);
+    this.votTranslationLanguageSelect.toSelect.setSelected(to);
     console.log(`[VOT] Set translation from ${from} to ${to}`);
     this.videoData.detectedLanguage = from;
     this.videoData.responseLanguage = to;
