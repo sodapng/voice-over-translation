@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.5.0-beta4
+// @version 1.5.0-beta5
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -128,7 +128,7 @@
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `.vot-button{--vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243));--vot-helper-ontheme: var(--vot-ontheme-rgb, var(--vot-onprimary-rgb, 255, 255, 255));position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;border:none;border-radius:4px;padding:0 16px;min-width:64px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;color:rgb(var(--vot-helper-ontheme));background-color:rgb(var(--vot-helper-theme));box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:36px;outline:none;cursor:pointer;transition:box-shadow .2s}.vot-button[hidden]{display:none !important}.vot-button::-moz-focus-inner{border:none}.vot-button::before,.vot-button::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-button::before{background-color:rgb(var(--vot-helper-ontheme));transition:opacity .2s}.vot-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-button:hover{box-shadow:0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)}.vot-button:hover::before{opacity:.08}.vot-button:active{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}.vot-button:active::after{opacity:.32;background-size:100% 100%;transition:background-size 0s}.vot-button:disabled{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.12);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);box-shadow:none;cursor:initial}.vot-button:disabled::before,.vot-button:disabled::after{opacity:0}.vot-outlined-button{--vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243));position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0;border:solid 1px;border-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.24);border-radius:4px;padding:0 16px;min-width:64px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;color:rgb(var(--vot-helper-theme));background-color:rgba(0,0,0,0);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:34px;outline:none;cursor:pointer}.vot-outlined-button[hidden]{display:none !important}.vot-outlined-button::-moz-focus-inner{border:none}.vot-outlined-button::before,.vot-outlined-button::after{content:"";position:absolute;border-radius:3px;top:0;right:0;bottom:0;left:0;opacity:0}.vot-outlined-button::before{background-color:rgb(var(--vot-helper-theme));transition:opacity .2s}.vot-outlined-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-outlined-button:hover::before{opacity:.04}.vot-outlined-button:active::after{opacity:.16;background-size:100% 100%;transition:background-size 0s}.vot-outlined-button:disabled{background-color:rgba(0,0,0,0);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-outlined-button:disabled::before,.vot-outlined-button:disabled::after{opacity:0}.vot-text-button{--vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243));position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0;border:none;border-radius:4px;padding:0 8px;min-width:64px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;color:rgb(var(--vot-helper-theme));background-color:rgba(0,0,0,0);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:36px;outline:none;cursor:pointer}.vot-text-button[hidden]{display:none !important}.vot-text-button::-moz-focus-inner{border:none}.vot-text-button::before,.vot-text-button::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-text-button::before{background-color:rgb(var(--vot-helper-theme));transition:opacity .2s}.vot-text-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-text-button:hover::before{opacity:.04}.vot-text-button:active::after{opacity:.16;background-size:100% 100%;transition:background-size 0s}.vot-text-button:disabled{background-color:rgba(0,0,0,0);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-text-button:disabled::before,.vot-text-button:disabled::after{opacity:0}.vot-icon-button{--vot-helper-onsurface: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87);position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0;border:none;border-radius:50%;padding:0;width:36px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;fill:var(--vot-helper-onsurface);color:var(--vot-helper-onsurface);background-color:rgba(0,0,0,0);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:36px;outline:none;cursor:pointer}.vot-icon-button[hidden]{display:none !important}.vot-icon-button::-moz-focus-inner{border:none}.vot-icon-button::before,.vot-icon-button::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-icon-button::before{background-color:var(--vot-helper-onsurface);transition:opacity .2s}.vot-icon-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity .3s,background-size .4s}.vot-icon-button:hover::before{opacity:.04}.vot-icon-button:active::after{opacity:.32;background-size:100% 100%;transition:background-size 0s,opacity 0s}.vot-icon-button:disabled{background-color:rgba(0,0,0,0);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);fill:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-icon-button:disabled::before,.vot-icon-button:disabled::after{opacity:0}.vot-textfield{--vot-helper-theme: rgb(var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243))) !important;--vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;--vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;--vot-helper-safari3: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;position:relative !important;display:inline-block;padding-top:6px !important;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;font-size:16px !important;line-height:1.5 !important;text-align:start !important}.vot-textfield[hidden]{display:none !important}.vot-textfield>input,.vot-textfield>textarea{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin:0 !important;border-style:solid !important;border-width:1px !important;border-color:rgba(0,0,0,0) var(--vot-helper-safari2) var(--vot-helper-safari2) !important;border-radius:4px !important;padding:15px 13px 15px !important;width:100% !important;height:inherit !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;-webkit-text-fill-color:currentColor !important;background-color:rgba(0,0,0,0) !important;box-shadow:inset 1px 0 rgba(0,0,0,0),inset -1px 0 rgba(0,0,0,0),inset 0 -1px rgba(0,0,0,0) !important;font-family:inherit !important;font-size:inherit !important;line-height:inherit !important;caret-color:var(--vot-helper-theme) !important;transition:border .2s,box-shadow .2s !important}.vot-textfield>input:not(:focus):placeholder-shown,.vot-textfield>textarea:not(:focus):placeholder-shown{border-top-color:var(--vot-helper-safari2) !important}.vot-textfield>input+span,.vot-textfield>textarea+span{position:absolute !important;top:0 !important;left:0 !important;display:flex !important;width:100% !important;max-height:100% !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;font-size:75% !important;line-height:15px !important;cursor:text !important;transition:color .2s,font-size .2s,line-height .2s !important;pointer-events:none !important}.vot-textfield>input:not(:focus):placeholder-shown+span,.vot-textfield>textarea:not(:focus):placeholder-shown+span{font-size:inherit !important;line-height:68px !important}.vot-textfield>input+span::before,.vot-textfield>input+span::after,.vot-textfield>textarea+span::before,.vot-textfield>textarea+span::after{content:"" !important;display:block !important;-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin-top:6px !important;border-top:solid 1px var(--vot-helper-safari2) !important;min-width:10px !important;height:8px !important;pointer-events:none !important;box-shadow:inset 0 1px rgba(0,0,0,0) !important;transition:border .2s,box-shadow .2s !important}.vot-textfield>input+span::before,.vot-textfield>textarea+span::before{margin-right:4px !important;border-left:solid 1px rgba(0,0,0,0) !important;border-radius:4px 0 !important}.vot-textfield>input+span::after,.vot-textfield>textarea+span::after{flex-grow:1 !important;margin-left:4px !important;border-right:solid 1px rgba(0,0,0,0) !important;border-radius:0 4px !important}.vot-textfield>input:not(:focus):placeholder-shown+span::before,.vot-textfield>input:not(:focus):placeholder-shown+span::after,.vot-textfield>textarea:not(:focus):placeholder-shown+span::before,.vot-textfield>textarea:not(:focus):placeholder-shown+span::after{border-top-color:rgba(0,0,0,0) !important}.vot-textfield:hover>input,.vot-textfield:hover>textarea{border-color:rgba(0,0,0,0) var(--vot-helper-safari3) var(--vot-helper-safari3) !important}.vot-textfield:hover>input+span::before,.vot-textfield:hover>input+span::after,.vot-textfield:hover>textarea+span::before,.vot-textfield:hover>textarea+span::after{border-top-color:var(--vot-helper-safari3) !important}.vot-textfield:hover>input:not(:focus):placeholder-shown,.vot-textfield:hover>textarea:not(:focus):placeholder-shown{border-color:var(--vot-helper-safari3) !important}.vot-textfield>input:focus,.vot-textfield>textarea:focus{border-color:rgba(0,0,0,0) var(--vot-helper-theme) var(--vot-helper-theme) !important;box-shadow:inset 1px 0 var(--vot-helper-theme),inset -1px 0 var(--vot-helper-theme),inset 0 -1px var(--vot-helper-theme) !important;outline:none !important}.vot-textfield>input:focus+span,.vot-textfield>textarea:focus+span{color:var(--vot-helper-theme) !important}.vot-textfield>input:focus+span::before,.vot-textfield>input:focus+span::after,.vot-textfield>textarea:focus+span::before,.vot-textfield>textarea:focus+span::after{border-top-color:var(--vot-helper-theme) !important;box-shadow:inset 0 1px var(--vot-helper-theme) !important}.vot-textfield>input:disabled,.vot-textfield>input:disabled+span,.vot-textfield>textarea:disabled,.vot-textfield>textarea:disabled+span{border-color:rgba(0,0,0,0) var(--vot-helper-safari1) var(--vot-helper-safari1) !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;pointer-events:none !important}.vot-textfield>input:disabled+span::before,.vot-textfield>input:disabled+span::after,.vot-textfield>textarea:disabled+span::before,.vot-textfield>textarea:disabled+span::after{border-top-color:var(--vot-helper-safari1) !important}.vot-textfield>input:disabled:placeholder-shown,.vot-textfield>input:disabled:placeholder-shown+span,.vot-textfield>textarea:disabled:placeholder-shown,.vot-textfield>textarea:disabled:placeholder-shown+span{border-top-color:var(--vot-helper-safari1) !important}.vot-textfield>input:disabled:placeholder-shown+span::before,.vot-textfield>input:disabled:placeholder-shown+span::after,.vot-textfield>textarea:disabled:placeholder-shown+span::before,.vot-textfield>textarea:disabled:placeholder-shown+span::after{border-top-color:rgba(0,0,0,0) !important}@media not all and (min-resolution: 0.001dpcm){@supports(-webkit-appearance: none){.vot-textfield>input,.vot-textfield>input+span,.vot-textfield>textarea,.vot-textfield>textarea+span,.vot-textfield>input+span::before,.vot-textfield>input+span::after,.vot-textfield>textarea+span::before,.vot-textfield>textarea+span::after{transition-duration:.1s !important}}}.vot-checkbox{--vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243));--vot-helper-ontheme: var(--vot-ontheme-rgb, var(--vot-onprimary-rgb, 255, 255, 255));z-index:0;position:relative;display:inline-block;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;text-align:start}.vot-checkbox[hidden]{display:none !important}.vot-checkbox>input{appearance:none;-moz-appearance:none;-webkit-appearance:none;z-index:1;position:absolute;display:block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:3px 1px;border:solid 2px;background:rgba(0,0,0,0);border-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6);border-radius:2px;width:18px;height:18px;outline:none;cursor:pointer;transition:border-color .2s,background-color .2s}.vot-checkbox>input+span{display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding-left:30px;width:inherit;cursor:pointer}.vot-checkbox>input+span::before{content:"";position:absolute;left:-10px;top:-8px;display:block;border-radius:50%;width:40px;height:40px;background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0));opacity:0;transform:scale(1);pointer-events:none;transition:opacity .3s,transform .2s}.vot-checkbox>input+span::after{content:"";z-index:1;display:block;position:absolute;top:3px;left:1px;-webkit-box-sizing:content-box !important;-moz-box-sizing:content-box !important;box-sizing:content-box !important;width:10px;height:5px;border:solid 2px rgba(0,0,0,0);border-right-width:0;border-top-width:0;pointer-events:none;transform:translate(3px, 4px) rotate(-45deg);transition:border-color .2s}.vot-checkbox>input:checked,.vot-checkbox>input:indeterminate{border-color:rgb(var(--vot-helper-theme));background-color:rgb(var(--vot-helper-theme))}.vot-checkbox>input:checked+span::before,.vot-checkbox>input:indeterminate+span::before{background-color:rgb(var(--vot-helper-theme))}.vot-checkbox>input:checked+span::after,.vot-checkbox>input:indeterminate+span::after{border-color:rgb(var(--vot-helper-ontheme, 255, 255, 255))}.vot-checkbox>input:indeterminate+span::after{border-left-width:0;transform:translate(4px, 3px)}.vot-checkbox:hover>input+span::before{opacity:.04}.vot-checkbox:active>input,.vot-checkbox:active:hover>input{border-color:rgb(var(--vot-helper-theme))}.vot-checkbox:active>input:checked{border-color:rgba(0,0,0,0);background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6)}.vot-checkbox:active>input+span::before{opacity:1;transform:scale(0);transition:transform 0s,opacity 0s}.vot-checkbox>input:disabled{border-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-checkbox>input:disabled:checked,.vot-checkbox>input:disabled:indeterminate{border-color:rgba(0,0,0,0);background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38)}.vot-checkbox>input:disabled+span{color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-checkbox>input:disabled+span::before{opacity:0;transform:scale(0)}.vot-slider{--vot-safari-helper1: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.04) !important;--vot-safari-helper2: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.12) !important;--vot-safari-helper3: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.16) !important;--vot-safari-helper4: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important;display:inline-block;width:100% !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;font-family:var(--vot-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;font-size:16px !important;line-height:1.5 !important;text-align:start !important}.vot-slider[hidden]{display:none !important}.vot-slider>input{-webkit-appearance:none !important;appearance:none !important;position:relative !important;top:24px !important;display:block !important;margin:0 0 -36px !important;width:100% !important;height:36px !important;background-color:rgba(0,0,0,0) !important;cursor:pointer !important}.vot-slider>input:last-child{position:static !important;margin:0 !important}.vot-slider>span{display:inline-block !important;margin-bottom:36px !important}.vot-slider>input:disabled{cursor:default !important;opacity:.38 !important}.vot-slider>input:disabled+span{color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input::-webkit-slider-runnable-track{margin:17px 0 !important;border-radius:1px !important;width:100% !important;height:2px !important;background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input::-webkit-slider-thumb{margin:0 !important;appearance:none !important;-webkit-appearance:none !important;border:none !important;border-radius:50% !important;height:2px !important;width:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important;transform:scale(6, 6) !important;transition:box-shadow .2s !important}.vot-slider:hover>input::-webkit-slider-thumb{box-shadow:0 0 0 2px var(--vot-safari-helper1) !important}.vot-slider>input:active::-webkit-slider-thumb{box-shadow:0 0 0 2px var(--vot-safari-helper4) !important}.vot-slider>input:disabled::-webkit-slider-runnable-track{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input:disabled::-webkit-slider-thumb{background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0)) !important;color:rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;box-shadow:0 0 0 1px rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;transform:scale(4, 4) !important}.vot-slider>input::-moz-range-track{margin:17px 0 !important;border-radius:1px !important;width:100% !important;height:2px !important;background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input::-moz-range-thumb{appearance:none !important;-moz-appearance:none !important;border:none !important;border-radius:50% !important;height:2px !important;width:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important;transform:scale(6, 6) !important;transition:box-shadow .2s !important}.vot-slider>input::-moz-range-progress{border-radius:1px !important;height:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important}.vot-slider:hover>input:hover::-moz-range-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.04) !important}.vot-slider>input:active::-moz-range-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input:disabled::-moz-range-track{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input:disabled::-moz-range-progress{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important}.vot-slider>input:disabled::-moz-range-thumb{background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0)) !important;box-shadow:0 0 0 1px rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;transform:scale(4, 4) !important}.vot-slider>input::-moz-focus-outer{border:none !important}.vot-slider>input::-ms-track{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin:17px 0 !important;border:none !important;border-radius:1px !important;padding:0 17px !important;width:100% !important;height:2px !important;background-color:rgba(0,0,0,0) !important}.vot-slider>input::-ms-fill-lower{border-radius:1px !important;height:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important}.vot-slider>input::-ms-fill-upper{border-radius:1px !important;height:2px !important;background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input::-ms-thumb{appearance:none !important;margin:0 17px !important;border:none !important;border-radius:50% !important;height:2px !important;width:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important;transform:scale(6, 6) !important;transition:box-shadow .2s !important}.vot-slider:hover>input::-ms-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.04) !important}.vot-slider>input:active::-ms-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input:disabled::-ms-fill-lower{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input:disabled::-ms-fill-upper{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;opacity:.38 !important}.vot-slider>input:disabled::-ms-thumb{background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0)) !important;box-shadow:0 0 0 1px rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;transform:scale(4, 4) !important}.vot-slider>input::before{content:"" !important;display:block !important;position:absolute !important;width:calc(100%*var(--vot-progress, 0)) !important;height:2px !important;top:calc(50% - 1px) !important;background:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important}.vot-select{--vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;--vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;--vot-helper-safari3: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;--vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243)) !important;--vot-helper-ontheme: var(--vot-ontheme-rgb, var(--vot-onprimary-rgb, 255, 255, 255)) !important;z-index:0 !important;position:relative !important;display:inline-block;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;font-size:16px !important;line-height:1.5 !important;text-align:start !important}.vot-select[hidden]{display:none !important}.vot-select>span{line-height:32px !important;margin-right:12px !important}.vot-select>select{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin:0 !important;border-style:solid !important;border-width:1px !important;border-color:var(--vot-helper-safari2) !important;border-radius:4px !important;padding:5px 3px 5px !important;max-width:150px !important;width:calc(50% - 16px) !important;height:32px !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;-webkit-text-fill-color:currentColor !important;background-color:rgba(0,0,0,0) !important;box-shadow:inset 1px 0 rgba(0,0,0,0),inset -1px 0 rgba(0,0,0,0),inset 0 -1px rgba(0,0,0,0) !important;font-family:inherit !important;font-size:inherit !important;line-height:inherit !important;caret-color:rgb(var(--vot-helper-theme)) !important;transition:border .2s,box-shadow .2s !important;cursor:pointer !important;float:right !important}.vot-select>select>option{background:var(--vot-select-option-background, #1d1d1f) !important}.vot-select:hover>select{border-color:var(--vot-helper-safari3) !important}.vot-select:hover>select:not(:focus):invalid{border-color:var(--vot-helper-safari3) !important}.vot-select>select:focus{border-color:rgb(var(--vot-helper-theme)) !important;box-shadow:inset 1px 0 rgb(var(--vot-helper-theme)),inset 0 1px rgb(var(--vot-helper-theme)),inset -1px 0 rgb(var(--vot-helper-theme)),inset 0 -1px rgb(var(--vot-helper-theme)) !important;outline:none !important}.vot-select>select:disabled{border-color:var(--vot-helper-safari1) !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;pointer-events:none !important}@media not all and (min-resolution: 0.001dpcm){@supports(-webkit-appearance: none){.vot-select>select{transition-duration:.1s !important}}}.vot-header{color:rgba(var(--vot-helper-onsurface-rgb), 0.87);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-weight:bold;line-height:1.5;text-align:start}.vot-header[hidden]{display:none !important}.vot-header:not(:first-child){padding-top:8px}.vot-header-level-1{font-size:2em}.vot-header-level-2{font-size:1.5em}.vot-header-level-3{font-size:1.17em}.vot-header-level-4{font-size:1em}.vot-header-level-5{font-size:.83em}.vot-header-level-6{font-size:.67em}.vot-info{display:flex;color:rgba(var(--vot-helper-onsurface-rgb), 0.87);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;text-align:start}.vot-info[hidden]{display:none !important}.vot-info>:not(:first-child){color:rgba(var(--vot-helper-onsurface-rgb), 0.5);flex:1;margin-left:8px}.vot-lang-select{--vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87);display:flex;align-items:center;color:var(--vot-helper-theme);fill:var(--vot-helper-theme)}.vot-lang-select[hidden]{display:none !important}.vot-lang-select-icon{width:32px;height:32px;display:flex;justify-content:center;align-items:center}.vot-lang-select>.vot-select{flex:1 !important}.vot-lang-select>.vot-select>select{width:100% !important}.vot-segmented-button{--vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87);overflow:hidden;position:absolute;left:50%;top:5rem;transform:translate(-50%);user-select:none;display:flex;align-items:center;height:32px;max-width:100vw;background:rgb(var(--vot-surface-rgb, 255, 255, 255));color:var(--vot-helper-theme);fill:var(--vot-helper-theme);border-radius:4px;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;cursor:default;transition:opacity .5s;z-index:100}.vot-segmented-button[hidden]{display:none !important}.vot-segmented-button *{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important}.vot-segmented-button .vot-separator{width:1px;height:50%;background:rgba(var(--vot-helper-theme-rgb), 0.1)}.vot-segmented-button .vot-separator[hidden]{display:none !important}.vot-segmented-button .vot-segment,.vot-segmented-button .vot-segment-only-icon{position:relative;overflow:hidden;display:flex;justify-content:center;align-items:center;height:100%;padding:0 8px;background-color:rgba(0,0,0,0);color:inherit;transition:background-color 100ms ease-in-out;border:none}.vot-segmented-button .vot-segment[hidden],.vot-segmented-button [hidden].vot-segment-only-icon{display:none !important}.vot-segmented-button .vot-segment::before,.vot-segmented-button .vot-segment-only-icon::before,.vot-segmented-button .vot-segment::after,.vot-segmented-button .vot-segment-only-icon::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-segmented-button .vot-segment::before,.vot-segmented-button .vot-segment-only-icon::before{background-color:rgb(var(--vot-helper-theme-rgb));transition:opacity .2s}.vot-segmented-button .vot-segment::after,.vot-segmented-button .vot-segment-only-icon::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-segmented-button .vot-segment:hover::before,.vot-segmented-button .vot-segment-only-icon:hover::before{opacity:.04}.vot-segmented-button .vot-segment:active::after,.vot-segmented-button .vot-segment-only-icon:active::after{opacity:.16;background-size:100% 100%;transition:background-size 0s}.vot-segmented-button .vot-segment-only-icon{min-width:32px;padding:0}.vot-segmented-button .vot-segment-label{margin-left:8px;white-space:nowrap}.vot-segmented-button[data-status=success] .vot-translate-button{color:rgb(var(--vot-primary-rgb, 33, 150, 243));fill:rgb(var(--vot-primary-rgb, 33, 150, 243))}.vot-segmented-button[data-status=error] .vot-translate-button{color:#f28b82;fill:#f28b82}.vot-menu{--vot-helper-surface-rgb: var(--vot-surface-rgb, 255, 255, 255);--vot-helper-surface: rgb(var(--vot-helper-surface-rgb));--vot-helper-onsurface-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-onsurface: rgba(var(--vot-helper-onsurface-rgb), 0.87);overflow:hidden;position:absolute;left:50%;top:calc(5rem + 32px + 16px);user-select:none;background-color:var(--vot-helper-surface);color:var(--vot-helper-onsurface);border-radius:8px;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;min-width:300px;cursor:default;z-index:100;visibility:visible;opacity:1;transform-origin:top;transform:translate(-50%) scale(1);transition:opacity .3s,transform .1s}.vot-menu *{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important}.vot-menu[hidden]{pointer-events:none;display:block !important;pointer-events:none;visibility:hidden;opacity:0;transform:translate(-50%) scale(0)}.vot-menu-content-wrapper{display:flex;flex-direction:column;min-height:100px;max-height:calc(var(--vot-container-height, 75vh) - (5rem + 32px + 16px)*2);overflow:auto}.vot-menu-header-container{flex-shrink:0;align-items:flex-start;display:flex;min-height:31px}.vot-menu-header-container:empty{padding:0 0 16px 0}.vot-menu-header-container>.vot-icon-button{margin-inline-end:4px;margin-top:4px}.vot-menu-title-container{display:flex;flex:1;font-size:inherit;font-weight:inherit;margin:0;outline:0;text-align:start}.vot-menu-title{flex:1;font-size:16px;line-height:1;padding-bottom:16px;padding-inline-end:16px;padding-inline-start:16px;padding-top:16px}.vot-menu-body-container{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:flex;flex-direction:column;min-height:1.375rem;overflow:auto;padding:0 16px;gap:8px;overscroll-behavior:contain;scrollbar-color:rgba(var(--vot-helper-onsurface-rgb), 0.1) var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar,.vot-menu-body-container::-webkit-scrollbar-track{height:12px !important;width:12px !important;background:var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar-thumb{background:rgba(var(--vot-helper-onsurface-rgb), 0.1) !important;-webkit-border-radius:1ex !important;border:5px solid var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar-thumb:hover{border:3px solid var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar-corner{background:var(--vot-helper-surface) !important}.vot-menu-footer-container{flex-shrink:0;display:flex;justify-content:flex-end;padding-bottom:16px;padding-inline-end:16px;padding-inline-start:16px;padding-top:16px}.vot-menu-footer-container:empty{padding:16px 0 0 0}.vot-dialog-container{visibility:visible;position:absolute;z-index:10000}.vot-dialog-container[hidden]{display:block !important;pointer-events:none;visibility:hidden}.vot-dialog-container *{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important}.vot-dialog-backdrop{background-color:rgba(0,0,0,.6);position:fixed;top:0;right:0;bottom:0;left:0;opacity:1;transition:opacity .3s}[hidden]>.vot-dialog-backdrop{pointer-events:none;opacity:0}.vot-dialog{--vot-helper-surface-rgb: var(--vot-surface-rgb, 255, 255, 255);--vot-helper-surface: rgb(var(--vot-helper-surface-rgb));--vot-helper-onsurface-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-onsurface: rgba(var(--vot-helper-onsurface-rgb), 0.87);display:block;position:fixed;top:50%;bottom:50%;max-width:initial;max-height:initial;width:min(var(--vot-dialog-width, 512px),100%);height:fit-content;inset-inline-start:0px;inset-inline-end:0px;inset-block-start:0px;inset-block-end:0px;border-radius:8px;margin:auto;padding:0;background-color:var(--vot-helper-surface);color:var(--vot-helper-onsurface);box-shadow:0 0 16px rgba(0,0,0,.12),0 16px 16px rgba(0,0,0,.24);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;user-select:none;visibility:visible;overflow:auto;overflow-y:hidden;opacity:1;transform-origin:center;transform:scale(1);transition:opacity .3s,transform .1s}[hidden]>.vot-dialog{pointer-events:none;opacity:0;transform:scale(0.5);transition:opacity .1s,transform .2s}.vot-dialog-content-wrapper{display:flex;flex-direction:column;max-height:75vh;overflow:auto}.vot-dialog-header-container{flex-shrink:0;align-items:flex-start;display:flex;min-height:31px}.vot-dialog-header-container:empty{padding:0 0 20px 0}.vot-dialog-header-container>.vot-icon-button{margin-inline-end:4px;margin-top:4px}.vot-dialog-title-container{display:flex;flex:1;font-size:inherit;font-weight:inherit;margin:0;outline:0}.vot-dialog-title{flex:1;font-size:115.3846153846%;font-weight:bold;line-height:1;padding-bottom:16px;padding-inline-end:20px;padding-inline-start:20px;padding-top:20px}.vot-dialog-body-container{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:flex;flex-direction:column;min-height:1.375rem;overflow:auto;padding:0 20px;gap:16px;overscroll-behavior:contain;scrollbar-color:rgba(var(--vot-helper-onsurface-rgb), 0.1) var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar,.vot-dialog-body-container::-webkit-scrollbar-track{height:12px !important;width:12px !important;background:var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar-thumb{background:rgba(var(--vot-helper-onsurface-rgb), 0.1) !important;-webkit-border-radius:1ex !important;border:5px solid var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar-thumb:hover{border:3px solid var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar-corner{background:var(--vot-helper-surface) !important}.vot-dialog-footer-container{flex-shrink:0;display:flex;justify-content:flex-end;padding-bottom:16px;padding-inline-end:16px;padding-inline-start:16px;padding-top:16px}.vot-dialog-footer-container:empty{padding:20px 0 0 0}.vot-subtitles-widget{display:flex;justify-content:center;align-items:center;position:absolute;width:50%;max-height:100%;min-height:20%;z-index:100;left:25%;top:75%;pointer-events:none}.vot-subtitles{position:relative;max-width:100%;max-height:100%;width:max-content;background:var(--vot-subtitles-background, rgba(46, 47, 52, 0.8));color:var(--vot-subtitles-color, rgb(227, 227, 227));border-radius:1rem;pointer-events:all;padding:1rem;font-size:2rem;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.vot-subtitles .passed{color:var(--vot-subtitles-passed-color, rgb(33, 150, 243))}:root{--vot-font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;--vot-primary-rgb: 139, 180, 245;--vot-onprimary-rgb: 32, 33, 36;--vot-surface-rgb: 32, 33, 36;--vot-onsurface-rgb: 227, 227, 227;--vot-subtitles-background: rgba(var(--vot-surface-rgb, 46, 47, 52), 0.8);--vot-subtitles-color: rgb(var(--vot-onsurface-rgb, 227, 227, 227));--vot-subtitles-passed-color: rgb(var(--vot-primary-rgb, 33, 150, 243))}vot-block{display:block}`, ""]);
+___CSS_LOADER_EXPORT___.push([module.id, `.vot-button{--vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243));--vot-helper-ontheme: var(--vot-ontheme-rgb, var(--vot-onprimary-rgb, 255, 255, 255));position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;border:none;border-radius:4px;padding:0 16px;min-width:64px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;color:rgb(var(--vot-helper-ontheme));background-color:rgb(var(--vot-helper-theme));box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:36px;outline:none;cursor:pointer;transition:box-shadow .2s}.vot-button[hidden]{display:none !important}.vot-button::-moz-focus-inner{border:none}.vot-button::before,.vot-button::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-button::before{background-color:rgb(var(--vot-helper-ontheme));transition:opacity .2s}.vot-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-button:hover{box-shadow:0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)}.vot-button:hover::before{opacity:.08}.vot-button:active{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}.vot-button:active::after{opacity:.32;background-size:100% 100%;transition:background-size 0s}.vot-button:disabled{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.12);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);box-shadow:none;cursor:initial}.vot-button:disabled::before,.vot-button:disabled::after{opacity:0}.vot-outlined-button{--vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243));position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0;border:solid 1px;border-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.24);border-radius:4px;padding:0 16px;min-width:64px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;color:rgb(var(--vot-helper-theme));background-color:rgba(0,0,0,0);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:34px;outline:none;cursor:pointer}.vot-outlined-button[hidden]{display:none !important}.vot-outlined-button::-moz-focus-inner{border:none}.vot-outlined-button::before,.vot-outlined-button::after{content:"";position:absolute;border-radius:3px;top:0;right:0;bottom:0;left:0;opacity:0}.vot-outlined-button::before{background-color:rgb(var(--vot-helper-theme));transition:opacity .2s}.vot-outlined-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-outlined-button:hover::before{opacity:.04}.vot-outlined-button:active::after{opacity:.16;background-size:100% 100%;transition:background-size 0s}.vot-outlined-button:disabled{background-color:rgba(0,0,0,0);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-outlined-button:disabled::before,.vot-outlined-button:disabled::after{opacity:0}.vot-text-button{--vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243));position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0;border:none;border-radius:4px;padding:0 8px;min-width:64px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;color:rgb(var(--vot-helper-theme));background-color:rgba(0,0,0,0);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:36px;outline:none;cursor:pointer}.vot-text-button[hidden]{display:none !important}.vot-text-button::-moz-focus-inner{border:none}.vot-text-button::before,.vot-text-button::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-text-button::before{background-color:rgb(var(--vot-helper-theme));transition:opacity .2s}.vot-text-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-text-button:hover::before{opacity:.04}.vot-text-button:active::after{opacity:.16;background-size:100% 100%;transition:background-size 0s}.vot-text-button:disabled{background-color:rgba(0,0,0,0);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-text-button:disabled::before,.vot-text-button:disabled::after{opacity:0}.vot-icon-button{--vot-helper-onsurface: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87);position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0;border:none;border-radius:50%;padding:0;width:36px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;fill:var(--vot-helper-onsurface);color:var(--vot-helper-onsurface);background-color:rgba(0,0,0,0);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:36px;outline:none;cursor:pointer}.vot-icon-button[hidden]{display:none !important}.vot-icon-button::-moz-focus-inner{border:none}.vot-icon-button::before,.vot-icon-button::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-icon-button::before{background-color:var(--vot-helper-onsurface);transition:opacity .2s}.vot-icon-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity .3s,background-size .4s}.vot-icon-button:hover::before{opacity:.04}.vot-icon-button:active::after{opacity:.32;background-size:100% 100%;transition:background-size 0s,opacity 0s}.vot-icon-button:disabled{background-color:rgba(0,0,0,0);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);fill:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-icon-button:disabled::before,.vot-icon-button:disabled::after{opacity:0}.vot-textfield{--vot-helper-theme: rgb(var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243))) !important;--vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;--vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;--vot-helper-safari3: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;position:relative !important;display:inline-block;padding-top:6px !important;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;font-size:16px !important;line-height:1.5 !important;text-align:start !important}.vot-textfield[hidden]{display:none !important}.vot-textfield>input,.vot-textfield>textarea{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin:0 !important;border-style:solid !important;border-width:1px !important;border-color:rgba(0,0,0,0) var(--vot-helper-safari2) var(--vot-helper-safari2) !important;border-radius:4px !important;padding:15px 13px 15px !important;width:100% !important;height:inherit !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;-webkit-text-fill-color:currentColor !important;background-color:rgba(0,0,0,0) !important;box-shadow:inset 1px 0 rgba(0,0,0,0),inset -1px 0 rgba(0,0,0,0),inset 0 -1px rgba(0,0,0,0) !important;font-family:inherit !important;font-size:inherit !important;line-height:inherit !important;caret-color:var(--vot-helper-theme) !important;transition:border .2s,box-shadow .2s !important}.vot-textfield>input:not(:focus):placeholder-shown,.vot-textfield>textarea:not(:focus):placeholder-shown{border-top-color:var(--vot-helper-safari2) !important}.vot-textfield>input+span,.vot-textfield>textarea+span{position:absolute !important;top:0 !important;left:0 !important;display:flex !important;width:100% !important;max-height:100% !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;font-size:75% !important;line-height:15px !important;cursor:text !important;transition:color .2s,font-size .2s,line-height .2s !important;pointer-events:none !important}.vot-textfield>input:not(:focus):placeholder-shown+span,.vot-textfield>textarea:not(:focus):placeholder-shown+span{font-size:inherit !important;line-height:68px !important}.vot-textfield>input+span::before,.vot-textfield>input+span::after,.vot-textfield>textarea+span::before,.vot-textfield>textarea+span::after{content:"" !important;display:block !important;-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin-top:6px !important;border-top:solid 1px var(--vot-helper-safari2) !important;min-width:10px !important;height:8px !important;pointer-events:none !important;box-shadow:inset 0 1px rgba(0,0,0,0) !important;transition:border .2s,box-shadow .2s !important}.vot-textfield>input+span::before,.vot-textfield>textarea+span::before{margin-right:4px !important;border-left:solid 1px rgba(0,0,0,0) !important;border-radius:4px 0 !important}.vot-textfield>input+span::after,.vot-textfield>textarea+span::after{flex-grow:1 !important;margin-left:4px !important;border-right:solid 1px rgba(0,0,0,0) !important;border-radius:0 4px !important}.vot-textfield>input:not(:focus):placeholder-shown+span::before,.vot-textfield>input:not(:focus):placeholder-shown+span::after,.vot-textfield>textarea:not(:focus):placeholder-shown+span::before,.vot-textfield>textarea:not(:focus):placeholder-shown+span::after{border-top-color:rgba(0,0,0,0) !important}.vot-textfield:hover>input,.vot-textfield:hover>textarea{border-color:rgba(0,0,0,0) var(--vot-helper-safari3) var(--vot-helper-safari3) !important}.vot-textfield:hover>input+span::before,.vot-textfield:hover>input+span::after,.vot-textfield:hover>textarea+span::before,.vot-textfield:hover>textarea+span::after{border-top-color:var(--vot-helper-safari3) !important}.vot-textfield:hover>input:not(:focus):placeholder-shown,.vot-textfield:hover>textarea:not(:focus):placeholder-shown{border-color:var(--vot-helper-safari3) !important}.vot-textfield>input:focus,.vot-textfield>textarea:focus{border-color:rgba(0,0,0,0) var(--vot-helper-theme) var(--vot-helper-theme) !important;box-shadow:inset 1px 0 var(--vot-helper-theme),inset -1px 0 var(--vot-helper-theme),inset 0 -1px var(--vot-helper-theme) !important;outline:none !important}.vot-textfield>input:focus+span,.vot-textfield>textarea:focus+span{color:var(--vot-helper-theme) !important}.vot-textfield>input:focus+span::before,.vot-textfield>input:focus+span::after,.vot-textfield>textarea:focus+span::before,.vot-textfield>textarea:focus+span::after{border-top-color:var(--vot-helper-theme) !important;box-shadow:inset 0 1px var(--vot-helper-theme) !important}.vot-textfield>input:disabled,.vot-textfield>input:disabled+span,.vot-textfield>textarea:disabled,.vot-textfield>textarea:disabled+span{border-color:rgba(0,0,0,0) var(--vot-helper-safari1) var(--vot-helper-safari1) !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;pointer-events:none !important}.vot-textfield>input:disabled+span::before,.vot-textfield>input:disabled+span::after,.vot-textfield>textarea:disabled+span::before,.vot-textfield>textarea:disabled+span::after{border-top-color:var(--vot-helper-safari1) !important}.vot-textfield>input:disabled:placeholder-shown,.vot-textfield>input:disabled:placeholder-shown+span,.vot-textfield>textarea:disabled:placeholder-shown,.vot-textfield>textarea:disabled:placeholder-shown+span{border-top-color:var(--vot-helper-safari1) !important}.vot-textfield>input:disabled:placeholder-shown+span::before,.vot-textfield>input:disabled:placeholder-shown+span::after,.vot-textfield>textarea:disabled:placeholder-shown+span::before,.vot-textfield>textarea:disabled:placeholder-shown+span::after{border-top-color:rgba(0,0,0,0) !important}@media not all and (min-resolution: 0.001dpcm){@supports(-webkit-appearance: none){.vot-textfield>input,.vot-textfield>input+span,.vot-textfield>textarea,.vot-textfield>textarea+span,.vot-textfield>input+span::before,.vot-textfield>input+span::after,.vot-textfield>textarea+span::before,.vot-textfield>textarea+span::after{transition-duration:.1s !important}}}.vot-checkbox{--vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243));--vot-helper-ontheme: var(--vot-ontheme-rgb, var(--vot-onprimary-rgb, 255, 255, 255));z-index:0;position:relative;display:inline-block;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;text-align:start}.vot-checkbox[hidden]{display:none !important}.vot-checkbox>input{appearance:none;-moz-appearance:none;-webkit-appearance:none;z-index:1;position:absolute;display:block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:3px 1px;border:solid 2px;background:rgba(0,0,0,0);border-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6);border-radius:2px;width:18px;height:18px;outline:none;cursor:pointer;transition:border-color .2s,background-color .2s}.vot-checkbox>input+span{display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding-left:30px;width:inherit;cursor:pointer}.vot-checkbox>input+span::before{content:"";position:absolute;left:-10px;top:-8px;display:block;border-radius:50%;width:40px;height:40px;background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0));opacity:0;transform:scale(1);pointer-events:none;transition:opacity .3s,transform .2s}.vot-checkbox>input+span::after{content:"";z-index:1;display:block;position:absolute;top:3px;left:1px;-webkit-box-sizing:content-box !important;-moz-box-sizing:content-box !important;box-sizing:content-box !important;width:10px;height:5px;border:solid 2px rgba(0,0,0,0);border-right-width:0;border-top-width:0;pointer-events:none;transform:translate(3px, 4px) rotate(-45deg);transition:border-color .2s}.vot-checkbox>input:checked,.vot-checkbox>input:indeterminate{border-color:rgb(var(--vot-helper-theme));background-color:rgb(var(--vot-helper-theme))}.vot-checkbox>input:checked+span::before,.vot-checkbox>input:indeterminate+span::before{background-color:rgb(var(--vot-helper-theme))}.vot-checkbox>input:checked+span::after,.vot-checkbox>input:indeterminate+span::after{border-color:rgb(var(--vot-helper-ontheme, 255, 255, 255))}.vot-checkbox>input:indeterminate+span::after{border-left-width:0;transform:translate(4px, 3px)}.vot-checkbox:hover>input+span::before{opacity:.04}.vot-checkbox:active>input,.vot-checkbox:active:hover>input{border-color:rgb(var(--vot-helper-theme))}.vot-checkbox:active>input:checked{border-color:rgba(0,0,0,0);background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6)}.vot-checkbox:active>input+span::before{opacity:1;transform:scale(0);transition:transform 0s,opacity 0s}.vot-checkbox>input:disabled{border-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-checkbox>input:disabled:checked,.vot-checkbox>input:disabled:indeterminate{border-color:rgba(0,0,0,0);background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38)}.vot-checkbox>input:disabled+span{color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-checkbox>input:disabled+span::before{opacity:0;transform:scale(0)}.vot-slider{--vot-safari-helper1: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.04) !important;--vot-safari-helper2: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.12) !important;--vot-safari-helper3: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.16) !important;--vot-safari-helper4: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important;display:inline-block;width:100% !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;font-family:var(--vot-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;font-size:16px !important;line-height:1.5 !important;text-align:start !important}.vot-slider[hidden]{display:none !important}.vot-slider>input{-webkit-appearance:none !important;appearance:none !important;position:relative !important;top:24px !important;display:block !important;margin:0 0 -36px !important;width:100% !important;height:36px !important;background-color:rgba(0,0,0,0) !important;cursor:pointer !important}.vot-slider>input:last-child{position:static !important;margin:0 !important}.vot-slider>span{display:inline-block !important;margin-bottom:36px !important}.vot-slider>input:disabled{cursor:default !important;opacity:.38 !important}.vot-slider>input:disabled+span{color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input::-webkit-slider-runnable-track{margin:17px 0 !important;border-radius:1px !important;width:100% !important;height:2px !important;background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input::-webkit-slider-thumb{margin:0 !important;appearance:none !important;-webkit-appearance:none !important;border:none !important;border-radius:50% !important;height:2px !important;width:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important;transform:scale(6, 6) !important;transition:box-shadow .2s !important}.vot-slider:hover>input::-webkit-slider-thumb{box-shadow:0 0 0 2px var(--vot-safari-helper1) !important}.vot-slider>input:active::-webkit-slider-thumb{box-shadow:0 0 0 2px var(--vot-safari-helper4) !important}.vot-slider>input:disabled::-webkit-slider-runnable-track{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input:disabled::-webkit-slider-thumb{background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0)) !important;color:rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;box-shadow:0 0 0 1px rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;transform:scale(4, 4) !important}.vot-slider>input::-moz-range-track{margin:17px 0 !important;border-radius:1px !important;width:100% !important;height:2px !important;background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input::-moz-range-thumb{appearance:none !important;-moz-appearance:none !important;border:none !important;border-radius:50% !important;height:2px !important;width:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important;transform:scale(6, 6) !important;transition:box-shadow .2s !important}.vot-slider>input::-moz-range-progress{border-radius:1px !important;height:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important}.vot-slider:hover>input:hover::-moz-range-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.04) !important}.vot-slider>input:active::-moz-range-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input:disabled::-moz-range-track{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input:disabled::-moz-range-progress{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important}.vot-slider>input:disabled::-moz-range-thumb{background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0)) !important;box-shadow:0 0 0 1px rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;transform:scale(4, 4) !important}.vot-slider>input::-moz-focus-outer{border:none !important}.vot-slider>input::-ms-track{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin:17px 0 !important;border:none !important;border-radius:1px !important;padding:0 17px !important;width:100% !important;height:2px !important;background-color:rgba(0,0,0,0) !important}.vot-slider>input::-ms-fill-lower{border-radius:1px !important;height:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important}.vot-slider>input::-ms-fill-upper{border-radius:1px !important;height:2px !important;background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input::-ms-thumb{appearance:none !important;margin:0 17px !important;border:none !important;border-radius:50% !important;height:2px !important;width:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important;transform:scale(6, 6) !important;transition:box-shadow .2s !important}.vot-slider:hover>input::-ms-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.04) !important}.vot-slider>input:active::-ms-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input:disabled::-ms-fill-lower{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input:disabled::-ms-fill-upper{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;opacity:.38 !important}.vot-slider>input:disabled::-ms-thumb{background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0)) !important;box-shadow:0 0 0 1px rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;transform:scale(4, 4) !important}.vot-slider>input::before{content:"" !important;display:block !important;position:absolute !important;width:calc(100%*var(--vot-progress, 0)) !important;height:2px !important;top:calc(50% - 1px) !important;background:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important}.vot-select{--vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0) !important;--vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87) !important;--vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;--vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;display:flex;align-items:center;justify-content:space-between;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;line-height:1.5;text-align:start;color:var(--vot-helper-theme);fill:var(--vot-helper-theme)}.vot-select[hidden]{display:none !important}.vot-select-outer{display:flex;align-items:center;justify-content:space-between;max-width:120px;width:120px;padding:0 5px;border-style:solid !important;border-width:1px !important;border-color:var(--vot-helper-safari1) !important;border-radius:4px !important;cursor:pointer;transition:border .2s !important}.vot-select-outer:hover{border-color:var(--vot-helper-safari2) !important}.vot-select-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vot-select-arrow-icon{width:32px;height:32px;display:flex;justify-content:center;align-items:center}.vot-select-content-list{display:flex;flex-direction:column}.vot-select-content-list .vot-select-content-item{padding:5px 10px;border-radius:8px;cursor:pointer}.vot-select-content-list .vot-select-content-item:not([inert]):hover{background-color:#2a2c31}.vot-select-content-list .vot-select-content-item[data-vot-selected=true]{color:rgb(var(--vot-primary-rgb, 33, 150, 243));background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.2)}.vot-select-content-list .vot-select-content-item[data-vot-selected=true]:hover{background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.1) !important}.vot-select-content-list .vot-select-content-item[data-vot-disabled=true]{cursor:default}.vot-select-content-list .vot-select-content-item[hidden]{display:none !important}.vot-header{color:rgba(var(--vot-helper-onsurface-rgb), 0.87);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-weight:bold;line-height:1.5;text-align:start}.vot-header[hidden]{display:none !important}.vot-header:not(:first-child){padding-top:8px}.vot-header-level-1{font-size:2em}.vot-header-level-2{font-size:1.5em}.vot-header-level-3{font-size:1.17em}.vot-header-level-4{font-size:1em}.vot-header-level-5{font-size:.83em}.vot-header-level-6{font-size:.67em}.vot-info{display:flex;color:rgba(var(--vot-helper-onsurface-rgb), 0.87);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;text-align:start}.vot-info[hidden]{display:none !important}.vot-info>:not(:first-child){color:rgba(var(--vot-helper-onsurface-rgb), 0.5);flex:1;margin-left:8px}.vot-lang-select{--vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87);display:flex;align-items:center;justify-content:space-between;color:var(--vot-helper-theme);fill:var(--vot-helper-theme)}.vot-lang-select[hidden]{display:none !important}.vot-lang-select-icon{width:32px;height:32px;display:flex;justify-content:center;align-items:center}.vot-segmented-button{--vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87);overflow:hidden;position:absolute;left:50%;top:5rem;transform:translate(-50%);user-select:none;display:flex;align-items:center;height:32px;max-width:100vw;background:rgb(var(--vot-surface-rgb, 255, 255, 255));color:var(--vot-helper-theme);fill:var(--vot-helper-theme);border-radius:4px;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;cursor:default;transition:opacity .5s;z-index:100}.vot-segmented-button[hidden]{display:none !important}.vot-segmented-button *{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important}.vot-segmented-button .vot-separator{width:1px;height:50%;background:rgba(var(--vot-helper-theme-rgb), 0.1)}.vot-segmented-button .vot-separator[hidden]{display:none !important}.vot-segmented-button .vot-segment,.vot-segmented-button .vot-segment-only-icon{position:relative;overflow:hidden;display:flex;justify-content:center;align-items:center;height:100%;padding:0 8px;background-color:rgba(0,0,0,0);color:inherit;transition:background-color 100ms ease-in-out;border:none}.vot-segmented-button .vot-segment[hidden],.vot-segmented-button [hidden].vot-segment-only-icon{display:none !important}.vot-segmented-button .vot-segment::before,.vot-segmented-button .vot-segment-only-icon::before,.vot-segmented-button .vot-segment::after,.vot-segmented-button .vot-segment-only-icon::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-segmented-button .vot-segment::before,.vot-segmented-button .vot-segment-only-icon::before{background-color:rgb(var(--vot-helper-theme-rgb));transition:opacity .2s}.vot-segmented-button .vot-segment::after,.vot-segmented-button .vot-segment-only-icon::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-segmented-button .vot-segment:hover::before,.vot-segmented-button .vot-segment-only-icon:hover::before{opacity:.04}.vot-segmented-button .vot-segment:active::after,.vot-segmented-button .vot-segment-only-icon:active::after{opacity:.16;background-size:100% 100%;transition:background-size 0s}.vot-segmented-button .vot-segment-only-icon{min-width:32px;padding:0}.vot-segmented-button .vot-segment-label{margin-left:8px;white-space:nowrap}.vot-segmented-button[data-status=success] .vot-translate-button{color:rgb(var(--vot-primary-rgb, 33, 150, 243));fill:rgb(var(--vot-primary-rgb, 33, 150, 243))}.vot-segmented-button[data-status=error] .vot-translate-button{color:#f28b82;fill:#f28b82}.vot-menu{--vot-helper-surface-rgb: var(--vot-surface-rgb, 255, 255, 255);--vot-helper-surface: rgb(var(--vot-helper-surface-rgb));--vot-helper-onsurface-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-onsurface: rgba(var(--vot-helper-onsurface-rgb), 0.87);overflow:hidden;position:absolute;left:50%;top:calc(5rem + 32px + 16px);user-select:none;background-color:var(--vot-helper-surface);color:var(--vot-helper-onsurface);border-radius:8px;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;min-width:300px;cursor:default;z-index:100;visibility:visible;opacity:1;transform-origin:top;transform:translate(-50%) scale(1);transition:opacity .3s,transform .1s}.vot-menu *{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important}.vot-menu[hidden]{pointer-events:none;display:block !important;pointer-events:none;visibility:hidden;opacity:0;transform:translate(-50%) scale(0)}.vot-menu-content-wrapper{display:flex;flex-direction:column;min-height:100px;max-height:calc(var(--vot-container-height, 75vh) - (5rem + 32px + 16px)*2);overflow:auto}.vot-menu-header-container{flex-shrink:0;align-items:flex-start;display:flex;min-height:31px}.vot-menu-header-container:empty{padding:0 0 16px 0}.vot-menu-header-container>.vot-icon-button{margin-inline-end:4px;margin-top:4px}.vot-menu-title-container{display:flex;flex:1;font-size:inherit;font-weight:inherit;margin:0;outline:0;text-align:start}.vot-menu-title{flex:1;font-size:16px;line-height:1;padding-bottom:16px;padding-inline-end:16px;padding-inline-start:16px;padding-top:16px}.vot-menu-body-container{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:flex;flex-direction:column;min-height:1.375rem;overflow:auto;padding:0 16px;gap:8px;overscroll-behavior:contain;scrollbar-color:rgba(var(--vot-helper-onsurface-rgb), 0.1) var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar,.vot-menu-body-container::-webkit-scrollbar-track{height:12px !important;width:12px !important;background:var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar-thumb{background:rgba(var(--vot-helper-onsurface-rgb), 0.1) !important;-webkit-border-radius:1ex !important;border:5px solid var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar-thumb:hover{border:3px solid var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar-corner{background:var(--vot-helper-surface) !important}.vot-menu-footer-container{flex-shrink:0;display:flex;justify-content:flex-end;padding-bottom:16px;padding-inline-end:16px;padding-inline-start:16px;padding-top:16px}.vot-menu-footer-container:empty{padding:16px 0 0 0}.vot-dialog-container{visibility:visible;position:absolute;z-index:10000}.vot-dialog-container[hidden]{display:block !important;pointer-events:none;visibility:hidden}.vot-dialog-container *{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important}.vot-dialog-backdrop{background-color:rgba(0,0,0,.6);position:fixed;top:0;right:0;bottom:0;left:0;opacity:1;transition:opacity .3s}[hidden]>.vot-dialog-backdrop{pointer-events:none;opacity:0}.vot-dialog{--vot-helper-surface-rgb: var(--vot-surface-rgb, 255, 255, 255);--vot-helper-surface: rgb(var(--vot-helper-surface-rgb));--vot-helper-onsurface-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-onsurface: rgba(var(--vot-helper-onsurface-rgb), 0.87);display:block;position:fixed;top:50%;bottom:50%;max-width:initial;max-height:initial;width:min(var(--vot-dialog-width, 512px),100%);height:fit-content;inset-inline-start:0px;inset-inline-end:0px;inset-block-start:0px;inset-block-end:0px;border-radius:8px;margin:auto;padding:0;background-color:var(--vot-helper-surface);color:var(--vot-helper-onsurface);box-shadow:0 0 16px rgba(0,0,0,.12),0 16px 16px rgba(0,0,0,.24);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;user-select:none;visibility:visible;overflow:auto;overflow-y:hidden;opacity:1;transform-origin:center;transform:scale(1);transition:opacity .3s,transform .1s}[hidden]>.vot-dialog{pointer-events:none;opacity:0;transform:scale(0.5);transition:opacity .1s,transform .2s}.vot-dialog-content-wrapper{display:flex;flex-direction:column;max-height:75vh;overflow:auto}.vot-dialog-header-container{flex-shrink:0;align-items:flex-start;display:flex;min-height:31px}.vot-dialog-header-container:empty{padding:0 0 20px 0}.vot-dialog-header-container>.vot-icon-button{margin-inline-end:4px;margin-top:4px}.vot-dialog-title-container{display:flex;flex:1;font-size:inherit;font-weight:inherit;margin:0;outline:0}.vot-dialog-title{flex:1;font-size:115.3846153846%;font-weight:bold;line-height:1;padding-bottom:16px;padding-inline-end:20px;padding-inline-start:20px;padding-top:20px}.vot-dialog-body-container{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:flex;flex-direction:column;min-height:1.375rem;overflow:auto;padding:0 20px;gap:16px;overscroll-behavior:contain;scrollbar-color:rgba(var(--vot-helper-onsurface-rgb), 0.1) var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar,.vot-dialog-body-container::-webkit-scrollbar-track{height:12px !important;width:12px !important;background:var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar-thumb{background:rgba(var(--vot-helper-onsurface-rgb), 0.1) !important;-webkit-border-radius:1ex !important;border:5px solid var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar-thumb:hover{border:3px solid var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar-corner{background:var(--vot-helper-surface) !important}.vot-dialog-footer-container{flex-shrink:0;display:flex;justify-content:flex-end;padding-bottom:16px;padding-inline-end:16px;padding-inline-start:16px;padding-top:16px}.vot-dialog-footer-container:empty{padding:20px 0 0 0}.vot-subtitles-widget{display:flex;justify-content:center;align-items:center;position:absolute;width:50%;max-height:100%;min-height:20%;z-index:100;left:25%;top:75%;pointer-events:none}.vot-subtitles{position:relative;max-width:100%;max-height:100%;width:max-content;background:var(--vot-subtitles-background, rgba(46, 47, 52, 0.8));color:var(--vot-subtitles-color, rgb(227, 227, 227));border-radius:1rem;pointer-events:all;padding:1rem;font-size:2rem;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.vot-subtitles .passed{color:var(--vot-subtitles-passed-color, rgb(33, 150, 243))}:root{--vot-font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;--vot-primary-rgb: 139, 180, 245;--vot-onprimary-rgb: 32, 33, 36;--vot-surface-rgb: 32, 33, 36;--vot-onsurface-rgb: 227, 227, 227;--vot-subtitles-background: rgba(var(--vot-surface-rgb, 46, 47, 52), 0.8);--vot-subtitles-color: rgb(var(--vot-onsurface-rgb, 227, 227, 227));--vot-subtitles-passed-color: rgb(var(--vot-primary-rgb, 33, 150, 243))}vot-block{display:block}`, ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -779,7 +779,7 @@ var update = injectStylesIntoStyleTag_default()(main/* default */.Z, options);
        /* harmony default export */ const styles_main = (main/* default */.Z && main/* default */.Z.locals ? main/* default */.Z.locals : undefined);
 
 ;// CONCATENATED MODULE: ./src/localization/locales/en.json
-const en_namespaceObject = JSON.parse('{"__version__":2,"recommended":"recommended","translateVideo":"Translate video","disableTranslate":"Turn off","translationSettings":"Translation settings","subtitlesSettings":"Subtitles settings","about":"About extension","resetSettings":"Reset settings","videoBeingTranslated":"The video is being translated","videoLanguage":"Video language","translationLanguage":"Translation language","translationTake":"The translation will take","translationTakeMoreThanHour":"The translation will take more than an hour","translationTakeAboutMinute":"The translation will take about a minute","translationTakeFewMinutes":"The translation will take a few minutes","translationTakeApproximatelyMinutes":"The translation will take approximately {0} minutes","translationTakeApproximatelyMinute":"The translation will take approximately {0} minutes","unSupportedExtensionError":"Error! {0} is not supported by this version of the extension!\\n\\nPlease use the cloudflare version of the VOT extension.","requestTranslationFailed":"Failed to request video translation","audioNotReceived":"Audio link not received","grantPermissionToAutoPlay":"Grant permission to autoplay","neededAdditionalExtension":"An additional extension is needed to support this site","audioFormatNotSupported":"The audio format is not supported","VOTAutoTranslate":"Translate on open","VOTDontTranslateYourLang":"Do not translate from my language","VOTVolume":"Video volume","VOTVolumeTranslation":"Translation Volume","VOTAutoSetVolume":"Reduce video volume to ","VOTShowVideoSlider":"Video volume slider","VOTSyncVolume":"Link translation and video volume","VOTAudioProxy":"Proxy received audio","VOTDisableFromYourLang":"You have disabled the translation of the video in your language","VOTLiveNotSupported":"Translation of live streams is not supported","VOTPremiere":"Wait for the premiere to end before translating","VOTVideoIsTooLong":"Video is too long","VOTNoVideoIDFound":"No video ID found","VOTFailedInitDB":"Failed to initialize database","VOTDBNeedUpdate":"The database needs an update, please reload the page","VOTDisabledForDBUpdating":"VOT is disabled due to an error when updating the Database. Close all open tabs with {0} and try again","VOTFailedWriteToDB":"Data could not be written to the database","VOTFailedReadFromDB":"Data could not be retrieved from the database","VOTSubtitles":"Subtitles","VOTSubtitlesDisabled":"Disabled","VOTSubtitlesMaxLength":"Subtitles max length","VOTHighlightWords":"Highlight words","VOTTranslatedFrom":"translated from","VOTAutogenerated":"autogenerated","VOTSettings":"VOT Settings","VOTMenuLanguage":"Menu language","VOTAuthors":"Authors","VOTVersion":"Version","VOTLoader":"Loader","VOTBrowser":"Browser","VOTShowPiPButton":"Show PiP button","langs":{"auto":"Auto","af":"Afrikaans","ak":"Akan","sq":"Albanian","am":"Amharic","ar":"Arabic","hy":"Armenian","as":"Assamese","ay":"Aymara","az":"Azerbaijani","bn":"Bangla","eu":"Basque","be":"Belarusian","bho":"Bhojpuri","bs":"Bosnian","bg":"Bulgarian","my":"Burmese","ca":"Catalan","ceb":"Cebuano","zh":"Chinese","zh-Hans":"Chinese (Simplified)","zh-Hant":"Chinese (Traditional)","co":"Corsican","hr":"Croatian","cs":"Czech","da":"Danish","dv":"Divehi","nl":"Dutch","en":"English","eo":"Esperanto","et":"Estonian","ee":"Ewe","fil":"Filipino","fi":"Finnish","fr":"French","gl":"Galician","lg":"Ganda","ka":"Georgian","de":"German","el":"Greek","gn":"Guarani","gu":"Gujarati","ht":"Haitian Creole","ha":"Hausa","haw":"Hawaiian","iw":"Hebrew","hi":"Hindi","hmn":"Hmong","hu":"Hungarian","is":"Icelandic","ig":"Igbo","id":"Indonesian","ga":"Irish","it":"Italian","ja":"Japanese","jv":"Javanese","kn":"Kannada","kk":"Kazakh","km":"Khmer","rw":"Kinyarwanda","ko":"Korean","kri":"Krio","ku":"Kurdish","ky":"Kyrgyz","lo":"Lao","la":"Latin","lv":"Latvian","ln":"Lingala","lt":"Lithuanian","lb":"Luxembourgish","mk":"Macedonian","mg":"Malagasy","ms":"Malay","ml":"Malayalam","mt":"Maltese","mi":"Māori","mr":"Marathi","mn":"Mongolian","ne":"Nepali","nso":"Northern Sotho","no":"Norwegian","ny":"Nyanja","or":"Odia","om":"Oromo","ps":"Pashto","fa":"Persian","pl":"Polish","pt":"Portuguese","pa":"Punjabi","qu":"Quechua","ro":"Romanian","ru":"Russian","sm":"Samoan","sa":"Sanskrit","gd":"Scottish Gaelic","sr":"Serbian","sn":"Shona","sd":"Sindhi","si":"Sinhala","sk":"Slovak","sl":"Slovenian","so":"Somali","st":"Southern Sotho","es":"Spanish","su":"Sundanese","sw":"Swahili","sv":"Swedish","tg":"Tajik","ta":"Tamil","tt":"Tatar","te":"Telugu","th":"Thai","ti":"Tigrinya","ts":"Tsonga","tr":"Turkish","tk":"Turkmen","uk":"Ukrainian","ur":"Urdu","ug":"Uyghur","uz":"Uzbek","vi":"Vietnamese","cy":"Welsh","fy":"Western Frisian","xh":"Xhosa","yi":"Yiddish","yo":"Yoruba","zu":"Zulu"},"udemyAccessTokenExpired":"Your entered Udemy Access Token has expired","udemyModuleArgsNotFound":"Could not get udemy module data due to the fact that ModuleArgs was not found","VOTTranslationHelpNull":"Could not get the data required for the translate","enterUdemyAccessToken":"Enter Udemy Access Token","VOTUdemyData":"Udemy Data","streamNoConnectionToServer":"There is no connection to the server","VOTCloudflareDoesntSupportStreams":"The Cloudflare version of the script does not support stream translation"}');
+const en_namespaceObject = JSON.parse('{"__version__":2,"recommended":"recommended","translateVideo":"Translate video","disableTranslate":"Turn off","translationSettings":"Translation settings","subtitlesSettings":"Subtitles settings","about":"About extension","resetSettings":"Reset settings","videoBeingTranslated":"The video is being translated","videoLanguage":"Video language","translationLanguage":"Translation language","translationTake":"The translation will take","translationTakeMoreThanHour":"The translation will take more than an hour","translationTakeAboutMinute":"The translation will take about a minute","translationTakeFewMinutes":"The translation will take a few minutes","translationTakeApproximatelyMinutes":"The translation will take approximately {0} minutes","translationTakeApproximatelyMinute":"The translation will take approximately {0} minutes","unSupportedExtensionError":"Error! {0} is not supported by this version of the extension!\\n\\nPlease use the cloudflare version of the VOT extension.","requestTranslationFailed":"Failed to request video translation","audioNotReceived":"Audio link not received","grantPermissionToAutoPlay":"Grant permission to autoplay","neededAdditionalExtension":"An additional extension is needed to support this site","audioFormatNotSupported":"The audio format is not supported","VOTAutoTranslate":"Translate on open","VOTDontTranslateYourLang":"Do not translate from my language","VOTVolume":"Video volume","VOTVolumeTranslation":"Translation Volume","VOTAutoSetVolume":"Reduce video volume to ","VOTShowVideoSlider":"Video volume slider","VOTSyncVolume":"Link translation and video volume","VOTAudioProxy":"Proxy received audio","VOTDisableFromYourLang":"You have disabled the translation of the video in your language","VOTLiveNotSupported":"Translation of live streams is not supported","VOTPremiere":"Wait for the premiere to end before translating","VOTVideoIsTooLong":"Video is too long","VOTNoVideoIDFound":"No video ID found","VOTFailedInitDB":"Failed to initialize database","VOTDBNeedUpdate":"The database needs an update, please reload the page","VOTDisabledForDBUpdating":"VOT is disabled due to an error when updating the Database. Close all open tabs with {0} and try again","VOTFailedWriteToDB":"Data could not be written to the database","VOTFailedReadFromDB":"Data could not be retrieved from the database","VOTSubtitles":"Subtitles","VOTSubtitlesDisabled":"Disabled","VOTSubtitlesMaxLength":"Subtitles max length","VOTHighlightWords":"Highlight words","VOTTranslatedFrom":"translated from","VOTAutogenerated":"autogenerated","VOTSettings":"VOT Settings","VOTMenuLanguage":"Menu language","VOTAuthors":"Authors","VOTVersion":"Version","VOTLoader":"Loader","VOTBrowser":"Browser","VOTShowPiPButton":"Show PiP button","langs":{"auto":"Auto","af":"Afrikaans","ak":"Akan","sq":"Albanian","am":"Amharic","ar":"Arabic","hy":"Armenian","as":"Assamese","ay":"Aymara","az":"Azerbaijani","bn":"Bangla","eu":"Basque","be":"Belarusian","bho":"Bhojpuri","bs":"Bosnian","bg":"Bulgarian","my":"Burmese","ca":"Catalan","ceb":"Cebuano","zh":"Chinese","zh-Hans":"Chinese (Simplified)","zh-Hant":"Chinese (Traditional)","co":"Corsican","hr":"Croatian","cs":"Czech","da":"Danish","dv":"Divehi","nl":"Dutch","en":"English","eo":"Esperanto","et":"Estonian","ee":"Ewe","fil":"Filipino","fi":"Finnish","fr":"French","gl":"Galician","lg":"Ganda","ka":"Georgian","de":"German","el":"Greek","gn":"Guarani","gu":"Gujarati","ht":"Haitian Creole","ha":"Hausa","haw":"Hawaiian","iw":"Hebrew","hi":"Hindi","hmn":"Hmong","hu":"Hungarian","is":"Icelandic","ig":"Igbo","id":"Indonesian","ga":"Irish","it":"Italian","ja":"Japanese","jv":"Javanese","kn":"Kannada","kk":"Kazakh","km":"Khmer","rw":"Kinyarwanda","ko":"Korean","kri":"Krio","ku":"Kurdish","ky":"Kyrgyz","lo":"Lao","la":"Latin","lv":"Latvian","ln":"Lingala","lt":"Lithuanian","lb":"Luxembourgish","mk":"Macedonian","mg":"Malagasy","ms":"Malay","ml":"Malayalam","mt":"Maltese","mi":"Māori","mr":"Marathi","mn":"Mongolian","ne":"Nepali","nso":"Northern Sotho","no":"Norwegian","ny":"Nyanja","or":"Odia","om":"Oromo","ps":"Pashto","fa":"Persian","pl":"Polish","pt":"Portuguese","pa":"Punjabi","qu":"Quechua","ro":"Romanian","ru":"Russian","sm":"Samoan","sa":"Sanskrit","gd":"Scottish Gaelic","sr":"Serbian","sn":"Shona","sd":"Sindhi","si":"Sinhala","sk":"Slovak","sl":"Slovenian","so":"Somali","st":"Southern Sotho","es":"Spanish","su":"Sundanese","sw":"Swahili","sv":"Swedish","tg":"Tajik","ta":"Tamil","tt":"Tatar","te":"Telugu","th":"Thai","ti":"Tigrinya","ts":"Tsonga","tr":"Turkish","tk":"Turkmen","uk":"Ukrainian","ur":"Urdu","ug":"Uyghur","uz":"Uzbek","vi":"Vietnamese","cy":"Welsh","fy":"Western Frisian","xh":"Xhosa","yi":"Yiddish","yo":"Yoruba","zu":"Zulu"},"udemyAccessTokenExpired":"Your entered Udemy Access Token has expired","udemyModuleArgsNotFound":"Could not get udemy module data due to the fact that ModuleArgs was not found","VOTTranslationHelpNull":"Could not get the data required for the translate","enterUdemyAccessToken":"Enter Udemy Access Token","VOTUdemyData":"Udemy Data","streamNoConnectionToServer":"There is no connection to the server","VOTCloudflareDoesntSupportStreams":"The Cloudflare version of the script does not support stream translation","searchField":"Search..."}');
 // EXTERNAL MODULE: ./src/utils/debug.js
 var debug = __webpack_require__("./src/utils/debug.js");
 ;// CONCATENATED MODULE: ./src/localization/localizationProvider.js
@@ -1235,11 +1235,16 @@ function langTo6391(lang) {
 }
 
 async function detectLang(cleanText) {
-  const response = await fetch("https://rust-server-531j.onrender.com/detect", {
-    method: "POST",
-    body: cleanText,
-  });
-  return await response.text();
+  try {
+    const response = await fetch("https://rust-server-531j.onrender.com/detect", {
+      method: "POST",
+      body: cleanText,
+    });
+    return await response.text();
+  } catch (error) {
+    console.error("Error getting lang from text:", error)
+    return "en";
+  }
 }
 
 function isPiPAvailable() {
@@ -1686,7 +1691,7 @@ const dbData = [
     dontTranslateYourLang: 1,
   },
   {
-    audioProxy: 0,
+    audioProxy: lang === "uk" && "cloudflare" === "cloudflare" ? 1 : 0, // #376 (To bypass blocking of Yandex servers)
   },
   {
     subtitlesMaxLength: 300,
@@ -2113,34 +2118,8 @@ function deleteDB() {
 
 
 ;// CONCATENATED MODULE: ./src/ui.js
-// options structure:
-// [
-//     {
-//         label: string,
-//         value: string,
-//         selected: boolean,
-//         disabled: boolean
-//     }
-// ]
-function selectAddOptions(select, options = []) {
-  for (const option of options) {
-    const el = document.createElement("option");
-    el.innerText = option.label;
-    el.value = option.value;
-    if (
-      Object.prototype.hasOwnProperty.call(option, "selected") &&
-      option.selected
-    ) {
-      el.setAttribute("selected", "selected");
-    }
 
-    if (Object.prototype.hasOwnProperty.call(option, "disabled")) {
-      el.disabled = option.disabled;
-    }
 
-    select.appendChild(el);
-  }
-}
 
 function createHeader(html, level = 4) {
   const header = document.createElement("vot-block");
@@ -2251,27 +2230,6 @@ function createSlider(html, value = 50, min = 0, max = 100) {
     container,
     input,
     label
-  };
-}
-
-function createSelect(html, options = []) {
-  const container = document.createElement("vot-block");
-  container.classList.add("vot-select");
-
-  const label = document.createElement("span");
-  label.innerHTML = html;
-
-  const select = document.createElement("select");
-
-  container.appendChild(label);
-  container.appendChild(select);
-
-  selectAddOptions(select, options);
-
-  return {
-    container,
-    label,
-    select
   };
 }
 
@@ -2444,42 +2402,155 @@ function createVOTMenu(html) {
   };
 }
 
-function createVOTLanguageSelect(fromOptions = [], toOptions = []) {
+function createVOTSelect(selectTitle, dialogTitle, items, options = {}) {
+  const onSelectCb = options.onSelectCb || function() {};
+  const labelText = options.labelText || '';
+  let selectedItems = [];
+
+  const container = document.createElement("vot-block");
+  container.classList.add("vot-select");
+
+  if (labelText) {
+    const label = document.createElement('span');
+    label.innerText = labelText;
+    container.appendChild(label);
+  }
+
+  const outer = document.createElement("vot-block");
+  outer.classList.add("vot-select-outer");
+
+  const title = document.createElement("span");
+  title.classList.add("vot-select-title")
+  title.innerText = selectTitle;
+
+  if (selectTitle === undefined) {
+    title.innerText = items.find(i => i.selected === true)?.label;
+  }
+
+  const arrowIcon = document.createElement("vot-block");
+  arrowIcon.classList.add("vot-select-arrow-icon");
+  arrowIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24"><path d="M12 14.975q-.2 0-.375-.062T11.3 14.7l-4.6-4.6q-.275-.275-.275-.7t.275-.7q.275-.275.7-.275t.7.275l3.9 3.9l3.9-3.9q.275-.275.7-.275t.7.275q.275.275.275.7t-.275.7l-4.6 4.6q-.15.15-.325.213t-.375.062Z"/></svg>`
+
+  outer.append(title, arrowIcon);
+  outer.onclick = () => {
+    const votSelectDialog = createDialog(dialogTitle);
+    votSelectDialog.container.classList.add('vot-dialog-temp');
+    votSelectDialog.container.hidden = false;
+    document.documentElement.appendChild(votSelectDialog.container);
+
+    const contentList = document.createElement("vot-block");
+    contentList.classList.add("vot-select-content-list");
+
+    for (const item of items) {
+      const contentItem = document.createElement("vot-block");
+      contentItem.classList.add("vot-select-content-item");
+      contentItem.innerText = item.label;
+      contentItem.dataset.votSelected = item.selected;
+      contentItem.dataset.votValue = item.value;
+      if (item.disabled) {
+        contentItem.inert = true;
+      }
+
+      contentItem.onclick = async (e) => {
+        if (e.target.inert) return;
+
+        // removing the selected value for updating
+        const contentItems = contentList.childNodes;
+        contentItems.forEach(ci => ci.dataset.votSelected = false);
+        // fixed selection after closing the modal and opening again
+        items.forEach(i => i.selected = i.value === item.value);
+
+        contentItem.dataset.votSelected = true;
+        title.innerText = item.label;
+
+        // !!! use e.target.dataset.votValue instead of e.target.value !!!
+        await onSelectCb(e);
+      }
+      contentList.appendChild(contentItem);
+    }
+
+    // search logic
+    const votSearchLangTextfield = createTextfield(localizationProvider.get("searchField"));
+
+    votSearchLangTextfield.input.oninput = (e) => {
+      const searchText = e.target.value.toLowerCase();
+      // check if there are lovercase characters in the string. used for smarter search
+      Array
+        .from(selectedItems)
+        .forEach(ci => (
+          ci.hidden = !ci.innerText.toLowerCase().includes(searchText)
+        ));
+    }
+
+    votSelectDialog.bodyContainer.append(votSearchLangTextfield.container, contentList);
+    selectedItems = contentList.childNodes;
+
+    // remove the modal so that they do not accumulate
+    votSelectDialog.backdrop.onclick = votSelectDialog.closeButton.onclick = () => {
+      votSelectDialog.container.remove();
+      selectedItems = [];
+    };
+  }
+
+  container.append(outer);
+
+  const setTitle = (newTitle) => {
+    title.innerText = newTitle;
+  }
+
+  const setSelected = (val) => {
+    Array
+      .from(selectedItems)
+      .filter(ci => !ci.inert)
+      .forEach(ci => ci.dataset.votSelected = ci.dataset.votValue === val)
+    items.forEach(i => i.selected = String(i.value) === val);
+  }
+
+  const updateItems = (newItems) => {
+    items = newItems;
+  }
+
+  return {
+    container,
+    title,
+    arrowIcon,
+    setTitle,
+    setSelected,
+    updateItems
+  }
+}
+
+function createVOTLanguageSelect(options) {
+  const fromTitle = options.fromTitle || '#UNDEFINED';
+  const fromDialogTitle = options.fromDialogTitle || '#UNDEFINED';
+  const fromItems = options.fromItems || [];
+  const fromOnSelectCB = options.fromOnSelectCB || function() {};
+  const toTitle = options.toTitle || '#UNDEFINED';
+  const toDialogTitle = options.toDialogTitle || '#UNDEFINED';
+  const toItems = options.toItems || [];
+  const toOnSelectCB = options.toOnSelectCB || function() {};
+
   const container = document.createElement("vot-block");
   container.classList.add("vot-lang-select");
 
-  const from = document.createElement("vot-block");
-  from.classList.add("vot-select");
-
-  const fromSelect = document.createElement("select");
+  const fromSelect = createVOTSelect(fromTitle, fromDialogTitle, fromItems, { onSelectCb: fromOnSelectCB });
 
   const icon = document.createElement("vot-block");
   icon.classList.add("vot-lang-select-icon");
   icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M647-440H200q-17 0-28.5-11.5T160-480q0-17 11.5-28.5T200-520h447L451-716q-12-12-11.5-28t12.5-28q12-11 28-11.5t28 11.5l264 264q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L508-188q-11 11-27.5 11T452-188q-12-12-12-28.5t12-28.5l195-195Z"/></svg>`;
 
-  const to = document.createElement("vot-block");
-  to.classList.add("vot-select");
+  const toSelect = createVOTSelect(toTitle, toDialogTitle, toItems, { onSelectCb: toOnSelectCB });
 
-  const toSelect = document.createElement("select");
-
-  container.appendChild(from);
-  container.appendChild(icon);
-  container.appendChild(to);
-  from.appendChild(fromSelect);
-  to.appendChild(toSelect);
-
-  selectAddOptions(fromSelect, fromOptions);
-  selectAddOptions(toSelect, toOptions);
+  container.append(fromSelect.container, icon, toSelect.container);
 
   return {
     container,
-    from,
     fromSelect,
     icon,
-    to,
     toSelect
   };
 }
+
 
 /* harmony default export */ const ui = ({
   createHeader,
@@ -2490,11 +2561,11 @@ function createVOTLanguageSelect(fromOptions = [], toOptions = []) {
   createIconButton,
   createCheckbox,
   createSlider,
-  createSelect,
   createTextfield,
   createDialog,
   createVOTButton,
   createVOTMenu,
+  createVOTSelect,
   createVOTLanguageSelect,
   updateSlider
 });
@@ -4061,38 +4132,65 @@ class VideoHandler {
       this.votMenu.headerContainer.appendChild(this.votSettingsButton);
 
       this.votTranslationLanguageSelect = ui.createVOTLanguageSelect(
-        [
-          {
-            label: localizationProvider.get("videoLanguage"),
-            value: "default",
-            disabled: true,
+        {
+          fromTitle: localizationProvider.get("langs")[this.video.detectedLanguage],
+          fromDialogTitle: localizationProvider.get("videoLanguage"),
+          fromItems: genOptionsByOBJ(availableLangs, this.videoData.detectedLanguage),
+          fromOnSelectCB: async (e) => {
+            debug/* default */.Z.log('[fromOnSelectCB] select from language', e.target.dataset.votValue)
+            this.videoData = await this.getVideoData();
+            this.setSelectMenuValues(
+              e.target.dataset.votValue,
+              this.videoData.responseLanguage
+            );
           },
-          ...genOptionsByOBJ(availableLangs, this.videoData.detectedLanguage),
-        ],
-        [
-          {
-            label: localizationProvider.get("translationLanguage"),
-            value: "default",
-            disabled: true,
-          },
-          ...genOptionsByOBJ(availableLangs, this.videoData.responseLanguage),
-          {
-            label: "─────────",
-            value: "separator",
-            disabled: true,
-          },
-          ...genOptionsByOBJ(additionalTTS, this.videoData.responseLanguage),
-        ]
-      );
+          toTitle: localizationProvider.get("langs")[this.video.responseLanguage],
+          toDialogTitle: localizationProvider.get("translationLanguage"),
+          toItems: [
+            ...genOptionsByOBJ(availableLangs, this.videoData.responseLanguage),
+            {
+              label: "─────────",
+              value: "separator",
+              disabled: true,
+            },
+            ...genOptionsByOBJ(additionalTTS, this.videoData.responseLanguage),
+          ],
+          toOnSelectCB: async (e) => {
+            const newLang = e.target.dataset.votValue;
+            debug/* default */.Z.log("[toOnSelectCB] select to language", newLang);
+            this.data.responseLanguage = this.translateToLang = newLang;
+            await updateDB({ responseLanguage: this.data.responseLanguage });
+            debug/* default */.Z.log("Response Language value changed. New value: ", this.data.responseLanguage);
+            this.videoData = await this.getVideoData();
+            this.setSelectMenuValues(
+              this.videoData.detectedLanguage,
+              this.data.responseLanguage
+            );
+          }
+        }
+      )
+
       this.votMenu.bodyContainer.appendChild(this.votTranslationLanguageSelect.container);
 
-      this.votSubtitlesSelect = ui.createSelect(localizationProvider.get("VOTSubtitles"), [
+      this.votSubtitlesSelect = ui.createVOTSelect(
+        localizationProvider.get("VOTSubtitlesDisabled"),
+        localizationProvider.get("VOTSubtitles"),
+        [
+          {
+            label: localizationProvider.get("VOTSubtitlesDisabled"),
+            value: "disabled",
+            selected: true,
+            disabled: false,
+          }
+        ],
         {
-          label: localizationProvider.get("VOTSubtitlesDisabled"),
-          value: "disabled",
-          disabled: false,
+          onSelectCb: async (e) => {
+            await this.changeSubtitlesLang(e.target.dataset.votValue);
+          },
+          labelText: localizationProvider.get("VOTSubtitles")
         }
-      ]);
+      )
+
       this.votMenu.bodyContainer.appendChild(this.votSubtitlesSelect.container);
 
       this.votVideoVolumeSlider = ui.createSlider(`${localizationProvider.get("VOTVolume")}: <strong>${this.getVideoVolume() * 100}%</strong>`, this.getVideoVolume() * 100);
@@ -4161,7 +4259,18 @@ class VideoHandler {
       this.votAboutHeader = ui.createHeader(localizationProvider.get("about"));
       this.votSettingsDialog.bodyContainer.appendChild(this.votAboutHeader);
 
-      this.votLanguageSelect = ui.createSelect(localizationProvider.get("VOTMenuLanguage"), genOptionsByOBJ(availableLocales, window.localStorage.getItem("vot-locale-lang-override") ?? "auto"));
+      this.votLanguageSelect = ui.createVOTSelect(
+        localizationProvider.get("langs")[window.localStorage.getItem("vot-locale-lang-override") ?? "auto"],
+        localizationProvider.get("VOTMenuLanguage"),
+        genOptionsByOBJ(availableLocales, window.localStorage.getItem("vot-locale-lang-override") ?? "auto"),
+        {
+          onSelectCb: (e) => {
+            window.localStorage.setItem("vot-locale-lang-override", e.target.dataset.votValue);
+          },
+          labelText: localizationProvider.get("VOTMenuLanguage")
+        }
+      )
+
       this.votSettingsDialog.bodyContainer.appendChild(this.votLanguageSelect.container);
 
       this.votShowPiPButtonCheckbox = ui.createCheckbox(localizationProvider.get("VOTShowPiPButton"), this.data?.showPiPButton ?? false);
@@ -4249,31 +4358,6 @@ class VideoHandler {
           document.mozCancelFullscreen && document.mozCancelFullscreen();
           document.exitFullscreen && document.exitFullscreen();
         }
-      });
-
-      this.votTranslationLanguageSelect.fromSelect.addEventListener("change", async (e) => {
-        debug/* default */.Z.log("[onchange] select from language", e.target.value);
-        this.videoData = await this.getVideoData();
-        await this.setSelectMenuValues(
-          e.target.value,
-          this.videoData.responseLanguage
-        );
-      });
-
-      this.votTranslationLanguageSelect.toSelect.addEventListener("change", async (e) => {
-        debug/* default */.Z.log("[onchange] select to language", e.target.value);
-        this.data.responseLanguage = this.translateToLang = e.target.value;
-        await updateDB({ responseLanguage: this.data.responseLanguage });
-        debug/* default */.Z.log("Response Language value changed. New value: ", this.data.responseLanguage);
-        this.videoData = await this.getVideoData();
-        await this.setSelectMenuValues(
-          this.videoData.detectedLanguage,
-          this.data.responseLanguage
-        );
-      });
-
-      this.votSubtitlesSelect.select.addEventListener("change", async (e) => {
-        await this.changeSubtitlesLang(e.target.value);
       });
 
       this.votVideoVolumeSlider.input.addEventListener("input", (e) => {
@@ -4372,10 +4456,6 @@ class VideoHandler {
         this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
       });
 
-      this.votLanguageSelect.select.addEventListener("change", (e) => {
-        window.localStorage.setItem("vot-locale-lang-override", e.target.value);
-      });
-
       this.votShowPiPButtonCheckbox.input.addEventListener("change", async (e) => {
         this.data.showPiPButton = Number(e.target.checked);
         await updateDB({ showPiPButton: this.data.showPiPButton });
@@ -4463,14 +4543,16 @@ class VideoHandler {
       const menu = this.votMenu.container;
       const container = this.container;
       const settings = this.votSettingsDialog.container;
+      const tempDialog = document.querySelector('.vot-dialog-temp');
 
       const isButton = button.contains(e);
       const isMenu = menu.contains(e);
       const isVideo = container.contains(e);
       const isSettings = settings.contains(e);
+      const isTempDialog = tempDialog?.contains(e) ?? false;
 
-      debug/* default */.Z.log(`[document click] ${isButton} ${isMenu} ${isVideo} ${isSettings}`);
-      if (!(!isButton && !isMenu && !isSettings)) return;
+      debug/* default */.Z.log(`[document click] ${isButton} ${isMenu} ${isVideo} ${isSettings} ${isTempDialog}`);
+      if (!(!isButton && !isMenu && !isSettings && !isTempDialog)) return;
       if (!isVideo) this.logout(0);
 
       this.votMenu.container.hidden = true;
@@ -4494,6 +4576,14 @@ class VideoHandler {
     addExtraEventListener(this.votButton.container, "mousemove" , this.changeOpacityOnEventBound);
     addExtraEventListener(this.votMenu.container, "mousemove" , this.changeOpacityOnEventBound);
     addExtraEventListeners(document, ["touchstart", "touchmove", "touchend"], this.changeOpacityOnEventBound);
+
+    // fix youtube hold to fast
+    addExtraEventListener(this.votButton.container, "mousedown", (e) => {
+      e.stopImmediatePropagation();
+    })
+    addExtraEventListener(this.votMenu.container, "mousedown", (e) => {
+      e.stopImmediatePropagation();
+    })
 
     addExtraEventListener(this.video, "abort", () => {
       debug/* default */.Z.log("lipsync mode is abort");
@@ -4547,8 +4637,9 @@ class VideoHandler {
 
   async changeSubtitlesLang(subs) {
     debug/* default */.Z.log("[onchange] subtitles", subs);
-    this.votSubtitlesSelect.select.value = subs;
+    this.votSubtitlesSelect.setSelected(subs)
     if (subs === "disabled") {
+      this.votSubtitlesSelect.setTitle(localizationProvider.get("VOTSubtitlesDisabled"));
       this.subtitlesWidget.setContent(null);
       this.votDownloadSubtitlesButton.hidden = true;
       this.downloadSubtitlesUrl = null;
@@ -4561,35 +4652,35 @@ class VideoHandler {
   }
 
   async updateSubtitlesLangSelect() {
-    const oldValue = this.votSubtitlesSelect.select.value;
-    this.votSubtitlesSelect.select.innerHTML = "";
+    const updatedOptions = [
+      {
+        label: localizationProvider.get("VOTSubtitlesDisabled"),
+        value: "disabled",
+        selected: true,
+        disabled: false,
+      },
+      ...this.subtitlesList.map((s, idx) => ({
+        label: (localizationProvider.get("langs")[s.language] ??
+            s.language.toUpperCase()) +
+          (s.translatedFromLanguage
+            ? ` ${localizationProvider.get("VOTTranslatedFrom")} ${
+                localizationProvider.get("langs")[s.translatedFromLanguage] ??
+                s.translatedFromLanguage.toUpperCase()
+              }`
+            : "") +
+          (s.source !== "yandex" ? ` ${s.source}` : "") +
+          (s.isAutoGenerated
+            ? ` (${localizationProvider.get("VOTAutogenerated")})`
+            : ""),
+        value: idx,
+        selected: false,
+        disabled: false
+      }))
+    ]
 
-    const disabledOption = document.createElement("option");
-    disabledOption.value = "disabled";
-    disabledOption.innerHTML = localizationProvider.get("VOTSubtitlesDisabled");
-    this.votSubtitlesSelect.select.append(disabledOption);
+    this.votSubtitlesSelect.updateItems(updatedOptions);
 
-    for (let i = 0; i < this.subtitlesList.length; i++) {
-      const s = this.subtitlesList[i];
-      const option = document.createElement("option");
-      option.value = i;
-      option.innerHTML =
-        (localizationProvider.get("langs")[s.language] ??
-          s.language.toUpperCase()) +
-        (s.translatedFromLanguage
-          ? ` ${localizationProvider.get("VOTTranslatedFrom")} ${
-              localizationProvider.get("langs")[s.translatedFromLanguage] ??
-              s.translatedFromLanguage.toUpperCase()
-            }`
-          : "") +
-        (s.source !== "yandex" ? ` ${s.source}` : "") +
-        (s.isAutoGenerated
-          ? ` (${localizationProvider.get("VOTAutogenerated")})`
-          : "");
-          this.votSubtitlesSelect.select.append(option);
-    }
-
-    await this.changeSubtitlesLang(oldValue);
+    await this.changeSubtitlesLang(updatedOptions[0].value);
   }
 
   async updateSubtitles() {
@@ -4613,7 +4704,7 @@ class VideoHandler {
 
     if (!this.videoData.detectedLanguage) {
       this.videoData = await this.getVideoData();
-      await this.setSelectMenuValues(
+      this.setSelectMenuValues(
         this.videoData.detectedLanguage,
         this.videoData.responseLanguage
       );
@@ -4663,8 +4754,10 @@ class VideoHandler {
   }
 
   setSelectMenuValues(from, to) {
-    this.votTranslationLanguageSelect.fromSelect.value = from;
-    this.votTranslationLanguageSelect.toSelect.value = to;
+    this.votTranslationLanguageSelect.fromSelect.setTitle(localizationProvider.get('langs')[from]);
+    this.votTranslationLanguageSelect.toSelect.setTitle(localizationProvider.get('langs')[to]);
+    this.votTranslationLanguageSelect.fromSelect.setSelected(from);
+    this.votTranslationLanguageSelect.toSelect.setSelected(to);
     console.log(`[VOT] Set translation from ${from} to ${to}`);
     this.videoData.detectedLanguage = from;
     this.videoData.responseLanguage = to;
@@ -4750,13 +4843,13 @@ class VideoHandler {
       ) {
         throw new VOTLocalizedError("VOTDisableFromYourLang");
       }
-      if (this.ytData.isPremiere) {
-        throw new VOTLocalizedError("VOTPremiere");
-      }
+      // if (this.ytData.isPremiere) {
+      //   throw new VOTLocalizedError("VOTPremiere");
+      // }
       // if (this.ytData.isLive) {
       //   throw new VOTLocalizedError("VOTLiveNotSupported");
       // }
-      if (!this.ytData.isLive && this.videoData.duration > 14_400) {
+      if (this.videoData.duration > 14_400) {
         throw new VOTLocalizedError("VOTVideoIsTooLong");
       }
     }
