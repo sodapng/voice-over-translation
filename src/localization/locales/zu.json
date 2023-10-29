@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Faka Udemy Ukufinyelela Ithokheni",
   "VOTUdemyData": "Idatha Ye-Udemy",
   "streamNoConnectionToServer": "Akukho ukuxhumana neseva",
-  "VOTCloudflareDoesntSupportStreams": "Inguqulo ye Cloudflare yeskripthi ayisekeli ukuhunyushwa kokusakazwa"
+  "VOTCloudflareDoesntSupportStreams": "Inguqulo ye Cloudflare yeskripthi ayisekeli ukuhunyushwa kokusakazwa",
+  "searchField": "Ukucinga..."
 }

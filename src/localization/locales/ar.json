@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "أدخل رمز الوصول أوديمي",
   "VOTUdemyData": "بيانات أوديمي",
   "streamNoConnectionToServer": "لا يوجد اتصال بالخادم",
-  "VOTCloudflareDoesntSupportStreams": "النسخة كلودفلاري من البرنامج النصي لا يدعم ترجمة تيار"
+  "VOTCloudflareDoesntSupportStreams": "النسخة كلودفلاري من البرنامج النصي لا يدعم ترجمة تيار",
+  "searchField": "بحث..."
 }

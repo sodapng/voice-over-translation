@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Въведете Жетон За Достъп",
   "VOTUdemyData": "Данни Udemy",
   "streamNoConnectionToServer": "Няма връзка със сървъра",
-  "VOTCloudflareDoesntSupportStreams": "Версията на скрипта не поддържа поток превод"
+  "VOTCloudflareDoesntSupportStreams": "Версията на скрипта не поддържа поток превод",
+  "searchField": "Търси..."
 }

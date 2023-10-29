@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Masukkan Token Akses Udemy",
   "VOTUdemyData": "Udemy Data",
   "streamNoConnectionToServer": "Tidak ada koneksi ke server",
-  "VOTCloudflareDoesntSupportStreams": "Skrip versi Cloudflare tidak mendukung terjemahan aliran"
+  "VOTCloudflareDoesntSupportStreams": "Skrip versi Cloudflare tidak mendukung terjemahan aliran",
+  "searchField": "Cari..."
 }

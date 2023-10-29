@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Entrez le Jeton d'accès Udemy",
   "VOTUdemyData": "Données Udemy",
   "streamNoConnectionToServer": "Il n'y a pas de connexion au serveur",
-  "VOTCloudflareDoesntSupportStreams": "La version Cloudflare du script ne prend pas en charge la traduction de flux"
+  "VOTCloudflareDoesntSupportStreams": "La version Cloudflare du script ne prend pas en charge la traduction de flux",
+  "searchField": "Chercher..."
 }

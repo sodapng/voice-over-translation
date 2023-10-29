@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Унесите Удеми приступни токен",
   "VOTUdemyData": "Удеми Подаци",
   "streamNoConnectionToServer": "Нема везе са сервером",
-  "VOTCloudflareDoesntSupportStreams": "Цлоудфларе верзија скрипте не подржава стриминг"
+  "VOTCloudflareDoesntSupportStreams": "Цлоудфларе верзија скрипте не подржава стриминг",
+  "searchField": "Претрага..."
 }

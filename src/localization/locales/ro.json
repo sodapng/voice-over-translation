@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Introduceți Jetonul De Acces Udemy",
   "VOTUdemyData": "Datele Udemy",
   "streamNoConnectionToServer": "Nu există nicio conexiune la server",
-  "VOTCloudflareDoesntSupportStreams": "Versiunea Cloudflare a scriptului nu acceptă traducerea fluxului"
+  "VOTCloudflareDoesntSupportStreams": "Versiunea Cloudflare a scriptului nu acceptă traducerea fluxului",
+  "searchField": "Căutare..."
 }

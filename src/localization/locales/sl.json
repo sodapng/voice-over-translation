@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Vnesite Žeton Za Dostop",
   "VOTUdemyData": "Podatki O Udemiju",
   "streamNoConnectionToServer": "Ni povezave s strežnikom",
-  "VOTCloudflareDoesntSupportStreams": "Različica skripta Cloudflare ne podpira prevajanja tokov"
+  "VOTCloudflareDoesntSupportStreams": "Različica skripta Cloudflare ne podpira prevajanja tokov",
+  "searchField": "Išči..."
 }

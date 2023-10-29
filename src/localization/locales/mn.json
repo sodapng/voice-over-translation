@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Udemy Хандалтын Токен Оруулна Уу",
   "VOTUdemyData": "Udemy Мэдээлэл",
   "streamNoConnectionToServer": "Сервертэй холбогдох боломжгүй",
-  "VOTCloudflareDoesntSupportStreams": "Скриптийн Cloudflare хувилбар нь урсгалын орчуулгыг дэмждэггүй"
+  "VOTCloudflareDoesntSupportStreams": "Скриптийн Cloudflare хувилбар нь урсгалын орчуулгыг дэмждэггүй",
+  "searchField": "Хайх..."
 }

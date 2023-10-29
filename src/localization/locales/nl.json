@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Enter Udemy Access Token",
   "VOTUdemyData": "Udemy Data",
   "streamNoConnectionToServer": "Er is geen verbinding met de server",
-  "VOTCloudflareDoesntSupportStreams": "De Cloudflare-versie van het script ondersteunt geen streamvertaling"
+  "VOTCloudflareDoesntSupportStreams": "De Cloudflare-versie van het script ondersteunt geen streamvertaling",
+  "searchField": "Zoeken..."
 }

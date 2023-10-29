@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Внесете Удеми Пристап Токен",
   "VOTUdemyData": "Удеми Податоци",
   "streamNoConnectionToServer": "Нема врска со серверот",
-  "VOTCloudflareDoesntSupportStreams": "Верзијата За Облак На сценариото не поддржува превод на поток"
+  "VOTCloudflareDoesntSupportStreams": "Верзијата За Облак На сценариото не поддржува превод на поток",
+  "searchField": "Барај..."
 }

@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Εισαγάγετε Το Διακριτικό Πρόσβασης Udemy",
   "VOTUdemyData": "Δεδομένα Udemy",
   "streamNoConnectionToServer": "Δεν υπάρχει σύνδεση με το διακομιστή",
-  "VOTCloudflareDoesntSupportStreams": "Η έκδοση Cloudflare του σεναρίου δεν υποστηρίζει μετάφραση ροής"
+  "VOTCloudflareDoesntSupportStreams": "Η έκδοση Cloudflare του σεναρίου δεν υποστηρίζει μετάφραση ροής",
+  "searchField": "Αναζήτηση..."
 }

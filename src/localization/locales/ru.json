@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Введите токен доступа Udemy",
   "VOTUdemyData": "Данные Udemy",
   "streamNoConnectionToServer": "Нет подключения к серверу",
-  "VOTCloudflareDoesntSupportStreams": "Версия скрипта Cloudflare не поддерживает перевод трансляций"
+  "VOTCloudflareDoesntSupportStreams": "Версия скрипта Cloudflare не поддерживает перевод трансляций",
+  "searchField": "Поиск..."
 }

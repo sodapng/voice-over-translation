@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Udemy Kirish Tokenini Kiriting",
   "VOTUdemyData": "Udemy Ma'lumotlari",
   "streamNoConnectionToServer": "Serverga ulanish yo'q",
-  "VOTCloudflareDoesntSupportStreams": "Skriptning Cloudflare versiyasi oqim tarjimasini qo'llab-quvvatlamaydi"
+  "VOTCloudflareDoesntSupportStreams": "Skriptning Cloudflare versiyasi oqim tarjimasini qo'llab-quvvatlamaydi",
+  "searchField": "Qidirish..."
 }

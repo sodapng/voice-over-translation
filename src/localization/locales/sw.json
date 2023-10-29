@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Ingiza Ishara Ya Ufikiaji Wa Udemy",
   "VOTUdemyData": "Takwimu Za Udemy",
   "streamNoConnectionToServer": "Hakuna uhusiano na server",
-  "VOTCloudflareDoesntSupportStreams": "Cloudflare toleo la script haina msaada mkondo tafsiri"
+  "VOTCloudflareDoesntSupportStreams": "Cloudflare toleo la script haina msaada mkondo tafsiri",
+  "searchField": "Tafuta..."
 }

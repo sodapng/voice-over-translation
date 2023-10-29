@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Udemy ප්රවේශ සංකේතය ඇතුලත් කරන්න",
   "VOTUdemyData": "උඩෙමි දත්ත",
   "streamNoConnectionToServer": "සර්වර් එකට කිසිම සම්බන්ධයක් නෑ",
-  "VOTCloudflareDoesntSupportStreams": "Script එකේ Cloudflare අනුවාදය stream translation වලට සහය නොදක්වයි"
+  "VOTCloudflareDoesntSupportStreams": "Script එකේ Cloudflare අනුවාදය stream translation වලට සහය නොදක්වයි",
+  "searchField": "හොයන්න..."
 }

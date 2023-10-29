@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Adja Meg Az Udemy Hozzáférési Tokent",
   "VOTUdemyData": "Udemy Adatok",
   "streamNoConnectionToServer": "Nincs kapcsolat a szerverrel",
-  "VOTCloudflareDoesntSupportStreams": "A szkript Cloudflare verziója nem támogatja a stream fordítást"
+  "VOTCloudflareDoesntSupportStreams": "A szkript Cloudflare verziója nem támogatja a stream fordítást",
+  "searchField": "Keresés..."
 }

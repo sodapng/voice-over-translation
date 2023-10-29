@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Մուտքագրեք Udemy մուտքի նշանը",
   "VOTUdemyData": "Udemy-Ի Տվյալները",
   "streamNoConnectionToServer": "Սերվերի միացում չկա",
-  "VOTCloudflareDoesntSupportStreams": "Cloudflare սցենարի տարբերակը չի աջակցում հոսքային հոսքին"
+  "VOTCloudflareDoesntSupportStreams": "Cloudflare սցենարի տարբերակը չի աջակցում հոսքային հոսքին",
+  "searchField": "Որոնում.."
 }

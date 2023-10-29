@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "उडेमी पहुँच टोकन प्रविष्ट गर्नुहोस्",
   "VOTUdemyData": "उडेमी डाटा",
   "streamNoConnectionToServer": "सर्भरसँग कुनै सम्बन्ध छैन",
-  "VOTCloudflareDoesntSupportStreams": "स्क्रिप्टको क्लाउडफ्लेयर संस्करणले स्ट्रिम अनुवादलाई समर्थन गर्दैन"
+  "VOTCloudflareDoesntSupportStreams": "स्क्रिप्टको क्लाउडफ्लेयर संस्करणले स्ट्रिम अनुवादलाई समर्थन गर्दैन",
+  "searchField": "खोजी गर्नुहोस्।.."
 }

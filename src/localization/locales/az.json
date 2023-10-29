@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Udemy giriş tokenini daxil edin",
   "VOTUdemyData": "Udemy Məlumatları",
   "streamNoConnectionToServer": "Server bağlantısı yoxdur",
-  "VOTCloudflareDoesntSupportStreams": "Cloudflare skriptinin versiyası axını dəstəkləmir"
+  "VOTCloudflareDoesntSupportStreams": "Cloudflare skriptinin versiyası axını dəstəkləmir",
+  "searchField": "Axtarış..."
 }

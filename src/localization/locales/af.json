@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Tik Udemy Toegang Token",
   "VOTUdemyData": "Udemy Data",
   "streamNoConnectionToServer": "Daar is geen verbinding met die bediener nie",
-  "VOTCloudflareDoesntSupportStreams": "Die Cloudflare weergawe van Die script ondersteun nie stroom vertaling"
+  "VOTCloudflareDoesntSupportStreams": "Die Cloudflare weergawe van Die script ondersteun nie stroom vertaling",
+  "searchField": "Soek..."
 }

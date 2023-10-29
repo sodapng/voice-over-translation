@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Unesite pristupni token",
   "VOTUdemyData": "Podaci Udemy",
   "streamNoConnectionToServer": "Nema veze s poslužiteljem",
-  "VOTCloudflareDoesntSupportStreams": "Verzija skripte ae ne podržava streaming uživo"
+  "VOTCloudflareDoesntSupportStreams": "Verzija skripte ae ne podržava streaming uživo",
+  "searchField": "Traži..."
 }

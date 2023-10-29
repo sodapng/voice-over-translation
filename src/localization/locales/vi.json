@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Nhập Mã Thông Báo Truy Cập Udemy",
   "VOTUdemyData": "Dữ Liệu Udemy",
   "streamNoConnectionToServer": "Không có kết nối đến máy chủ",
-  "VOTCloudflareDoesntSupportStreams": "Phiên Bản Cloudflare của tập lệnh không hỗ trợ dịch luồng"
+  "VOTCloudflareDoesntSupportStreams": "Phiên Bản Cloudflare của tập lệnh không hỗ trợ dịch luồng",
+  "searchField": "Tìm kiếm..."
 }

@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Daħħal It-Token Tal-Aċċess Udemy",
   "VOTUdemyData": "Dejta Udemy",
   "streamNoConnectionToServer": "M'hemm l ebda konnessjoni mas server",
-  "VOTCloudflareDoesntSupportStreams": "Il verżjoni Cloudflare tal iskrittura ma tappoġġjax traduzzjoni stream"
+  "VOTCloudflareDoesntSupportStreams": "Il verżjoni Cloudflare tal iskrittura ma tappoġġjax traduzzjoni stream",
+  "searchField": "Fittex..."
 }

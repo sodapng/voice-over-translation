@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "ກະລຸນາໃສ່ Token ການເຂົ້າເຖິງ Udemy",
   "VOTUdemyData": "ຂໍ້ມູນ Udemy",
   "streamNoConnectionToServer": "ບໍ່ມີການເຊື່ອມຕໍ່ກັບ server",
-  "VOTCloudflareDoesntSupportStreams": "ສະບັບ Cloudflare ຂອງ script ບໍ່ໄດ້ສະຫນັບສະຫນູນການແປພາສານ້ໍາ"
+  "VOTCloudflareDoesntSupportStreams": "ສະບັບ Cloudflare ຂອງ script ບໍ່ໄດ້ສະຫນັບສະຫນູນການແປພາສານ້ໍາ",
+  "searchField": "ຄົ້ນຫາ..."
 }

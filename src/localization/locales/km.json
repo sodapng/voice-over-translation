@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "បញ្ចូលសញ្ញាសម្ងាត់ចូលដំណើរការ Udemy",
   "VOTUdemyData": "ទិន្នន័យ Udemy",
   "streamNoConnectionToServer": "មិនមានការតភ្ជាប់ទៅម៉ាស៊ីនបម្រើទេ",
-  "VOTCloudflareDoesntSupportStreams": "កំណែ Cloudflare នៃស្គ្រីបមិនគាំទ្រការបកប្រែស្ទ្រីម"
+  "VOTCloudflareDoesntSupportStreams": "កំណែ Cloudflare នៃស្គ្រីបមិនគាំទ្រការបកប្រែស្ទ្រីម",
+  "searchField": "ស្វែងរក..."
 }

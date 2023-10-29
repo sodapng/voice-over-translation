@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "ഉഡെമി ആക്സസ് ടോക്കൺ നൽകുക",
   "VOTUdemyData": "ഉഡെമി ഡാറ്റ",
   "streamNoConnectionToServer": "സെർവറുമായി ബന്ധമില്ല",
-  "VOTCloudflareDoesntSupportStreams": "സ്ക്രിപ്റ്റിന്റെ ക്ലൌഡ്ഫ്ലെയർ പതിപ്പ് സ്ട്രീം വിവർത്തനത്തെ പിന്തുണയ്ക്കുന്നില്ല"
+  "VOTCloudflareDoesntSupportStreams": "സ്ക്രിപ്റ്റിന്റെ ക്ലൌഡ്ഫ്ലെയർ പതിപ്പ് സ്ട്രീം വിവർത്തനത്തെ പിന്തുണയ്ക്കുന്നില്ല",
+  "searchField": "തിരയൂ..."
 }

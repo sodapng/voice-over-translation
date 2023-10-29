@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Udemy Erişim Belirtecini Girin",
   "VOTUdemyData": "Udemy Verileri",
   "streamNoConnectionToServer": "Sunucuya bağlantı yok",
-  "VOTCloudflareDoesntSupportStreams": "Komut dosyasının Cloudflare sürümü akış çevirisini desteklemiyor"
+  "VOTCloudflareDoesntSupportStreams": "Komut dosyasının Cloudflare sürümü akış çevirisini desteklemiyor",
+  "searchField": "Aramak..."
 }

@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Introduïu El Testimoni D ' Accés A Udemy",
   "VOTUdemyData": "Dades Udemy",
   "streamNoConnectionToServer": "No hi ha connexió amb el servidor",
-  "VOTCloudflareDoesntSupportStreams": "La versió De Cloudflare de l'script no admet la traducció de flux"
+  "VOTCloudflareDoesntSupportStreams": "La versió De Cloudflare de l'script no admet la traducció de flux",
+  "searchField": "Cerca..."
 }

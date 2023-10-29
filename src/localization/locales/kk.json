@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Udemy кіру таңбалауышын енгізіңіз",
   "VOTUdemyData": "Udemy Деректері",
   "streamNoConnectionToServer": "Серверге қосылу жоқ",
-  "VOTCloudflareDoesntSupportStreams": "Cloudflare сценарийінің нұсқасы ағынды қолдамайды"
+  "VOTCloudflareDoesntSupportStreams": "Cloudflare сценарийінің нұсқасы ағынды қолдамайды",
+  "searchField": "Іздеу..."
 }

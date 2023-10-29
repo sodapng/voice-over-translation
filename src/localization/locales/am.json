@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "የኡዲሚ መዳረሻ ማስመሰያ ያስገቡ",
   "VOTUdemyData": "የተጠቃሚዎች በይነ-ተገናኝነት",
   "streamNoConnectionToServer": "ከአገልጋዩ ጋር ምንም ግንኙነት የለም ። ",
-  "VOTCloudflareDoesntSupportStreams": "የስክሪፕቱ ክላውድላሬ ስሪት የዥረት ትርጉምን አይደግፍም ። "
+  "VOTCloudflareDoesntSupportStreams": "የስክሪፕቱ ክላውድላሬ ስሪት የዥረት ትርጉምን አይደግፍም ። ",
+  "searchField": "Search።.."
 }

@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Indtast Udemy Access Token",
   "VOTUdemyData": "Udemy Data",
   "streamNoConnectionToServer": "Der er ingen forbindelse til serveren",
-  "VOTCloudflareDoesntSupportStreams": "Cloudflare-versionen af scriptet understøtter ikke streamoversættelse"
+  "VOTCloudflareDoesntSupportStreams": "Cloudflare-versionen af scriptet understøtter ikke streamoversættelse",
+  "searchField": "Søge..."
 }

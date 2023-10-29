@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Sartu Udemy Sarbide-Tokena",
   "VOTUdemyData": "Udemy Datuak",
   "streamNoConnectionToServer": "Ez dago konexiorik zerbitzariarekin",
-  "VOTCloudflareDoesntSupportStreams": "Gidoiaren hodei-izpi bertsioak ez du stream itzulpena onartzen"
+  "VOTCloudflareDoesntSupportStreams": "Gidoiaren hodei-izpi bertsioak ez du stream itzulpena onartzen",
+  "searchField": "Bilatu..."
 }

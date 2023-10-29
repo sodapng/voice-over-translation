@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "উদেমি অ্যাক্সেস টোকেন লিখুন",
   "VOTUdemyData": "উদেমি ডেটা",
   "streamNoConnectionToServer": "সার্ভারের সাথে কোন সংযোগ নেই",
-  "VOTCloudflareDoesntSupportStreams": "স্ক্রিপ্টের ক্লাউডফ্লেয়ার সংস্করণটি স্ট্রিম অনুবাদ সমর্থন করে না"
+  "VOTCloudflareDoesntSupportStreams": "স্ক্রিপ্টের ক্লাউডফ্লেয়ার সংস্করণটি স্ট্রিম অনুবাদ সমর্থন করে না",
+  "searchField": "অনুসন্ধান..."
 }

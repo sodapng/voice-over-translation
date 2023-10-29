@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Sisestage Udemy Juurdepääsuluba",
   "VOTUdemyData": "Udemy Andmed",
   "streamNoConnectionToServer": "Serveriga pole ühendust",
-  "VOTCloudflareDoesntSupportStreams": "Skripti Cloudflare versioon ei toeta voo tõlkimist"
+  "VOTCloudflareDoesntSupportStreams": "Skripti Cloudflare versioon ei toeta voo tõlkimist",
+  "searchField": "Otsing..."
 }

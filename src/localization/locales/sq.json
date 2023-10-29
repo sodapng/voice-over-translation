@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Shkruani Udemy Access Token",
   "VOTUdemyData": "Të Dhënat E Udemy",
   "streamNoConnectionToServer": "Nuk ka lidhje me serverin",
-  "VOTCloudflareDoesntSupportStreams": "Versioni Cloudflare i shkrimit nuk mbështet përkthimin e rrjedhës"
+  "VOTCloudflareDoesntSupportStreams": "Versioni Cloudflare i shkrimit nuk mbështet përkthimin e rrjedhës",
+  "searchField": "Kërko..."
 }

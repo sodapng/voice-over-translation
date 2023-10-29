@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "ਉਡੇਮੀ ਐਕਸੈਸ ਟੋਕਨ ਦਰਜ ਕਰੋ",
   "VOTUdemyData": "ਉਡੇਮੀ ਡਾਟਾ",
   "streamNoConnectionToServer": "ਸਰਵਰ ਨਾਲ ਕੋਈ ਕੁਨੈਕਸ਼ਨ ਨਹੀਂ",
-  "VOTCloudflareDoesntSupportStreams": "ਸਕ੍ਰਿਪਟ ਦਾ ਕਲਾਉਡਫਲੇਅਰ ਵਰਜਨ ਸਟ੍ਰੀਮ ਅਨੁਵਾਦ ਦਾ ਸਮਰਥਨ ਨਹੀਂ ਕਰਦਾ"
+  "VOTCloudflareDoesntSupportStreams": "ਸਕ੍ਰਿਪਟ ਦਾ ਕਲਾਉਡਫਲੇਅਰ ਵਰਜਨ ਸਟ੍ਰੀਮ ਅਨੁਵਾਦ ਦਾ ਸਮਰਥਨ ਨਹੀਂ ਕਰਦਾ",
+  "searchField": "ਖੋਜ ਕਰੋ..."
 }

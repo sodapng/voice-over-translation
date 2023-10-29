@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Udemy رسائی ٹوکن درج کریں",
   "VOTUdemyData": "اڈیمی ڈیٹا",
   "streamNoConnectionToServer": "سرور سے کوئی تعلق نہیں ہے",
-  "VOTCloudflareDoesntSupportStreams": "اسکرپٹ کا کلاؤڈ فلیئر ورژن اسٹریم ٹرانسلیشن کی حمایت نہیں کرتا ہے ۔ "
+  "VOTCloudflareDoesntSupportStreams": "اسکرپٹ کا کلاؤڈ فلیئر ورژن اسٹریم ٹرانسلیشن کی حمایت نہیں کرتا ہے ۔ ",
+  "searchField": "تلاش..."
 }

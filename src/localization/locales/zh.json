@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "输入Udemy访问令牌",
   "VOTUdemyData": "Udemy数据",
   "streamNoConnectionToServer": "没有连接到服务器",
-  "VOTCloudflareDoesntSupportStreams": "Cloudflare版本的脚本不支持流翻译"
+  "VOTCloudflareDoesntSupportStreams": "Cloudflare版本的脚本不支持流翻译",
+  "searchField": "搜索。.."
 }

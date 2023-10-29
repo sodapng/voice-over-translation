@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "توکن دسترسی Udemy را وارد کنید",
   "VOTUdemyData": "داده های Udemy",
   "streamNoConnectionToServer": "هیچ ارتباطی با سرور وجود ندارد",
-  "VOTCloudflareDoesntSupportStreams": "نسخه cloudflare از اسکریپت از ترجمه جریان پشتیبانی نمی کند"
+  "VOTCloudflareDoesntSupportStreams": "نسخه cloudflare از اسکریپت از ترجمه جریان پشتیبانی نمی کند",
+  "searchField": "جستجو کن.."
 }

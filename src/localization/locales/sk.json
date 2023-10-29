@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Zadajte Prístupový Token Udemy",
   "VOTUdemyData": "Udemy Data",
   "streamNoConnectionToServer": "Neexistuje žiadne pripojenie k serveru",
-  "VOTCloudflareDoesntSupportStreams": "Verzia skriptu Cloudflare nepodporuje preklad streamu"
+  "VOTCloudflareDoesntSupportStreams": "Verzia skriptu Cloudflare nepodporuje preklad streamu",
+  "searchField": "Vyhľadávanie..."
 }

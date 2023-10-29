@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Введіть маркер доступу Udemy",
   "VOTUdemyData": "Дані Udemy",
   "streamNoConnectionToServer": "Немає підключення до сервера",
-  "VOTCloudflareDoesntSupportStreams": "Версія сценарію Cloudflare не підтримує потокове передавання"
+  "VOTCloudflareDoesntSupportStreams": "Версія сценарію Cloudflare не підтримує потокове передавання",
+  "searchField": "Пошук..."
 }

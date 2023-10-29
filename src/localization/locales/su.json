@@ -188,5 +188,6 @@
   "enterUdemyAccessToken": "Asupkeun Udemy Aksés Token",
   "VOTUdemyData": "Data Udemy",
   "streamNoConnectionToServer": "Teu aya sambungan ka server",
-  "VOTCloudflareDoesntSupportStreams": "Versi Cloudflare tina naskah henteu ngadukung tarjamahan aliran"
+  "VOTCloudflareDoesntSupportStreams": "Versi Cloudflare tina naskah henteu ngadukung tarjamahan aliran",
+  "searchField": "Néangan..."
 }
