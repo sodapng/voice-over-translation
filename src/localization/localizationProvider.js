@@ -1,9 +1,10 @@
 import defaultLocale from "./locales/en.json";
 import debug from "../utils/debug.js";
 
-const localesVersion = 3;
-const localesUrl =
-  "https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/src/localization/locales";
+const localesVersion = 2;
+const localesUrl = `https://raw.githubusercontent.com/ilyhalight/voice-over-translation/${
+  DEBUG_MODE || IS_BETA_VERSION ? "dev" : "master"
+}/src/localization/locales`;
 
 export const availableLocales = [
   "auto",
@@ -38,30 +39,30 @@ export const localizationProvider = new (class {
   locale = {};
 
   constructor() {
-    const langOverride = window.localStorage.getItem("vot-locale-lang-override");
+    const langOverride = GM_getValue("locale-lang-override", "auto");
     if (langOverride && langOverride !== "auto") {
       this.lang = langOverride;
     } else {
-      this.lang = (navigator.language || navigator.userLanguage)
-        ?.substr(0, 2)
-        ?.toLowerCase() ?? "en";
+      this.lang =
+        (navigator.language || navigator.userLanguage)
+          ?.substr(0, 2)
+          ?.toLowerCase() ?? "en";
     }
-    this.setLocaleFromJsonString(window.localStorage.getItem("vot-locale"));
+    this.setLocaleFromJsonString(GM_getValue("locale-phrases", ""));
   }
 
   reset() {
-    window.localStorage.removeItem("vot-locale");
-    window.localStorage.removeItem("vot-locale-lang");
-    window.localStorage.removeItem("vot-locale-version");
-    window.localStorage.removeItem("vot-locale-lang-override");
+    GM_deleteValue("locale-phrases");
+    GM_deleteValue("locale-lang");
+    GM_deleteValue("locale-version");
+    GM_deleteValue("locale-lang-override");
   }
 
   async update(force = false) {
     if (
       !force &&
-      Number(window.localStorage.getItem("vot-locale-version")) ===
-        localesVersion &&
-      window.localStorage.getItem("vot-locale-lang") === this.lang
+      Number(await GM_getValue("locale-version", 0)) === localesVersion &&
+      (await GM_getValue("locale-lang")) === this.lang
     ) {
       return;
     }
@@ -73,19 +74,20 @@ export const localizationProvider = new (class {
         if (response.status === 200) return response.text();
         throw response.status;
       })
-      .then((text) => {
-        window.localStorage.setItem("vot-locale", text);
+      .then(async (text) => {
+        await GM_setValue("locale-phrases", text);
         this.setLocaleFromJsonString(text);
         const version = this.getFromLocale(this.locale, "__version__");
-        if (typeof version === "number") window.localStorage.setItem("vot-locale-version", version);
-        window.localStorage.setItem("vot-locale-lang", this.lang);
+        if (typeof version === "number")
+          await GM_setValue("locale-version", version);
+        await GM_setValue("locale-lang", this.lang);
       })
-      .catch((error) => {
+      .catch(async (error) => {
         console.error(
           "[VOT] [localizationProvider] failed get locale, cause:",
-          error
+          error,
         );
-        this.setLocaleFromJsonString(window.localStorage.getItem("vot-locale"));
+        this.setLocaleFromJsonString(await GM_getValue("locale-phrases", ""));
       });
   }
 
@@ -108,7 +110,7 @@ export const localizationProvider = new (class {
         "[VOT] [localizationProvider] locale",
         locale,
         "doesn't contain key",
-        key
+        key,
       );
     }
     return result;
