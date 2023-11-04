@@ -10,9 +10,9 @@ import ESLintPlugin from 'eslint-webpack-plugin';
 
 const repo = "https://raw.githubusercontent.com/ilyhalight/voice-over-translation";
 const dev = process.env.NODE_ENV === 'development';
-let isBeta = false;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+let isBeta = getHeaders('headers.json').version.includes('beta');
 
 console.log('development mode: ', dev);
 
@@ -108,9 +108,6 @@ export default (env) => {
           const headers = getHeaders('headers.json');
 
           let version = headers.version;
-          if (version.includes('beta')) {
-            isBeta = true;
-          }
 
           const extFileName = get_filename().slice(0, -3);
           const finalURL = `${repo}/${isBeta ? 'dev' : 'master'}/dist/${extFileName}.user.js`;
