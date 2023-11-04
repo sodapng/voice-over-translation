@@ -1,6 +1,6 @@
 export class EventImpl {
   constructor() {
-    this.listeners = new Set;
+    this.listeners = new Set();
   }
   hasListener(e) {
     return this.listeners.has(e);

@@ -62,6 +62,6 @@ const sitesProxyTok = [
   "cringe.whatever.social",
   "proxitok.lunar.icu",
   "proxitok.privacy.com.de", // maybe instance doesn't working
-]
+];
 
 export { sitesInvidious, sitesPiped, sitesProxyTok };

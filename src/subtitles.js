@@ -17,7 +17,7 @@ function formatYandexSubtitlesTokens(line) {
           start: alignRangeEnd,
           end: newAlignRangeEnd,
         },
-      })
+      }),
     );
     if (nextToken) {
       const endMs = token.startMs + token.durationMs;
@@ -89,7 +89,7 @@ function getSubtitlesTokens(subtitles, source) {
     result.push(
       Object.assign(Object.assign({}, line), {
         tokens,
-      })
+      }),
     );
   }
   subtitles.containsTokens = true;
@@ -233,7 +233,7 @@ export async function getSubtitles(site, videoId, requestLang) {
           }, []);
           resolved = true;
           resolve(subtitles);
-        }
+        },
       );
     }),
   ]);
@@ -327,7 +327,8 @@ export class SubtitlesWidget {
 
   onMouseDown(e) {
     if (this.votSubtitlesContainer.contains(e.target)) {
-      this.subtitlesContainerRect = this.votSubtitlesContainer.getBoundingClientRect();
+      this.subtitlesContainerRect =
+        this.votSubtitlesContainer.getBoundingClientRect();
       this.containerRect = this.container.getBoundingClientRect();
       this.offsetX = e.clientX - this.subtitlesContainerRect.x;
       this.offsetY = e.clientY - this.subtitlesContainerRect.y;
@@ -345,9 +346,11 @@ export class SubtitlesWidget {
       const x = e.clientX - this.offsetX;
       const y = e.clientY - this.offsetY;
       const top = y >= this.containerRect.top;
-      const bottom = y + this.subtitlesContainerRect.height <= this.containerRect.bottom;
+      const bottom =
+        y + this.subtitlesContainerRect.height <= this.containerRect.bottom;
       const left = x >= this.containerRect.left;
-      const right = x + this.subtitlesContainerRect.width <= this.containerRect.right;
+      const right =
+        x + this.subtitlesContainerRect.width <= this.containerRect.right;
 
       if (top && bottom) {
         this.votSubtitlesContainer.style.top = `${y - this.containerRect.y}px`;
@@ -366,7 +369,9 @@ export class SubtitlesWidget {
         if (!left) {
           this.votSubtitlesContainer.style.left = `${0}px`;
         } else {
-          this.votSubtitlesContainer.style.left = `${this.containerRect.width - this.subtitlesContainerRect.width}px`;
+          this.votSubtitlesContainer.style.left = `${
+            this.containerRect.width - this.subtitlesContainerRect.width
+          }px`;
         }
       }
     }
@@ -423,7 +428,8 @@ export class SubtitlesWidget {
             if (!tokens[i] || length > this.maxLength) {
               let t = tokens.slice(chunkStartIndex, chunkEndIndex + 1);
               if (t.at(0) && t.at(0).text === " ") t = t.slice(1);
-              if (t.at(-1) && t.at(-1).text === " ") t = t.slice(0, t.length - 1);
+              if (t.at(-1) && t.at(-1).text === " ")
+                t = t.slice(0, t.length - 1);
               chunks.push({
                 startMs: tokens[chunkStartIndex].startMs,
                 durationMs:
@@ -477,7 +483,10 @@ export class SubtitlesWidget {
     if (content !== this.lastContent) {
       this.lastContent = content;
       this.votSubtitlesContainer.innerHTML = content
-        ? `<vot-block class="vot-subtitles">${content.replace("\\n", "<br>")}</vot-block>`
+        ? `<vot-block class="vot-subtitles">${content.replace(
+            "\\n",
+            "<br>",
+          )}</vot-block>`
         : "";
     }
   }

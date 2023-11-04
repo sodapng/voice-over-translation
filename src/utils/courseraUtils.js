@@ -4,7 +4,7 @@ import { langTo6391 } from "./utils.js";
 
 async function getCourseData(courseId) {
   const response = await fetch(
-    `https://www.coursera.org/api/onDemandCourses.v1/${courseId}`
+    `https://www.coursera.org/api/onDemandCourses.v1/${courseId}`,
   );
   const resJSON = await response.json();
   return resJSON?.elements?.[0];
@@ -12,14 +12,14 @@ async function getCourseData(courseId) {
 
 function getSubtitlesFileURL(captions, detectedLanguage, responseLang) {
   let subtitle = captions?.find(
-      (caption) => langTo6391(caption.srclang) === detectedLanguage
-    )
+    (caption) => langTo6391(caption.srclang) === detectedLanguage,
+  );
 
   if (!subtitle) {
-    subtitle = captions?.find(
-      (caption) => langTo6391(caption.srclang) === responseLang
-    ) || captions?.[0];
-
+    subtitle =
+      captions?.find(
+        (caption) => langTo6391(caption.srclang) === responseLang,
+      ) || captions?.[0];
   }
 
   return subtitle?.src;
@@ -27,7 +27,7 @@ function getSubtitlesFileURL(captions, detectedLanguage, responseLang) {
 
 function getVideoFileURL(sources) {
   const source = sources?.find(
-    (src) => src.type === "video/webm" || src.type === "video/mp4"
+    (src) => src.type === "video/webm" || src.type === "video/mp4",
   );
 
   return source?.src;
@@ -59,7 +59,11 @@ async function getVideoData(responseLang = "en") {
     detectedLanguage = "en";
   }
 
-  const subtitlesURL = getSubtitlesFileURL(tracks, detectedLanguage, responseLang);
+  const subtitlesURL = getSubtitlesFileURL(
+    tracks,
+    detectedLanguage,
+    responseLang,
+  );
   console.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
 
   if (subtitlesURL && videoURL) {
@@ -74,7 +78,9 @@ async function getVideoData(responseLang = "en") {
       },
     ];
   } else {
-    console.error(`Failed to find subtitlesURL or videoURL. videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
+    console.error(
+      `Failed to find subtitlesURL or videoURL. videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`,
+    );
   }
 
   const videoData = {

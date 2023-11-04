@@ -1,4 +1,8 @@
-import { sitesInvidious, sitesPiped, sitesProxyTok } from "./alternativeUrls.js";
+import {
+  sitesInvidious,
+  sitesPiped,
+  sitesProxyTok,
+} from "./alternativeUrls.js";
 
 const sites = () => {
   return [
@@ -44,14 +48,14 @@ const sites = () => {
     {
       host: "twitch",
       url: "https://twitch.tv/",
-      match: (url) => url.host.includes("clips.twitch.tv")
-        || (url.host.includes("player.twitch.tv") 
-          && url.searchParams.get("channel") === null)
-        || (url.host.includes("twitch.tv") 
-          && (url.pathname.startsWith("/videos")
-            || url.pathname.startsWith("/embed")
-            || url.pathname.includes("/clip")
-          )),
+      match: (url) =>
+        url.host.includes("clips.twitch.tv") ||
+        (url.host.includes("player.twitch.tv") &&
+          url.searchParams.get("channel") === null) ||
+        (url.host.includes("twitch.tv") &&
+          (url.pathname.startsWith("/videos") ||
+            url.pathname.startsWith("/embed") ||
+            url.pathname.includes("/clip"))),
       selector: ".video-ref",
     },
     {
@@ -70,7 +74,8 @@ const sites = () => {
       additionalData: "embed",
       host: "pornhub",
       url: "https://rt.pornhub.com/view_video.php?viewkey=",
-      match: (url) => url.host.includes("pornhub.com") && url.pathname.startsWith("/embed/"),
+      match: (url) =>
+        url.host.includes("pornhub.com") && url.pathname.startsWith("/embed/"),
       selector: "#player",
     },
     {
@@ -79,7 +84,7 @@ const sites = () => {
       url: "https://vk.com/video?z=",
       match: /^m.vk.(com|ru)$/,
       selector: "vk-video-player",
-      shadowRoot: true
+      shadowRoot: true,
     },
     {
       host: "vk",
@@ -87,7 +92,8 @@ const sites = () => {
       match: /^(www.|m.)?vk.(com|ru)$/,
       selector: ".videoplayer_media",
     },
-    { // TODO: video selector: ".vp-video-wrapper > .vp-video > .vp-telecine > video"
+    {
+      // TODO: video selector: ".vp-video-wrapper > .vp-video > .vp-telecine > video"
       host: "vimeo",
       url: "https://vimeo.com/",
       match: /^(player.)?vimeo.com$/,
@@ -149,36 +155,41 @@ const sites = () => {
       match: /^my.mail.ru$/,
       selector: "#b-video-wrapper",
     },
-    { // ONLY IF YOU LOGINED TO COURSERA /learn/NAME/lecture/XXXX
+    {
+      // ONLY IF YOU LOGINED TO COURSERA /learn/NAME/lecture/XXXX
       host: "coursera",
       url: "https://www.coursera.org/",
       match: /coursera.org$/,
       selector: "#video_player",
     },
-    { // ONLY IF YOU LOGINED TO UDEMY /course/NAME/learn/lecture/XXXX
+    {
+      // ONLY IF YOU LOGINED TO UDEMY /course/NAME/learn/lecture/XXXX
       host: "udemy",
       url: "https://www.udemy.com",
       match: /udemy.com$/,
       selector: ".vjs-v7",
     },
-    { // Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
+    {
+      // Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
       host: "invidious",
       url: "https://youtu.be/",
       match: sitesInvidious,
       selector: "#player",
     },
-    { // Sites host Piped. I tested the performance only on piped.video
+    {
+      // Sites host Piped. I tested the performance only on piped.video
       host: "piped",
       url: "https://youtu.be/",
       match: sitesPiped,
       selector: ".shaka-video-container",
     },
-    { // TODO: FIX RUMBLE DOUBLE BUTTON ON TRANSLATED VIDEO
+    {
+      // TODO: FIX RUMBLE DOUBLE BUTTON ON TRANSLATED VIDEO
       host: "rumble",
       url: "https://rumble.com",
       match: /^rumble.com$/,
       selector: ".videoPlayer-Rumble-cls > div",
-    }
+    },
   ];
 };
 
