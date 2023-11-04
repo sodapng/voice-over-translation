@@ -8,7 +8,9 @@ import { UserscriptPlugin } from 'webpack-userscript';
 import ESLintPlugin from 'eslint-webpack-plugin';
 // const ESLintPlugin = require('eslint-webpack-plugin');
 
+const repo = "https://raw.githubusercontent.com/ilyhalight/voice-over-translation";
 const dev = process.env.NODE_ENV === 'development';
+let isBeta = false;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -101,22 +103,24 @@ export default (env) => {
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 1
       }),
-      new webpack.DefinePlugin({
-        BUILD_MODE: JSON.stringify(build_mode),
-        DEBUG_MODE: dev
-      }),
       new UserscriptPlugin({
         headers: async () => {
           const headers = getHeaders('headers.json');
 
           let version = headers.version;
+          if (version.includes('beta')) {
+            isBeta = true;
+          }
+
+          const extFileName = get_filename().slice(0, -3);
+          const finalURL = `${repo}/${isBeta ? 'dev' : 'master'}/dist/${extFileName}.user.js`;
+          headers['namespace'] = extFileName;
+          headers['updateURL'] = finalURL;
+          headers['downloadURL'] = finalURL;
 
           if (build_mode === 'cloudflare') {
             headers['name'] = '[VOT Cloudflare] - Voice Over Translation';
             headers['inject-into'] = 'page';
-            headers['namespace'] = 'vot-cloudflare';
-            headers['updateURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
-            headers['downloadURL'] = 'https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js';
           }
 
           if (dev) {
@@ -163,6 +167,11 @@ export default (env) => {
           }),
         },
         strict: true,
+      }),
+      new webpack.DefinePlugin({
+        BUILD_MODE: JSON.stringify(build_mode),
+        DEBUG_MODE: dev,
+        IS_BETA_VERSION: isBeta
       }),
     ],
     module: {
