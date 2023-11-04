@@ -37,6 +37,7 @@ module.exports = {
         // WEBPACK ENVIRONMENT
         "BUILD_MODE": "readonly",
         "DEBUG_MODE": "readonly",
+        "IS_BETA_VERSION": "readonly",
         // YOUTUBE PAGE API
         "ytplayer": "readonly",
     }
