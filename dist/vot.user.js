@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.5.0-beta6
+// @version 1.5.0-beta7
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -3675,7 +3675,23 @@ class VideoHandler {
   async init() {
     if (this.initialized) return;
 
-    this.data = await GM_getValue("ext-data", {});
+    this.data = {
+      autoTranslate: await GM_getValue("autoTranslate", 0),
+      dontTranslateYourLang: await GM_getValue("dontTranslateYourLang", 1),
+      autoSetVolumeYandexStyle: await GM_getValue("autoSetVolumeYandexStyle", 1),
+      showVideoSlider: await GM_getValue("showVideoSlider", 1),
+      syncVolume: await GM_getValue("syncVolume", 0),
+      subtitlesMaxLength: await GM_getValue("subtitlesMaxLength", 300),
+      highlightWords: await GM_getValue("highlightWords", 0),
+      responseLanguage: await GM_getValue("responseLanguage", lang),
+      defaultVolume: await GM_getValue("defaultVolume", 100),
+      udemyData: await GM_getValue("udemyData", {
+        accessToken: "",
+        expires: 0,
+      }),
+      audioProxy: await GM_getValue("audioProxy", 0),
+      showPiPButton: await GM_getValue("showPiPButton", 0),
+    };
     this.videoData = await this.getVideoData();
 
     debug/* default */.Z.log("[db] data from db: ", this.data);
@@ -3762,7 +3778,7 @@ class VideoHandler {
         fromDialogTitle: localizationProvider.get("videoLanguage"),
         fromItems: [
           {
-            label: "auto",
+            label: localizationProvider.get("langs")["auto"],
             value: "auto",
             selected: "",
           },
@@ -3802,7 +3818,7 @@ class VideoHandler {
           const newLang = e.target.dataset.votValue;
           debug/* default */.Z.log("[toOnSelectCB] select to language", newLang);
           this.data.responseLanguage = this.translateToLang = newLang;
-          await GM_setValue("ext-data", this.data);
+          await GM_setValue("responseLanguage", this.data.responseLanguage);
           debug/* default */.Z.log(
             "Response Language value changed. New value: ",
             this.data.responseLanguage,
@@ -4153,7 +4169,7 @@ class VideoHandler {
         "input",
         async (e) => {
           this.data.defaultVolume = Number(e.target.value);
-          await GM_setValue("ext-data", this.data);
+          await GM_setValue("defaultVolume", this.data.defaultVolume);
           this.votVideoTranslationVolumeSlider.label.querySelector(
             "strong",
           ).innerHTML = `${this.data.defaultVolume}%`;
@@ -4171,7 +4187,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.autoTranslate = Number(e.target.checked);
-          await GM_setValue("ext-data", this.data);
+          await GM_setValue("autoTranslate", this.data.autoTranslate);
           debug/* default */.Z.log(
             "autoTranslate value changed. New value: ",
             this.data.autoTranslate,
@@ -4183,7 +4199,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.dontTranslateYourLang = Number(e.target.checked);
-          await GM_setValue("ext-data", this.data);
+          await GM_setValue("dontTranslateYourLang", this.data.dontTranslateYourLang);
           debug/* default */.Z.log(
             "dontTranslateYourLang value changed. New value: ",
             this.data.dontTranslateYourLang,
@@ -4195,7 +4211,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.autoSetVolumeYandexStyle = Number(e.target.checked);
-          await GM_setValue("ext-data", this.data);
+          await GM_setValue("autoSetVolumeYandexStyle", this.data.autoSetVolumeYandexStyle);
           debug/* default */.Z.log(
             "autoSetVolumeYandexStyle value changed. New value: ",
             this.data.autoSetVolumeYandexStyle,
@@ -4207,7 +4223,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.showVideoSlider = Number(e.target.checked);
-          await GM_setValue("ext-data", this.data);
+          await GM_setValue("showVideoSlider", this.data.showVideoSlider);
           debug/* default */.Z.log(
             "showVideoSlider value changed. New value: ",
             this.data.showVideoSlider,
@@ -4223,14 +4239,14 @@ class VideoHandler {
           accessToken: e.target.value,
           expires: new Date().getTime(),
         };
-        await GM_setValue("ext-data", this.data);
+        await GM_setValue("udemyData", this.data.udemyData);
         debug/* default */.Z.log("udemyData value changed. New value: ", this.data.udemyData);
         window.location.reload();
       });
 
       this.votSyncVolumeCheckbox.input.addEventListener("change", async (e) => {
         this.data.syncVolume = Number(e.target.checked);
-        await GM_setValue("ext-data", this.data);
+        await GM_setValue("syncVolume", this.data.syncVolume);
         debug/* default */.Z.log(
           "syncVolume value changed. New value: ",
           this.data.syncVolume,
@@ -4239,7 +4255,7 @@ class VideoHandler {
 
       this.votAudioProxyCheckbox.input.addEventListener("change", async (e) => {
         this.data.audioProxy = Number(e.target.checked);
-        await GM_setValue("ext-data", this.data);
+        await GM_setValue("audioProxy", this.data.audioProxy);
         debug/* default */.Z.log(
           "audioProxy value changed. New value: ",
           this.data.audioProxy,
@@ -4250,7 +4266,7 @@ class VideoHandler {
         "input",
         async (e) => {
           this.data.subtitlesMaxLength = Number(e.target.value);
-          await GM_setValue("ext-data", this.data);
+          await GM_setValue("subtitlesMaxLength", this.data.subtitlesMaxLength);
           this.votSubtitlesMaxLengthSlider.label.querySelector(
             "strong",
           ).innerHTML = `${this.data.subtitlesMaxLength}`;
@@ -4262,7 +4278,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.highlightWords = Number(e.target.checked);
-          await GM_setValue("ext-data", this.data);
+          await GM_setValue("highlightWords", this.data.highlightWords);
           debug/* default */.Z.log(
             "highlightWords value changed. New value: ",
             this.data.highlightWords,
@@ -4275,7 +4291,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.showPiPButton = Number(e.target.checked);
-          await GM_setValue("ext-data", this.data);
+          await GM_setValue("showPiPButton", this.data.showPiPButton);
           debug/* default */.Z.log(
             "showPiPButton value changed. New value: ",
             this.data.showPiPButton,
@@ -4289,7 +4305,18 @@ class VideoHandler {
 
       this.votResetSettingsButton.addEventListener("click", () => {
         localizationProvider.reset();
-        GM_deleteValue("ext-data");
+        GM_deleteValue("autoTranslate")
+        GM_deleteValue("dontTranslateYourLang")
+        GM_deleteValue("autoSetVolumeYandexStyle")
+        GM_deleteValue("showVideoSlider")
+        GM_deleteValue("syncVolume")
+        GM_deleteValue("subtitlesMaxLength")
+        GM_deleteValue("highlightWords")
+        GM_deleteValue("responseLanguage")
+        GM_deleteValue("defaultVolume")
+        GM_deleteValue("udemyData")
+        GM_deleteValue("audioProxy")
+        GM_deleteValue("showPiPButton")
         window.location.reload();
       });
     }
