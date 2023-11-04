@@ -6,6 +6,9 @@
 Закадровый перевод видео, теперь, доступен не только в YandexBrowser.
 Очень признателен, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)** & **[SashaXser](https://github.com/SashaXser)**. Спасиб <3
 
+> [!NOTE]
+> На 04.11.2023 большая часть языков доступных для выбора в качестве озвучки были отключены на стороне Яндекса. Мне неизвестно будут ли они возвращены позднее или нет. Из тех, на которые точно можно выполнить перевод остались: `Русский`, `Английский`, `Казахский`.
+
 ## Установка расширения:
 1. Установите расширение **[Tampermonkey](https://www.tampermonkey.net/)** (Альтернатива для Safari: **[UserScripts](https://apps.apple.com/app/userscripts/id1463298887 )**)
 2. **[«Установите Скрипт»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js)** (**[Cloudflare version](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**)

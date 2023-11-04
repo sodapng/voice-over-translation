@@ -5,6 +5,9 @@
 
 The voice-over translation of the video is now available not only in YandexBrowser. Very grateful, **[Yandex.Translate](https://translate.yandex.ru/)** & **[sodapng](https://github.com/sodapng)** & **[mynovelhost](https://github.com/mynovelhost)** & **[SashaXser](https://github.com/SashaXser)**. Thanks <3
 
+> [!NOTE]
+> On 04.11.2023, most of the languages available for selection as voice acting were disabled on the Yandex side. I don't know if they will be returned later or not. Of those that can be translated for sure, there are: `Russian`, `English`, `Kazakh`.
+
 ## Installing the extension:
 1. Install the extension **[Tampermonkey](https://www.tampermonkey.net/)** (An alternative for Safari: **[UserScripts](https://apps.apple.com/app/userscripts/id1463298887 )**)
 2. **[«Install the Script»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js)** (**[Cloudflare version](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**)
