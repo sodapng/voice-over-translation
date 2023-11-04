@@ -63,7 +63,7 @@ const getVideoId = (service, video) => {
         return url.searchParams.get("z").split("/")[0];
       } else if (url.searchParams.get("oid") && url.searchParams.get("id")) {
         return `video-${Math.abs(
-          url.searchParams.get("oid")
+          url.searchParams.get("oid"),
         )}_${url.searchParams.get("id")}`;
       } else {
         return false;
@@ -83,7 +83,7 @@ const getVideoId = (service, video) => {
       } else if (/^clips\.twitch\.tv$/.test(window.location.hostname)) {
         // get link to twitch channel (ex.: https://www.twitch.tv/xqc)
         const channelLink = document.querySelector(
-          ".tw-link[data-test-selector='stream-info-card-component__stream-avatar-link']"
+          ".tw-link[data-test-selector='stream-info-card-component__stream-avatar-link']",
         );
         if (!channelLink) {
           return false;
@@ -91,7 +91,7 @@ const getVideoId = (service, video) => {
 
         const channelName = channelLink.href.replace(
           "https://www.twitch.tv/",
-          ""
+          "",
         );
         return `${channelName}/clip/${url.searchParams.get("clip")}`;
       } else if (url.pathname.match(/([^/]+)\/(?:clip)\/([^/]+)/)) {
@@ -102,24 +102,27 @@ const getVideoId = (service, video) => {
     case "proxytok":
       // return url.pathname.match(/video\/([^/]+)/)?.[1];
       return url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
-    case "tiktok":
-      {
-        // let id = url.pathname.match(/video\/([^/]+)/)?.[1];
-        let id = url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
-        if (!id) {
-          const playerEl = video.closest(".xgplayer-playing, .tiktok-web-player");
-          const itemEl = playerEl?.closest("div[data-e2e=\"recommend-list-item-container\"]");
-          const authorEl = itemEl?.querySelector("a[data-e2e=\"video-author-avatar\"]");
-          if (playerEl && authorEl) {
-            const videoId = playerEl.id?.match(/^xgwrapper-[0-9]+-(.*)$/)?.at(1);
-            const author = authorEl.href?.match(/.*(@.*)$/)?.at(1);
-            if (videoId && author) {
-              id = `${author}/video/${videoId}`;
-            }
+    case "tiktok": {
+      // let id = url.pathname.match(/video\/([^/]+)/)?.[1];
+      let id = url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
+      if (!id) {
+        const playerEl = video.closest(".xgplayer-playing, .tiktok-web-player");
+        const itemEl = playerEl?.closest(
+          'div[data-e2e="recommend-list-item-container"]',
+        );
+        const authorEl = itemEl?.querySelector(
+          'a[data-e2e="video-author-avatar"]',
+        );
+        if (playerEl && authorEl) {
+          const videoId = playerEl.id?.match(/^xgwrapper-[0-9]+-(.*)$/)?.at(1);
+          const author = authorEl.href?.match(/.*(@.*)$/)?.at(1);
+          if (videoId && author) {
+            id = `${author}/video/${videoId}`;
           }
         }
-        return id;
       }
+      return id;
+    }
     case "vimeo":
       return (
         url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||
@@ -177,7 +180,7 @@ const getVideoId = (service, video) => {
         return url.pathname;
       } else if (url.pathname.match(/video\/embed\/([^/]+)/)) {
         const referer = document.querySelector(
-          ".b-video-controls__mymail-link"
+          ".b-video-controls__mymail-link",
         );
         if (!referer) {
           return false;
@@ -222,19 +225,43 @@ function langTo6391(lang) {
 
 async function detectLang(cleanText) {
   try {
-    const response = await fetch("https://rust-server-531j.onrender.com/detect", {
-      method: "POST",
-      body: cleanText,
-    });
+    const response = await fetch(
+      "https://rust-server-531j.onrender.com/detect",
+      {
+        method: "POST",
+        body: cleanText,
+      },
+    );
     return await response.text();
   } catch (error) {
-    console.error("Error getting lang from text:", error)
+    console.error("Error getting lang from text:", error);
     return "en";
   }
 }
 
 function isPiPAvailable() {
-  return "pictureInPictureEnabled" in document && document.pictureInPictureEnabled;
+  return (
+    "pictureInPictureEnabled" in document && document.pictureInPictureEnabled
+  );
 }
 
-export { waitForElm, sleep, getVideoId, secsToStrTime, detectLang, langTo6391, isPiPAvailable };
+function initHls() {
+  return Hls.isSupported()
+    ? new Hls({
+        debug: DEBUG_MODE, // turn it on manually if necessary
+        lowLatencyMode: true,
+        backBufferLength: 90,
+      })
+    : undefined;
+}
+
+export {
+  waitForElm,
+  sleep,
+  getVideoId,
+  secsToStrTime,
+  detectLang,
+  langTo6391,
+  isPiPAvailable,
+  initHls,
+};
