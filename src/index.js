@@ -2,19 +2,26 @@ import "./styles/main.scss";
 import { VOTLocalizedError } from "./utils/VOTLocalizedError.js";
 import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
-import { getVideoId, secsToStrTime, lang, isPiPAvailable, sleep } from "./utils/utils.js";
-import { autoVolume, m3u8ProxyHost } from "./config/config.js";
 import {
-  sitesInvidious,
-  sitesPiped
-} from "./config/alternativeUrls.js";
+  getVideoId,
+  secsToStrTime,
+  lang,
+  isPiPAvailable,
+  sleep,
+  initHls,
+} from "./utils/utils.js";
+import { autoVolume, m3u8ProxyHost } from "./config/config.js";
+import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
 import {
   availableLangs,
   additionalTTS,
+  actualTTS,
   cfOnlyExtensions,
 } from "./config/constants.js";
-import { localizationProvider, availableLocales } from "./localization/localizationProvider.js";
-import { initDB, readDB, updateDB, deleteDB } from "./indexedDB.js";
+import {
+  localizationProvider,
+  availableLocales,
+} from "./localization/localizationProvider.js";
 import ui from "./ui.js";
 import { syncVolume } from "./utils/volume.js";
 import { workerHost } from "./config/config-cloudflare.js";
@@ -25,11 +32,7 @@ import Bowser from "bowser";
 import requestVideoTranslation from "./rvt.js";
 import requestStreamTranslation from "./rst.js";
 import requestStreamPing from "./rsp.js";
-import {
-  getSubtitles,
-  fetchSubtitles,
-  SubtitlesWidget
-} from "./subtitles.js";
+import { getSubtitles, fetchSubtitles, SubtitlesWidget } from "./subtitles.js";
 import { courseraUtils } from "./utils/courseraUtils.js";
 import { udemyUtils } from "./utils/udemyUtils.js";
 
@@ -40,29 +43,23 @@ const browserInfo = Bowser.getParser(window.navigator.userAgent).getResult();
 
 const sitesChromiumBlocked = [...sitesInvidious, ...sitesPiped];
 
-const videoLipSyncEvents = ["playing", "ratechange", "play", "waiting", "pause"];
+const videoLipSyncEvents = [
+  "playing",
+  "ratechange",
+  "play",
+  "waiting",
+  "pause",
+];
 
-function genOptionsByOBJ(obj, conditionString) {
+function genOptionsByOBJ(obj, conditionString, validateLangs = false) {
   return obj.map((code) => ({
-    label: localizationProvider.get(`langs`)[code] ?? code.toUpperCase(),
+    label: `${validateLangs && !actualTTS.includes(code) ? "❌ " : ""}${
+      localizationProvider.get("langs")[code] ?? code.toUpperCase()
+    }`,
     value: code,
     selected: conditionString === code,
   }));
 }
-
-// // translate properties
-// let translateFromLang = "en"; // default language of video
-// let translateToLang = lang; // default language of audio response
-
-// let ytData = "";
-
-// let subtitlesList = [];
-// let subtitlesListVideoId = null;
-
-// let timer;
-// const audio = new Audio();
-// let opacityRatio = 0.9;
-// let openedMenu = false;
 
 if (BUILD_MODE === "cloudflare") {
   var translationPanding = false;
@@ -74,10 +71,10 @@ function translateVideo(
   requestLang,
   responseLang,
   translationHelp,
-  callback
+  callback,
 ) {
   debug.log(
-    `Translate video (url: ${url}, duration: ${duration}, requestLang: ${requestLang}, responseLang: ${responseLang})`
+    `Translate video (url: ${url}, duration: ${duration}, requestLang: ${requestLang}, responseLang: ${responseLang})`,
   );
 
   debug.log("translationHelp:", translationHelp);
@@ -116,7 +113,7 @@ function translateVideo(
           callback(
             !!translateResponse.url,
             translateResponse.url ||
-              localizationProvider.get("audioNotReceived")
+              localizationProvider.get("audioNotReceived"),
           );
           break;
         case 2:
@@ -124,7 +121,7 @@ function translateVideo(
             false,
             translateResponse.remainingTime
               ? secsToStrTime(translateResponse.remainingTime)
-              : localizationProvider.get("translationTakeFewMinutes")
+              : localizationProvider.get("translationTakeFewMinutes"),
           );
           break;
         case 3:
@@ -138,19 +135,13 @@ function translateVideo(
           callback(false, localizationProvider.get("videoBeingTranslated"));
           break;
       }
-    }
+    },
   );
 }
 
-
-function translateStream(
-  url,
-  requestLang,
-  responseLang,
-  callback
-) {
+function translateStream(url, requestLang, responseLang, callback) {
   debug.log(
-    `Translate stream (url: ${url}, requestLang: ${requestLang}, responseLang: ${responseLang})`
+    `Translate stream (url: ${url}, requestLang: ${requestLang}, responseLang: ${responseLang})`,
   );
 
   requestStreamTranslation(
@@ -164,23 +155,34 @@ function translateStream(
         return;
       }
 
-      const streamResponse =
-        yandexProtobuf.decodeStreamResponse(response);
+      const streamResponse = yandexProtobuf.decodeStreamResponse(response);
       console.log("[VOT] Stream Translation response: ", streamResponse);
 
       switch (streamResponse.interval) {
         case 10:
-          callback(false, streamResponse.interval, localizationProvider.get("translationTakeFewMinutes"))
+          callback(
+            false,
+            streamResponse.interval,
+            localizationProvider.get("translationTakeFewMinutes"),
+          );
           break;
         case 20:
-          callback(true, streamResponse.interval, streamResponse || localizationProvider.get("audioNotReceived"))
+          callback(
+            true,
+            streamResponse.interval,
+            streamResponse || localizationProvider.get("audioNotReceived"),
+          );
           break;
         case 0:
           // stream removed or ended
-          callback(false, streamResponse.interval, localizationProvider.get("streamNoConnectionToServer"));
+          callback(
+            false,
+            streamResponse.interval,
+            localizationProvider.get("streamNoConnectionToServer"),
+          );
           break;
       }
-    }
+    },
   );
 }
 
@@ -195,11 +197,7 @@ class VideoHandler {
   videoData = "";
   firstPlay = true;
   audio = new Audio();
-  hls = Hls.isSupported() ? new Hls({
-    debug: DEBUG_MODE, // turn it on manually if necessary
-    lowLatencyMode: true,
-    backBufferLength: 90
-  }) : undefined; // debug enabled only in dev mode
+  hls = initHls(); // debug enabled only in dev mode
   downloadTranslationUrl = null;
   downloadSubtitlesUrl = null;
 
@@ -215,14 +213,20 @@ class VideoHandler {
   videoLastSrcObject = null;
 
   constructor(video, container, site) {
-    debug.log("[VideoHandler] add video:", video, "container:", container, this);
+    debug.log(
+      "[VideoHandler] add video:",
+      video,
+      "container:",
+      container,
+      this,
+    );
     this.video = video;
     this.container = container;
     this.site = site;
     this.handleSrcChangedBound = this.handleSrcChanged.bind(this);
     this.srcObserver = new MutationObserver(this.handleSrcChangedBound);
     this.srcObserver.observe(this.video, {
-      attributeFilter: ["src", "currentSrc"]
+      attributeFilter: ["src", "currentSrc"],
     });
     this.srcObjectInterval = setInterval(async () => {
       if (this.videoLastSrcObject !== this.video.srcObject) {
@@ -240,25 +244,33 @@ class VideoHandler {
   async init() {
     if (this.initialized) return;
 
-    this.data = await readDB() ?? {};
+    this.data = await GM_getValue("ext-data", {});
     this.videoData = await this.getVideoData();
 
     debug.log("[db] data from db: ", this.data);
 
-    this.subtitlesWidget = new SubtitlesWidget(this.video, this.container, this.site);
+    this.subtitlesWidget = new SubtitlesWidget(
+      this.video,
+      this.container,
+      this.site,
+    );
     this.subtitlesWidget.setMaxLength(this.data.subtitlesMaxLength);
     this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
 
     this.initUI();
     this.initUIEvents();
 
-    const hide = !this.video.src && !this.video.currentSrc && !this.video.srcObject;
+    const hide =
+      !this.video.src && !this.video.currentSrc && !this.video.srcObject;
     this.votButton.container.hidden = hide;
     hide && (this.votMenu.container.hidden = hide);
 
     await this.updateSubtitles();
     await this.changeSubtitlesLang("disabled");
-    this.setSelectMenuValues(this.videoData.detectedLanguage, this.data.responseLanguage ?? "ru");
+    this.setSelectMenuValues(
+      this.videoData.detectedLanguage,
+      this.data.responseLanguage ?? "ru",
+    );
     this.translateToLang = this.data.responseLanguage ?? "ru";
 
     this.initExtraEvents();
@@ -274,11 +286,15 @@ class VideoHandler {
   initUI() {
     // VOT Button
     {
-      this.votButton = ui.createVOTButton(localizationProvider.get("translateVideo"));
+      this.votButton = ui.createVOTButton(
+        localizationProvider.get("translateVideo"),
+      );
       this.container.appendChild(this.votButton.container);
 
-      this.votButton.pipButton.hidden = !isPiPAvailable() || !this.data?.showPiPButton;
-      this.votButton.separator2.hidden = !isPiPAvailable() || !this.data?.showPiPButton;
+      this.votButton.pipButton.hidden =
+        !isPiPAvailable() || !this.data?.showPiPButton;
+      this.votButton.separator2.hidden =
+        !isPiPAvailable() || !this.data?.showPiPButton;
 
       this.votButton.container.addEventListener("click", (e) => {
         e.preventDefault();
@@ -292,57 +308,85 @@ class VideoHandler {
       this.votMenu = ui.createVOTMenu(localizationProvider.get("VOTSettings"));
       this.container.appendChild(this.votMenu.container);
 
-      this.votDownloadButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M480-337q-8 0-15-2.5t-13-8.5L308-492q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T365-549l75 75v-286q0-17 11.5-28.5T480-800q17 0 28.5 11.5T520-760v286l75-75q12-12 28.5-11.5T652-548q11 12 11.5 28T652-492L508-348q-6 6-13 8.5t-15 2.5ZM240-160q-33 0-56.5-23.5T160-240v-80q0-17 11.5-28.5T200-360q17 0 28.5 11.5T240-320v80h480v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80q0 33-23.5 56.5T720-160H240Z"/></svg>`);
+      this.votDownloadButton = ui.createIconButton(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M480-337q-8 0-15-2.5t-13-8.5L308-492q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T365-549l75 75v-286q0-17 11.5-28.5T480-800q17 0 28.5 11.5T520-760v286l75-75q12-12 28.5-11.5T652-548q11 12 11.5 28T652-492L508-348q-6 6-13 8.5t-15 2.5ZM240-160q-33 0-56.5-23.5T160-240v-80q0-17 11.5-28.5T200-360q17 0 28.5 11.5T240-320v80h480v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80q0 33-23.5 56.5T720-160H240Z"/></svg>`,
+      );
       this.votDownloadButton.hidden = true;
       this.votMenu.headerContainer.appendChild(this.votDownloadButton);
 
-      this.votDownloadSubtitlesButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 0 24 24"><path d="M4 20q-.825 0-1.413-.588T2 18V6q0-.825.588-1.413T4 4h16q.825 0 1.413.588T22 6v12q0 .825-.588 1.413T20 20H4Zm2-4h8v-2H6v2Zm10 0h2v-2h-2v2ZM6 12h2v-2H6v2Zm4 0h8v-2h-8v2Z"/></svg>`);
+      this.votDownloadSubtitlesButton = ui.createIconButton(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 0 24 24"><path d="M4 20q-.825 0-1.413-.588T2 18V6q0-.825.588-1.413T4 4h16q.825 0 1.413.588T22 6v12q0 .825-.588 1.413T20 20H4Zm2-4h8v-2H6v2Zm10 0h2v-2h-2v2ZM6 12h2v-2H6v2Zm4 0h8v-2h-8v2Z"/></svg>`,
+      );
       this.votDownloadSubtitlesButton.hidden = true;
       this.votMenu.headerContainer.appendChild(this.votDownloadSubtitlesButton);
 
-      this.votSettingsButton = ui.createIconButton(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M555-80H405q-15 0-26-10t-13-25l-12-93q-13-5-24.5-12T307-235l-87 36q-14 5-28 1t-22-17L96-344q-8-13-5-28t15-24l75-57q-1-7-1-13.5v-27q0-6.5 1-13.5l-75-57q-12-9-15-24t5-28l74-129q7-14 21.5-17.5T220-761l87 36q11-8 23-15t24-12l12-93q2-15 13-25t26-10h150q15 0 26 10t13 25l12 93q13 5 24.5 12t22.5 15l87-36q14-5 28-1t22 17l74 129q8 13 5 28t-15 24l-75 57q1 7 1 13.5v27q0 6.5-2 13.5l75 57q12 9 15 24t-5 28l-74 128q-8 13-22.5 17.5T738-199l-85-36q-11 8-23 15t-24 12l-12 93q-2 15-13 25t-26 10Zm-73-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm0-80q-25 0-42.5-17.5T422-480q0-25 17.5-42.5T482-540q25 0 42.5 17.5T542-480q0 25-17.5 42.5T482-420Zm-2-60Zm-40 320h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Z"/></svg>`);
+      this.votSettingsButton = ui.createIconButton(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="100%" viewBox="0 -960 960 960"><path d="M555-80H405q-15 0-26-10t-13-25l-12-93q-13-5-24.5-12T307-235l-87 36q-14 5-28 1t-22-17L96-344q-8-13-5-28t15-24l75-57q-1-7-1-13.5v-27q0-6.5 1-13.5l-75-57q-12-9-15-24t5-28l74-129q7-14 21.5-17.5T220-761l87 36q11-8 23-15t24-12l12-93q2-15 13-25t26-10h150q15 0 26 10t13 25l12 93q13 5 24.5 12t22.5 15l87-36q14-5 28-1t22 17l74 129q8 13 5 28t-15 24l-75 57q1 7 1 13.5v27q0 6.5-2 13.5l75 57q12 9 15 24t-5 28l-74 128q-8 13-22.5 17.5T738-199l-85-36q-11 8-23 15t-24 12l-12 93q-2 15-13 25t-26 10Zm-73-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm0-80q-25 0-42.5-17.5T422-480q0-25 17.5-42.5T482-540q25 0 42.5 17.5T542-480q0 25-17.5 42.5T482-420Zm-2-60Zm-40 320h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Z"/></svg>`,
+      );
       this.votMenu.headerContainer.appendChild(this.votSettingsButton);
 
-      this.votTranslationLanguageSelect = ui.createVOTLanguageSelect(
-        {
-          fromTitle: localizationProvider.get("langs")[this.video.detectedLanguage],
-          fromDialogTitle: localizationProvider.get("videoLanguage"),
-          fromItems: genOptionsByOBJ(availableLangs, this.videoData.detectedLanguage),
-          fromOnSelectCB: async (e) => {
-            debug.log('[fromOnSelectCB] select from language', e.target.dataset.votValue)
-            this.videoData = await this.getVideoData();
-            this.setSelectMenuValues(
-              e.target.dataset.votValue,
-              this.videoData.responseLanguage
-            );
+      this.votTranslationLanguageSelect = ui.createVOTLanguageSelect({
+        fromTitle:
+          localizationProvider.get("langs")[this.video.detectedLanguage],
+        fromDialogTitle: localizationProvider.get("videoLanguage"),
+        fromItems: [
+          {
+            label: "auto",
+            value: "auto",
+            selected: "",
           },
-          toTitle: localizationProvider.get("langs")[this.video.responseLanguage],
-          toDialogTitle: localizationProvider.get("translationLanguage"),
-          toItems: [
-            ...genOptionsByOBJ(availableLangs, this.videoData.responseLanguage),
-            {
-              label: "─────────",
-              value: "separator",
-              disabled: true,
-            },
-            ...genOptionsByOBJ(additionalTTS, this.videoData.responseLanguage),
-          ],
-          toOnSelectCB: async (e) => {
-            const newLang = e.target.dataset.votValue;
-            debug.log("[toOnSelectCB] select to language", newLang);
-            this.data.responseLanguage = this.translateToLang = newLang;
-            await updateDB({ responseLanguage: this.data.responseLanguage });
-            debug.log("Response Language value changed. New value: ", this.data.responseLanguage);
-            this.videoData = await this.getVideoData();
-            this.setSelectMenuValues(
-              this.videoData.detectedLanguage,
-              this.data.responseLanguage
-            );
-          }
-        }
-      )
+          ...genOptionsByOBJ(availableLangs, this.videoData.detectedLanguage),
+        ],
+        fromOnSelectCB: async (e) => {
+          debug.log(
+            "[fromOnSelectCB] select from language",
+            e.target.dataset.votValue,
+          );
+          this.videoData = await this.getVideoData();
+          this.setSelectMenuValues(
+            e.target.dataset.votValue,
+            this.videoData.responseLanguage,
+          );
+        },
+        toTitle: localizationProvider.get("langs")[this.video.responseLanguage],
+        toDialogTitle: localizationProvider.get("translationLanguage"),
+        toItems: [
+          ...genOptionsByOBJ(
+            availableLangs,
+            this.videoData.responseLanguage,
+            true,
+          ),
+          {
+            label: "─────────",
+            value: "separator",
+            disabled: true,
+          },
+          ...genOptionsByOBJ(
+            additionalTTS,
+            this.videoData.responseLanguage,
+            true,
+          ),
+        ],
+        toOnSelectCB: async (e) => {
+          const newLang = e.target.dataset.votValue;
+          debug.log("[toOnSelectCB] select to language", newLang);
+          this.data.responseLanguage = this.translateToLang = newLang;
+          await GM_setValue("ext-data", this.data);
+          debug.log(
+            "Response Language value changed. New value: ",
+            this.data.responseLanguage,
+          );
+          this.videoData = await this.getVideoData();
+          this.setSelectMenuValues(
+            this.videoData.detectedLanguage,
+            this.data.responseLanguage,
+          );
+        },
+      });
 
-      this.votMenu.bodyContainer.appendChild(this.votTranslationLanguageSelect.container);
+      this.votMenu.bodyContainer.appendChild(
+        this.votTranslationLanguageSelect.container,
+      );
 
       this.votSubtitlesSelect = ui.createVOTSelect(
         localizationProvider.get("VOTSubtitlesDisabled"),
@@ -353,25 +397,42 @@ class VideoHandler {
             value: "disabled",
             selected: true,
             disabled: false,
-          }
+          },
         ],
         {
           onSelectCb: async (e) => {
             await this.changeSubtitlesLang(e.target.dataset.votValue);
           },
-          labelText: localizationProvider.get("VOTSubtitles")
-        }
-      )
+          labelText: localizationProvider.get("VOTSubtitles"),
+        },
+      );
 
       this.votMenu.bodyContainer.appendChild(this.votSubtitlesSelect.container);
 
-      this.votVideoVolumeSlider = ui.createSlider(`${localizationProvider.get("VOTVolume")}: <strong>${this.getVideoVolume() * 100}%</strong>`, this.getVideoVolume() * 100);
-      this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
-      this.votMenu.bodyContainer.appendChild(this.votVideoVolumeSlider.container);
+      this.votVideoVolumeSlider = ui.createSlider(
+        `${localizationProvider.get("VOTVolume")}: <strong>${
+          this.getVideoVolume() * 100
+        }%</strong>`,
+        this.getVideoVolume() * 100,
+      );
+      this.votVideoVolumeSlider.container.hidden =
+        this.data.showVideoSlider !== 1 ||
+        this.votButton.container.dataset.status !== "success";
+      this.votMenu.bodyContainer.appendChild(
+        this.votVideoVolumeSlider.container,
+      );
 
-      this.votVideoTranslationVolumeSlider = ui.createSlider(`${localizationProvider.get("VOTVolumeTranslation")}: <strong>${this.data?.defaultVolume ?? 100}%</strong>`, this.data?.defaultVolume ?? 100);
-      this.votVideoTranslationVolumeSlider.container.hidden = this.votButton.container.dataset.status !== "success";
-      this.votMenu.bodyContainer.appendChild(this.votVideoTranslationVolumeSlider.container);
+      this.votVideoTranslationVolumeSlider = ui.createSlider(
+        `${localizationProvider.get("VOTVolumeTranslation")}: <strong>${
+          this.data?.defaultVolume ?? 100
+        }%</strong>`,
+        this.data?.defaultVolume ?? 100,
+      );
+      this.votVideoTranslationVolumeSlider.container.hidden =
+        this.votButton.container.dataset.status !== "success";
+      this.votMenu.bodyContainer.appendChild(
+        this.votVideoTranslationVolumeSlider.container,
+      );
 
       this.votMenu.container.addEventListener("click", (e) => {
         e.preventDefault();
@@ -382,49 +443,107 @@ class VideoHandler {
 
     // VOT Settings
     {
-      this.votSettingsDialog = ui.createDialog(localizationProvider.get("VOTSettings"));
+      this.votSettingsDialog = ui.createDialog(
+        localizationProvider.get("VOTSettings"),
+      );
       document.documentElement.appendChild(this.votSettingsDialog.container);
 
-      this.votTranslationHeader = ui.createHeader(localizationProvider.get("translationSettings"));
-      this.votSettingsDialog.bodyContainer.appendChild(this.votTranslationHeader);
+      this.votTranslationHeader = ui.createHeader(
+        localizationProvider.get("translationSettings"),
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votTranslationHeader,
+      );
 
-      this.votAutoTranslateCheckbox = ui.createCheckbox(localizationProvider.get("VOTAutoTranslate"), this.data?.autoTranslate ?? false);
-      this.votSettingsDialog.bodyContainer.appendChild(this.votAutoTranslateCheckbox.container);
+      this.votAutoTranslateCheckbox = ui.createCheckbox(
+        localizationProvider.get("VOTAutoTranslate"),
+        this.data?.autoTranslate ?? false,
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votAutoTranslateCheckbox.container,
+      );
 
-      this.votDontTranslateYourLangCheckbox = ui.createCheckbox(localizationProvider.get("VOTDontTranslateYourLang"), this.data?.dontTranslateYourLang ?? true);
-      this.votSettingsDialog.bodyContainer.appendChild(this.votDontTranslateYourLangCheckbox.container);
+      this.votDontTranslateYourLangCheckbox = ui.createCheckbox(
+        localizationProvider.get("VOTDontTranslateYourLang"),
+        this.data?.dontTranslateYourLang ?? true,
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votDontTranslateYourLangCheckbox.container,
+      );
 
-      this.votAutoSetVolumeCheckbox = ui.createCheckbox(`${localizationProvider.get("VOTAutoSetVolume")} ${autoVolume * 100}%`, this.data?.autoSetVolumeYandexStyle ?? true);
-      this.votSettingsDialog.bodyContainer.appendChild(this.votAutoSetVolumeCheckbox.container);
+      this.votAutoSetVolumeCheckbox = ui.createCheckbox(
+        `${localizationProvider.get("VOTAutoSetVolume")} ${autoVolume * 100}%`,
+        this.data?.autoSetVolumeYandexStyle ?? true,
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votAutoSetVolumeCheckbox.container,
+      );
 
-      this.votShowVideoSliderCheckbox = ui.createCheckbox(localizationProvider.get("VOTShowVideoSlider"), this.data?.showVideoSlider ?? false);
-      this.votSettingsDialog.bodyContainer.appendChild(this.votShowVideoSliderCheckbox.container);
+      this.votShowVideoSliderCheckbox = ui.createCheckbox(
+        localizationProvider.get("VOTShowVideoSlider"),
+        this.data?.showVideoSlider ?? false,
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votShowVideoSliderCheckbox.container,
+      );
 
       // udemy only
-      this.votUdemyDataTextfield = ui.createTextfield(localizationProvider.get("VOTUdemyData"), this.data?.udemyData?.accessToken ?? "");
+      this.votUdemyDataTextfield = ui.createTextfield(
+        localizationProvider.get("VOTUdemyData"),
+        this.data?.udemyData?.accessToken ?? "",
+      );
       this.votUdemyDataTextfield.container.hidden = this.site.host !== "udemy";
-      this.votSettingsDialog.bodyContainer.appendChild(this.votUdemyDataTextfield.container);
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votUdemyDataTextfield.container,
+      );
 
       // youtube only
-      this.votSyncVolumeCheckbox = ui.createCheckbox(localizationProvider.get("VOTSyncVolume"), this.data?.syncVolume ?? false);
-      this.votSyncVolumeCheckbox.container.hidden = this.site.host !== "youtube" || this.site.additionalData === "mobile";
-      this.votSettingsDialog.bodyContainer.appendChild(this.votSyncVolumeCheckbox.container);
+      this.votSyncVolumeCheckbox = ui.createCheckbox(
+        localizationProvider.get("VOTSyncVolume"),
+        this.data?.syncVolume ?? false,
+      );
+      this.votSyncVolumeCheckbox.container.hidden =
+        this.site.host !== "youtube" || this.site.additionalData === "mobile";
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votSyncVolumeCheckbox.container,
+      );
 
       // cf version only
-      this.votAudioProxyCheckbox = ui.createCheckbox(localizationProvider.get("VOTAudioProxy"), this.data?.audioProxy ?? false);
+      this.votAudioProxyCheckbox = ui.createCheckbox(
+        localizationProvider.get("VOTAudioProxy"),
+        this.data?.audioProxy ?? false,
+      );
       this.votAudioProxyCheckbox.container.hidden = BUILD_MODE !== "cloudflare";
-      this.votSettingsDialog.bodyContainer.appendChild(this.votAudioProxyCheckbox.container);
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votAudioProxyCheckbox.container,
+      );
 
       // SUBTITLES
 
-      this.votSubtitlesHeader = ui.createHeader(localizationProvider.get("subtitlesSettings"));
+      this.votSubtitlesHeader = ui.createHeader(
+        localizationProvider.get("subtitlesSettings"),
+      );
       this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesHeader);
 
-      this.votSubtitlesMaxLengthSlider = ui.createSlider(`${localizationProvider.get("VOTSubtitlesMaxLength")}: <strong>${this.data?.subtitlesMaxLength ?? 300}</strong>`, this.data?.subtitlesMaxLength ?? 300, 50, 300);
-      this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesMaxLengthSlider.container);
+      this.votSubtitlesMaxLengthSlider = ui.createSlider(
+        `${localizationProvider.get("VOTSubtitlesMaxLength")}: <strong>${
+          this.data?.subtitlesMaxLength ?? 300
+        }</strong>`,
+        this.data?.subtitlesMaxLength ?? 300,
+        50,
+        300,
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votSubtitlesMaxLengthSlider.container,
+      );
 
-      this.votSubtitlesHighlightWordsCheckbox = ui.createCheckbox(localizationProvider.get("VOTHighlightWords"), this.data?.highlightWords ?? false);
-      this.votSettingsDialog.bodyContainer.appendChild(this.votSubtitlesHighlightWordsCheckbox.container);
+      this.votSubtitlesHighlightWordsCheckbox = ui.createCheckbox(
+        localizationProvider.get("VOTHighlightWords"),
+        this.data?.highlightWords ?? false,
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votSubtitlesHighlightWordsCheckbox.container,
+      );
 
       // ABOUT
 
@@ -432,37 +551,75 @@ class VideoHandler {
       this.votSettingsDialog.bodyContainer.appendChild(this.votAboutHeader);
 
       this.votLanguageSelect = ui.createVOTSelect(
-        localizationProvider.get("langs")[window.localStorage.getItem("vot-locale-lang-override") ?? "auto"],
+        localizationProvider.get("langs")[
+          GM_getValue("locale-lang-override", "auto")
+        ],
         localizationProvider.get("VOTMenuLanguage"),
-        genOptionsByOBJ(availableLocales, window.localStorage.getItem("vot-locale-lang-override") ?? "auto"),
+        genOptionsByOBJ(
+          availableLocales,
+          GM_getValue("locale-lang-override", "auto"),
+        ),
         {
           onSelectCb: (e) => {
-            window.localStorage.setItem("vot-locale-lang-override", e.target.dataset.votValue);
+            GM_setValue("locale-lang-override", e.target.dataset.votValue);
           },
-          labelText: localizationProvider.get("VOTMenuLanguage")
-        }
-      )
+          labelText: localizationProvider.get("VOTMenuLanguage"),
+        },
+      );
 
-      this.votSettingsDialog.bodyContainer.appendChild(this.votLanguageSelect.container);
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votLanguageSelect.container,
+      );
 
-      this.votShowPiPButtonCheckbox = ui.createCheckbox(localizationProvider.get("VOTShowPiPButton"), this.data?.showPiPButton ?? false);
+      this.votShowPiPButtonCheckbox = ui.createCheckbox(
+        localizationProvider.get("VOTShowPiPButton"),
+        this.data?.showPiPButton ?? false,
+      );
       this.votShowPiPButtonCheckbox.container.hidden = !isPiPAvailable();
-      this.votSettingsDialog.bodyContainer.appendChild(this.votShowPiPButtonCheckbox.container);
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votShowPiPButtonCheckbox.container,
+      );
 
-      this.votVersionInfo = ui.createInformation(`${localizationProvider.get("VOTVersion")}:`, BUILD_MODE === "cloudflare" ? `cloudflare ${GM_info.script.version}` : GM_info.script.version);
-      this.votSettingsDialog.bodyContainer.appendChild(this.votVersionInfo.container);
+      this.votVersionInfo = ui.createInformation(
+        `${localizationProvider.get("VOTVersion")}:`,
+        BUILD_MODE === "cloudflare"
+          ? `cloudflare ${GM_info.script.version}`
+          : GM_info.script.version,
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votVersionInfo.container,
+      );
 
-      this.votAuthorsInfo = ui.createInformation(`${localizationProvider.get("VOTAuthors")}:`, GM_info.script.author);
-      this.votSettingsDialog.bodyContainer.appendChild(this.votAuthorsInfo.container);
+      this.votAuthorsInfo = ui.createInformation(
+        `${localizationProvider.get("VOTAuthors")}:`,
+        GM_info.script.author,
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votAuthorsInfo.container,
+      );
 
-      this.votLoaderInfo = ui.createInformation(`${localizationProvider.get("VOTLoader")}:`, `${GM_info.scriptHandler} v${GM_info.version}`);
-      this.votSettingsDialog.bodyContainer.appendChild(this.votLoaderInfo.container);
+      this.votLoaderInfo = ui.createInformation(
+        `${localizationProvider.get("VOTLoader")}:`,
+        `${GM_info.scriptHandler} v${GM_info.version}`,
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votLoaderInfo.container,
+      );
 
-      this.votBrowserInfo = ui.createInformation(`${localizationProvider.get("VOTBrowser")}:`, `${browserInfo.browser.name} ${browserInfo.browser.version} (${browserInfo.os.name} ${browserInfo.os.version})`);
-      this.votSettingsDialog.bodyContainer.appendChild(this.votBrowserInfo.container);
+      this.votBrowserInfo = ui.createInformation(
+        `${localizationProvider.get("VOTBrowser")}:`,
+        `${browserInfo.browser.name} ${browserInfo.browser.version} (${browserInfo.os.name} ${browserInfo.os.version})`,
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votBrowserInfo.container,
+      );
 
-      this.votResetSettingsButton = ui.createButton(localizationProvider.get("resetSettings"));
-      this.votSettingsDialog.bodyContainer.appendChild(this.votResetSettingsButton);
+      this.votResetSettingsButton = ui.createButton(
+        localizationProvider.get("resetSettings"),
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votResetSettingsButton,
+      );
     }
   }
 
@@ -517,14 +674,15 @@ class VideoHandler {
       });
 
       this.votDownloadSubtitlesButton.addEventListener("click", () => {
-        console.log(this.downloadSubtitlesUrl)
+        console.log(this.downloadSubtitlesUrl);
         if (this.downloadSubtitlesUrl) {
           window.open(this.downloadSubtitlesUrl, "_blank").focus();
         }
       });
 
       this.votSettingsButton.addEventListener("click", () => {
-        this.votSettingsDialog.container.hidden = !this.votSettingsDialog.container.hidden;
+        this.votSettingsDialog.container.hidden =
+          !this.votSettingsDialog.container.hidden;
         if (document.fullscreen === undefined || document.fullscreen) {
           document.webkitExitFullscreen && document.webkitExitFullscreen();
           document.mozCancelFullscreen && document.mozCancelFullscreen();
@@ -534,19 +692,25 @@ class VideoHandler {
 
       this.votVideoVolumeSlider.input.addEventListener("input", (e) => {
         const value = Number(e.target.value);
-        this.votVideoVolumeSlider.label.querySelector("strong").innerHTML = `${value}%`;
+        this.votVideoVolumeSlider.label.querySelector(
+          "strong",
+        ).innerHTML = `${value}%`;
         this.setVideoVolume(value / 100);
         if (this.data.syncVolume === 1) {
-          const translateVolume = Number(this.votVideoTranslationVolumeSlider.input.value);
+          const translateVolume = Number(
+            this.votVideoTranslationVolumeSlider.input.value,
+          );
           const finalValue = syncVolume(
             this.audio,
             value,
             translateVolume,
-            this.tempOriginalVolume
+            this.tempOriginalVolume,
           );
 
           this.votVideoTranslationVolumeSlider.input.value = finalValue;
-          this.votVideoTranslationVolumeSlider.label.querySelector("strong").innerHTML = `${finalValue}%`;
+          this.votVideoTranslationVolumeSlider.label.querySelector(
+            "strong",
+          ).innerHTML = `${finalValue}%`;
           ui.updateSlider(this.votVideoTranslationVolumeSlider.input);
 
           this.tempVolume = finalValue;
@@ -554,91 +718,147 @@ class VideoHandler {
         }
       });
 
-      this.votVideoTranslationVolumeSlider.input.addEventListener("input", async (e) => {
-        this.data.defaultVolume = Number(e.target.value);
-        await updateDB({ defaultVolume: this.data.defaultVolume });
-        this.votVideoTranslationVolumeSlider.label.querySelector("strong").innerHTML = `${this.data.defaultVolume}%`;
-        this.audio.volume = this.data.defaultVolume / 100;
-        if (this.data.syncVolume === 1) {
-          this.syncTranslationWithVideo(this.data.defaultVolume);
-        }
-      });
+      this.votVideoTranslationVolumeSlider.input.addEventListener(
+        "input",
+        async (e) => {
+          this.data.defaultVolume = Number(e.target.value);
+          await GM_setValue("ext-data", this.data);
+          this.votVideoTranslationVolumeSlider.label.querySelector(
+            "strong",
+          ).innerHTML = `${this.data.defaultVolume}%`;
+          this.audio.volume = this.data.defaultVolume / 100;
+          if (this.data.syncVolume === 1) {
+            this.syncTranslationWithVideo(this.data.defaultVolume);
+          }
+        },
+      );
     }
 
     // VOT Settings
     {
-      this.votAutoTranslateCheckbox.input.addEventListener("change", async (e) => {
-        this.data.autoTranslate = Number(e.target.checked);
-        await updateDB({ autoTranslate: this.data.autoTranslate });
-        debug.log("autoTranslate value changed. New value: ", this.data.autoTranslate);
-      });
+      this.votAutoTranslateCheckbox.input.addEventListener(
+        "change",
+        async (e) => {
+          this.data.autoTranslate = Number(e.target.checked);
+          await GM_setValue("ext-data", this.data);
+          debug.log(
+            "autoTranslate value changed. New value: ",
+            this.data.autoTranslate,
+          );
+        },
+      );
 
-      this.votDontTranslateYourLangCheckbox.input.addEventListener("change", async (e) => {
-        this.data.dontTranslateYourLang = Number(e.target.checked);
-        await updateDB({ dontTranslateYourLang: this.data.dontTranslateYourLang });
-        debug.log("dontTranslateYourLang value changed. New value: ", this.data.dontTranslateYourLang);
-      });
+      this.votDontTranslateYourLangCheckbox.input.addEventListener(
+        "change",
+        async (e) => {
+          this.data.dontTranslateYourLang = Number(e.target.checked);
+          await GM_setValue("ext-data", this.data);
+          debug.log(
+            "dontTranslateYourLang value changed. New value: ",
+            this.data.dontTranslateYourLang,
+          );
+        },
+      );
 
-      this.votAutoSetVolumeCheckbox.input.addEventListener("change", async (e) => {
-        this.data.autoSetVolumeYandexStyle = Number(e.target.checked);
-        await updateDB({ autoSetVolumeYandexStyle: this.data.autoSetVolumeYandexStyle });
-        debug.log("autoSetVolumeYandexStyle value changed. New value: ", this.data.autoSetVolumeYandexStyle);
-      });
+      this.votAutoSetVolumeCheckbox.input.addEventListener(
+        "change",
+        async (e) => {
+          this.data.autoSetVolumeYandexStyle = Number(e.target.checked);
+          await GM_setValue("ext-data", this.data);
+          debug.log(
+            "autoSetVolumeYandexStyle value changed. New value: ",
+            this.data.autoSetVolumeYandexStyle,
+          );
+        },
+      );
 
-      this.votShowVideoSliderCheckbox.input.addEventListener("change", async (e) => {
-        this.data.showVideoSlider = Number(e.target.checked);
-        await updateDB({ showVideoSlider: this.data.showVideoSlider });
-        debug.log("showVideoSlider value changed. New value: ", this.data.showVideoSlider);
-        this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
-      });
+      this.votShowVideoSliderCheckbox.input.addEventListener(
+        "change",
+        async (e) => {
+          this.data.showVideoSlider = Number(e.target.checked);
+          await GM_setValue("ext-data", this.data);
+          debug.log(
+            "showVideoSlider value changed. New value: ",
+            this.data.showVideoSlider,
+          );
+          this.votVideoVolumeSlider.container.hidden =
+            this.data.showVideoSlider !== 1 ||
+            this.votButton.container.dataset.status !== "success";
+        },
+      );
 
       this.votUdemyDataTextfield.input.addEventListener("change", async (e) => {
         this.data.udemyData = {
           accessToken: e.target.value,
           expires: new Date().getTime(),
         };
-        await updateDB({ udemyData: this.data.udemyData });
+        await GM_setValue("ext-data", this.data);
         debug.log("udemyData value changed. New value: ", this.data.udemyData);
         window.location.reload();
       });
 
       this.votSyncVolumeCheckbox.input.addEventListener("change", async (e) => {
         this.data.syncVolume = Number(e.target.checked);
-        await updateDB({ syncVolume: this.data.syncVolume });
-        debug.log("syncVolume value changed. New value: ", this.data.syncVolume);
+        await GM_setValue("ext-data", this.data);
+        debug.log(
+          "syncVolume value changed. New value: ",
+          this.data.syncVolume,
+        );
       });
 
       this.votAudioProxyCheckbox.input.addEventListener("change", async (e) => {
         this.data.audioProxy = Number(e.target.checked);
-        await updateDB({ audioProxy: this.data.audioProxy });
-        debug.log("audioProxy value changed. New value: ", this.data.audioProxy);
+        await GM_setValue("ext-data", this.data);
+        debug.log(
+          "audioProxy value changed. New value: ",
+          this.data.audioProxy,
+        );
       });
 
-      this.votSubtitlesMaxLengthSlider.input.addEventListener("input", async (e) => {
-        this.data.subtitlesMaxLength = Number(e.target.value);
-        await updateDB({ subtitlesMaxLength: this.data.subtitlesMaxLength });
-        this.votSubtitlesMaxLengthSlider.label.querySelector("strong").innerHTML = `${this.data.subtitlesMaxLength}`;
-        this.subtitlesWidget.setMaxLength(this.data.subtitlesMaxLength);
-      });
+      this.votSubtitlesMaxLengthSlider.input.addEventListener(
+        "input",
+        async (e) => {
+          this.data.subtitlesMaxLength = Number(e.target.value);
+          await GM_setValue("ext-data", this.data);
+          this.votSubtitlesMaxLengthSlider.label.querySelector(
+            "strong",
+          ).innerHTML = `${this.data.subtitlesMaxLength}`;
+          this.subtitlesWidget.setMaxLength(this.data.subtitlesMaxLength);
+        },
+      );
 
-      this.votSubtitlesHighlightWordsCheckbox.input.addEventListener("change", async (e) => {
-        this.data.highlightWords = Number(e.target.checked);
-        await updateDB({ highlightWords: this.data.highlightWords });
-        debug.log("highlightWords value changed. New value: ", this.data.highlightWords);
-        this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
-      });
+      this.votSubtitlesHighlightWordsCheckbox.input.addEventListener(
+        "change",
+        async (e) => {
+          this.data.highlightWords = Number(e.target.checked);
+          await GM_setValue("ext-data", this.data);
+          debug.log(
+            "highlightWords value changed. New value: ",
+            this.data.highlightWords,
+          );
+          this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
+        },
+      );
 
-      this.votShowPiPButtonCheckbox.input.addEventListener("change", async (e) => {
-        this.data.showPiPButton = Number(e.target.checked);
-        await updateDB({ showPiPButton: this.data.showPiPButton });
-        debug.log("showPiPButton value changed. New value: ", this.data.showPiPButton);
-        this.votButton.pipButton.hidden = !isPiPAvailable() || !this.data.showPiPButton;
-        this.votButton.separator2.hidden = !isPiPAvailable() || !this.data.showPiPButton;
-      });
+      this.votShowPiPButtonCheckbox.input.addEventListener(
+        "change",
+        async (e) => {
+          this.data.showPiPButton = Number(e.target.checked);
+          await GM_setValue("ext-data", this.data);
+          debug.log(
+            "showPiPButton value changed. New value: ",
+            this.data.showPiPButton,
+          );
+          this.votButton.pipButton.hidden =
+            !isPiPAvailable() || !this.data.showPiPButton;
+          this.votButton.separator2.hidden =
+            !isPiPAvailable() || !this.data.showPiPButton;
+        },
+      );
 
       this.votResetSettingsButton.addEventListener("click", () => {
         localizationProvider.reset();
-        deleteDB();
+        GM_deleteValue("ext-data");
         window.location.reload();
       });
     }
@@ -663,7 +883,7 @@ class VideoHandler {
       this.extraEvents.push({
         element,
         event,
-        handler
+        handler,
       });
       element.addEventListener(event, handler);
     };
@@ -676,13 +896,24 @@ class VideoHandler {
 
     this.resizeObserver = new ResizeObserver((entries) => {
       entries.forEach((e) => {
-        this.votMenu.container.setAttribute("style", `--vot-container-height: ${e.contentRect.height}px`);
+        this.votMenu.container.setAttribute(
+          "style",
+          `--vot-container-height: ${e.contentRect.height}px`,
+        );
       });
     });
     this.resizeObserver.observe(this.video);
-    this.votMenu.container.setAttribute("style", `--vot-container-height: ${this.video.getBoundingClientRect().height}px`);
+    this.votMenu.container.setAttribute(
+      "style",
+      `--vot-container-height: ${this.video.getBoundingClientRect().height}px`,
+    );
     this.resizeInterval = setInterval(() => {
-      this.votMenu.container.setAttribute("style", `--vot-container-height: ${this.video.getBoundingClientRect().height}px`);
+      this.votMenu.container.setAttribute(
+        "style",
+        `--vot-container-height: ${
+          this.video.getBoundingClientRect().height
+        }px`,
+      );
     }, 500);
     // Sync volume slider with original video (youtube only)
     if (this.site.host === "youtube" && this.site.additionalData !== "mobile") {
@@ -715,7 +946,7 @@ class VideoHandler {
       const menu = this.votMenu.container;
       const container = this.container;
       const settings = this.votSettingsDialog.container;
-      const tempDialog = document.querySelector('.vot-dialog-temp');
+      const tempDialog = document.querySelector(".vot-dialog-temp");
 
       const isButton = button.contains(e);
       const isMenu = menu.contains(e);
@@ -723,7 +954,9 @@ class VideoHandler {
       const isSettings = settings.contains(e);
       const isTempDialog = tempDialog?.contains(e) ?? false;
 
-      debug.log(`[document click] ${isButton} ${isMenu} ${isVideo} ${isSettings} ${isTempDialog}`);
+      debug.log(
+        `[document click] ${isButton} ${isMenu} ${isVideo} ${isSettings} ${isTempDialog}`,
+      );
       if (!(!isButton && !isMenu && !isSettings && !isTempDialog)) return;
       if (!isVideo) this.logout(0);
 
@@ -743,19 +976,36 @@ class VideoHandler {
     } else {
       eContainer = this.container;
     }
-    if (eContainer) addExtraEventListeners(eContainer, ["mousemove", "mouseout"], this.resetTimerBound);
+    if (eContainer)
+      addExtraEventListeners(
+        eContainer,
+        ["mousemove", "mouseout"],
+        this.resetTimerBound,
+      );
 
-    addExtraEventListener(this.votButton.container, "mousemove" , this.changeOpacityOnEventBound);
-    addExtraEventListener(this.votMenu.container, "mousemove" , this.changeOpacityOnEventBound);
-    addExtraEventListeners(document, ["touchstart", "touchmove", "touchend"], this.changeOpacityOnEventBound);
+    addExtraEventListener(
+      this.votButton.container,
+      "mousemove",
+      this.changeOpacityOnEventBound,
+    );
+    addExtraEventListener(
+      this.votMenu.container,
+      "mousemove",
+      this.changeOpacityOnEventBound,
+    );
+    addExtraEventListeners(
+      document,
+      ["touchstart", "touchmove", "touchend"],
+      this.changeOpacityOnEventBound,
+    );
 
     // fix youtube hold to fast
     addExtraEventListener(this.votButton.container, "mousedown", (e) => {
       e.stopImmediatePropagation();
-    })
+    });
     addExtraEventListener(this.votMenu.container, "mousedown", (e) => {
       e.stopImmediatePropagation();
-    })
+    });
 
     addExtraEventListener(this.video, "abort", () => {
       debug.log("lipsync mode is abort");
@@ -809,14 +1059,18 @@ class VideoHandler {
 
   async changeSubtitlesLang(subs) {
     debug.log("[onchange] subtitles", subs);
-    this.votSubtitlesSelect.setSelected(subs)
+    this.votSubtitlesSelect.setSelected(subs);
     if (subs === "disabled") {
-      this.votSubtitlesSelect.setTitle(localizationProvider.get("VOTSubtitlesDisabled"));
+      this.votSubtitlesSelect.setTitle(
+        localizationProvider.get("VOTSubtitlesDisabled"),
+      );
       this.subtitlesWidget.setContent(null);
       this.votDownloadSubtitlesButton.hidden = true;
       this.downloadSubtitlesUrl = null;
     } else {
-      const fetchedSubs = await fetchSubtitles(this.subtitlesList.at(parseInt(subs)));
+      const fetchedSubs = await fetchSubtitles(
+        this.subtitlesList.at(parseInt(subs)),
+      );
       this.subtitlesWidget.setContent(fetchedSubs);
       this.votDownloadSubtitlesButton.hidden = false;
       this.downloadSubtitlesUrl = this.subtitlesList.at(parseInt(subs))?.url;
@@ -832,7 +1086,8 @@ class VideoHandler {
         disabled: false,
       },
       ...this.subtitlesList.map((s, idx) => ({
-        label: (localizationProvider.get("langs")[s.language] ??
+        label:
+          (localizationProvider.get("langs")[s.language] ??
             s.language.toUpperCase()) +
           (s.translatedFromLanguage
             ? ` ${localizationProvider.get("VOTTranslatedFrom")} ${
@@ -846,9 +1101,9 @@ class VideoHandler {
             : ""),
         value: idx,
         selected: false,
-        disabled: false
-      }))
-    ]
+        disabled: false,
+      })),
+    ];
 
     this.votSubtitlesSelect.updateItems(updatedOptions);
 
@@ -862,7 +1117,7 @@ class VideoHandler {
 
     if (!VIDEO_ID) {
       console.error(
-        `[VOT] ${localizationProvider.getDefault("VOTNoVideoIDFound")}`
+        `[VOT] ${localizationProvider.getDefault("VOTNoVideoIDFound")}`,
       );
       this.subtitlesList = [];
       this.subtitlesListVideoId = null;
@@ -878,14 +1133,14 @@ class VideoHandler {
       this.videoData = await this.getVideoData();
       this.setSelectMenuValues(
         this.videoData.detectedLanguage,
-        this.videoData.responseLanguage
+        this.videoData.responseLanguage,
       );
     }
 
     this.subtitlesList = await getSubtitles(
       this.site,
       VIDEO_ID,
-      this.videoData.detectedLanguage
+      this.videoData.detectedLanguage,
     );
     if (!this.subtitlesList) {
       await this.changeSubtitlesLang("disabled");
@@ -917,7 +1172,9 @@ class VideoHandler {
     const newSlidersVolume = Math.round(this.getVideoVolume() * 100);
 
     this.votVideoVolumeSlider.input.value = newSlidersVolume;
-    this.votVideoVolumeSlider.label.querySelector("strong").innerHTML = `${newSlidersVolume}%`;
+    this.votVideoVolumeSlider.label.querySelector(
+      "strong",
+    ).innerHTML = `${newSlidersVolume}%`;
     ui.updateSlider(this.votVideoVolumeSlider.input);
 
     if (this.data.syncVolume === 1) {
@@ -926,8 +1183,12 @@ class VideoHandler {
   }
 
   setSelectMenuValues(from, to) {
-    this.votTranslationLanguageSelect.fromSelect.setTitle(localizationProvider.get('langs')[from]);
-    this.votTranslationLanguageSelect.toSelect.setTitle(localizationProvider.get('langs')[to]);
+    this.votTranslationLanguageSelect.fromSelect.setTitle(
+      localizationProvider.get("langs")[from],
+    );
+    this.votTranslationLanguageSelect.toSelect.setTitle(
+      localizationProvider.get("langs")[to],
+    );
     this.votTranslationLanguageSelect.fromSelect.setSelected(from);
     this.votTranslationLanguageSelect.toSelect.setSelected(to);
     console.log(`[VOT] Set translation from ${from} to ${to}`);
@@ -945,12 +1206,14 @@ class VideoHandler {
       this.video,
       translationValue,
       videoVolume,
-      this.tempVolume
+      this.tempVolume,
     );
 
     // Set the video volume slider value to the synced value
     this.votVideoVolumeSlider.input.value = finalValue;
-    this.votVideoVolumeSlider.label.querySelector("strong").innerHTML = `${finalValue}%`;
+    this.votVideoVolumeSlider.label.querySelector(
+      "strong",
+    ).innerHTML = `${finalValue}%`;
     ui.updateSlider(this.votVideoVolumeSlider.input);
 
     // Update the temp variables for future syncing
@@ -988,14 +1251,16 @@ class VideoHandler {
     } else if (window.location.hostname.includes("bilibili.com")) {
       videoData.detectedLanguage = "zh";
     } else if (window.location.hostname.includes("coursera.org")) {
-      const courseraData = await courseraUtils.getVideoData(this.translateToLang);
+      const courseraData = await courseraUtils.getVideoData(
+        this.translateToLang,
+      );
       videoData.duration = courseraData.duration || videoData.duration; // courseraData.duration sometimes it can be equal to NaN
       videoData.detectedLanguage = courseraData.detectedLanguage;
       videoData.translationHelp = courseraData.translationHelp;
     } else if (window.location.hostname.includes("udemy.com")) {
       const udemyData = await udemyUtils.getVideoData(
         this.data.udemyData,
-        this.translateToLang
+        this.translateToLang,
       );
       videoData.duration = udemyData.duration || videoData.duration;
       videoData.detectedLanguage = udemyData.detectedLanguage;
@@ -1050,7 +1315,7 @@ class VideoHandler {
           if (e.name === "NotAllowedError") {
             this.transformBtn(
               "error",
-              localizationProvider.get("grantPermissionToAutoPlay")
+              localizationProvider.get("grantPermissionToAutoPlay"),
             );
             throw new VOTLocalizedError("grantPermissionToAutoPlay");
           } else if (e.name === "NotSupportedError") {
@@ -1058,7 +1323,7 @@ class VideoHandler {
               "error",
               sitesChromiumBlocked.includes(window.location.hostname)
                 ? localizationProvider.get("neededAdditionalExtension")
-                : localizationProvider.get("audioFormatNotSupported")
+                : localizationProvider.get("audioFormatNotSupported"),
             );
             throw sitesChromiumBlocked.includes(window.location.hostname)
               ? new VOTLocalizedError("neededAdditionalExtension")
@@ -1094,7 +1359,9 @@ class VideoHandler {
 
   // Default actions on stop translate
   stopTraslate() {
-    videoLipSyncEvents.forEach((e) => this.video.removeEventListener(e, this.handleVideoEventBound));
+    videoLipSyncEvents.forEach((e) =>
+      this.video.removeEventListener(e, this.handleVideoEventBound),
+    );
     this.audio.pause();
     //! video.removeEventListener(".translate", stopTraslate, false); // why???
     this.audio.src = "";
@@ -1113,6 +1380,8 @@ class VideoHandler {
       }
     }
     clearInterval(this.streamPing);
+    this.hls?.destroy();
+    this.hls = initHls();
   }
 
   async translateExecutor(VIDEO_ID) {
@@ -1120,7 +1389,7 @@ class VideoHandler {
       this.videoData = await this.getVideoData();
       this.setSelectMenuValues(
         this.videoData.detectedLanguage,
-        this.videoData.responseLanguage
+        this.videoData.responseLanguage,
       );
     }
     debug.log("Run videoValidator");
@@ -1132,7 +1401,7 @@ class VideoHandler {
       this.videoData.isStream,
       this.videoData.detectedLanguage,
       this.videoData.responseLanguage,
-      this.videoData.translationHelp
+      this.videoData.translationHelp,
     );
   }
 
@@ -1142,7 +1411,7 @@ class VideoHandler {
     isStream,
     requestLang,
     responseLang,
-    translationHelp
+    translationHelp,
   ) {
     console.log("[VOT] Video Data: ", this.videoData);
     const videoURL = `${this.site.url}${VIDEO_ID}`;
@@ -1178,41 +1447,52 @@ class VideoHandler {
                     isStream,
                     requestLang,
                     responseLang,
-                    translationHelp
+                    translationHelp,
                   ),
-                  reqInterval * 1000
+                reqInterval * 1000,
               );
             }
 
             return;
           }
 
-          this.transformBtn("success", localizationProvider.get("disableTranslate"));
+          this.transformBtn(
+            "success",
+            localizationProvider.get("disableTranslate"),
+          );
 
-          console.log(resOrError)
+          console.log(resOrError);
           const pingId = resOrError.pingId;
-          console.log(`Stream pingId: ${pingId}`)
+          console.log(`Stream pingId: ${pingId}`);
           // if you don't make ping requests, then the translation of the stream dies
           this.streamPing = setInterval(
             async () =>
-              await requestStreamPing(pingId, (result) => console.log('Stream ping result: ', result)),
-              reqInterval * 1000
+              await requestStreamPing(pingId, (result) =>
+                console.log("Stream ping result: ", result),
+              ),
+            reqInterval * 1000,
           );
 
           // const streamURL = "https://stream.ram.radio/audio/ram.stream_aac/playlist.m3u8";
-          debug.log(resOrError.translatedInfo.url)
-          const streamURL = `https://${m3u8ProxyHost}/?all=yes&origin=${encodeURIComponent('https://strm.yandex.ru')}&referer=${encodeURIComponent('https://strm.yandex.ru')}&url=${encodeURIComponent(resOrError.translatedInfo.url)}`;
-          debug.log(streamURL)
+          debug.log(resOrError.translatedInfo.url);
+          const streamURL = `https://${m3u8ProxyHost}/?all=yes&origin=${encodeURIComponent(
+            "https://strm.yandex.ru",
+          )}&referer=${encodeURIComponent(
+            "https://strm.yandex.ru",
+          )}&url=${encodeURIComponent(resOrError.translatedInfo.url)}`;
+          debug.log(streamURL);
           // const timestamp = Date.now(); // get timestamp
 
-          debug.log("Test hls support")
+          debug.log("Test hls support");
           if (this.hls) {
             this.hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-              debug.log('audio and hls.js are now bound together !');
+              debug.log("audio and hls.js are now bound together !");
             });
             this.hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
               debug.log(
-                'manifest loaded, found ' + data.levels.length + ' quality level',
+                "manifest loaded, found " +
+                  data.levels.length +
+                  " quality level",
               );
             });
             this.hls.loadSource(streamURL);
@@ -1221,11 +1501,13 @@ class VideoHandler {
               if (data.fatal) {
                 switch (data.type) {
                   case Hls.ErrorTypes.MEDIA_ERROR:
-                    console.log('fatal media error encountered, try to recover');
+                    console.log(
+                      "fatal media error encountered, try to recover",
+                    );
                     this.hls.recoverMediaError();
                     break;
                   case Hls.ErrorTypes.NETWORK_ERROR:
-                    console.error('fatal network error encountered', data);
+                    console.error("fatal network error encountered", data);
                     // All retries and media options have been exhausted.
                     // Immediately trying to restart loading could cause loop loading.
                     // Consider modifying loading policies to best fit your asset and network
@@ -1238,8 +1520,8 @@ class VideoHandler {
                 }
               }
             });
-            debug.log(this.hls)
-          } else if (this.audio.canPlayType('application/vnd.apple.mpegurl')) {
+            debug.log(this.hls);
+          } else if (this.audio.canPlayType("application/vnd.apple.mpegurl")) {
             // safari
             this.audio.src = streamURL;
           } else {
@@ -1247,11 +1529,9 @@ class VideoHandler {
             throw new VOTLocalizedError("audioFormatNotSupported");
           }
 
-
           // const streamTime = youtubeUtils.getStreamTime(this.video)
 
           // youtubeUtils.videoSeekTo(this.video, streamTime.absoluteTime - (resOrError.translatedInfo.timestamp / 1000));
-
 
           // console.log("video times", this.video.duration, this.video.currentTime);
           // console.log("stream times", streamTime.currentTime, streamTime.absoluteTime);
@@ -1272,28 +1552,39 @@ class VideoHandler {
             this.setVideoVolume(autoVolume);
           }
 
-          if (!this.video.src && !this.video.currentSrc && !this.video.srcObject) {
+          if (
+            !this.video.src &&
+            !this.video.currentSrc &&
+            !this.video.srcObject
+          ) {
             this.stopTranslation();
             return;
           }
 
           if (this.video && !this.video.paused) this.lipSync("play");
           // this.audio.play();
-          videoLipSyncEvents.forEach((e) => this.video.addEventListener(e, this.handleVideoEventBound));
+          videoLipSyncEvents.forEach((e) =>
+            this.video.addEventListener(e, this.handleVideoEventBound),
+          );
 
-          this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
-          this.votVideoTranslationVolumeSlider.container.hidden = this.votButton.container.dataset.status !== "success";
+          this.votVideoVolumeSlider.container.hidden =
+            this.data.showVideoSlider !== 1 ||
+            this.votButton.container.dataset.status !== "success";
+          this.votVideoTranslationVolumeSlider.container.hidden =
+            this.votButton.container.dataset.status !== "success";
 
           if (this.data.autoSetVolumeYandexStyle === 1) {
             this.votVideoVolumeSlider.input.value = autoVolume * 100;
-            this.votVideoVolumeSlider.label.querySelector("strong").innerHTML = `${autoVolume * 100}%`;
+            this.votVideoVolumeSlider.label.querySelector(
+              "strong",
+            ).innerHTML = `${autoVolume * 100}%`;
             ui.updateSlider(this.votVideoVolumeSlider.input);
           }
 
           this.votDownloadButton.hidden = false;
           this.downloadTranslationUrl = streamURL;
-        }
-      )
+        },
+      );
 
       return;
     }
@@ -1329,9 +1620,9 @@ class VideoHandler {
                   isStream,
                   requestLang,
                   responseLang,
-                  translationHelp
+                  translationHelp,
                 ),
-              60_000
+              60_000,
             );
           }
           console.error("[VOT]", urlOrError);
@@ -1348,7 +1639,7 @@ class VideoHandler {
         ) {
           const audioPath = urlOrError.replace(
             "https://vtrans.s3-private.mds.yandex.net/tts/prod/",
-            ""
+            "",
           );
           const proxiedAudioUrl = `https://${workerHost}/video-translation/audio-proxy/${audioPath}`;
           console.log(`[VOT] Audio proxied via ${proxiedAudioUrl}`);
@@ -1377,7 +1668,11 @@ class VideoHandler {
             break;
         }
 
-        if (!this.video.src && !this.video.currentSrc && !this.video.srcObject) {
+        if (
+          !this.video.src &&
+          !this.video.currentSrc &&
+          !this.video.srcObject
+        ) {
           this.stopTranslation();
           return;
         }
@@ -1394,21 +1689,19 @@ class VideoHandler {
         ];
         for (let i = 0; i < siteHostnames.length; i++) {
           if (this.site.host === siteHostnames[i]) {
-            const mutationObserver = new MutationObserver(
-              (mutations) => {
-                mutations.forEach((mutation) => {
-                  if (
-                    mutation.type === "attributes" &&
-                    mutation.attributeName === "src" &&
-                    mutation.target === this.video &&
-                    mutation.target.src !== ""
-                  ) {
-                    this.stopTranslation();
-                    this.firstPlay = true;
-                  }
-                });
-              }
-            );
+            const mutationObserver = new MutationObserver((mutations) => {
+              mutations.forEach((mutation) => {
+                if (
+                  mutation.type === "attributes" &&
+                  mutation.attributeName === "src" &&
+                  mutation.target === this.video &&
+                  mutation.target.src !== ""
+                ) {
+                  this.stopTranslation();
+                  this.firstPlay = true;
+                }
+              });
+            });
             mutationObserver.observe(this.container, {
               attributes: true,
               childList: false,
@@ -1420,21 +1713,31 @@ class VideoHandler {
         }
 
         if (this.video && !this.video.paused) this.lipSync("play");
-        videoLipSyncEvents.forEach((e) => this.video.addEventListener(e, this.handleVideoEventBound));
-        this.transformBtn("success", localizationProvider.get("disableTranslate"));
+        videoLipSyncEvents.forEach((e) =>
+          this.video.addEventListener(e, this.handleVideoEventBound),
+        );
+        this.transformBtn(
+          "success",
+          localizationProvider.get("disableTranslate"),
+        );
 
-        this.votVideoVolumeSlider.container.hidden = this.data.showVideoSlider !== 1 || this.votButton.container.dataset.status !== "success";
-        this.votVideoTranslationVolumeSlider.container.hidden = this.votButton.container.dataset.status !== "success";
+        this.votVideoVolumeSlider.container.hidden =
+          this.data.showVideoSlider !== 1 ||
+          this.votButton.container.dataset.status !== "success";
+        this.votVideoTranslationVolumeSlider.container.hidden =
+          this.votButton.container.dataset.status !== "success";
 
         if (this.data.autoSetVolumeYandexStyle === 1) {
           this.votVideoVolumeSlider.input.value = autoVolume * 100;
-          this.votVideoVolumeSlider.label.querySelector("strong").innerHTML = `${autoVolume * 100}%`;
+          this.votVideoVolumeSlider.label.querySelector(
+            "strong",
+          ).innerHTML = `${autoVolume * 100}%`;
           ui.updateSlider(this.votVideoVolumeSlider.input);
         }
 
         this.votDownloadButton.hidden = false;
         this.downloadTranslationUrl = urlOrError;
-      }
+      },
     );
   }
 
@@ -1461,14 +1764,14 @@ class VideoHandler {
         }
         resolved = true;
         resolve(true);
-      })
+      }),
     ]);
   }
 
   async handleSrcChanged() {
     debug.log("[VideoHandler] src changed", this);
 
-    if (!await this.waitInitialization()) return;
+    if (!(await this.waitInitialization())) return;
 
     this.stopTranslation();
 
@@ -1476,7 +1779,8 @@ class VideoHandler {
 
     this.firstPlay = true;
 
-    const hide = !this.video.src && !this.video.currentSrc && !this.video.srcObject;
+    const hide =
+      !this.video.src && !this.video.currentSrc && !this.video.srcObject;
     this.votButton.container.hidden = hide;
     hide && (this.votMenu.container.hidden = hide);
 
@@ -1491,14 +1795,17 @@ class VideoHandler {
 
     await this.updateSubtitles();
     await this.changeSubtitlesLang("disabled");
-    this.setSelectMenuValues(this.videoData.detectedLanguage, this.data.responseLanguage ?? "ru");
+    this.setSelectMenuValues(
+      this.videoData.detectedLanguage,
+      this.data.responseLanguage ?? "ru",
+    );
     this.translateToLang = this.data.responseLanguage ?? "ru";
   }
 
   async release() {
     debug.log("[VideoHandler] release");
 
-    if (!await this.waitInitialization()) return;
+    if (!(await this.waitInitialization())) return;
     this.initialized = false;
 
     this.stopTranslation();
@@ -1514,11 +1821,17 @@ class VideoHandler {
 function getSites() {
   return sites.filter((e) => {
     const isMathes = (match) => {
-      return (match instanceof RegExp && match.test(window.location.hostname))
-        || (typeof match === "string" && window.location.hostname.includes(match))
-        || (typeof match === "function" && match(new URL(window.location)));
+      return (
+        (match instanceof RegExp && match.test(window.location.hostname)) ||
+        (typeof match === "string" &&
+          window.location.hostname.includes(match)) ||
+        (typeof match === "function" && match(new URL(window.location)))
+      );
     };
-    if (isMathes(e.match) || (e.match instanceof Array && e.match.some((e) => isMathes(e)))) {
+    if (
+      isMathes(e.match) ||
+      (e.match instanceof Array && e.match.some((e) => isMathes(e)))
+    ) {
       return e.host && e.url;
     }
     return false;
@@ -1543,28 +1856,16 @@ async function main() {
     console.error(
       `[VOT] ${localizationProvider
         .getDefault("unSupportedExtensionError")
-        .format(GM_info.scriptHandler)}`
+        .format(GM_info.scriptHandler)}`,
     );
     return alert(
       `[VOT] ${localizationProvider
         .get("unSupportedExtensionError")
-        .format(GM_info.scriptHandler)}`
+        .format(GM_info.scriptHandler)}`,
     );
   }
 
   debug.log("Extension compatibility passed...");
-
-  try {
-    if (!await initDB()) {
-      console.error("[VOT] Failed to initialize database");
-      return;
-    }
-  } catch (err) {
-    console.error("[VOT] Failed to initialize database", err);
-    return;
-  }
-
-  debug.log("database initialized");
 
   videoObserver.onVideoAdded.addListener((video) => {
     for (const site of getSites()) {
@@ -1572,14 +1873,25 @@ async function main() {
 
       // fix multiply translation buttons in rumble.com
       // only main video has poster
-      if (site.host === 'rumble' && !video.poster) continue;
+      if (site.host === "rumble" && !video.poster) continue;
 
       let container;
       if (site.shadowRoot) {
-        container = site.selector ? Object.values(document.querySelectorAll(site.selector)).find(e => e.shadowRoot.contains(video)) : video.parentElement;
-        container = (container && container.shadowRoot) ? container.parentElement : container;
+        container = site.selector
+          ? Object.values(document.querySelectorAll(site.selector)).find((e) =>
+              e.shadowRoot.contains(video),
+            )
+          : video.parentElement;
+        container =
+          container && container.shadowRoot
+            ? container.parentElement
+            : container;
       } else {
-        container = site.selector ? Object.values(document.querySelectorAll(site.selector)).find(e => e.contains(video)) : video.parentElement;
+        container = site.selector
+          ? Object.values(document.querySelectorAll(site.selector)).find((e) =>
+              e.contains(video),
+            )
+          : video.parentElement;
       }
       if (!container) continue;
       if (!videosWrappers.has(video)) {
