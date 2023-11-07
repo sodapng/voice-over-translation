@@ -92,6 +92,10 @@ npm i
    ```bash
    npm run build:cloudflare-min
    ```
+4. Installing the pre-commit hook:
+   ```bash
+   npm run prepare
+   ```
 
 ## Note:
 1. I recommend allowing autoplay of "audio and video" to avoid errors when working with the extension

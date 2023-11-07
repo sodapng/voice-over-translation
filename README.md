@@ -93,6 +93,10 @@ npm i
    ```bash
    npm run build:cloudflare-min
    ```
+4. Установка pre-commit хука:
+   ```bash
+   npm run prepare
+   ```
 
 
 ## Как задеплоить свой Cloudflare Worker?
