@@ -17,8 +17,12 @@
   ],
   "devDependencies": {
     "css-loader": "^6.8.1",
-    "eslint": "^8.52.0",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
     "eslint-webpack-plugin": "^4.0.1",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
@@ -37,10 +41,12 @@
     "build:default-min": "webpack build -c webpack.config.js --env build_type=minify",
     "build": "npm run build:default && npm run build:cloudflare",
     "build:min": "npm run build:default-min && npm run build:cloudflare-min",
-    "format": "prettier --write --ignore-unknown \"src/**/*.{html,css,js,ts,json}\"",
     "dev": "webpack serve --node-env development",
     "dev:cloudflare": "webpack serve --node-env development --env build_mode=cloudflare",
-    "lint": "npx eslint ."
+    "lint": "npx eslint .",
+    "lint-fix": "npx eslint . --fix",
+    "format": "prettier --write --ignore-unknown \"src/**/*.{html,css,scss,cjs,js,ts,json}\"",
+    "prepare": "husky install"
   },
   "dependencies": {
     "bowser": "^2.11.0",
