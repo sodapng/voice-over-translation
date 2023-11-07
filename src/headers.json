@@ -1,7 +1,7 @@
 {
   "name": "[VOT] - Voice Over Translation",
   "description": "A small extension that adds a Yandex Browser video translation to other browsers",
-  "version": "1.5.0-beta7",
+  "version": "1.5.0-beta8",
   "author": "sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD",
   "namespace": "vot",
   "icon": "https://translate.yandex.ru/icons/favicon.ico",
@@ -12,6 +12,7 @@
   "match": [
     "*://*.youtube.com/*",
     "*://*.youtube-nocookie.com/*",
+    "*://*.youtubekids.com/*",
     "*://*.twitch.tv/*",
     "*://*.xvideos.com/*",
     "*://*.pornhub.com/*",
