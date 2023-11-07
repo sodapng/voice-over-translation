@@ -59,7 +59,14 @@
     box-shadow:
       0 0 16px rgba(0, 0, 0, 0.12),
       0 16px 16px rgba(0, 0, 0, 0.24);
-    font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+    font-family: var(
+      --vot-font-family,
+      "Roboto",
+      "Segoe UI",
+      BlinkMacSystemFont,
+      system-ui,
+      -apple-system
+    );
     font-size: 16px;
     line-height: 1.5;
     user-select: none;
@@ -139,7 +146,8 @@
     gap: 16px;
     overscroll-behavior: contain;
 
-    scrollbar-color: rgba(var(--vot-helper-onsurface-rgb), 0.1) var(--vot-helper-surface) !important;
+    scrollbar-color: rgba(var(--vot-helper-onsurface-rgb), 0.1)
+      var(--vot-helper-surface) !important;
 
     &::-webkit-scrollbar,
     &::-webkit-scrollbar-track {

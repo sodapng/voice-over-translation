@@ -3,7 +3,10 @@
     display: none !important;
   }
 
-  --vot-helper-theme: var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243));
+  --vot-helper-theme: var(
+    --vot-theme-rgb,
+    var(--vot-primary-rgb, 33, 150, 243)
+  );
   position: relative;
   display: inline-block;
   -webkit-box-sizing: border-box;
@@ -20,7 +23,14 @@
   text-overflow: ellipsis;
   color: rgb(var(--vot-helper-theme));
   background-color: transparent;
-  font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+  font-family: var(
+    --vot-font-family,
+    "Roboto",
+    "Segoe UI",
+    BlinkMacSystemFont,
+    system-ui,
+    -apple-system
+  );
   font-size: 14px;
   font-weight: 500;
   line-height: 36px;
@@ -49,7 +59,12 @@
   }
 
   &::after {
-    background: radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;
+    background: radial-gradient(
+        circle at center,
+        currentColor 1%,
+        transparent 1%
+      )
+      center/10000% 10000% no-repeat;
     transition:
       opacity 1s,
       background-size 0.5s;

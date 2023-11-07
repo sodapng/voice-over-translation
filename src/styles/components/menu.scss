@@ -11,7 +11,14 @@
   background-color: var(--vot-helper-surface);
   color: var(--vot-helper-onsurface);
   border-radius: 8px;
-  font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+  font-family: var(
+    --vot-font-family,
+    "Roboto",
+    "Segoe UI",
+    BlinkMacSystemFont,
+    system-ui,
+    -apple-system
+  );
   font-size: 16px;
   line-height: 1.5;
   min-width: 300px;
@@ -22,7 +29,7 @@
   opacity: 1;
   transform-origin: top;
   transform: translate(-50%) scale(1);
-  transition: 
+  transition:
     opacity 0.3s,
     transform 0.1s;
 
@@ -45,7 +52,9 @@
     display: flex;
     flex-direction: column;
     min-height: 100px;
-    max-height: calc(var(--vot-container-height, 75vh) - (5rem + 32px + 16px) * 2);
+    max-height: calc(
+      var(--vot-container-height, 75vh) - (5rem + 32px + 16px) * 2
+    );
     overflow: auto;
   }
 
@@ -97,7 +106,8 @@
     gap: 8px;
     overscroll-behavior: contain;
 
-    scrollbar-color: rgba(var(--vot-helper-onsurface-rgb), 0.1) var(--vot-helper-surface) !important;
+    scrollbar-color: rgba(var(--vot-helper-onsurface-rgb), 0.1)
+      var(--vot-helper-surface) !important;
 
     &::-webkit-scrollbar,
     &::-webkit-scrollbar-track {

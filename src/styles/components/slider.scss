@@ -3,14 +3,33 @@
     display: none !important;
   }
 
-  --vot-safari-helper1: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.04) !important;
-  --vot-safari-helper2: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.12) !important;
-  --vot-safari-helper3: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.16) !important;
-  --vot-safari-helper4: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important;
+  --vot-safari-helper1: rgba(
+    var(--vot-primary-rgb, 33, 150, 243),
+    0.04
+  ) !important;
+  --vot-safari-helper2: rgba(
+    var(--vot-primary-rgb, 33, 150, 243),
+    0.12
+  ) !important;
+  --vot-safari-helper3: rgba(
+    var(--vot-primary-rgb, 33, 150, 243),
+    0.16
+  ) !important;
+  --vot-safari-helper4: rgba(
+    var(--vot-primary-rgb, 33, 150, 243),
+    0.24
+  ) !important;
   display: inline-block;
   width: 100% !important;
   color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;
-  font-family: var(--vot-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;
+  font-family: var(
+    --vot-font,
+    "Roboto",
+    "Segoe UI",
+    BlinkMacSystemFont,
+    system-ui,
+    -apple-system
+  ) !important;
   font-size: 16px !important;
   line-height: 1.5 !important;
   text-align: start !important;

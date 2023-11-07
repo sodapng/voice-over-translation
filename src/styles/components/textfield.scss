@@ -3,14 +3,29 @@
     display: none !important;
   }
 
-  --vot-helper-theme: rgb(var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243))) !important;
-  --vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;
+  --vot-helper-theme: rgb(
+    var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243))
+  ) !important;
+  --vot-helper-safari1: rgba(
+    var(--vot-onsurface-rgb, 0, 0, 0),
+    0.38
+  ) !important;
   --vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;
-  --vot-helper-safari3: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;
+  --vot-helper-safari3: rgba(
+    var(--vot-onsurface-rgb, 0, 0, 0),
+    0.87
+  ) !important;
   position: relative !important;
   display: inline-block;
   padding-top: 6px !important;
-  font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;
+  font-family: var(
+    --vot-font-family,
+    "Roboto",
+    "Segoe UI",
+    BlinkMacSystemFont,
+    system-ui,
+    -apple-system
+  ) !important;
   font-size: 16px !important;
   line-height: 1.5 !important;
   text-align: start !important;
@@ -23,7 +38,8 @@
     margin: 0 !important;
     border-style: solid !important;
     border-width: 1px !important;
-    border-color: transparent var(--vot-helper-safari2) var(--vot-helper-safari2) !important;
+    border-color: transparent var(--vot-helper-safari2)
+      var(--vot-helper-safari2) !important;
     border-radius: 4px !important;
     padding: 15px 13px 15px !important;
     width: 100% !important;
@@ -116,7 +132,8 @@
   &:hover {
     & > input,
     & > textarea {
-      border-color: transparent var(--vot-helper-safari3) var(--vot-helper-safari3) !important;
+      border-color: transparent var(--vot-helper-safari3)
+        var(--vot-helper-safari3) !important;
 
       & + span::before,
       & + span::after {
@@ -153,7 +170,8 @@
   & > textarea:disabled {
     &,
     & + span {
-      border-color: transparent var(--vot-helper-safari1) var(--vot-helper-safari1) !important;
+      border-color: transparent var(--vot-helper-safari1)
+        var(--vot-helper-safari1) !important;
       color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;
       pointer-events: none !important;
     }

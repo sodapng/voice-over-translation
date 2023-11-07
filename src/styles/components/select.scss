@@ -6,11 +6,21 @@
   --vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0) !important;
   --vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87) !important;
   --vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;
-  --vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;
+  --vot-helper-safari2: rgba(
+    var(--vot-onsurface-rgb, 0, 0, 0),
+    0.87
+  ) !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+  font-family: var(
+    --vot-font-family,
+    "Roboto",
+    "Segoe UI",
+    BlinkMacSystemFont,
+    system-ui,
+    -apple-system
+  );
   font-size: 14px;
   line-height: 1.5;
   text-align: start;
@@ -35,7 +45,6 @@
       border-color: var(--vot-helper-safari2) !important;
     }
   }
-
 
   &-title {
     overflow: hidden;
@@ -67,7 +76,10 @@
         color: rgb(var(--vot-primary-rgb, 33, 150, 243));
         background-color: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.2);
         &:hover {
-          background-color: rgba(var(--vot-primary-rgb, 33, 150, 243), 0.1) !important;
+          background-color: rgba(
+            var(--vot-primary-rgb, 33, 150, 243),
+            0.1
+          ) !important;
         }
       }
       &[data-vot-disabled="true"] {
