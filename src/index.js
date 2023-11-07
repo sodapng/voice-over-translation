@@ -247,7 +247,10 @@ class VideoHandler {
     this.data = {
       autoTranslate: await GM_getValue("autoTranslate", 0),
       dontTranslateYourLang: await GM_getValue("dontTranslateYourLang", 1),
-      autoSetVolumeYandexStyle: await GM_getValue("autoSetVolumeYandexStyle", 1),
+      autoSetVolumeYandexStyle: await GM_getValue(
+        "autoSetVolumeYandexStyle",
+        1,
+      ),
       showVideoSlider: await GM_getValue("showVideoSlider", 1),
       syncVolume: await GM_getValue("syncVolume", 0),
       subtitlesMaxLength: await GM_getValue("subtitlesMaxLength", 300),
@@ -258,7 +261,10 @@ class VideoHandler {
         accessToken: "",
         expires: 0,
       }),
-      audioProxy: await GM_getValue("audioProxy", 0),
+      audioProxy: await GM_getValue(
+        "audioProxy",
+        lang === "uk" && BUILD_MODE === "cloudflare" ? 1 : 0,
+      ),
       showPiPButton: await GM_getValue("showPiPButton", 0),
     };
     this.videoData = await this.getVideoData();
@@ -768,7 +774,10 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.dontTranslateYourLang = Number(e.target.checked);
-          await GM_setValue("dontTranslateYourLang", this.data.dontTranslateYourLang);
+          await GM_setValue(
+            "dontTranslateYourLang",
+            this.data.dontTranslateYourLang,
+          );
           debug.log(
             "dontTranslateYourLang value changed. New value: ",
             this.data.dontTranslateYourLang,
@@ -780,7 +789,10 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.autoSetVolumeYandexStyle = Number(e.target.checked);
-          await GM_setValue("autoSetVolumeYandexStyle", this.data.autoSetVolumeYandexStyle);
+          await GM_setValue(
+            "autoSetVolumeYandexStyle",
+            this.data.autoSetVolumeYandexStyle,
+          );
           debug.log(
             "autoSetVolumeYandexStyle value changed. New value: ",
             this.data.autoSetVolumeYandexStyle,
@@ -872,20 +884,12 @@ class VideoHandler {
         },
       );
 
-      this.votResetSettingsButton.addEventListener("click", () => {
+      this.votResetSettingsButton.addEventListener("click", async () => {
         localizationProvider.reset();
-        GM_deleteValue("autoTranslate")
-        GM_deleteValue("dontTranslateYourLang")
-        GM_deleteValue("autoSetVolumeYandexStyle")
-        GM_deleteValue("showVideoSlider")
-        GM_deleteValue("syncVolume")
-        GM_deleteValue("subtitlesMaxLength")
-        GM_deleteValue("highlightWords")
-        GM_deleteValue("responseLanguage")
-        GM_deleteValue("defaultVolume")
-        GM_deleteValue("udemyData")
-        GM_deleteValue("audioProxy")
-        GM_deleteValue("showPiPButton")
+        const valuesForClear = await GM_listValues();
+        valuesForClear
+          .filter((v) => !localizationProvider.gmValues.includes(v))
+          .forEach((v) => GM_deleteValue(v));
         window.location.reload();
       });
     }
@@ -996,7 +1000,9 @@ class VideoHandler {
         eContainer = document.querySelector("#player");
       } else {
         // const e = document.querySelector(".original.mainPlayerDiv > video-element > div");
-        eContainer = this.container.querySelector("video-element > div");
+        eContainer = this.container.querySelector(
+          ".video-element-wrapper-js > div",
+        );
       }
     } else if (this.site.host === "twitter") {
       eContainer = document.querySelector('div[data-testid="videoPlayer"');
@@ -1033,6 +1039,11 @@ class VideoHandler {
     addExtraEventListener(this.votMenu.container, "mousedown", (e) => {
       e.stopImmediatePropagation();
     });
+
+    // fix opera draggable menu in youtube (#394)
+    if (browserInfo.browser.name === "Opera" && this.site.host === "youtube") {
+      this.container.draggable = false;
+    }
 
     addExtraEventListener(this.video, "abort", () => {
       debug.log("lipsync mode is abort");
