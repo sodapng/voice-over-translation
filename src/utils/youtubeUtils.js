@@ -23,6 +23,12 @@ async function getLanguage(player, response, title, description) {
       return langTo6391(autoCaption.languageCode);
     }
   }
+
+  // the "delayed video upload" fix for YouTube (#387)
+  if (!(description && title)) {
+    return "en";
+  }
+
   // If there is no caption track, use detect to get the language code from the description
   const cleanedDescription = description
     .split("\n")
