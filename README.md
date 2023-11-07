@@ -27,7 +27,7 @@
 - **[9GAG](https://9gag.com/gag/)**
 - **[Rutube](https://rutube.ru/)**
 - **[Bilibili](https://bilibili.com/)**
-- **[[❔] Видео Mail.ru](https://my.mail.ru/video)**
+- **[Видео Mail.ru](https://my.mail.ru/video)**
 - **[Vimeo](https://vimeo.com/)**
 - **[[⚠️] XVideos](https://xvideos.com/)**
 - **[PornHub](https://rt.pornhub.com/)**

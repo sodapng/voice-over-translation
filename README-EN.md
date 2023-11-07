@@ -26,7 +26,7 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[9GAG](https://9gag.com/gag/)**
 - **[Rutube](https://rutube.ru/)**
 - **[Bilibili](https://bilibili.com/)**
-- **[[❔] Video Mail.ru](https://my.mail.ru/video)**
+- **[Video Mail.ru](https://my.mail.ru/video)**
 - **[Vimeo](https://vimeo.com/)**
 - **[[⚠️] XVideos](https://xvideos.com/)**
 - **[PornHub](https://rt.pornhub.com/)**
