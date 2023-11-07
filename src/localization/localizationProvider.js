@@ -37,6 +37,12 @@ export const availableLocales = [
 export const localizationProvider = new (class {
   lang = "en";
   locale = {};
+  gmValues = [
+    "locale-phrases",
+    "locale-lang",
+    "locale-version",
+    "locale-lang-override",
+  ];
 
   constructor() {
     const langOverride = GM_getValue("locale-lang-override", "auto");
@@ -52,10 +58,7 @@ export const localizationProvider = new (class {
   }
 
   reset() {
-    GM_deleteValue("locale-phrases");
-    GM_deleteValue("locale-lang");
-    GM_deleteValue("locale-version");
-    GM_deleteValue("locale-lang-override");
+    this.gmValues.forEach((v) => GM_deleteValue(v));
   }
 
   async update(force = false) {
