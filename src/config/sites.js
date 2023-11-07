@@ -23,7 +23,7 @@ const sites = () => {
     {
       host: "youtube",
       url: "https://youtu.be/",
-      match: /^(www.)?youtube(-nocookie)?.com$/,
+      match: /^(www.)?youtube(-nocookie|kids)?.com$/,
       selector: ".html5-video-container:not(#inline-player *)",
     },
     {
@@ -68,7 +68,7 @@ const sites = () => {
       host: "pornhub",
       url: "https://rt.pornhub.com/view_video.php?viewkey=",
       match: /^[a-z]+.pornhub.com$/,
-      selector: ".mainPlayerDiv > video-element > div",
+      selector: ".mainPlayerDiv > .video-element-wrapper-js > div",
     },
     {
       additionalData: "embed",
