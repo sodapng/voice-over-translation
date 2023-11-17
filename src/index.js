@@ -246,6 +246,7 @@ class VideoHandler {
 
     this.data = {
       autoTranslate: await GM_getValue("autoTranslate", 0),
+      dontTranslateLanguage: await GM_getValue("dontTranslateLanguage", lang),
       dontTranslateYourLang: await GM_getValue("dontTranslateYourLang", 1),
       autoSetVolumeYandexStyle: await GM_getValue(
         "autoSetVolumeYandexStyle",
@@ -261,6 +262,7 @@ class VideoHandler {
         accessToken: "",
         expires: 0,
       }),
+      menuLang: await GM_getValue("locale-lang", lang),
       audioProxy: await GM_getValue(
         "audioProxy",
         lang === "uk" && BUILD_MODE === "cloudflare" ? 1 : 0,
@@ -425,7 +427,9 @@ class VideoHandler {
           onSelectCb: async (e) => {
             await this.changeSubtitlesLang(e.target.dataset.votValue);
           },
-          labelText: localizationProvider.get("VOTSubtitles"),
+          labelElement: ui.createVOTSelectLabel(
+            localizationProvider.get("VOTSubtitles"),
+          ),
         },
       );
 
@@ -485,12 +489,32 @@ class VideoHandler {
         this.votAutoTranslateCheckbox.container,
       );
 
-      this.votDontTranslateYourLangCheckbox = ui.createCheckbox(
-        localizationProvider.get("VOTDontTranslateYourLang"),
-        this.data?.dontTranslateYourLang ?? true,
+      this.votDontTranslateYourLangSelect = ui.createVOTSelect(
+        localizationProvider.get("langs")[
+          GM_getValue("dontTranslateLanguage", lang)
+        ],
+        localizationProvider.get("VOTMenuLanguage"),
+        genOptionsByOBJ(
+          availableLangs,
+          GM_getValue("dontTranslateLanguage", lang),
+        ),
+        {
+          onSelectCb: (e) => {
+            this.data.dontTranslateLanguage = e.target.dataset.votValue;
+            GM_setValue(
+              "dontTranslateLanguage",
+              this.data.dontTranslateLanguage,
+            );
+          },
+          labelElement: ui.createCheckbox(
+            localizationProvider.get("VOTDontTranslateYourLang"),
+            this.data?.dontTranslateYourLang ?? true,
+          ).container,
+        },
       );
+
       this.votSettingsDialog.bodyContainer.appendChild(
-        this.votDontTranslateYourLangCheckbox.container,
+        this.votDontTranslateYourLangSelect.container,
       );
 
       this.votAutoSetVolumeCheckbox = ui.createCheckbox(
@@ -585,7 +609,9 @@ class VideoHandler {
           onSelectCb: (e) => {
             GM_setValue("locale-lang-override", e.target.dataset.votValue);
           },
-          labelText: localizationProvider.get("VOTMenuLanguage"),
+          labelElement: ui.createVOTSelectLabel(
+            localizationProvider.get("VOTMenuLanguage"),
+          ),
         },
       );
 
@@ -770,7 +796,7 @@ class VideoHandler {
         },
       );
 
-      this.votDontTranslateYourLangCheckbox.input.addEventListener(
+      this.votDontTranslateYourLangSelect.labelElement.addEventListener(
         "change",
         async (e) => {
           this.data.dontTranslateYourLang = Number(e.target.checked);
@@ -1313,8 +1339,8 @@ class VideoHandler {
       debug.log("VideoValidator videoData: ", this.videoData);
       if (
         this.data.dontTranslateYourLang === 1 &&
-        this.videoData.detectedLanguage === lang &&
-        this.videoData.responseLanguage === lang
+        this.videoData.detectedLanguage === this.data.dontTranslateLanguage &&
+        this.videoData.responseLanguage === this.data.dontTranslateLanguage
       ) {
         throw new VOTLocalizedError("VOTDisableFromYourLang");
       }
@@ -1454,6 +1480,9 @@ class VideoHandler {
     console.log("[VOT] Video Data: ", this.videoData);
     const videoURL = `${this.site.url}${VIDEO_ID}`;
 
+    // fix enabling the old requested voiceover when changing the language to the native language (#)
+    this.videoValidator();
+
     if (isStream) {
       debug.log("Executed stream translation");
       // if (BUILD_MODE === "cloudflare") {
@@ -1501,12 +1530,12 @@ class VideoHandler {
 
           console.log(resOrError);
           const pingId = resOrError.pingId;
-          console.log(`Stream pingId: ${pingId}`);
+          debug.log(`Stream pingId: ${pingId}`);
           // if you don't make ping requests, then the translation of the stream dies
           this.streamPing = setInterval(
             async () =>
               await requestStreamPing(pingId, (result) =>
-                console.log("Stream ping result: ", result),
+                debug.log("Stream ping result: ", result),
               ),
             reqInterval * 1000,
           );
@@ -1724,6 +1753,7 @@ class VideoHandler {
           "bilibili",
           "mail_ru",
           "rumble",
+          "eporner",
         ];
         for (let i = 0; i < siteHostnames.length; i++) {
           if (this.site.host === siteHostnames[i]) {
@@ -1911,7 +1941,6 @@ async function main() {
 
       // fix multiply translation buttons in rumble.com
       // only main video has poster
-      if (site.host === "rumble" && !video.poster) continue;
 
       let container;
       if (site.shadowRoot) {
@@ -1932,6 +1961,9 @@ async function main() {
           : video.parentElement;
       }
       if (!container) continue;
+      if (site.host === "rumble" && container.querySelector("vot-block")) {
+        continue;
+      }
       if (!videosWrappers.has(video)) {
         videosWrappers.set(video, new VideoHandler(video, container, site));
         break;
