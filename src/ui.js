@@ -283,18 +283,23 @@ export function createVOTMenu(html) {
   };
 }
 
+export function createVOTSelectLabel(text) {
+  const label = document.createElement("span");
+  label.classList.add("vot-select-label");
+  label.innerText = text;
+  return label;
+}
+
 export function createVOTSelect(selectTitle, dialogTitle, items, options = {}) {
   const onSelectCb = options.onSelectCb || function () {};
-  const labelText = options.labelText || "";
+  const labelElement = options.labelElement || "";
   let selectedItems = [];
 
   const container = document.createElement("vot-block");
   container.classList.add("vot-select");
 
-  if (labelText) {
-    const label = document.createElement("span");
-    label.innerText = labelText;
-    container.appendChild(label);
+  if (labelElement) {
+    container.appendChild(labelElement);
   }
 
   const outer = document.createElement("vot-block");
@@ -398,6 +403,7 @@ export function createVOTSelect(selectTitle, dialogTitle, items, options = {}) {
     container,
     title,
     arrowIcon,
+    labelElement,
     setTitle,
     setSelected,
     updateItems,
@@ -452,6 +458,7 @@ export default {
   createDialog,
   createVOTButton,
   createVOTMenu,
+  createVOTSelectLabel,
   createVOTSelect,
   createVOTLanguageSelect,
   updateSlider,
