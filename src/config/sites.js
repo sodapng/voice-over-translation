@@ -184,11 +184,16 @@ const sites = () => {
       selector: ".shaka-video-container",
     },
     {
-      // TODO: FIX RUMBLE DOUBLE BUTTON ON TRANSLATED VIDEO
       host: "rumble",
-      url: "https://rumble.com",
+      url: "https://rumble.com", // <-- there should be no slash because we take the whole pathname
       match: /^rumble.com$/,
-      selector: ".videoPlayer-Rumble-cls > div",
+      selector: "#videoPlayer > .videoPlayer-Rumble-cls > div",
+    },
+    {
+      host: "eporner",
+      url: "https://www.eporner.com/",
+      match: /^(www.)?eporner.com$/,
+      selector: ".vjs-v7",
     },
   ];
 };
