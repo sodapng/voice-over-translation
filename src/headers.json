@@ -1,7 +1,7 @@
 {
   "name": "[VOT] - Voice Over Translation",
   "description": "A small extension that adds a Yandex Browser video translation to other browsers",
-  "version": "1.5.0-beta8",
+  "version": "1.5.0-beta9",
   "author": "sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD",
   "namespace": "vot",
   "icon": "https://translate.yandex.ru/icons/favicon.ico",
@@ -83,7 +83,8 @@
     "*://cringe.whatever.social/*",
     "*://proxitok.lunar.icu/*",
     "*://proxitok.privacy.com.de/*",
-    "*://rumble.com/*"
+    "*://rumble.com/*",
+    "*://*.eporner.com/*"
   ],
   "require": [
     "https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/light/protobuf.min.js",
