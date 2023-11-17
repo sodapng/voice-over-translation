@@ -28,6 +28,10 @@
   color: var(--vot-helper-theme);
   fill: var(--vot-helper-theme);
 
+  &-label {
+    font-size: 16px;
+  }
+
   &-outer {
     display: flex;
     align-items: center;
