@@ -262,7 +262,6 @@ class VideoHandler {
         accessToken: "",
         expires: 0,
       }),
-      menuLang: await GM_getValue("locale-lang", lang),
       audioProxy: await GM_getValue(
         "audioProxy",
         lang === "uk" && BUILD_MODE === "cloudflare" ? 1 : 0,
