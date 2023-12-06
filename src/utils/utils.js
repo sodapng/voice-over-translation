@@ -226,22 +226,6 @@ function langTo6391(lang) {
   return lang.toLowerCase().split(";")[0].trim().split("-")[0].split("_")[0];
 }
 
-async function detectLang(cleanText) {
-  try {
-    const response = await fetch(
-      "https://rust-server-531j.onrender.com/detect",
-      {
-        method: "POST",
-        body: cleanText,
-      },
-    );
-    return await response.text();
-  } catch (error) {
-    console.error("Error getting lang from text:", error);
-    return "en";
-  }
-}
-
 function isPiPAvailable() {
   return (
     "pictureInPictureEnabled" in document && document.pictureInPictureEnabled
@@ -249,7 +233,7 @@ function isPiPAvailable() {
 }
 
 function initHls() {
-  return Hls.isSupported()
+  return typeof Hls != "undefined" && Hls?.isSupported()
     ? new Hls({
         debug: DEBUG_MODE, // turn it on manually if necessary
         lowLatencyMode: true,
@@ -263,7 +247,6 @@ export {
   sleep,
   getVideoId,
   secsToStrTime,
-  detectLang,
   langTo6391,
   isPiPAvailable,
   initHls,
