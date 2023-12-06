@@ -167,7 +167,8 @@ const sites = () => {
       host: "udemy",
       url: "https://www.udemy.com",
       match: /udemy.com$/,
-      selector: ".vjs-v7",
+      selector:
+        'div[data-purpose="curriculum-item-viewer-content"] > section > div > div > div > div:nth-of-type(2)',
     },
     {
       // Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
