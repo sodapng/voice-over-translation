@@ -10,7 +10,12 @@ import {
   sleep,
   initHls,
 } from "./utils/utils.js";
-import { autoVolume, m3u8ProxyHost } from "./config/config.js";
+import {
+  autoVolume,
+  defaultTranslationService,
+  defaultDetectService,
+  m3u8ProxyHost,
+} from "./config/config.js";
 import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
 import {
   availableLangs,
@@ -38,6 +43,12 @@ import { udemyUtils } from "./utils/udemyUtils.js";
 
 import { VideoObserver } from "./utils/VideoObserver.js";
 import sites from "./config/sites.js";
+import { votStorage } from "./utils/storage.js";
+import {
+  translate,
+  detectServices,
+  translateServices,
+} from "./utils/translateApis.js";
 
 const browserInfo = Bowser.getParser(window.navigator.userAgent).getResult();
 
@@ -245,32 +256,50 @@ class VideoHandler {
     if (this.initialized) return;
 
     this.data = {
-      autoTranslate: await GM_getValue("autoTranslate", 0),
-      dontTranslateLanguage: await GM_getValue("dontTranslateLanguage", lang),
-      dontTranslateYourLang: await GM_getValue("dontTranslateYourLang", 1),
-      autoSetVolumeYandexStyle: await GM_getValue(
+      autoTranslate: await votStorage.get("autoTranslate", 0, true),
+      dontTranslateLanguage: await votStorage.get(
+        "dontTranslateLanguage",
+        lang,
+      ),
+      dontTranslateYourLang: await votStorage.get(
+        "dontTranslateYourLang",
+        1,
+        true,
+      ),
+      autoSetVolumeYandexStyle: await votStorage.get(
         "autoSetVolumeYandexStyle",
         1,
+        true,
       ),
-      showVideoSlider: await GM_getValue("showVideoSlider", 1),
-      syncVolume: await GM_getValue("syncVolume", 0),
-      subtitlesMaxLength: await GM_getValue("subtitlesMaxLength", 300),
-      highlightWords: await GM_getValue("highlightWords", 0),
-      responseLanguage: await GM_getValue("responseLanguage", lang),
-      defaultVolume: await GM_getValue("defaultVolume", 100),
-      udemyData: await GM_getValue("udemyData", {
+      showVideoSlider: await votStorage.get("showVideoSlider", 1, true),
+      syncVolume: await votStorage.get("syncVolume", 0, true),
+      subtitlesMaxLength: await votStorage.get("subtitlesMaxLength", 300, true),
+      highlightWords: await votStorage.get("highlightWords", 0, true),
+      responseLanguage: await votStorage.get("responseLanguage", lang),
+      defaultVolume: await votStorage.get("defaultVolume", 100, true),
+      udemyData: await votStorage.get("udemyData", {
         accessToken: "",
         expires: 0,
       }),
-      audioProxy: await GM_getValue(
+      audioProxy: await votStorage.get(
         "audioProxy",
         lang === "uk" && BUILD_MODE === "cloudflare" ? 1 : 0,
+        true,
       ),
-      showPiPButton: await GM_getValue("showPiPButton", 0),
+      showPiPButton: await votStorage.get("showPiPButton", 0, true),
+      translateAPIErrors: await votStorage.get("translateAPIErrors", 1, true),
+      translationService: await votStorage.get(
+        "translationService",
+        defaultTranslationService,
+      ),
+      detectService: await votStorage.get(
+        "detectService",
+        defaultDetectService,
+      ),
     };
     this.videoData = await this.getVideoData();
 
-    debug.log("[db] data from db: ", this.data);
+    console.log("[db] data from db: ", this.data);
 
     this.subtitlesWidget = new SubtitlesWidget(
       this.video,
@@ -394,7 +423,7 @@ class VideoHandler {
           const newLang = e.target.dataset.votValue;
           debug.log("[toOnSelectCB] select to language", newLang);
           this.data.responseLanguage = this.translateToLang = newLang;
-          await GM_setValue("responseLanguage", this.data.responseLanguage);
+          await votStorage.set("responseLanguage", this.data.responseLanguage);
           debug.log(
             "Response Language value changed. New value: ",
             this.data.responseLanguage,
@@ -490,17 +519,17 @@ class VideoHandler {
 
       this.votDontTranslateYourLangSelect = ui.createVOTSelect(
         localizationProvider.get("langs")[
-          GM_getValue("dontTranslateLanguage", lang)
+          votStorage.syncGet("dontTranslateLanguage", lang)
         ],
-        localizationProvider.get("VOTMenuLanguage"),
+        localizationProvider.get("VOTDontTranslateYourLang"),
         genOptionsByOBJ(
           availableLangs,
-          GM_getValue("dontTranslateLanguage", lang),
+          votStorage.syncGet("dontTranslateLanguage", lang),
         ),
         {
-          onSelectCb: (e) => {
+          onSelectCb: async (e) => {
             this.data.dontTranslateLanguage = e.target.dataset.votValue;
-            GM_setValue(
+            await votStorage.set(
               "dontTranslateLanguage",
               this.data.dontTranslateLanguage,
             );
@@ -563,6 +592,54 @@ class VideoHandler {
         this.votAudioProxyCheckbox.container,
       );
 
+      this.votTranslationServiceSelect = ui.createVOTSelect(
+        votStorage.syncGet("translationService", defaultTranslationService),
+        localizationProvider.get("VOTTranslationService"),
+        genOptionsByOBJ(
+          translateServices,
+          votStorage.syncGet("translationService", defaultTranslationService),
+        ),
+        {
+          onSelectCb: async (e) => {
+            this.data.translationService = e.target.dataset.votValue;
+            await votStorage.set(
+              "translationService",
+              this.data.translationService,
+            );
+          },
+          labelElement: ui.createCheckbox(
+            localizationProvider.get("VOTTranslateAPIErrors"),
+            this.data.translateAPIErrors ?? true,
+          ).container,
+        },
+      );
+      this.votTranslationServiceSelect.container.hidden =
+        localizationProvider.lang === "ru";
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votTranslationServiceSelect.container,
+      );
+
+      this.votDetectServiceSelect = ui.createVOTSelect(
+        votStorage.syncGet("detectService", defaultDetectService),
+        localizationProvider.get("VOTDetectService"),
+        genOptionsByOBJ(
+          detectServices,
+          votStorage.syncGet("detectService", defaultDetectService),
+        ),
+        {
+          onSelectCb: async (e) => {
+            this.data.detectService = e.target.dataset.votValue;
+            await votStorage.set("detectService", this.data.detectService);
+          },
+          labelElement: ui.createVOTSelectLabel(
+            localizationProvider.get("VOTDetectService"),
+          ),
+        },
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votDetectServiceSelect.container,
+      );
+
       // SUBTITLES
 
       this.votSubtitlesHeader = ui.createHeader(
@@ -597,16 +674,19 @@ class VideoHandler {
 
       this.votLanguageSelect = ui.createVOTSelect(
         localizationProvider.get("langs")[
-          GM_getValue("locale-lang-override", "auto")
+          votStorage.syncGet("locale-lang-override", "auto")
         ],
         localizationProvider.get("VOTMenuLanguage"),
         genOptionsByOBJ(
           availableLocales,
-          GM_getValue("locale-lang-override", "auto"),
+          votStorage.syncGet("locale-lang-override", "auto"),
         ),
         {
-          onSelectCb: (e) => {
-            GM_setValue("locale-lang-override", e.target.dataset.votValue);
+          onSelectCb: async (e) => {
+            await votStorage.set(
+              "locale-lang-override",
+              e.target.dataset.votValue,
+            );
           },
           labelElement: ui.createVOTSelectLabel(
             localizationProvider.get("VOTMenuLanguage"),
@@ -769,7 +849,7 @@ class VideoHandler {
         "input",
         async (e) => {
           this.data.defaultVolume = Number(e.target.value);
-          await GM_setValue("defaultVolume", this.data.defaultVolume);
+          await votStorage.set("defaultVolume", this.data.defaultVolume);
           this.votVideoTranslationVolumeSlider.label.querySelector(
             "strong",
           ).innerHTML = `${this.data.defaultVolume}%`;
@@ -787,7 +867,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.autoTranslate = Number(e.target.checked);
-          await GM_setValue("autoTranslate", this.data.autoTranslate);
+          await votStorage.set("autoTranslate", this.data.autoTranslate);
           debug.log(
             "autoTranslate value changed. New value: ",
             this.data.autoTranslate,
@@ -799,7 +879,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.dontTranslateYourLang = Number(e.target.checked);
-          await GM_setValue(
+          await votStorage.set(
             "dontTranslateYourLang",
             this.data.dontTranslateYourLang,
           );
@@ -814,7 +894,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.autoSetVolumeYandexStyle = Number(e.target.checked);
-          await GM_setValue(
+          await votStorage.set(
             "autoSetVolumeYandexStyle",
             this.data.autoSetVolumeYandexStyle,
           );
@@ -829,7 +909,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.showVideoSlider = Number(e.target.checked);
-          await GM_setValue("showVideoSlider", this.data.showVideoSlider);
+          await votStorage.set("showVideoSlider", this.data.showVideoSlider);
           debug.log(
             "showVideoSlider value changed. New value: ",
             this.data.showVideoSlider,
@@ -845,14 +925,14 @@ class VideoHandler {
           accessToken: e.target.value,
           expires: new Date().getTime(),
         };
-        await GM_setValue("udemyData", this.data.udemyData);
+        await votStorage.set("udemyData", this.data.udemyData);
         debug.log("udemyData value changed. New value: ", this.data.udemyData);
         window.location.reload();
       });
 
       this.votSyncVolumeCheckbox.input.addEventListener("change", async (e) => {
         this.data.syncVolume = Number(e.target.checked);
-        await GM_setValue("syncVolume", this.data.syncVolume);
+        await votStorage.set("syncVolume", this.data.syncVolume);
         debug.log(
           "syncVolume value changed. New value: ",
           this.data.syncVolume,
@@ -861,18 +941,38 @@ class VideoHandler {
 
       this.votAudioProxyCheckbox.input.addEventListener("change", async (e) => {
         this.data.audioProxy = Number(e.target.checked);
-        await GM_setValue("audioProxy", this.data.audioProxy);
+        await votStorage.set("audioProxy", this.data.audioProxy);
         debug.log(
           "audioProxy value changed. New value: ",
           this.data.audioProxy,
         );
       });
 
+      this.votTranslationServiceSelect.labelElement.addEventListener(
+        "change",
+        async (e) => {
+          this.data.translateAPIErrors = Number(e.target.checked);
+          await votStorage.set(
+            "translateAPIErrors",
+            this.data.translateAPIErrors,
+          );
+          debug.log(
+            "translateAPIErrors value changed. New value: ",
+            this.data.translateAPIErrors,
+          );
+        },
+      );
+
+      // Subtitles
+
       this.votSubtitlesMaxLengthSlider.input.addEventListener(
         "input",
         async (e) => {
           this.data.subtitlesMaxLength = Number(e.target.value);
-          await GM_setValue("subtitlesMaxLength", this.data.subtitlesMaxLength);
+          await votStorage.set(
+            "subtitlesMaxLength",
+            this.data.subtitlesMaxLength,
+          );
           this.votSubtitlesMaxLengthSlider.label.querySelector(
             "strong",
           ).innerHTML = `${this.data.subtitlesMaxLength}`;
@@ -884,7 +984,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.highlightWords = Number(e.target.checked);
-          await GM_setValue("highlightWords", this.data.highlightWords);
+          await votStorage.set("highlightWords", this.data.highlightWords);
           debug.log(
             "highlightWords value changed. New value: ",
             this.data.highlightWords,
@@ -897,7 +997,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.showPiPButton = Number(e.target.checked);
-          await GM_setValue("showPiPButton", this.data.showPiPButton);
+          await votStorage.set("showPiPButton", this.data.showPiPButton);
           debug.log(
             "showPiPButton value changed. New value: ",
             this.data.showPiPButton,
@@ -911,10 +1011,10 @@ class VideoHandler {
 
       this.votResetSettingsButton.addEventListener("click", async () => {
         localizationProvider.reset();
-        const valuesForClear = await GM_listValues();
+        const valuesForClear = await votStorage.list();
         valuesForClear
           .filter((v) => !localizationProvider.gmValues.includes(v))
-          .forEach((v) => GM_deleteValue(v));
+          .forEach((v) => votStorage.syncDelete(v));
         window.location.reload();
       });
     }
@@ -1065,8 +1165,8 @@ class VideoHandler {
       e.stopImmediatePropagation();
     });
 
-    // fix opera draggable menu in youtube (#394)
-    if (browserInfo.browser.name === "Opera" && this.site.host === "youtube") {
+    // fix draggable menu in youtube (#394, #417)
+    if (this.site.host === "youtube") {
       this.container.draggable = false;
     }
 
@@ -1493,14 +1593,28 @@ class VideoHandler {
         videoURL,
         requestLang,
         responseLang,
-        (success, reqInterval, resOrError) => {
+        async (success, reqInterval, resOrError) => {
           debug.log("[exec callback] translateStream callback");
           if (getVideoId(this.site.host, this.video) !== VIDEO_ID) return;
           if (!success || !resOrError.translatedInfo) {
             if (resOrError?.name === "VOTLocalizedError") {
               this.transformBtn("error", resOrError.localizedMessage);
             } else {
-              this.transformBtn("error", resOrError);
+              if (
+                this.data.translateAPIErrors === 1 &&
+                localizationProvider.lang !== "ru"
+              ) {
+                this.transformBtn(
+                  "error",
+                  `${localizationProvider.get("VOTTranslatingError")}...`,
+                );
+                this.transformBtn(
+                  "error",
+                  await translate(resOrError, "ru", localizationProvider.lang),
+                );
+              } else {
+                this.transformBtn("error", resOrError);
+              }
             }
 
             if (reqInterval === 10) {
@@ -1665,14 +1779,31 @@ class VideoHandler {
       requestLang,
       responseLang,
       translationHelp,
-      (success, urlOrError) => {
+      async (success, urlOrError) => {
         debug.log("[exec callback] translateVideo callback");
         if (getVideoId(this.site.host, this.video) !== VIDEO_ID) return;
         if (!success) {
           if (urlOrError?.name === "VOTLocalizedError") {
             this.transformBtn("error", urlOrError.localizedMessage);
           } else {
-            this.transformBtn("error", urlOrError);
+            if (
+              this.data.translateAPIErrors === 1 &&
+              !urlOrError.includes(
+                localizationProvider.get("translationTake"),
+              ) &&
+              localizationProvider.lang !== "ru"
+            ) {
+              this.transformBtn(
+                "error",
+                localizationProvider.get("VOTTranslatingError"),
+              );
+              this.transformBtn(
+                "error",
+                await translate(urlOrError, "ru", localizationProvider.lang),
+              );
+            } else {
+              this.transformBtn("error", urlOrError);
+            }
           }
           // if the error line contains information that the translation is being performed, then we wait
           if (
