@@ -548,9 +548,13 @@ const yandexHmacKey = "xtGCyGdTY2Jy6OMEKdTuXev3Twhkamgm";
 
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   EY: () => (/* binding */ defaultDetectService),
 /* harmony export */   IM: () => (/* binding */ autoVolume),
 /* harmony export */   Rr: () => (/* binding */ yandexUserAgent),
-/* harmony export */   e6: () => (/* binding */ m3u8ProxyHost)
+/* harmony export */   e6: () => (/* binding */ m3u8ProxyHost),
+/* harmony export */   jm: () => (/* binding */ detectUrls),
+/* harmony export */   kF: () => (/* binding */ defaultTranslationService),
+/* harmony export */   rm: () => (/* binding */ translateUrls)
 /* harmony export */ });
 /* unused harmony exports workerHost, yandexHmacKey */
 // CONFIGURATION
@@ -560,6 +564,17 @@ const yandexHmacKey = "xtGCyGdTY2Jy6OMEKdTuXev3Twhkamgm";
 const yandexUserAgent =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 YaBrowser/23.7.1.1140 Yowser/2.5 Safari/537.36";
 const autoVolume = 0.15; // 0.0 - 1.0 (0% - 100%) - default volume of the video with the translation
+const defaultTranslationService = "yandex";
+const defaultDetectService = "yandex";
+
+const detectUrls = {
+  yandex: "https://translate.toil.cc/detect",
+  rustServer: "https://rust-server-531j.onrender.com/detect",
+};
+
+const translateUrls = {
+  yandex: "https://translate.toil.cc/translate",
+};
 
 
 
@@ -599,8 +614,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _config_config_cloudflare_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./src/config/config-cloudflare.js");
-/* harmony import */ var _config_config_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./src/config/config.js");
-/* harmony import */ var _utils_debug_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./src/utils/debug.js");
+/* harmony import */ var _config_config_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./src/config/config.js");
+/* harmony import */ var _utils_debug_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./src/utils/debug.js");
 
 
 
@@ -609,7 +624,7 @@ async function yandexRequest(path, body, headers, callback) {
   let response;
   let responseBody;
   try {
-    _utils_debug_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.log("yandexRequest:", path);
+    _utils_debug_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z.log("yandexRequest:", path);
     // Create a fetch options object with headers and body
     const options = {
       method: "POST",
@@ -626,7 +641,7 @@ async function yandexRequest(path, body, headers, callback) {
             Accept: "application/x-protobuf",
             "Accept-Language": "en",
             "Content-Type": "application/x-protobuf",
-            "User-Agent": _config_config_js__WEBPACK_IMPORTED_MODULE_1__/* .yandexUserAgent */ .Rr,
+            "User-Agent": _config_config_js__WEBPACK_IMPORTED_MODULE_0__/* .yandexUserAgent */ .Rr,
             Pragma: "no-cache",
             "Cache-Control": "no-cache",
             "Sec-Fetch-Mode": "no-cors",
@@ -638,7 +653,7 @@ async function yandexRequest(path, body, headers, callback) {
     };
     // Fetch the translation from the worker host
     response = await fetch(`https://${_config_config_cloudflare_js__WEBPACK_IMPORTED_MODULE_2__/* .workerHost */ .i}${path}`, options);
-    _utils_debug_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.log("yandexRequest:", response.status, response);
+    _utils_debug_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z.log("yandexRequest:", response.status, response);
     // Get the response body as an array buffer
     responseBody = await response.arrayBuffer();
   } catch (exception) {
@@ -785,10 +800,123 @@ var update = injectStylesIntoStyleTag_default()(main/* default */.Z, options);
        /* harmony default export */ const styles_main = (main/* default */.Z && main/* default */.Z.locals ? main/* default */.Z.locals : undefined);
 
 ;// CONCATENATED MODULE: ./src/localization/locales/en.json
-const en_namespaceObject = JSON.parse('{"__version__":2,"recommended":"recommended","translateVideo":"Translate video","disableTranslate":"Turn off","translationSettings":"Translation settings","subtitlesSettings":"Subtitles settings","about":"About extension","resetSettings":"Reset settings","videoBeingTranslated":"The video is being translated","videoLanguage":"Video language","translationLanguage":"Translation language","translationTake":"The translation will take","translationTakeMoreThanHour":"The translation will take more than an hour","translationTakeAboutMinute":"The translation will take about a minute","translationTakeFewMinutes":"The translation will take a few minutes","translationTakeApproximatelyMinutes":"The translation will take approximately {0} minutes","translationTakeApproximatelyMinute":"The translation will take approximately {0} minutes","unSupportedExtensionError":"Error! {0} is not supported by this version of the extension!\\n\\nPlease use the cloudflare version of the VOT extension.","requestTranslationFailed":"Failed to request video translation","audioNotReceived":"Audio link not received","grantPermissionToAutoPlay":"Grant permission to autoplay","neededAdditionalExtension":"An additional extension is needed to support this site","audioFormatNotSupported":"The audio format is not supported","VOTAutoTranslate":"Translate on open","VOTDontTranslateYourLang":"Do not translate from my language","VOTVolume":"Video volume","VOTVolumeTranslation":"Translation Volume","VOTAutoSetVolume":"Reduce video volume to ","VOTShowVideoSlider":"Video volume slider","VOTSyncVolume":"Link translation and video volume","VOTAudioProxy":"Proxy received audio","VOTDisableFromYourLang":"You have disabled the translation of the video in your language","VOTLiveNotSupported":"Translation of live streams is not supported","VOTPremiere":"Wait for the premiere to end before translating","VOTVideoIsTooLong":"Video is too long","VOTNoVideoIDFound":"No video ID found","VOTFailedInitDB":"Failed to initialize database","VOTDBNeedUpdate":"The database needs an update, please reload the page","VOTDisabledForDBUpdating":"VOT is disabled due to an error when updating the Database. Close all open tabs with {0} and try again","VOTFailedWriteToDB":"Data could not be written to the database","VOTFailedReadFromDB":"Data could not be retrieved from the database","VOTSubtitles":"Subtitles","VOTSubtitlesDisabled":"Disabled","VOTSubtitlesMaxLength":"Subtitles max length","VOTHighlightWords":"Highlight words","VOTTranslatedFrom":"translated from","VOTAutogenerated":"autogenerated","VOTSettings":"VOT Settings","VOTMenuLanguage":"Menu language","VOTAuthors":"Authors","VOTVersion":"Version","VOTLoader":"Loader","VOTBrowser":"Browser","VOTShowPiPButton":"Show PiP button","langs":{"auto":"Auto","af":"Afrikaans","ak":"Akan","sq":"Albanian","am":"Amharic","ar":"Arabic","hy":"Armenian","as":"Assamese","ay":"Aymara","az":"Azerbaijani","bn":"Bangla","eu":"Basque","be":"Belarusian","bho":"Bhojpuri","bs":"Bosnian","bg":"Bulgarian","my":"Burmese","ca":"Catalan","ceb":"Cebuano","zh":"Chinese","zh-Hans":"Chinese (Simplified)","zh-Hant":"Chinese (Traditional)","co":"Corsican","hr":"Croatian","cs":"Czech","da":"Danish","dv":"Divehi","nl":"Dutch","en":"English","eo":"Esperanto","et":"Estonian","ee":"Ewe","fil":"Filipino","fi":"Finnish","fr":"French","gl":"Galician","lg":"Ganda","ka":"Georgian","de":"German","el":"Greek","gn":"Guarani","gu":"Gujarati","ht":"Haitian Creole","ha":"Hausa","haw":"Hawaiian","iw":"Hebrew","hi":"Hindi","hmn":"Hmong","hu":"Hungarian","is":"Icelandic","ig":"Igbo","id":"Indonesian","ga":"Irish","it":"Italian","ja":"Japanese","jv":"Javanese","kn":"Kannada","kk":"Kazakh","km":"Khmer","rw":"Kinyarwanda","ko":"Korean","kri":"Krio","ku":"Kurdish","ky":"Kyrgyz","lo":"Lao","la":"Latin","lv":"Latvian","ln":"Lingala","lt":"Lithuanian","lb":"Luxembourgish","mk":"Macedonian","mg":"Malagasy","ms":"Malay","ml":"Malayalam","mt":"Maltese","mi":"Māori","mr":"Marathi","mn":"Mongolian","ne":"Nepali","nso":"Northern Sotho","no":"Norwegian","ny":"Nyanja","or":"Odia","om":"Oromo","ps":"Pashto","fa":"Persian","pl":"Polish","pt":"Portuguese","pa":"Punjabi","qu":"Quechua","ro":"Romanian","ru":"Russian","sm":"Samoan","sa":"Sanskrit","gd":"Scottish Gaelic","sr":"Serbian","sn":"Shona","sd":"Sindhi","si":"Sinhala","sk":"Slovak","sl":"Slovenian","so":"Somali","st":"Southern Sotho","es":"Spanish","su":"Sundanese","sw":"Swahili","sv":"Swedish","tg":"Tajik","ta":"Tamil","tt":"Tatar","te":"Telugu","th":"Thai","ti":"Tigrinya","ts":"Tsonga","tr":"Turkish","tk":"Turkmen","uk":"Ukrainian","ur":"Urdu","ug":"Uyghur","uz":"Uzbek","vi":"Vietnamese","cy":"Welsh","fy":"Western Frisian","xh":"Xhosa","yi":"Yiddish","yo":"Yoruba","zu":"Zulu"},"udemyAccessTokenExpired":"Your entered Udemy Access Token has expired","udemyModuleArgsNotFound":"Could not get udemy module data due to the fact that ModuleArgs was not found","VOTTranslationHelpNull":"Could not get the data required for the translate","enterUdemyAccessToken":"Enter Udemy Access Token","VOTUdemyData":"Udemy Data","streamNoConnectionToServer":"There is no connection to the server","VOTCloudflareDoesntSupportStreams":"The Cloudflare version of the script does not support stream translation","searchField":"Search..."}');
+const en_namespaceObject = JSON.parse('{"__version__":2,"recommended":"recommended","translateVideo":"Translate video","disableTranslate":"Turn off","translationSettings":"Translation settings","subtitlesSettings":"Subtitles settings","about":"About extension","resetSettings":"Reset settings","videoBeingTranslated":"The video is being translated","videoLanguage":"Video language","translationLanguage":"Translation language","translationTake":"The translation will take","translationTakeMoreThanHour":"The translation will take more than an hour","translationTakeAboutMinute":"The translation will take about a minute","translationTakeFewMinutes":"The translation will take a few minutes","translationTakeApproximatelyMinutes":"The translation will take approximately {0} minutes","translationTakeApproximatelyMinute":"The translation will take approximately {0} minutes","unSupportedExtensionError":"Error! {0} is not supported by this version of the extension!\\n\\nPlease use the cloudflare version of the VOT extension.","requestTranslationFailed":"Failed to request video translation","audioNotReceived":"Audio link not received","grantPermissionToAutoPlay":"Grant permission to autoplay","neededAdditionalExtension":"An additional extension is needed to support this site","audioFormatNotSupported":"The audio format is not supported","VOTAutoTranslate":"Translate on open","VOTDontTranslateYourLang":"Do not translate from my language","VOTVolume":"Video volume","VOTVolumeTranslation":"Translation Volume","VOTAutoSetVolume":"Reduce video volume to ","VOTShowVideoSlider":"Video volume slider","VOTSyncVolume":"Link translation and video volume","VOTAudioProxy":"Proxy received audio","VOTDisableFromYourLang":"You have disabled the translation of the video in your language","VOTLiveNotSupported":"Translation of live streams is not supported","VOTPremiere":"Wait for the premiere to end before translating","VOTVideoIsTooLong":"Video is too long","VOTNoVideoIDFound":"No video ID found","VOTFailedInitDB":"Failed to initialize database","VOTDBNeedUpdate":"The database needs an update, please reload the page","VOTDisabledForDBUpdating":"VOT is disabled due to an error when updating the Database. Close all open tabs with {0} and try again","VOTFailedWriteToDB":"Data could not be written to the database","VOTFailedReadFromDB":"Data could not be retrieved from the database","VOTSubtitles":"Subtitles","VOTSubtitlesDisabled":"Disabled","VOTSubtitlesMaxLength":"Subtitles max length","VOTHighlightWords":"Highlight words","VOTTranslatedFrom":"translated from","VOTAutogenerated":"autogenerated","VOTSettings":"VOT Settings","VOTMenuLanguage":"Menu language","VOTAuthors":"Authors","VOTVersion":"Version","VOTLoader":"Loader","VOTBrowser":"Browser","VOTShowPiPButton":"Show PiP button","langs":{"auto":"Auto","af":"Afrikaans","ak":"Akan","sq":"Albanian","am":"Amharic","ar":"Arabic","hy":"Armenian","as":"Assamese","ay":"Aymara","az":"Azerbaijani","bn":"Bangla","eu":"Basque","be":"Belarusian","bho":"Bhojpuri","bs":"Bosnian","bg":"Bulgarian","my":"Burmese","ca":"Catalan","ceb":"Cebuano","zh":"Chinese","zh-Hans":"Chinese (Simplified)","zh-Hant":"Chinese (Traditional)","co":"Corsican","hr":"Croatian","cs":"Czech","da":"Danish","dv":"Divehi","nl":"Dutch","en":"English","eo":"Esperanto","et":"Estonian","ee":"Ewe","fil":"Filipino","fi":"Finnish","fr":"French","gl":"Galician","lg":"Ganda","ka":"Georgian","de":"German","el":"Greek","gn":"Guarani","gu":"Gujarati","ht":"Haitian Creole","ha":"Hausa","haw":"Hawaiian","iw":"Hebrew","hi":"Hindi","hmn":"Hmong","hu":"Hungarian","is":"Icelandic","ig":"Igbo","id":"Indonesian","ga":"Irish","it":"Italian","ja":"Japanese","jv":"Javanese","kn":"Kannada","kk":"Kazakh","km":"Khmer","rw":"Kinyarwanda","ko":"Korean","kri":"Krio","ku":"Kurdish","ky":"Kyrgyz","lo":"Lao","la":"Latin","lv":"Latvian","ln":"Lingala","lt":"Lithuanian","lb":"Luxembourgish","mk":"Macedonian","mg":"Malagasy","ms":"Malay","ml":"Malayalam","mt":"Maltese","mi":"Māori","mr":"Marathi","mn":"Mongolian","ne":"Nepali","nso":"Northern Sotho","no":"Norwegian","ny":"Nyanja","or":"Odia","om":"Oromo","ps":"Pashto","fa":"Persian","pl":"Polish","pt":"Portuguese","pa":"Punjabi","qu":"Quechua","ro":"Romanian","ru":"Russian","sm":"Samoan","sa":"Sanskrit","gd":"Scottish Gaelic","sr":"Serbian","sn":"Shona","sd":"Sindhi","si":"Sinhala","sk":"Slovak","sl":"Slovenian","so":"Somali","st":"Southern Sotho","es":"Spanish","su":"Sundanese","sw":"Swahili","sv":"Swedish","tg":"Tajik","ta":"Tamil","tt":"Tatar","te":"Telugu","th":"Thai","ti":"Tigrinya","ts":"Tsonga","tr":"Turkish","tk":"Turkmen","uk":"Ukrainian","ur":"Urdu","ug":"Uyghur","uz":"Uzbek","vi":"Vietnamese","cy":"Welsh","fy":"Western Frisian","xh":"Xhosa","yi":"Yiddish","yo":"Yoruba","zu":"Zulu"},"udemyAccessTokenExpired":"Your entered Udemy Access Token has expired","udemyModuleArgsNotFound":"Could not get udemy module data due to the fact that ModuleArgs was not found","VOTTranslationHelpNull":"Could not get the data required for the translate","enterUdemyAccessToken":"Enter Udemy Access Token","VOTUdemyData":"Udemy Data","streamNoConnectionToServer":"There is no connection to the server","VOTCloudflareDoesntSupportStreams":"The Cloudflare version of the script does not support stream translation","searchField":"Search...","VOTTranslateAPIErrors":"Translate errors from the API","VOTTranslationService":"Translation Service","VOTDetectService":"Detect Service","VOTTranslatingError":"Translating the error"}');
 // EXTERNAL MODULE: ./src/utils/debug.js
 var debug = __webpack_require__("./src/utils/debug.js");
+;// CONCATENATED MODULE: ./src/utils/storage.js
+
+
+const votStorage = new (class {
+  constructor() {
+    this.gmSupport = typeof GM_getValue === "function";
+    debug/* default */.Z.log(`GM Storage Status: ${this.gmSupport}`);
+  }
+
+  syncGet(name, def = undefined, toNumber = false) {
+    if (this.gmSupport) {
+      return GM_getValue(name, def);
+    }
+
+    let val = window.localStorage.getItem(name);
+    if (name === "udemyData" && typeof val === "string") {
+      try {
+        val = JSON.parse(val);
+      } catch {
+        val = def;
+      }
+    }
+
+    return toNumber ? Number(val) ?? Number(def) : val ?? def;
+  }
+
+  async get(name, def = undefined, toNumber = false) {
+    if (this.gmSupport) {
+      return await GM_getValue(name, def);
+    }
+
+    return new Promise((resolve) => {
+      resolve(this.syncGet(name, def, toNumber));
+    });
+  }
+
+  syncSet(name, value) {
+    if (this.gmSupport) {
+      return GM_setValue(name, value);
+    }
+
+    if (name === "udemyData") {
+      value = JSON.stringify(value);
+    }
+
+    return window.localStorage.setItem(name, value);
+  }
+
+  async set(name, value) {
+    if (this.gmSupport) {
+      return await GM_setValue(name, value);
+    }
+
+    return new Promise((resolve) => {
+      resolve(this.syncSet(name, value));
+    });
+  }
+
+  syncDelete(name) {
+    if (this.gmSupport) {
+      return GM_deleteValue(name);
+    }
+
+    return window.localStorage.removeItem(name);
+  }
+
+  async delete(name) {
+    if (this.gmSupport) {
+      return await GM_deleteValue(name);
+    }
+
+    return new Promise((resolve) => {
+      resolve(this.syncDelete(name));
+    });
+  }
+
+  syncList() {
+    if (this.gmSupport) {
+      return GM_listValues();
+    }
+
+    return [
+      "autoTranslate",
+      "dontTranslateLanguage",
+      "dontTranslateYourLang",
+      "autoSetVolumeYandexStyle",
+      "showVideoSlider",
+      "syncVolume",
+      "subtitlesMaxLength",
+      "highlightWords",
+      "responseLanguage",
+      "defaultVolume",
+      "udemyData",
+      "audioProxy",
+      "showPiPButton",
+      "locale-version",
+      "locale-lang",
+      "locale-phrases",
+    ];
+  }
+
+  async list() {
+    if (this.gmSupport) {
+      return await GM_listValues();
+    }
+
+    return new Promise((resolve) => {
+      resolve(this.syncList());
+    });
+  }
+})();
+
 ;// CONCATENATED MODULE: ./src/localization/localizationProvider.js
+
 
 
 
@@ -802,27 +930,66 @@ const availableLocales = [
   "en",
   "ru",
 
+  "af",
+  "am",
   "ar",
+  "az",
+  "bg",
   "bn",
+  "bs",
+  "ca",
   "cs",
+  "cy",
+  "da",
   "de",
+  "el",
   "es",
+  "et",
+  "eu",
   "fa",
+  "fi",
   "fr",
+  "gl",
   "hi",
+  "hr",
+  "hu",
+  "hy",
   "id",
   "it",
   "ja",
   "jv",
   "kk",
+  "km",
+  "kn",
   "ko",
+  "lo",
+  "mk",
+  "ml",
+  "mn",
   "ms",
+  "mt",
+  "my",
+  "ne",
+  "nl",
+  "pa",
+  "pl",
   "pt",
+  "ro",
+  "si",
+  "sk",
+  "sl",
+  "sq",
+  "sr",
+  "su",
+  "sv",
+  "sw",
   "tr",
   "uk",
   "ur",
+  "uz",
   "vi",
   "zh",
+  "zu",
 ];
 
 const localizationProvider = new (class {
@@ -836,7 +1003,7 @@ const localizationProvider = new (class {
   ];
 
   constructor() {
-    const langOverride = GM_getValue("locale-lang-override", "auto");
+    const langOverride = votStorage.syncGet("locale-lang-override", "auto");
     if (langOverride && langOverride !== "auto") {
       this.lang = langOverride;
     } else {
@@ -845,18 +1012,18 @@ const localizationProvider = new (class {
           ?.substr(0, 2)
           ?.toLowerCase() ?? "en";
     }
-    this.setLocaleFromJsonString(GM_getValue("locale-phrases", ""));
+    this.setLocaleFromJsonString(votStorage.syncGet("locale-phrases", ""));
   }
 
   reset() {
-    this.gmValues.forEach((v) => GM_deleteValue(v));
+    this.gmValues.forEach((v) => votStorage.syncDelete(v));
   }
 
   async update(force = false) {
     if (
       !force &&
-      Number(await GM_getValue("locale-version", 0)) === localesVersion &&
-      (await GM_getValue("locale-lang")) === this.lang
+      (await votStorage.get("locale-version", 0, true)) === localesVersion &&
+      (await votStorage.get("locale-lang")) === this.lang
     ) {
       return;
     }
@@ -869,19 +1036,21 @@ const localizationProvider = new (class {
         throw response.status;
       })
       .then(async (text) => {
-        await GM_setValue("locale-phrases", text);
+        await votStorage.set("locale-phrases", text);
         this.setLocaleFromJsonString(text);
         const version = this.getFromLocale(this.locale, "__version__");
         if (typeof version === "number")
-          await GM_setValue("locale-version", version);
-        await GM_setValue("locale-lang", this.lang);
+          await votStorage.set("locale-version", version);
+        await votStorage.set("locale-lang", this.lang);
       })
       .catch(async (error) => {
         console.error(
           "[VOT] [localizationProvider] failed get locale, cause:",
           error,
         );
-        this.setLocaleFromJsonString(await GM_getValue("locale-phrases", ""));
+        this.setLocaleFromJsonString(
+          await votStorage.get("locale-phrases", ""),
+        );
       });
   }
 
@@ -1254,22 +1423,6 @@ function langTo6391(lang) {
   return lang.toLowerCase().split(";")[0].trim().split("-")[0].split("_")[0];
 }
 
-async function detectLang(cleanText) {
-  try {
-    const response = await fetch(
-      "https://rust-server-531j.onrender.com/detect",
-      {
-        method: "POST",
-        body: cleanText,
-      },
-    );
-    return await response.text();
-  } catch (error) {
-    console.error("Error getting lang from text:", error);
-    return "en";
-  }
-}
-
 function isPiPAvailable() {
   return (
     "pictureInPictureEnabled" in document && document.pictureInPictureEnabled
@@ -1277,7 +1430,7 @@ function isPiPAvailable() {
 }
 
 function initHls() {
-  return Hls.isSupported()
+  return typeof Hls != "undefined" && Hls?.isSupported()
     ? new Hls({
         debug: false, // turn it on manually if necessary
         lowLatencyMode: true,
@@ -1288,14 +1441,130 @@ function initHls() {
 
 
 
+// EXTERNAL MODULE: ./src/config/config.js
+var config = __webpack_require__("./src/config/config.js");
+;// CONCATENATED MODULE: ./src/utils/translateApis.js
+
+
+
+const YandexTranslateAPI = {
+  async translate(text, lang) {
+    // Limit: 10k symbols
+    //
+    // Lang examples:
+    // en-ru, uk-ru, ru-en...
+    // ru, en (instead of auto-ru, auto-en)
+    try {
+      const response = await fetch(config/* translateUrls */.rm.yandex, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          text,
+          lang,
+        }),
+      });
+
+      const content = await response.json();
+
+      if (content.code !== 200) {
+        throw response.message;
+      }
+
+      return content.text[0];
+    } catch (error) {
+      console.error("Error translating text:", error);
+      return text;
+    }
+  },
+
+  async detect(text, lang) {
+    // Limit: 10k symbols
+    try {
+      const response = await fetch(config/* detectUrls */.jm.yandex, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          text,
+          lang,
+        }),
+      });
+
+      const content = await response.json();
+      if (content.code !== 200) {
+        throw response.message;
+      }
+
+      return content.lang ?? "en";
+    } catch (error) {
+      console.error("Error translating text:", error);
+      return "en";
+    }
+  },
+};
+
+const RustServerAPI = {
+  async detect(text) {
+    try {
+      const response = await fetch(config/* detectUrls */.jm.rustServer, {
+        method: "POST",
+        body: text,
+      });
+      return await response.text();
+    } catch (error) {
+      console.error("Error getting lang from text:", error);
+      return "en";
+    }
+  },
+};
+
+async function translate(text, fromLang = "", toLang = "ru") {
+  const service = await votStorage.get(
+    "translationService",
+    config/* defaultTranslationService */.kF,
+  );
+  switch (service) {
+    case "yandex": {
+      const langPair = fromLang && toLang ? `${fromLang}-${toLang}` : toLang;
+      return await YandexTranslateAPI.translate(text, langPair);
+    }
+    default:
+      return text;
+  }
+}
+
+async function detect(text) {
+  const service = await votStorage.get("detectService", config/* defaultDetectService */.EY);
+  switch (service) {
+    case "yandex":
+      return await YandexTranslateAPI.detect(text);
+    case "rust-server":
+      return await RustServerAPI.detect(text);
+    default:
+      return "en";
+  }
+}
+
+const translateServices = ["yandex"];
+const detectServices = ["yandex", "rust-server"];
+
+
+
 ;// CONCATENATED MODULE: ./src/utils/youtubeUtils.js
+
 
 
 
 
 // Get the language code from the response or the text
 async function getLanguage(player, response, title, description) {
-  if (!window.location.hostname.includes("m.youtube.com")) {
+  if (
+    !window.location.hostname.includes("m.youtube.com") &&
+    player?.getAudioTrack
+  ) {
     // ! Experimental ! get lang from selected audio track if availabled
     const audioTracks = player.getAudioTrack();
     const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
@@ -1333,7 +1602,7 @@ async function getLanguage(player, response, title, description) {
 
   const cleanText = [cleanedDescription, title].join("");
 
-  return await detectLang(cleanText);
+  return await detect(cleanText);
 }
 
 function isMobile() {
@@ -1364,7 +1633,12 @@ function getPlayerData() {
 }
 
 function getVideoVolume() {
-  return getPlayer()?.getVolume() / 100;
+  const player = getPlayer();
+  if (player?.getVolume) {
+    return player.getVolume.call() / 100;
+  }
+
+  return 1;
 }
 
 function setVideoVolume(volume) {
@@ -1652,8 +1926,6 @@ const yandexProtobuf = {
   },
 };
 
-// EXTERNAL MODULE: ./src/config/config.js
-var config = __webpack_require__("./src/config/config.js");
 ;// CONCATENATED MODULE: ./src/config/alternativeUrls.js
 // Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
 const sitesInvidious = [
@@ -3464,7 +3736,8 @@ const sites = () => {
       host: "udemy",
       url: "https://www.udemy.com",
       match: /udemy.com$/,
-      selector: ".vjs-v7",
+      selector:
+        'div[data-purpose="curriculum-item-viewer-content"] > section > div > div > div > div:nth-of-type(2)',
     },
     {
       // Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
@@ -3498,6 +3771,8 @@ const sites = () => {
 /* harmony default export */ const config_sites = (sites());
 
 ;// CONCATENATED MODULE: ./src/index.js
+
+
 
 
 
@@ -3730,32 +4005,50 @@ class VideoHandler {
     if (this.initialized) return;
 
     this.data = {
-      autoTranslate: await GM_getValue("autoTranslate", 0),
-      dontTranslateLanguage: await GM_getValue("dontTranslateLanguage", lang),
-      dontTranslateYourLang: await GM_getValue("dontTranslateYourLang", 1),
-      autoSetVolumeYandexStyle: await GM_getValue(
+      autoTranslate: await votStorage.get("autoTranslate", 0, true),
+      dontTranslateLanguage: await votStorage.get(
+        "dontTranslateLanguage",
+        lang,
+      ),
+      dontTranslateYourLang: await votStorage.get(
+        "dontTranslateYourLang",
+        1,
+        true,
+      ),
+      autoSetVolumeYandexStyle: await votStorage.get(
         "autoSetVolumeYandexStyle",
         1,
+        true,
       ),
-      showVideoSlider: await GM_getValue("showVideoSlider", 1),
-      syncVolume: await GM_getValue("syncVolume", 0),
-      subtitlesMaxLength: await GM_getValue("subtitlesMaxLength", 300),
-      highlightWords: await GM_getValue("highlightWords", 0),
-      responseLanguage: await GM_getValue("responseLanguage", lang),
-      defaultVolume: await GM_getValue("defaultVolume", 100),
-      udemyData: await GM_getValue("udemyData", {
+      showVideoSlider: await votStorage.get("showVideoSlider", 1, true),
+      syncVolume: await votStorage.get("syncVolume", 0, true),
+      subtitlesMaxLength: await votStorage.get("subtitlesMaxLength", 300, true),
+      highlightWords: await votStorage.get("highlightWords", 0, true),
+      responseLanguage: await votStorage.get("responseLanguage", lang),
+      defaultVolume: await votStorage.get("defaultVolume", 100, true),
+      udemyData: await votStorage.get("udemyData", {
         accessToken: "",
         expires: 0,
       }),
-      audioProxy: await GM_getValue(
+      audioProxy: await votStorage.get(
         "audioProxy",
         lang === "uk" && "cloudflare" === "cloudflare" ? 1 : 0,
+        true,
       ),
-      showPiPButton: await GM_getValue("showPiPButton", 0),
+      showPiPButton: await votStorage.get("showPiPButton", 0, true),
+      translateAPIErrors: await votStorage.get("translateAPIErrors", 1, true),
+      translationService: await votStorage.get(
+        "translationService",
+        config/* defaultTranslationService */.kF,
+      ),
+      detectService: await votStorage.get(
+        "detectService",
+        config/* defaultDetectService */.EY,
+      ),
     };
     this.videoData = await this.getVideoData();
 
-    debug/* default */.Z.log("[db] data from db: ", this.data);
+    console.log("[db] data from db: ", this.data);
 
     this.subtitlesWidget = new SubtitlesWidget(
       this.video,
@@ -3879,7 +4172,7 @@ class VideoHandler {
           const newLang = e.target.dataset.votValue;
           debug/* default */.Z.log("[toOnSelectCB] select to language", newLang);
           this.data.responseLanguage = this.translateToLang = newLang;
-          await GM_setValue("responseLanguage", this.data.responseLanguage);
+          await votStorage.set("responseLanguage", this.data.responseLanguage);
           debug/* default */.Z.log(
             "Response Language value changed. New value: ",
             this.data.responseLanguage,
@@ -3975,17 +4268,17 @@ class VideoHandler {
 
       this.votDontTranslateYourLangSelect = ui.createVOTSelect(
         localizationProvider.get("langs")[
-          GM_getValue("dontTranslateLanguage", lang)
+          votStorage.syncGet("dontTranslateLanguage", lang)
         ],
-        localizationProvider.get("VOTMenuLanguage"),
+        localizationProvider.get("VOTDontTranslateYourLang"),
         genOptionsByOBJ(
           availableLangs,
-          GM_getValue("dontTranslateLanguage", lang),
+          votStorage.syncGet("dontTranslateLanguage", lang),
         ),
         {
-          onSelectCb: (e) => {
+          onSelectCb: async (e) => {
             this.data.dontTranslateLanguage = e.target.dataset.votValue;
-            GM_setValue(
+            await votStorage.set(
               "dontTranslateLanguage",
               this.data.dontTranslateLanguage,
             );
@@ -4048,6 +4341,54 @@ class VideoHandler {
         this.votAudioProxyCheckbox.container,
       );
 
+      this.votTranslationServiceSelect = ui.createVOTSelect(
+        votStorage.syncGet("translationService", config/* defaultTranslationService */.kF),
+        localizationProvider.get("VOTTranslationService"),
+        genOptionsByOBJ(
+          translateServices,
+          votStorage.syncGet("translationService", config/* defaultTranslationService */.kF),
+        ),
+        {
+          onSelectCb: async (e) => {
+            this.data.translationService = e.target.dataset.votValue;
+            await votStorage.set(
+              "translationService",
+              this.data.translationService,
+            );
+          },
+          labelElement: ui.createCheckbox(
+            localizationProvider.get("VOTTranslateAPIErrors"),
+            this.data.translateAPIErrors ?? true,
+          ).container,
+        },
+      );
+      this.votTranslationServiceSelect.container.hidden =
+        localizationProvider.lang === "ru";
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votTranslationServiceSelect.container,
+      );
+
+      this.votDetectServiceSelect = ui.createVOTSelect(
+        votStorage.syncGet("detectService", config/* defaultDetectService */.EY),
+        localizationProvider.get("VOTDetectService"),
+        genOptionsByOBJ(
+          detectServices,
+          votStorage.syncGet("detectService", config/* defaultDetectService */.EY),
+        ),
+        {
+          onSelectCb: async (e) => {
+            this.data.detectService = e.target.dataset.votValue;
+            await votStorage.set("detectService", this.data.detectService);
+          },
+          labelElement: ui.createVOTSelectLabel(
+            localizationProvider.get("VOTDetectService"),
+          ),
+        },
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votDetectServiceSelect.container,
+      );
+
       // SUBTITLES
 
       this.votSubtitlesHeader = ui.createHeader(
@@ -4082,16 +4423,19 @@ class VideoHandler {
 
       this.votLanguageSelect = ui.createVOTSelect(
         localizationProvider.get("langs")[
-          GM_getValue("locale-lang-override", "auto")
+          votStorage.syncGet("locale-lang-override", "auto")
         ],
         localizationProvider.get("VOTMenuLanguage"),
         genOptionsByOBJ(
           availableLocales,
-          GM_getValue("locale-lang-override", "auto"),
+          votStorage.syncGet("locale-lang-override", "auto"),
         ),
         {
-          onSelectCb: (e) => {
-            GM_setValue("locale-lang-override", e.target.dataset.votValue);
+          onSelectCb: async (e) => {
+            await votStorage.set(
+              "locale-lang-override",
+              e.target.dataset.votValue,
+            );
           },
           labelElement: ui.createVOTSelectLabel(
             localizationProvider.get("VOTMenuLanguage"),
@@ -4254,7 +4598,7 @@ class VideoHandler {
         "input",
         async (e) => {
           this.data.defaultVolume = Number(e.target.value);
-          await GM_setValue("defaultVolume", this.data.defaultVolume);
+          await votStorage.set("defaultVolume", this.data.defaultVolume);
           this.votVideoTranslationVolumeSlider.label.querySelector(
             "strong",
           ).innerHTML = `${this.data.defaultVolume}%`;
@@ -4272,7 +4616,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.autoTranslate = Number(e.target.checked);
-          await GM_setValue("autoTranslate", this.data.autoTranslate);
+          await votStorage.set("autoTranslate", this.data.autoTranslate);
           debug/* default */.Z.log(
             "autoTranslate value changed. New value: ",
             this.data.autoTranslate,
@@ -4284,7 +4628,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.dontTranslateYourLang = Number(e.target.checked);
-          await GM_setValue(
+          await votStorage.set(
             "dontTranslateYourLang",
             this.data.dontTranslateYourLang,
           );
@@ -4299,7 +4643,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.autoSetVolumeYandexStyle = Number(e.target.checked);
-          await GM_setValue(
+          await votStorage.set(
             "autoSetVolumeYandexStyle",
             this.data.autoSetVolumeYandexStyle,
           );
@@ -4314,7 +4658,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.showVideoSlider = Number(e.target.checked);
-          await GM_setValue("showVideoSlider", this.data.showVideoSlider);
+          await votStorage.set("showVideoSlider", this.data.showVideoSlider);
           debug/* default */.Z.log(
             "showVideoSlider value changed. New value: ",
             this.data.showVideoSlider,
@@ -4330,14 +4674,14 @@ class VideoHandler {
           accessToken: e.target.value,
           expires: new Date().getTime(),
         };
-        await GM_setValue("udemyData", this.data.udemyData);
+        await votStorage.set("udemyData", this.data.udemyData);
         debug/* default */.Z.log("udemyData value changed. New value: ", this.data.udemyData);
         window.location.reload();
       });
 
       this.votSyncVolumeCheckbox.input.addEventListener("change", async (e) => {
         this.data.syncVolume = Number(e.target.checked);
-        await GM_setValue("syncVolume", this.data.syncVolume);
+        await votStorage.set("syncVolume", this.data.syncVolume);
         debug/* default */.Z.log(
           "syncVolume value changed. New value: ",
           this.data.syncVolume,
@@ -4346,18 +4690,38 @@ class VideoHandler {
 
       this.votAudioProxyCheckbox.input.addEventListener("change", async (e) => {
         this.data.audioProxy = Number(e.target.checked);
-        await GM_setValue("audioProxy", this.data.audioProxy);
+        await votStorage.set("audioProxy", this.data.audioProxy);
         debug/* default */.Z.log(
           "audioProxy value changed. New value: ",
           this.data.audioProxy,
         );
       });
 
+      this.votTranslationServiceSelect.labelElement.addEventListener(
+        "change",
+        async (e) => {
+          this.data.translateAPIErrors = Number(e.target.checked);
+          await votStorage.set(
+            "translateAPIErrors",
+            this.data.translateAPIErrors,
+          );
+          debug/* default */.Z.log(
+            "translateAPIErrors value changed. New value: ",
+            this.data.translateAPIErrors,
+          );
+        },
+      );
+
+      // Subtitles
+
       this.votSubtitlesMaxLengthSlider.input.addEventListener(
         "input",
         async (e) => {
           this.data.subtitlesMaxLength = Number(e.target.value);
-          await GM_setValue("subtitlesMaxLength", this.data.subtitlesMaxLength);
+          await votStorage.set(
+            "subtitlesMaxLength",
+            this.data.subtitlesMaxLength,
+          );
           this.votSubtitlesMaxLengthSlider.label.querySelector(
             "strong",
           ).innerHTML = `${this.data.subtitlesMaxLength}`;
@@ -4369,7 +4733,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.highlightWords = Number(e.target.checked);
-          await GM_setValue("highlightWords", this.data.highlightWords);
+          await votStorage.set("highlightWords", this.data.highlightWords);
           debug/* default */.Z.log(
             "highlightWords value changed. New value: ",
             this.data.highlightWords,
@@ -4382,7 +4746,7 @@ class VideoHandler {
         "change",
         async (e) => {
           this.data.showPiPButton = Number(e.target.checked);
-          await GM_setValue("showPiPButton", this.data.showPiPButton);
+          await votStorage.set("showPiPButton", this.data.showPiPButton);
           debug/* default */.Z.log(
             "showPiPButton value changed. New value: ",
             this.data.showPiPButton,
@@ -4396,10 +4760,10 @@ class VideoHandler {
 
       this.votResetSettingsButton.addEventListener("click", async () => {
         localizationProvider.reset();
-        const valuesForClear = await GM_listValues();
+        const valuesForClear = await votStorage.list();
         valuesForClear
           .filter((v) => !localizationProvider.gmValues.includes(v))
-          .forEach((v) => GM_deleteValue(v));
+          .forEach((v) => votStorage.syncDelete(v));
         window.location.reload();
       });
     }
@@ -4550,8 +4914,8 @@ class VideoHandler {
       e.stopImmediatePropagation();
     });
 
-    // fix opera draggable menu in youtube (#394)
-    if (browserInfo.browser.name === "Opera" && this.site.host === "youtube") {
+    // fix draggable menu in youtube (#394, #417)
+    if (this.site.host === "youtube") {
       this.container.draggable = false;
     }
 
@@ -4978,14 +5342,28 @@ class VideoHandler {
         videoURL,
         requestLang,
         responseLang,
-        (success, reqInterval, resOrError) => {
+        async (success, reqInterval, resOrError) => {
           debug/* default */.Z.log("[exec callback] translateStream callback");
           if (getVideoId(this.site.host, this.video) !== VIDEO_ID) return;
           if (!success || !resOrError.translatedInfo) {
             if (resOrError?.name === "VOTLocalizedError") {
               this.transformBtn("error", resOrError.localizedMessage);
             } else {
-              this.transformBtn("error", resOrError);
+              if (
+                this.data.translateAPIErrors === 1 &&
+                localizationProvider.lang !== "ru"
+              ) {
+                this.transformBtn(
+                  "error",
+                  `${localizationProvider.get("VOTTranslatingError")}...`,
+                );
+                this.transformBtn(
+                  "error",
+                  await translate(resOrError, "ru", localizationProvider.lang),
+                );
+              } else {
+                this.transformBtn("error", resOrError);
+              }
             }
 
             if (reqInterval === 10) {
@@ -5150,14 +5528,31 @@ class VideoHandler {
       requestLang,
       responseLang,
       translationHelp,
-      (success, urlOrError) => {
+      async (success, urlOrError) => {
         debug/* default */.Z.log("[exec callback] translateVideo callback");
         if (getVideoId(this.site.host, this.video) !== VIDEO_ID) return;
         if (!success) {
           if (urlOrError?.name === "VOTLocalizedError") {
             this.transformBtn("error", urlOrError.localizedMessage);
           } else {
-            this.transformBtn("error", urlOrError);
+            if (
+              this.data.translateAPIErrors === 1 &&
+              !urlOrError.includes(
+                localizationProvider.get("translationTake"),
+              ) &&
+              localizationProvider.lang !== "ru"
+            ) {
+              this.transformBtn(
+                "error",
+                localizationProvider.get("VOTTranslatingError"),
+              );
+              this.transformBtn(
+                "error",
+                await translate(urlOrError, "ru", localizationProvider.lang),
+              );
+            } else {
+              this.transformBtn("error", urlOrError);
+            }
           }
           // if the error line contains information that the translation is being performed, then we wait
           if (
