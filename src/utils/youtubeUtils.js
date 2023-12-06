@@ -1,10 +1,14 @@
 import debug from "./debug.js";
 import { availableLangs } from "../config/constants.js";
-import { detectLang, langTo6391 } from "./utils.js";
+import { langTo6391 } from "./utils.js";
+import { detect } from "./translateApis.js";
 
 // Get the language code from the response or the text
 async function getLanguage(player, response, title, description) {
-  if (!window.location.hostname.includes("m.youtube.com")) {
+  if (
+    !window.location.hostname.includes("m.youtube.com") &&
+    player?.getAudioTrack
+  ) {
     // ! Experimental ! get lang from selected audio track if availabled
     const audioTracks = player.getAudioTrack();
     const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
@@ -42,7 +46,7 @@ async function getLanguage(player, response, title, description) {
 
   const cleanText = [cleanedDescription, title].join("");
 
-  return await detectLang(cleanText);
+  return await detect(cleanText);
 }
 
 function isMobile() {
@@ -73,7 +77,12 @@ function getPlayerData() {
 }
 
 function getVideoVolume() {
-  return getPlayer()?.getVolume() / 100;
+  const player = getPlayer();
+  if (player?.getVolume) {
+    return player.getVolume.call() / 100;
+  }
+
+  return 1;
 }
 
 function setVideoVolume(volume) {
