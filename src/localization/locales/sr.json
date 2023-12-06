@@ -189,5 +189,9 @@
   "VOTUdemyData": "Удеми Подаци",
   "streamNoConnectionToServer": "Нема везе са сервером",
   "VOTCloudflareDoesntSupportStreams": "Цлоудфларе верзија скрипте не подржава стриминг",
-  "searchField": "Претрага..."
+  "searchField": "Претрага...",
+  "VOTTranslateAPIErrors": "Превођење грешака из АПИ-ја",
+  "VOTTranslationService": "Услуга писменог превођења",
+  "VOTDetectService": "Услуга откривања",
+  "VOTTranslatingError": "Превођење грешке"
 }

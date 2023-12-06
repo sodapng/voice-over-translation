@@ -189,5 +189,9 @@
   "VOTUdemyData": "Takwimu Za Udemy",
   "streamNoConnectionToServer": "Hakuna uhusiano na server",
   "VOTCloudflareDoesntSupportStreams": "Cloudflare toleo la script haina msaada mkondo tafsiri",
-  "searchField": "Tafuta..."
+  "searchField": "Tafuta...",
+  "VOTTranslateAPIErrors": "Tafsiri makosa KUTOKA API",
+  "VOTTranslationService": "Huduma Ya Tafsiri",
+  "VOTDetectService": "Tambua Huduma",
+  "VOTTranslatingError": "Kutafsiri kosa"
 }

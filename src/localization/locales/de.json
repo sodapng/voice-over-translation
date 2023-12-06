@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy-Daten",
   "streamNoConnectionToServer": "Es besteht keine Verbindung zum Server",
   "VOTCloudflareDoesntSupportStreams": "Die Cloudflare-Version des Skripts unterstützt keine Stream-Übersetzung",
-  "searchField": "Suche..."
+  "searchField": "Suche...",
+  "VOTTranslateAPIErrors": "Fehler aus der API übersetzen",
+  "VOTTranslationService": "Übersetzungsdienst",
+  "VOTDetectService": "Service erkennen",
+  "VOTTranslatingError": "Den Fehler übersetzen"
 }

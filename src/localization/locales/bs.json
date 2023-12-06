@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Podaci",
   "streamNoConnectionToServer": "Nema veze sa serverom",
   "VOTCloudflareDoesntSupportStreams": "Cloudflare verzija skripte ne podržava prijevod toka",
-  "searchField": "Traži..."
+  "searchField": "Traži...",
+  "VOTTranslateAPIErrors": "Prevedi greške iz API-ja",
+  "VOTTranslationService": "Prevodilačka Služba",
+  "VOTDetectService": "Otkrijte Uslugu",
+  "VOTTranslatingError": "Prevođenje greške"
 }

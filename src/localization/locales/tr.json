@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Verileri",
   "streamNoConnectionToServer": "Sunucuya bağlantı yok",
   "VOTCloudflareDoesntSupportStreams": "Komut dosyasının Cloudflare sürümü akış çevirisini desteklemiyor",
-  "searchField": "Aramak..."
+  "searchField": "Aramak...",
+  "VOTTranslateAPIErrors": "API'DEN hataları çevir",
+  "VOTTranslationService": "Çeviri Hizmeti",
+  "VOTDetectService": "Hizmeti Algıla",
+  "VOTTranslatingError": "Hatayı çevirmek"
 }

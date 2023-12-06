@@ -189,5 +189,9 @@
   "VOTUdemyData": "ຂໍ້ມູນ Udemy",
   "streamNoConnectionToServer": "ບໍ່ມີການເຊື່ອມຕໍ່ກັບ server",
   "VOTCloudflareDoesntSupportStreams": "ສະບັບ Cloudflare ຂອງ script ບໍ່ໄດ້ສະຫນັບສະຫນູນການແປພາສານ້ໍາ",
-  "searchField": "ຄົ້ນຫາ..."
+  "searchField": "ຄົ້ນຫາ...",
+  "VOTTranslateAPIErrors": "ແປຂໍ້ຜິດພາດຈາກ API",
+  "VOTTranslationService": "ການບໍລິການແປພາສາ",
+  "VOTDetectService": "ກວດສອບການບໍລິການ",
+  "VOTTranslatingError": "ການແປຄວາມຜິດພາດ"
 }

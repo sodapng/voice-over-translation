@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Ma'lumotlari",
   "streamNoConnectionToServer": "Serverga ulanish yo'q",
   "VOTCloudflareDoesntSupportStreams": "Skriptning Cloudflare versiyasi oqim tarjimasini qo'llab-quvvatlamaydi",
-  "searchField": "Qidirish..."
+  "searchField": "Qidirish...",
+  "VOTTranslateAPIErrors": "API-dan xatolarni tarjima qiling",
+  "VOTTranslationService": "Tarjima Xizmati",
+  "VOTDetectService": "Xizmatni Aniqlash",
+  "VOTTranslatingError": "Xatoni tarjima qilish"
 }

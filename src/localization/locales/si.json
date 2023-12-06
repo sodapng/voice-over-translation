@@ -189,5 +189,9 @@
   "VOTUdemyData": "උඩෙමි දත්ත",
   "streamNoConnectionToServer": "සර්වර් එකට කිසිම සම්බන්ධයක් නෑ",
   "VOTCloudflareDoesntSupportStreams": "Script එකේ Cloudflare අනුවාදය stream translation වලට සහය නොදක්වයි",
-  "searchField": "හොයන්න..."
+  "searchField": "හොයන්න...",
+  "VOTTranslateAPIErrors": "API වෙතින් දෝෂ පරිවර්තනය කරන්න",
+  "VOTTranslationService": "පරිවර්තන සේවාව",
+  "VOTDetectService": "සේවාව හඳුනාගන්න",
+  "VOTTranslatingError": "දෝෂය පරිවර්තනය කිරීම"
 }

@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Adatok",
   "streamNoConnectionToServer": "Nincs kapcsolat a szerverrel",
   "VOTCloudflareDoesntSupportStreams": "A szkript Cloudflare verziója nem támogatja a stream fordítást",
-  "searchField": "Keresés..."
+  "searchField": "Keresés...",
+  "VOTTranslateAPIErrors": "Hibák lefordítása az API - ból",
+  "VOTTranslationService": "Fordítási Szolgáltatás",
+  "VOTDetectService": "Szolgáltatás Észlelése",
+  "VOTTranslatingError": "A hiba fordítása"
 }

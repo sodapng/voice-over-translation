@@ -189,5 +189,9 @@
   "VOTUdemyData": "ഉഡെമി ഡാറ്റ",
   "streamNoConnectionToServer": "സെർവറുമായി ബന്ധമില്ല",
   "VOTCloudflareDoesntSupportStreams": "സ്ക്രിപ്റ്റിന്റെ ക്ലൌഡ്ഫ്ലെയർ പതിപ്പ് സ്ട്രീം വിവർത്തനത്തെ പിന്തുണയ്ക്കുന്നില്ല",
-  "searchField": "തിരയൂ..."
+  "searchField": "തിരയൂ...",
+  "VOTTranslateAPIErrors": "എപിഐയിൽ നിന്ന് പിശകുകൾ വിവർത്തനം ചെയ്യുക",
+  "VOTTranslationService": "വിവർത്തന സേവനം",
+  "VOTDetectService": "സേവനം കണ്ടെത്തുക",
+  "VOTTranslatingError": "തെറ്റ് വിവർത്തനം ചെയ്യുക"
 }

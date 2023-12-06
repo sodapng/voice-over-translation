@@ -189,5 +189,9 @@
   "VOTUdemyData": "Datele Udemy",
   "streamNoConnectionToServer": "Nu există nicio conexiune la server",
   "VOTCloudflareDoesntSupportStreams": "Versiunea Cloudflare a scriptului nu acceptă traducerea fluxului",
-  "searchField": "Căutare..."
+  "searchField": "Căutare...",
+  "VOTTranslateAPIErrors": "Traduceți erorile din API",
+  "VOTTranslationService": "Servicii De Traducere",
+  "VOTDetectService": "Serviciu De Detectare",
+  "VOTTranslatingError": "Traducerea erorii"
 }

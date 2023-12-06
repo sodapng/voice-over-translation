@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Data",
   "streamNoConnectionToServer": "Er is geen verbinding met de server",
   "VOTCloudflareDoesntSupportStreams": "De Cloudflare-versie van het script ondersteunt geen streamvertaling",
-  "searchField": "Zoeken..."
+  "searchField": "Zoeken...",
+  "VOTTranslateAPIErrors": "Vertaal fouten uit de API",
+  "VOTTranslationService": "vertaaldienst",
+  "VOTDetectService": "Detect Service",
+  "VOTTranslatingError": "Vertaling van de fout"
 }

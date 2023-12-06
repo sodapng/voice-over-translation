@@ -189,5 +189,9 @@
   "VOTUdemyData": "Dejta Udemy",
   "streamNoConnectionToServer": "M'hemm l ebda konnessjoni mas server",
   "VOTCloudflareDoesntSupportStreams": "Il verżjoni Cloudflare tal iskrittura ma tappoġġjax traduzzjoni stream",
-  "searchField": "Fittex..."
+  "searchField": "Fittex...",
+  "VOTTranslateAPIErrors": "Ittraduċi żbalji mill-API",
+  "VOTTranslationService": "Servizz Ta'traduzzjoni",
+  "VOTDetectService": "Servizz Ta'skoperta",
+  "VOTTranslatingError": "Traduzzjoni tal-iżball"
 }

@@ -189,5 +189,9 @@
   "VOTUdemyData": "Të Dhënat E Udemy",
   "streamNoConnectionToServer": "Nuk ka lidhje me serverin",
   "VOTCloudflareDoesntSupportStreams": "Versioni Cloudflare i shkrimit nuk mbështet përkthimin e rrjedhës",
-  "searchField": "Kërko..."
+  "searchField": "Kërko...",
+  "VOTTranslateAPIErrors": "Përktheni gabimet NGA API",
+  "VOTTranslationService": "Shërbimi I Përkthimit",
+  "VOTDetectService": "Zbuloni Shërbimin",
+  "VOTTranslatingError": "Përkthimi i gabimit"
 }

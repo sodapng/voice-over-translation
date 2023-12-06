@@ -189,5 +189,9 @@
   "VOTUdemyData": "የተጠቃሚዎች በይነ-ተገናኝነት",
   "streamNoConnectionToServer": "ከአገልጋዩ ጋር ምንም ግንኙነት የለም ። ",
   "VOTCloudflareDoesntSupportStreams": "የስክሪፕቱ ክላውድላሬ ስሪት የዥረት ትርጉምን አይደግፍም ። ",
-  "searchField": "Search።.."
+  "searchField": "Search።..",
+  "VOTTranslateAPIErrors": "ከ API ስህተቶችን ይተረጉሙ",
+  "VOTTranslationService": "የትርጉም አገልግሎት",
+  "VOTDetectService": "አግኝ አገልግሎት",
+  "VOTTranslatingError": "ስህተት መተርጎም"
 }

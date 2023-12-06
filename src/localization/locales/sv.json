@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Data",
   "streamNoConnectionToServer": "Det finns ingen anslutning till servern",
   "VOTCloudflareDoesntSupportStreams": "Cloudflare-versionen av skriptet stöder inte strömöversättning",
-  "searchField": "Söka..."
+  "searchField": "Söka...",
+  "VOTTranslateAPIErrors": "Översätt fel från API",
+  "VOTTranslationService": "översättningstjänst",
+  "VOTDetectService": "Upptäck Service",
+  "VOTTranslatingError": "Översätta felet"
 }

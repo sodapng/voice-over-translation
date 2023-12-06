@@ -189,5 +189,9 @@
   "VOTUdemyData": "Data Udemy",
   "streamNoConnectionToServer": "Tiada sambungan ke pelayan",
   "VOTCloudflareDoesntSupportStreams": "Versi Cloudflare Skrip tidak menyokong terjemahan aliran",
-  "searchField": "Cari..."
+  "searchField": "Cari...",
+  "VOTTranslateAPIErrors": "Terjemahkan ralat dari API",
+  "VOTTranslationService": "Perkhidmatan Terjemahan",
+  "VOTDetectService": "Mengesan Perkhidmatan",
+  "VOTTranslatingError": "Menterjemahkan ralat"
 }

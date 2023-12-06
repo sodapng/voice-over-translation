@@ -189,5 +189,9 @@
   "VOTUdemyData": "ទិន្នន័យ Udemy",
   "streamNoConnectionToServer": "មិនមានការតភ្ជាប់ទៅម៉ាស៊ីនបម្រើទេ",
   "VOTCloudflareDoesntSupportStreams": "កំណែ Cloudflare នៃស្គ្រីបមិនគាំទ្រការបកប្រែស្ទ្រីម",
-  "searchField": "ស្វែងរក..."
+  "searchField": "ស្វែងរក...",
+  "VOTTranslateAPIErrors": "បកប្រែកំហុសពី API",
+  "VOTTranslationService": "សេវាកម្មបកប្រែ",
+  "VOTDetectService": "រកឃើញសេវា",
+  "VOTTranslatingError": "ការបកប្រែកំហុស"
 }

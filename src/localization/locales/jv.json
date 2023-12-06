@@ -189,5 +189,9 @@
   "VOTUdemyData": "Data Udemy",
   "streamNoConnectionToServer": "Ora ana sambungan menyang server",
   "VOTCloudflareDoesntSupportStreams": "Versi Cloudflare saka naskah ora ndhukung terjemahan aliran",
-  "searchField": "Nggolèki..."
+  "searchField": "Nggolèki...",
+  "VOTTranslateAPIErrors": "Translate kasalahan SAKA API",
+  "VOTTranslationService": "Layanan Terjemahan",
+  "VOTDetectService": "Ndeteksi Layanan",
+  "VOTTranslatingError": "Nerjemahake kesalahan"
 }

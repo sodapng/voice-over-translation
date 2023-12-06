@@ -189,5 +189,9 @@
   "VOTUdemyData": "Idatha Ye-Udemy",
   "streamNoConnectionToServer": "Akukho ukuxhumana neseva",
   "VOTCloudflareDoesntSupportStreams": "Inguqulo ye Cloudflare yeskripthi ayisekeli ukuhunyushwa kokusakazwa",
-  "searchField": "Ukucinga..."
+  "searchField": "Ukucinga...",
+  "VOTTranslateAPIErrors": "Humusha amaphutha KUSUKA API",
+  "VOTTranslationService": "Inkonzo Yokuhumusha",
+  "VOTDetectService": "Thola Service",
+  "VOTTranslatingError": "Ukuhumusha iphutha"
 }

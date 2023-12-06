@@ -189,5 +189,9 @@
   "VOTUdemyData": "Δεδομένα Udemy",
   "streamNoConnectionToServer": "Δεν υπάρχει σύνδεση με το διακομιστή",
   "VOTCloudflareDoesntSupportStreams": "Η έκδοση Cloudflare του σεναρίου δεν υποστηρίζει μετάφραση ροής",
-  "searchField": "Αναζήτηση..."
+  "searchField": "Αναζήτηση...",
+  "VOTTranslateAPIErrors": "Μετάφραση σφαλμάτων από το API",
+  "VOTTranslationService": "μετάφραση",
+  "VOTDetectService": "Ανίχνευση Υπηρεσίας",
+  "VOTTranslatingError": "Μετάφραση του σφάλματος"
 }

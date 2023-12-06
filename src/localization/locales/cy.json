@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Data",
   "streamNoConnectionToServer": "Nid oes cysylltiad i'r defnyddiwr",
   "VOTCloudflareDoesntSupportStreams": "Nid yw'r Fersiwn Cloudflare o'r sgript yn cefnogi cyfieithu ffrwd",
-  "searchField": "Chwilio..."
+  "searchField": "Chwilio...",
+  "VOTTranslateAPIErrors": "Cyfieithu gwallau O'R API",
+  "VOTTranslationService": "Gwasanaeth Cyfieithu",
+  "VOTDetectService": "Canfod Gwasanaeth",
+  "VOTTranslatingError": "Cyfieithu'r gwall"
 }

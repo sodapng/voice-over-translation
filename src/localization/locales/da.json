@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Data",
   "streamNoConnectionToServer": "Der er ingen forbindelse til serveren",
   "VOTCloudflareDoesntSupportStreams": "Cloudflare-versionen af scriptet understøtter ikke streamoversættelse",
-  "searchField": "Søge..."
+  "searchField": "Søge...",
+  "VOTTranslateAPIErrors": "Oversæt fejl fra API",
+  "VOTTranslationService": "oversættelsestjenesterne",
+  "VOTDetectService": "Opdag Service",
+  "VOTTranslatingError": "Oversættelse af fejlen"
 }

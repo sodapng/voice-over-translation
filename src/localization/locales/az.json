@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Məlumatları",
   "streamNoConnectionToServer": "Server bağlantısı yoxdur",
   "VOTCloudflareDoesntSupportStreams": "Cloudflare skriptinin versiyası axını dəstəkləmir",
-  "searchField": "Axtarış..."
+  "searchField": "Axtarış...",
+  "VOTTranslateAPIErrors": "API-dən səhvlərin tərcüməsi",
+  "VOTTranslationService": "Tərcümə xidməti",
+  "VOTDetectService": "Kəşf xidməti",
+  "VOTTranslatingError": "Səhv tərcümə"
 }

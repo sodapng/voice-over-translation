@@ -189,5 +189,9 @@
   "VOTUdemyData": "Podaci Udemy",
   "streamNoConnectionToServer": "Nema veze s poslužiteljem",
   "VOTCloudflareDoesntSupportStreams": "Verzija skripte ae ne podržava streaming uživo",
-  "searchField": "Traži..."
+  "searchField": "Traži...",
+  "VOTTranslateAPIErrors": "Prevođenje pogrešaka iz",
+  "VOTTranslationService": "Usluga prevođenja",
+  "VOTDetectService": "Usluga otkrivanja",
+  "VOTTranslatingError": "Prijevod pogreške"
 }

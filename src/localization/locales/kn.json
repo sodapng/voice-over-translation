@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy ಡೇಟಾ",
   "streamNoConnectionToServer": "ಸರ್ವರ್ಗೆ ಸಂಪರ್ಕವಿಲ್ಲ",
   "VOTCloudflareDoesntSupportStreams": "ಸ್ಕ್ರಿಪ್ಟ್ Cloudflare ಆವೃತ್ತಿ ಸ್ಟ್ರೀಮ್ ಅನುವಾದ ಬೆಂಬಲಿಸುವುದಿಲ್ಲ",
-  "searchField": "ಹುಡುಕಿ..."
+  "searchField": "ಹುಡುಕಿ...",
+  "VOTTranslateAPIErrors": "API ನಿಂದ ದೋಷಗಳನ್ನು ಭಾಷಾಂತರಿಸಿ",
+  "VOTTranslationService": "ಅನುವಾದ ಸೇವೆ",
+  "VOTDetectService": "ಸೇವೆಯನ್ನು ಪತ್ತೆ ಮಾಡಿ",
+  "VOTTranslatingError": "ದೋಷ ಅನುವಾದ"
 }

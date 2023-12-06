@@ -189,5 +189,9 @@
   "VOTUdemyData": "اڈیمی ڈیٹا",
   "streamNoConnectionToServer": "سرور سے کوئی تعلق نہیں ہے",
   "VOTCloudflareDoesntSupportStreams": "اسکرپٹ کا کلاؤڈ فلیئر ورژن اسٹریم ٹرانسلیشن کی حمایت نہیں کرتا ہے ۔ ",
-  "searchField": "تلاش..."
+  "searchField": "تلاش...",
+  "VOTTranslateAPIErrors": "API سے غلطیوں کا ترجمہ کریں",
+  "VOTTranslationService": "ترجمہ سروس",
+  "VOTDetectService": "سروس کا پتہ لگائیں",
+  "VOTTranslatingError": "غلطی کا ترجمہ"
 }

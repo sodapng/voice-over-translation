@@ -189,5 +189,9 @@
   "VOTUdemyData": "उडेमी डाटा",
   "streamNoConnectionToServer": "सर्भरसँग कुनै सम्बन्ध छैन",
   "VOTCloudflareDoesntSupportStreams": "स्क्रिप्टको क्लाउडफ्लेयर संस्करणले स्ट्रिम अनुवादलाई समर्थन गर्दैन",
-  "searchField": "खोजी गर्नुहोस्।.."
+  "searchField": "खोजी गर्नुहोस्।..",
+  "VOTTranslateAPIErrors": "एपीआईबाट त्रुटिहरू अनुवाद गर्नुहोस्",
+  "VOTTranslationService": "अनुवाद सेवा",
+  "VOTDetectService": "सेवा पत्ता लगाउनुहोस्",
+  "VOTTranslatingError": "त्रुटि अनुवाद गर्दै"
 }

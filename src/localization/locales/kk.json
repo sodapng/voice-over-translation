@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Деректері",
   "streamNoConnectionToServer": "Серверге қосылу жоқ",
   "VOTCloudflareDoesntSupportStreams": "Cloudflare сценарийінің нұсқасы ағынды қолдамайды",
-  "searchField": "Іздеу..."
+  "searchField": "Іздеу...",
+  "VOTTranslateAPIErrors": "API-ден қателерді аудару",
+  "VOTTranslationService": "Жазбаша аударма қызметі",
+  "VOTDetectService": "Анықтау қызметі",
+  "VOTTranslatingError": "Қате аудармасы"
 }

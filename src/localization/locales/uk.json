@@ -189,5 +189,9 @@
   "VOTUdemyData": "Дані Udemy",
   "streamNoConnectionToServer": "Немає підключення до сервера",
   "VOTCloudflareDoesntSupportStreams": "Версія сценарію Cloudflare не підтримує потокове передавання",
-  "searchField": "Пошук..."
+  "searchField": "Пошук...",
+  "VOTTranslateAPIErrors": "Переклад помилок з API",
+  "VOTTranslationService": "Сервис перекладу",
+  "VOTDetectService": "Служба виявлення",
+  "VOTTranslatingError": "Переклад помилки"
 }

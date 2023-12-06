@@ -189,5 +189,9 @@
   "VOTUdemyData": "Удеми Податоци",
   "streamNoConnectionToServer": "Нема врска со серверот",
   "VOTCloudflareDoesntSupportStreams": "Верзијата За Облак На сценариото не поддржува превод на поток",
-  "searchField": "Барај..."
+  "searchField": "Барај...",
+  "VOTTranslateAPIErrors": "Преведи грешки ОД АПИ",
+  "VOTTranslationService": "Преведувачка Услуга",
+  "VOTDetectService": "Откривање На Услугата",
+  "VOTTranslatingError": "Преведување на грешката"
 }

@@ -189,5 +189,9 @@
   "VOTUdemyData": "Dữ Liệu Udemy",
   "streamNoConnectionToServer": "Không có kết nối đến máy chủ",
   "VOTCloudflareDoesntSupportStreams": "Phiên Bản Cloudflare của tập lệnh không hỗ trợ dịch luồng",
-  "searchField": "Tìm kiếm..."
+  "searchField": "Tìm kiếm...",
+  "VOTTranslateAPIErrors": "Dịch lỗi TỪ API",
+  "VOTTranslationService": "Dịch Vụ Dịch Thuật",
+  "VOTDetectService": "Phát Hiện Dịch Vụ",
+  "VOTTranslatingError": "Dịch lỗi"
 }

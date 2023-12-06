@@ -189,5 +189,9 @@
   "VOTUdemyData": "داده های Udemy",
   "streamNoConnectionToServer": "هیچ ارتباطی با سرور وجود ندارد",
   "VOTCloudflareDoesntSupportStreams": "نسخه cloudflare از اسکریپت از ترجمه جریان پشتیبانی نمی کند",
-  "searchField": "جستجو کن.."
+  "searchField": "جستجو کن..",
+  "VOTTranslateAPIErrors": "ترجمه خطاها از API",
+  "VOTTranslationService": "خدمات ترجمه",
+  "VOTDetectService": "سرویس تشخیص",
+  "VOTTranslatingError": "ترجمه خطا"
 }

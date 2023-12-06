@@ -189,5 +189,9 @@
   "VOTUdemyData": "بيانات أوديمي",
   "streamNoConnectionToServer": "لا يوجد اتصال بالخادم",
   "VOTCloudflareDoesntSupportStreams": "النسخة كلودفلاري من البرنامج النصي لا يدعم ترجمة تيار",
-  "searchField": "بحث..."
+  "searchField": "بحث...",
+  "VOTTranslateAPIErrors": "ترجمة الأخطاء من واجهة برمجة التطبيقات",
+  "VOTTranslationService": "خدمة الترجمة",
+  "VOTDetectService": "كشف الخدمة",
+  "VOTTranslatingError": "ترجمة الخطأ"
 }

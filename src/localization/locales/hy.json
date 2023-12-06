@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy-Ի Տվյալները",
   "streamNoConnectionToServer": "Սերվերի միացում չկա",
   "VOTCloudflareDoesntSupportStreams": "Cloudflare սցենարի տարբերակը չի աջակցում հոսքային հոսքին",
-  "searchField": "Որոնում.."
+  "searchField": "Որոնում..",
+  "VOTTranslateAPIErrors": "API-ից սխալների փոխանցում",
+  "VOTTranslationService": "Գրավոր թարգմանության ծառայություն",
+  "VOTDetectService": "Հայտնաբերման ծառայություն",
+  "VOTTranslatingError": "Սխալ թարգմանություն"
 }

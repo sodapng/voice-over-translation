@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Мэдээлэл",
   "streamNoConnectionToServer": "Сервертэй холбогдох боломжгүй",
   "VOTCloudflareDoesntSupportStreams": "Скриптийн Cloudflare хувилбар нь урсгалын орчуулгыг дэмждэггүй",
-  "searchField": "Хайх..."
+  "searchField": "Хайх...",
+  "VOTTranslateAPIErrors": "API - аас алдаа орчуулах",
+  "VOTTranslationService": "Орчуулгын Үйлчилгээ",
+  "VOTDetectService": "Үйлчилгээг Илрүүлэх",
+  "VOTTranslatingError": "Алдааг орчуулах"
 }

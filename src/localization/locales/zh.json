@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy数据",
   "streamNoConnectionToServer": "没有连接到服务器",
   "VOTCloudflareDoesntSupportStreams": "Cloudflare版本的脚本不支持流翻译",
-  "searchField": "搜索。.."
+  "searchField": "搜索。..",
+  "VOTTranslateAPIErrors": "从API翻译错误",
+  "VOTTranslationService": "翻译服务",
+  "VOTDetectService": "检测服务",
+  "VOTTranslatingError": "翻译错误"
 }

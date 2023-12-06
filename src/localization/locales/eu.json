@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Datuak",
   "streamNoConnectionToServer": "Ez dago konexiorik zerbitzariarekin",
   "VOTCloudflareDoesntSupportStreams": "Gidoiaren hodei-izpi bertsioak ez du stream itzulpena onartzen",
-  "searchField": "Bilatu..."
+  "searchField": "Bilatu...",
+  "VOTTranslateAPIErrors": "Itzuli ERROREAK APITIK",
+  "VOTTranslationService": "Itzulpen Zerbitzua",
+  "VOTDetectService": "Detektatu Zerbitzua",
+  "VOTTranslatingError": "Errorea itzultzen"
 }

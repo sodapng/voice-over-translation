@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Data",
   "streamNoConnectionToServer": "Palvelimeen ei ole yhteyttä",
   "VOTCloudflareDoesntSupportStreams": "Skriptin Cloudflare-versio ei tue stream-käännöstä",
-  "searchField": "Etsiä..."
+  "searchField": "Etsiä...",
+  "VOTTranslateAPIErrors": "Käännä virheet API: sta",
+  "VOTTranslationService": "käännöspalvelu",
+  "VOTDetectService": "Tunnista Palvelu",
+  "VOTTranslatingError": "Virheen kääntäminen"
 }

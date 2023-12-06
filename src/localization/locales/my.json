@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy ဒေတာ",
   "streamNoConnectionToServer": "ဆာဗာနှင့်ချိတ်ဆက်မှုမရှိပါ။",
   "VOTCloudflareDoesntSupportStreams": "Cloudflare ဗားရှင်းသည် stream ဘာသာပြန်မှုကိုမထောက်ပံ့ပါ။",
-  "searchField": "ရှာဖွေပါ။.."
+  "searchField": "ရှာဖွေပါ။..",
+  "VOTTranslateAPIErrors": "API မှအမှားများကိုဘာသာပြန်ပါ",
+  "VOTTranslationService": "ဘာသာပြန်ဝန်ဆောင်မှု",
+  "VOTDetectService": "ရှာဖွေရေးဝန်ဆောင်မှု",
+  "VOTTranslatingError": "အမှားကိုဘာသာပြန်ခြင်း"
 }

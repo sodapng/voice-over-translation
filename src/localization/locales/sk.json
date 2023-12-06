@@ -189,5 +189,9 @@
   "VOTUdemyData": "Udemy Data",
   "streamNoConnectionToServer": "Neexistuje žiadne pripojenie k serveru",
   "VOTCloudflareDoesntSupportStreams": "Verzia skriptu Cloudflare nepodporuje preklad streamu",
-  "searchField": "Vyhľadávanie..."
+  "searchField": "Vyhľadávanie...",
+  "VOTTranslateAPIErrors": "Preklad chýb z API",
+  "VOTTranslationService": "Prekladateľská Služba",
+  "VOTDetectService": "Zistiť Službu",
+  "VOTTranslatingError": "Preložiť chybu"
 }
