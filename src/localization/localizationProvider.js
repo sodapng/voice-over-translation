@@ -1,5 +1,6 @@
 import defaultLocale from "./locales/en.json";
 import debug from "../utils/debug.js";
+import { votStorage } from "../utils/storage.js";
 
 const localesVersion = 2;
 const localesUrl = `https://raw.githubusercontent.com/ilyhalight/voice-over-translation/${
@@ -11,27 +12,66 @@ export const availableLocales = [
   "en",
   "ru",
 
+  "af",
+  "am",
   "ar",
+  "az",
+  "bg",
   "bn",
+  "bs",
+  "ca",
   "cs",
+  "cy",
+  "da",
   "de",
+  "el",
   "es",
+  "et",
+  "eu",
   "fa",
+  "fi",
   "fr",
+  "gl",
   "hi",
+  "hr",
+  "hu",
+  "hy",
   "id",
   "it",
   "ja",
   "jv",
   "kk",
+  "km",
+  "kn",
   "ko",
+  "lo",
+  "mk",
+  "ml",
+  "mn",
   "ms",
+  "mt",
+  "my",
+  "ne",
+  "nl",
+  "pa",
+  "pl",
   "pt",
+  "ro",
+  "si",
+  "sk",
+  "sl",
+  "sq",
+  "sr",
+  "su",
+  "sv",
+  "sw",
   "tr",
   "uk",
   "ur",
+  "uz",
   "vi",
   "zh",
+  "zu",
 ];
 
 export const localizationProvider = new (class {
@@ -45,7 +85,7 @@ export const localizationProvider = new (class {
   ];
 
   constructor() {
-    const langOverride = GM_getValue("locale-lang-override", "auto");
+    const langOverride = votStorage.syncGet("locale-lang-override", "auto");
     if (langOverride && langOverride !== "auto") {
       this.lang = langOverride;
     } else {
@@ -54,18 +94,18 @@ export const localizationProvider = new (class {
           ?.substr(0, 2)
           ?.toLowerCase() ?? "en";
     }
-    this.setLocaleFromJsonString(GM_getValue("locale-phrases", ""));
+    this.setLocaleFromJsonString(votStorage.syncGet("locale-phrases", ""));
   }
 
   reset() {
-    this.gmValues.forEach((v) => GM_deleteValue(v));
+    this.gmValues.forEach((v) => votStorage.syncDelete(v));
   }
 
   async update(force = false) {
     if (
       !force &&
-      Number(await GM_getValue("locale-version", 0)) === localesVersion &&
-      (await GM_getValue("locale-lang")) === this.lang
+      (await votStorage.get("locale-version", 0, true)) === localesVersion &&
+      (await votStorage.get("locale-lang")) === this.lang
     ) {
       return;
     }
@@ -78,19 +118,21 @@ export const localizationProvider = new (class {
         throw response.status;
       })
       .then(async (text) => {
-        await GM_setValue("locale-phrases", text);
+        await votStorage.set("locale-phrases", text);
         this.setLocaleFromJsonString(text);
         const version = this.getFromLocale(this.locale, "__version__");
         if (typeof version === "number")
-          await GM_setValue("locale-version", version);
-        await GM_setValue("locale-lang", this.lang);
+          await votStorage.set("locale-version", version);
+        await votStorage.set("locale-lang", this.lang);
       })
       .catch(async (error) => {
         console.error(
           "[VOT] [localizationProvider] failed get locale, cause:",
           error,
         );
-        this.setLocaleFromJsonString(await GM_getValue("locale-phrases", ""));
+        this.setLocaleFromJsonString(
+          await votStorage.get("locale-phrases", ""),
+        );
       });
   }
 
