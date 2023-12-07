@@ -94,7 +94,9 @@
     "*://peervideo.club/*",
     "*://tube.la-dina.net/*",
     "*://peertube.tmp.rcp.tf/*",
-    "*://geo.dailymotion.com/*"
+    "*://geo.dailymotion.com/*",
+    "*://trovo.live/*",
+    "*://disk.yandex.ru/i/*"
   ],
   "require": [
     "https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/light/protobuf.min.js",
