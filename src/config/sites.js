@@ -2,6 +2,7 @@ import {
   sitesInvidious,
   sitesPiped,
   sitesProxyTok,
+  sitesPeertube,
 } from "./alternativeUrls.js";
 
 const sites = () => {
@@ -195,6 +196,18 @@ const sites = () => {
       url: "https://www.eporner.com/",
       match: /^(www.)?eporner.com$/,
       selector: ".vjs-v7",
+    },
+    {
+      host: "peertube",
+      url: "tube.shanti.cafe", // This is a stub. The present value is set using window.location.origin. Check "src/index.js:videoObserver.onVideoAdded.addListener" to get more info
+      match: sitesPeertube,
+      selector: ".vjs-v7",
+    },
+    {
+      host: "dailymotion",
+      url: "https://www.dailymotion.com/video/", // This is a stub. The present value is set using window.location.origin. Check "src/index.js:videoObserver.onVideoAdded.addListener" to get more info
+      match: /^geo.dailymotion.com$/,
+      selector: ".player",
     },
   ];
 };

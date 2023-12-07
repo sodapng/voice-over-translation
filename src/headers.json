@@ -1,7 +1,7 @@
 {
   "name": "[VOT] - Voice Over Translation",
   "description": "A small extension that adds a Yandex Browser video translation to other browsers",
-  "version": "1.5.0-beta9",
+  "version": "1.5.0-beta10",
   "author": "sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD",
   "namespace": "vot",
   "icon": "https://translate.yandex.ru/icons/favicon.ico",
@@ -84,7 +84,17 @@
     "*://proxitok.lunar.icu/*",
     "*://proxitok.privacy.com.de/*",
     "*://rumble.com/*",
-    "*://*.eporner.com/*"
+    "*://*.eporner.com/*",
+    "*://peertube.1312.media/*",
+    "*://tube.shanti.cafe/*",
+    "*://bee-tube.fr/*",
+    "*://video.sadmin.io/*",
+    "*://dalek.zone/*",
+    "*://review.peertube.biz/*",
+    "*://peervideo.club/*",
+    "*://tube.la-dina.net/*",
+    "*://peertube.tmp.rcp.tf/*",
+    "*://geo.dailymotion.com/*"
   ],
   "require": [
     "https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/light/protobuf.min.js",

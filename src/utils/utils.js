@@ -198,6 +198,40 @@ const getVideoId = (service, video) => {
     case "eporner":
       // ! LINK SHOULD BE LIKE THIS eporner.com/video-XXXXXXXXX/isdfsd-dfjsdfjsdf-dsfsdf-dsfsda-dsad-ddsd
       return url.pathname.match(/video-([^/]+)\/([^/]+)/)?.[0];
+    case "peertube":
+      return url.pathname.match(/\/w\/([^/]+)/)?.[0];
+    case "dailymotion": {
+      // we work in the context of the player
+      // geo.dailymotion.com
+
+      const plainPlayerConfig = Array.from(document.scripts).filter((s) =>
+        s.innerText.trim().includes("window.__PLAYER_CONFIG__ = {"),
+      );
+      if (!plainPlayerConfig.length) {
+        return false;
+      }
+
+      try {
+        let clearPlainConfig = plainPlayerConfig[0].innerText
+          .trim()
+          .replace("window.__PLAYER_CONFIG__ = ", "");
+        if (clearPlainConfig.endsWith("};")) {
+          clearPlainConfig = clearPlainConfig.substring(
+            0,
+            clearPlainConfig.length - 1,
+          );
+        }
+        const playerConfig = JSON.parse(clearPlainConfig);
+        const videoUrl =
+          playerConfig.context.embedder ?? playerConfig.context.http_referer;
+        console.log(videoUrl, playerConfig);
+        return videoUrl.match(/\/video\/([^/]+)/)?.[1];
+      } catch (e) {
+        console.error("[VOT]", e);
+        return false;
+      }
+    }
+
     default:
       return false;
   }

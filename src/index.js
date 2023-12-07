@@ -2069,9 +2069,6 @@ async function main() {
     for (const site of getSites()) {
       if (!site) continue;
 
-      // fix multiply translation buttons in rumble.com
-      // only main video has poster
-
       let container;
       if (site.shadowRoot) {
         container = site.selector
@@ -2092,8 +2089,15 @@ async function main() {
       }
       if (!container) continue;
       if (site.host === "rumble" && container.querySelector("vot-block")) {
+        // fix multiply translation buttons in rumble.com
         continue;
       }
+
+      if (site.host === "peertube") {
+        // we set the url of the current site, since peertube doesn't have a main server
+        site.url = window.location.origin;
+      }
+
       if (!videosWrappers.has(video)) {
         videosWrappers.set(video, new VideoHandler(video, container, site));
         break;
