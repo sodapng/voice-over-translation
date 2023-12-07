@@ -231,7 +231,26 @@ const getVideoId = (service, video) => {
         return false;
       }
     }
+    case "trovo": {
+      if (!url.pathname.startsWith("/s/")) {
+        return false;
+      }
 
+      const vid = url.searchParams.get("vid");
+      if (!vid) {
+        return false;
+      }
+
+      const path = url.pathname.match(/([^/]+)\/([\d]+)/)?.[0];
+      if (!path) {
+        return false;
+      }
+
+      return `${path}?vid=${vid}`;
+    }
+    case "yandexdisk": {
+      return url.pathname.match(/\/i\/([^/]+)/)?.[1];
+    }
     default:
       return false;
   }
