@@ -11,7 +11,7 @@ import {
   initHls,
 } from "./utils/utils.js";
 import {
-  autoVolume,
+  defaultAutoVolume,
   defaultTranslationService,
   defaultDetectService,
   m3u8ProxyHost,
@@ -271,6 +271,7 @@ class VideoHandler {
         1,
         true,
       ),
+      autoVolume: (await votStorage.get("autoVolume", 15, true)) / 100,
       showVideoSlider: await votStorage.get("showVideoSlider", 1, true),
       syncVolume: await votStorage.get("syncVolume", 0, true),
       subtitlesMaxLength: await votStorage.get("subtitlesMaxLength", 300, true),
@@ -546,11 +547,22 @@ class VideoHandler {
       );
 
       this.votAutoSetVolumeCheckbox = ui.createCheckbox(
-        `${localizationProvider.get("VOTAutoSetVolume")} ${autoVolume * 100}%`,
+        `${localizationProvider.get("VOTAutoSetVolume")}`,
         this.data?.autoSetVolumeYandexStyle ?? true,
       );
       this.votSettingsDialog.bodyContainer.appendChild(
         this.votAutoSetVolumeCheckbox.container,
+      );
+      this.votAutoSetVolumeSlider = ui.createSlider(
+        `<strong>${
+          (this.data?.autoVolume ?? defaultAutoVolume) * 100
+        }%</strong>`,
+        (this.data?.autoVolume ?? defaultAutoVolume) * 100,
+        0,
+        100,
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votAutoSetVolumeSlider.container,
       );
 
       this.votShowVideoSliderCheckbox = ui.createCheckbox(
@@ -905,6 +917,15 @@ class VideoHandler {
         },
       );
 
+      this.votAutoSetVolumeSlider.input.addEventListener("input", async (e) => {
+        const presetAutoVolume = Number(e.target.value);
+        this.data.autoVolume = presetAutoVolume / 100;
+        await votStorage.set("autoVolume", presetAutoVolume);
+        this.votAutoSetVolumeSlider.label.querySelector(
+          "strong",
+        ).innerHTML = `${presetAutoVolume}%`;
+      });
+
       this.votShowVideoSliderCheckbox.input.addEventListener(
         "change",
         async (e) => {
@@ -1130,7 +1151,9 @@ class VideoHandler {
         );
       }
     } else if (this.site.host === "twitter") {
-      eContainer = document.querySelector('div[data-testid="videoPlayer"');
+      eContainer = document.querySelector('div[data-testid="videoPlayer"]');
+    } else if (this.site.host === "yandexdisk") {
+      eContainer = document.querySelector(".video-player__player");
     } else {
       eContainer = this.container;
     }
@@ -1428,8 +1451,19 @@ class VideoHandler {
       videoData.duration = udemyData.duration || videoData.duration;
       videoData.detectedLanguage = udemyData.detectedLanguage;
       videoData.translationHelp = udemyData.translationHelp;
+    } else if (
+      this.site.host === "vk" ||
+      this.site.host === "piped" ||
+      this.site.host === "invidious" ||
+      this.site.host === "bitchute" ||
+      this.site.host === "rumble" ||
+      this.site.host === "peertube" ||
+      this.site.host === "dailymotion" ||
+      this.site.host === "trovo" ||
+      this.site.host === "yandexdisk"
+    ) {
+      videoData.detectedLanguage = "auto";
     }
-
     return videoData;
   }
 
@@ -1729,7 +1763,7 @@ class VideoHandler {
             typeof this.data.autoSetVolumeYandexStyle === "number" &&
             this.data.autoSetVolumeYandexStyle
           ) {
-            this.setVideoVolume(autoVolume);
+            this.setVideoVolume(this.data.autoVolume);
           }
 
           if (
@@ -1754,10 +1788,10 @@ class VideoHandler {
             this.votButton.container.dataset.status !== "success";
 
           if (this.data.autoSetVolumeYandexStyle === 1) {
-            this.votVideoVolumeSlider.input.value = autoVolume * 100;
+            this.votVideoVolumeSlider.input.value = this.data.autoVolume * 100;
             this.votVideoVolumeSlider.label.querySelector(
               "strong",
-            ).innerHTML = `${autoVolume * 100}%`;
+            ).innerHTML = `${this.data.autoVolume * 100}%`;
             ui.updateSlider(this.votVideoVolumeSlider.input);
           }
 
@@ -1851,7 +1885,7 @@ class VideoHandler {
           typeof this.data.autoSetVolumeYandexStyle === "number" &&
           this.data.autoSetVolumeYandexStyle
         ) {
-          this.setVideoVolume(autoVolume);
+          this.setVideoVolume(this.data.autoVolume);
         }
 
         switch (this.site.host) {
@@ -1926,10 +1960,10 @@ class VideoHandler {
           this.votButton.container.dataset.status !== "success";
 
         if (this.data.autoSetVolumeYandexStyle === 1) {
-          this.votVideoVolumeSlider.input.value = autoVolume * 100;
+          this.votVideoVolumeSlider.input.value = this.data.autoVolume * 100;
           this.votVideoVolumeSlider.label.querySelector(
             "strong",
-          ).innerHTML = `${autoVolume * 100}%`;
+          ).innerHTML = `${this.data.autoVolume * 100}%`;
           ui.updateSlider(this.votVideoVolumeSlider.input);
         }
 
