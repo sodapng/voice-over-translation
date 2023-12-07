@@ -1348,7 +1348,10 @@ class VideoHandler {
   // Set video volume in 0.00-1.00 format
   setVideoVolume(volume) {
     if (this.site.host === "youtube") {
-      return youtubeUtils.setVideoVolume(volume);
+      const videoVolume = youtubeUtils.setVideoVolume(volume);
+      if (videoVolume) {
+        return;
+      }
     }
     this.video.volume = volume;
   }

@@ -86,7 +86,11 @@ function getVideoVolume() {
 }
 
 function setVideoVolume(volume) {
-  return getPlayer()?.setVolume(Math.round(volume * 100));
+  const player = getPlayer();
+  if (player?.setVolume) {
+    player.setVolume(Math.round(volume * 100));
+    return true;
+  }
 }
 
 function videoSeek(video, time) {
