@@ -209,6 +209,18 @@ const sites = () => {
       match: /^geo.dailymotion.com$/,
       selector: ".player",
     },
+    {
+      host: "trovo",
+      url: "https://trovo.live/s/",
+      match: /^trovo.live$/,
+      selector: ".player-video",
+    },
+    {
+      host: "yandexdisk",
+      url: "https://disk.yandex.ru/i/",
+      match: /^disk.yandex.ru$/,
+      selector: "yaplayertag > div:nth-of-type(1)",
+    },
   ];
 };
 
