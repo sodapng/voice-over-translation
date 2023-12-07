@@ -1687,7 +1687,6 @@ class VideoHandler {
             reqInterval * 1000,
           );
 
-          // const streamURL = "https://stream.ram.radio/audio/ram.stream_aac/playlist.m3u8";
           debug.log(resOrError.translatedInfo.url);
           const streamURL = `https://${m3u8ProxyHost}/?all=yes&origin=${encodeURIComponent(
             "https://strm.yandex.ru",
@@ -1695,9 +1694,7 @@ class VideoHandler {
             "https://strm.yandex.ru",
           )}&url=${encodeURIComponent(resOrError.translatedInfo.url)}`;
           debug.log(streamURL);
-          // const timestamp = Date.now(); // get timestamp
 
-          debug.log("Test hls support");
           if (this.hls) {
             this.hls.on(Hls.Events.MEDIA_ATTACHED, function () {
               debug.log("audio and hls.js are now bound together !");
@@ -1743,17 +1740,8 @@ class VideoHandler {
             throw new VOTLocalizedError("audioFormatNotSupported");
           }
 
-          // const streamTime = youtubeUtils.getStreamTime(this.video)
-
-          // youtubeUtils.videoSeekTo(this.video, streamTime.absoluteTime - (resOrError.translatedInfo.timestamp / 1000));
-
-          // console.log("video times", this.video.duration, this.video.currentTime);
-          // console.log("stream times", streamTime.currentTime, streamTime.absoluteTime);
-          // console.log("trans info times", resOrError.translatedInfo.timestamp);
-
           youtubeUtils.videoSeek(this.video, 10); // 10 is the most successful number for streaming. With it, the audio is not so far behind the original
 
-          // TODO: Remove code repetition
           this.volumeOnStart = this.getVideoVolume();
           if (typeof this.data.defaultVolume === "number") {
             this.audio.volume = this.data.defaultVolume / 100;
@@ -1776,7 +1764,6 @@ class VideoHandler {
           }
 
           if (this.video && !this.video.paused) this.lipSync("play");
-          // this.audio.play();
           videoLipSyncEvents.forEach((e) =>
             this.video.addEventListener(e, this.handleVideoEventBound),
           );

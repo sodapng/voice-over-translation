@@ -100,10 +100,8 @@ const getVideoId = (service, video) => {
         return url.pathname.match(/(?:videos)\/([^/]+)/)?.[0];
       }
     case "proxytok":
-      // return url.pathname.match(/video\/([^/]+)/)?.[1];
       return url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
     case "tiktok": {
-      // let id = url.pathname.match(/video\/([^/]+)/)?.[1];
       let id = url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
       if (!id) {
         const playerEl = video.closest(".xgplayer-playing, .tiktok-web-player");
