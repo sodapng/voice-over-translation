@@ -130,4 +130,8 @@
     color: #f28b82;
     fill: #f28b82;
   }
+
+  & svg {
+    width: fit-content;
+  }
 }
