@@ -37,6 +37,10 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[TikTok](https://tiktok.com/)**
 - **[Rumble](https://rumble.com/)**
 - **[EPorner](https://www.eporner.com/)**
+- **[Peertube](https://tube.shanti.cafe/)**
+- **[Dailymotion](https://www.dailymotion.com/)**
+- **[Trovo](https://trovo.live/)**
+- **[Yandex Disk](https://disk.yandex.ru/)**
 - **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[[⚠️] Invidious](https://yewtu.be)**
 - **[[⚠️] Piped](https://piped.video)**
@@ -154,12 +158,14 @@ Example of changing styles:
 | Status | Browser | Extension
 |---|---|---
 | ⠀✅ | Any | Tampermonkey
-| ⠀[Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Safari | Userscripts
-| ⠀[Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Any | Violetmonkey
-| ⠀[Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Any | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
-| ⠀[Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Firefox | Firemonkey
-| ⠀[Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Any | Greasemonkey
-| ⠀[Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Any | OrangeMonkey
+| ⠀[⚠️ Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Safari | Userscripts
+| ⠀[⚠️ Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Any | Violetmonkey
+| ⠀[⚠️ Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Any | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
+| ⠀[⚠️ Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Firefox | Firemonkey
+| ⠀[⚠️ Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Any | Greasemonkey
+| ⠀[⚠️ Download](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Any | OrangeMonkey
+
+⚠️ - They are not priority extensions. These extensions, due to the "cloudflare" version of the user script, do not have cross-site synchronization of settings, and are also (practically) not tested before the release of a new version of the user script.
 
 ![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example_en.jpg "btn")
 

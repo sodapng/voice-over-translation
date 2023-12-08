@@ -1309,10 +1309,8 @@ const getVideoId = (service, video) => {
         return url.pathname.match(/(?:videos)\/([^/]+)/)?.[0];
       }
     case "proxytok":
-      // return url.pathname.match(/video\/([^/]+)/)?.[1];
       return url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
     case "tiktok": {
-      // let id = url.pathname.match(/video\/([^/]+)/)?.[1];
       let id = url.pathname.match(/([^/]+)\/video\/([^/]+)/)?.[0];
       if (!id) {
         const playerEl = video.closest(".xgplayer-playing, .tiktok-web-player");
@@ -1707,64 +1705,20 @@ function getVideoVolume() {
 }
 
 function setVideoVolume(volume) {
-  return getPlayer()?.setVolume(Math.round(volume * 100));
-}
-
-function checkStreamTime(streamTime) {
-  // TODO: remove
-  const absTime = streamTime.absoluteTime;
-  return (
-    !(absTime || !Number.isFinite(absTime) || absTime <= 0) &&
-    Math.abs(Date.now() - 1000 * absTime) < 86400000 &&
-    streamTime.currentTime !== 0
-  );
-  // return !(void 0 === (t = e.absoluteTime) || !Number.isFinite(t) || t <= 0) && Math.abs(Date.now() - 1e3 * t) < 864e5 && 0 !== e.currentTime;
-}
-
-function getStreamTime(video) {
-  // TODO: remove
   const player = getPlayer();
-  const progressState = player?.getProgressState?.call();
-  let absoluteTime = player?.getMediaReferenceTime
-    ? player?.getMediaReferenceTime?.call()
-    : progressState?.ingestionTime;
-  const currentTime = progressState?.seekableEnd || video.currentTime;
-
-  // getStreamTimes -> ue()
-  // СЕЙЧАС ВРЕМЯ ТРАНСЛЯЦИИ УСТАНАВЛИВАЕТСЯ НЕПРАВИЛЬНО И ПЕРЕВОД ЗАЛАГИВАЕТ
-
-  const streamTime = {
-    absoluteTime,
-    currentTime,
-  };
-
-  return checkStreamTime(streamTime), streamTime;
+  if (player?.setVolume) {
+    player.setVolume(Math.round(volume * 100));
+    return true;
+  }
 }
 
 function videoSeek(video, time) {
   // * TIME IN MS
   debug/* default */.Z.log("videoSeek", time);
-  // const player = getPlayer();
-  // if (!player) {
-  //   console.error("player not found")
-  //   return false;
-  // }
-
-  // const streamTime = getStreamTime(video);
-  // console.log("videoSeek", video.currentTime - time )
-  // const finalTime = streamTime.currentTime - time
-  // const finalTime = video.currentTime - time;
   const preTime =
     getPlayer()?.getProgressState()?.seekableEnd || video.currentTime;
   const finalTime = preTime - time; // we always throw it to the end of the stream - time
   video.currentTime = finalTime;
-
-  // return player.seekTo.call(time, true);
-}
-
-function streamToLive() {
-  // TODO: remove
-  return getPlayer()?.seekToStreamTime();
 }
 
 function getSubtitles() {
@@ -1839,9 +1793,7 @@ const youtubeUtils = {
   getSubtitles,
   getVideoData,
   setVideoVolume,
-  getStreamTime,
   videoSeek,
-  streamToLive,
 };
 
 ;// CONCATENATED MODULE: ./src/yandexProtobuf.js
@@ -5199,7 +5151,10 @@ class VideoHandler {
   // Set video volume in 0.00-1.00 format
   setVideoVolume(volume) {
     if (this.site.host === "youtube") {
-      return youtubeUtils.setVideoVolume(volume);
+      const videoVolume = youtubeUtils.setVideoVolume(volume);
+      if (videoVolume) {
+        return;
+      }
     }
     this.video.volume = volume;
   }
@@ -5538,7 +5493,6 @@ class VideoHandler {
             reqInterval * 1000,
           );
 
-          // const streamURL = "https://stream.ram.radio/audio/ram.stream_aac/playlist.m3u8";
           debug/* default */.Z.log(resOrError.translatedInfo.url);
           const streamURL = `https://${config/* m3u8ProxyHost */.e6}/?all=yes&origin=${encodeURIComponent(
             "https://strm.yandex.ru",
@@ -5546,9 +5500,7 @@ class VideoHandler {
             "https://strm.yandex.ru",
           )}&url=${encodeURIComponent(resOrError.translatedInfo.url)}`;
           debug/* default */.Z.log(streamURL);
-          // const timestamp = Date.now(); // get timestamp
 
-          debug/* default */.Z.log("Test hls support");
           if (this.hls) {
             this.hls.on(Hls.Events.MEDIA_ATTACHED, function () {
               debug/* default */.Z.log("audio and hls.js are now bound together !");
@@ -5594,17 +5546,8 @@ class VideoHandler {
             throw new VOTLocalizedError("audioFormatNotSupported");
           }
 
-          // const streamTime = youtubeUtils.getStreamTime(this.video)
-
-          // youtubeUtils.videoSeekTo(this.video, streamTime.absoluteTime - (resOrError.translatedInfo.timestamp / 1000));
-
-          // console.log("video times", this.video.duration, this.video.currentTime);
-          // console.log("stream times", streamTime.currentTime, streamTime.absoluteTime);
-          // console.log("trans info times", resOrError.translatedInfo.timestamp);
-
           youtubeUtils.videoSeek(this.video, 10); // 10 is the most successful number for streaming. With it, the audio is not so far behind the original
 
-          // TODO: Remove code repetition
           this.volumeOnStart = this.getVideoVolume();
           if (typeof this.data.defaultVolume === "number") {
             this.audio.volume = this.data.defaultVolume / 100;
@@ -5627,7 +5570,6 @@ class VideoHandler {
           }
 
           if (this.video && !this.video.paused) this.lipSync("play");
-          // this.audio.play();
           videoLipSyncEvents.forEach((e) =>
             this.video.addEventListener(e, this.handleVideoEventBound),
           );

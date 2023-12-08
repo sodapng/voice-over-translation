@@ -38,6 +38,10 @@
 - **[TikTok](https://tiktok.com/)**
 - **[Rumble](https://rumble.com/)**
 - **[EPorner](https://www.eporner.com/)**
+- **[Peertube](https://tube.shanti.cafe/)**
+- **[Dailymotion](https://www.dailymotion.com/)**
+- **[Trovo](https://trovo.live/)**
+- **[Yandex Disk](https://disk.yandex.ru/)**
 - **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[[⚠️] Invidious](https://yewtu.be)**
 - **[[⚠️] Piped](https://piped.video)**
@@ -152,19 +156,21 @@ npm i
 | ⠀✅ | Opera GX | LVL4 (core: 91.0.4516.36) | Windows | Tampermonkey
 | ⠀✅ | Opera | v92.0.4561.43 | Windows | Tampermonkey
 | ⠀✅ | Vivaldi | 5.7.2921.63 | Windows, Linux | Tampermonkey
-| ⠀❔ | Safari | v15.6.1 | MacOS, iOS | Userscripts
+| ⠀✅ | Safari | v15.6.1 | MacOS, iOS | Userscripts
 | ⠀✅ | Kiwi Browser | v116.0.5845.61 | Android | Tampermonkey
 
 ## Протестировано в следующих расширениях для юзерскриптов:
 | Статус | Браузер | Расширение
 |---|---|---
 | ⠀✅ | Любой | Tampermonkey
-| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Safari | Userscripts
-| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | Violetmonkey
-| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
-| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Firefox | Firemonkey
-| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | Greasemonkey
-| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | OrangeMonkey
+| ⠀[⚠️ Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Safari | Userscripts
+| ⠀[⚠️ Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | Violetmonkey
+| ⠀[⚠️ Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
+| ⠀[⚠️ Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Firefox | Firemonkey
+| ⠀[⚠️ Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | Greasemonkey
+| ⠀[⚠️ Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | OrangeMonkey
+
+⚠️ - Не являются приоритетными расширениями. Эти расширения из-за "cloudflare" версии юзерскрипта не имеют межсайтовой синхронизации настроек, а так же (практически) не тестируются перед выходом новой версии юзерскрипта.
 
 ![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.jpg "btn")
 
