@@ -271,7 +271,8 @@ class VideoHandler {
         1,
         true,
       ),
-      autoVolume: (await votStorage.get("autoVolume", 15, true)) / 100,
+      autoVolume:
+        (await votStorage.get("autoVolume", defaultAutoVolume, true)) / 100,
       showVideoSlider: await votStorage.get("showVideoSlider", 1, true),
       syncVolume: await votStorage.get("syncVolume", 0, true),
       subtitlesMaxLength: await votStorage.get("subtitlesMaxLength", 300, true),
