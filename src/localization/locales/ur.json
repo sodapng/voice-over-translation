@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "API سے غلطیوں کا ترجمہ کریں",
   "VOTTranslationService": "ترجمہ سروس",
   "VOTDetectService": "سروس کا پتہ لگائیں",
-  "VOTTranslatingError": "غلطی کا ترجمہ"
+  "VOTTranslatingError": "غلطی کا ترجمہ",
+  "VOTProxyWorkerHost": "پراکسی ورکر ایڈریس درج کریں ۔ ",
+  "VOTM3u8ProxyHost": "M3u8 پراکسی ورکر کا پتہ درج کریں ۔ ",
+  "proxySettings": "پراکسی کی ترتیبات"
 }

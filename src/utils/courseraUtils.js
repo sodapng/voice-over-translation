@@ -38,7 +38,7 @@ function getPlayerData() {
 }
 
 function getPlayer() {
-  return document.querySelector("#video_player");
+  return document.querySelector(".vjs-v6");
 }
 
 // Get the video data from the player

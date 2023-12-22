@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Traducir errores de la API",
   "VOTTranslationService": "Servicio de Traducción",
   "VOTDetectService": "Detectar Servicio",
-  "VOTTranslatingError": "Traduciendo el error"
+  "VOTTranslatingError": "Traduciendo el error",
+  "VOTProxyWorkerHost": "Ingrese la dirección del trabajador proxy",
+  "VOTM3u8ProxyHost": "Ingrese la dirección del trabajador proxy m3u8",
+  "proxySettings": "Configuración de Proxy"
 }

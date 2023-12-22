@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "API ನಿಂದ ದೋಷಗಳನ್ನು ಭಾಷಾಂತರಿಸಿ",
   "VOTTranslationService": "ಅನುವಾದ ಸೇವೆ",
   "VOTDetectService": "ಸೇವೆಯನ್ನು ಪತ್ತೆ ಮಾಡಿ",
-  "VOTTranslatingError": "ದೋಷ ಅನುವಾದ"
+  "VOTTranslatingError": "ದೋಷ ಅನುವಾದ",
+  "VOTProxyWorkerHost": "ಪ್ರಾಕ್ಸಿ ಕಾರ್ಮಿಕರ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ",
+  "VOTM3u8ProxyHost": "M3u8 ಪ್ರಾಕ್ಸಿ ಕೆಲಸಗಾರನ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ",
+  "proxySettings": "ಪ್ರಾಕ್ಸಿ ಸೆಟ್ಟಿಂಗ್ಗಳು"
 }

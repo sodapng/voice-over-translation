@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "API-dan xatolarni tarjima qiling",
   "VOTTranslationService": "Tarjima Xizmati",
   "VOTDetectService": "Xizmatni Aniqlash",
-  "VOTTranslatingError": "Xatoni tarjima qilish"
+  "VOTTranslatingError": "Xatoni tarjima qilish",
+  "VOTProxyWorkerHost": "Proksi-server manzilini kiriting",
+  "VOTM3u8ProxyHost": "M3u8 proksi-serverining manzilini kiriting",
+  "proxySettings": "Proksi Moslamalari"
 }

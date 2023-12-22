@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Грешки при превод от АПИ",
   "VOTTranslationService": "Преводачески Услуги",
   "VOTDetectService": "Откриване На Услуга",
-  "VOTTranslatingError": "Превод на грешка"
+  "VOTTranslatingError": "Превод на грешка",
+  "VOTProxyWorkerHost": "Въведете адреса на пълномощника",
+  "VOTM3u8ProxyHost": "Въведете адреса на прокси служителя м3у8",
+  "proxySettings": "Настройки На Прокси Сървъра"
 }

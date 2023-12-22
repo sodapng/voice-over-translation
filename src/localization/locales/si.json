@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "API වෙතින් දෝෂ පරිවර්තනය කරන්න",
   "VOTTranslationService": "පරිවර්තන සේවාව",
   "VOTDetectService": "සේවාව හඳුනාගන්න",
-  "VOTTranslatingError": "දෝෂය පරිවර්තනය කිරීම"
+  "VOTTranslatingError": "දෝෂය පරිවර්තනය කිරීම",
+  "VOTProxyWorkerHost": "ප්රොක්සි සේවක ලිපිනය ඇතුලත් කරන්න",
+  "VOTM3u8ProxyHost": "M3u8 ප්රොක්සි සේවකයාගේ ලිපිනය ඇතුලත් කරන්න",
+  "proxySettings": "ප්රොක්සි සැකසුම්"
 }

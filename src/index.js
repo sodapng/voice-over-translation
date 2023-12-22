@@ -15,6 +15,7 @@ import {
   defaultTranslationService,
   defaultDetectService,
   m3u8ProxyHost,
+  proxyWorkerHost,
 } from "./config/config.js";
 import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
 import {
@@ -29,7 +30,6 @@ import {
 } from "./localization/localizationProvider.js";
 import ui from "./ui.js";
 import { syncVolume } from "./utils/volume.js";
-import { workerHost } from "./config/config-cloudflare.js";
 import debug from "./utils/debug.js";
 
 import Bowser from "bowser";
@@ -271,7 +271,8 @@ class VideoHandler {
         1,
         true,
       ),
-      autoVolume: (await votStorage.get("autoVolume", 15, true)) / 100,
+      autoVolume:
+        (await votStorage.get("autoVolume", defaultAutoVolume, true)) / 100,
       showVideoSlider: await votStorage.get("showVideoSlider", 1, true),
       syncVolume: await votStorage.get("syncVolume", 0, true),
       subtitlesMaxLength: await votStorage.get("subtitlesMaxLength", 300, true),
@@ -297,6 +298,8 @@ class VideoHandler {
         "detectService",
         defaultDetectService,
       ),
+      m3u8ProxyHost: await votStorage.get("m3u8ProxyHost", m3u8ProxyHost),
+      proxyWorkerHost: await votStorage.get("proxyWorkerHost", proxyWorkerHost),
     };
     this.videoData = await this.getVideoData();
 
@@ -594,16 +597,6 @@ class VideoHandler {
         this.votSyncVolumeCheckbox.container,
       );
 
-      // cf version only
-      this.votAudioProxyCheckbox = ui.createCheckbox(
-        localizationProvider.get("VOTAudioProxy"),
-        this.data?.audioProxy ?? false,
-      );
-      this.votAudioProxyCheckbox.container.hidden = BUILD_MODE !== "cloudflare";
-      this.votSettingsDialog.bodyContainer.appendChild(
-        this.votAudioProxyCheckbox.container,
-      );
-
       this.votTranslationServiceSelect = ui.createVOTSelect(
         votStorage.syncGet("translationService", defaultTranslationService),
         localizationProvider.get("VOTTranslationService"),
@@ -677,6 +670,44 @@ class VideoHandler {
       );
       this.votSettingsDialog.bodyContainer.appendChild(
         this.votSubtitlesHighlightWordsCheckbox.container,
+      );
+
+      // PROXY
+
+      this.votProxyHeader = ui.createHeader(
+        localizationProvider.get("proxySettings"),
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(this.votProxyHeader);
+
+      this.votM3u8ProxyHostTextfield = ui.createTextfield(
+        localizationProvider.get("VOTM3u8ProxyHost"),
+        this.data?.m3u8ProxyHost,
+        m3u8ProxyHost,
+      );
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votM3u8ProxyHostTextfield.container,
+      );
+
+      // cf version only
+      this.votProxyWorkerHostTextfield = ui.createTextfield(
+        localizationProvider.get("VOTProxyWorkerHost"),
+        this.data?.proxyWorkerHost,
+        proxyWorkerHost,
+      );
+      this.votProxyWorkerHostTextfield.container.hidden =
+        BUILD_MODE !== "cloudflare";
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votProxyWorkerHostTextfield.container,
+      );
+
+      // cf version only
+      this.votAudioProxyCheckbox = ui.createCheckbox(
+        localizationProvider.get("VOTAudioProxy"),
+        this.data?.audioProxy ?? false,
+      );
+      this.votAudioProxyCheckbox.container.hidden = BUILD_MODE !== "cloudflare";
+      this.votSettingsDialog.bodyContainer.appendChild(
+        this.votAudioProxyCheckbox.container,
       );
 
       // ABOUT
@@ -960,15 +991,6 @@ class VideoHandler {
         );
       });
 
-      this.votAudioProxyCheckbox.input.addEventListener("change", async (e) => {
-        this.data.audioProxy = Number(e.target.checked);
-        await votStorage.set("audioProxy", this.data.audioProxy);
-        debug.log(
-          "audioProxy value changed. New value: ",
-          this.data.audioProxy,
-        );
-      });
-
       this.votTranslationServiceSelect.labelElement.addEventListener(
         "change",
         async (e) => {
@@ -984,7 +1006,7 @@ class VideoHandler {
         },
       );
 
-      // Subtitles
+      // SUBTITLES
 
       this.votSubtitlesMaxLengthSlider.input.addEventListener(
         "input",
@@ -1029,6 +1051,42 @@ class VideoHandler {
             !isPiPAvailable() || !this.data.showPiPButton;
         },
       );
+
+      // PROXY
+
+      this.votM3u8ProxyHostTextfield.input.addEventListener(
+        "change",
+        async (e) => {
+          this.data.m3u8ProxyHost = e.target.value || m3u8ProxyHost;
+          await votStorage.set("m3u8ProxyHost", this.data.m3u8ProxyHost);
+          debug.log(
+            "m3u8ProxyHost value changed. New value: ",
+            this.data.m3u8ProxyHost,
+          );
+        },
+      );
+
+      this.votProxyWorkerHostTextfield.input.addEventListener(
+        "change",
+        async (e) => {
+          this.data.proxyWorkerHost = e.target.value || proxyWorkerHost;
+          await votStorage.set("proxyWorkerHost", this.data.proxyWorkerHost);
+          debug.log(
+            "proxyWorkerHost value changed. New value: ",
+            this.data.proxyWorkerHost,
+          );
+          window.location.reload();
+        },
+      );
+
+      this.votAudioProxyCheckbox.input.addEventListener("change", async (e) => {
+        this.data.audioProxy = Number(e.target.checked);
+        await votStorage.set("audioProxy", this.data.audioProxy);
+        debug.log(
+          "audioProxy value changed. New value: ",
+          this.data.audioProxy,
+        );
+      });
 
       this.votResetSettingsButton.addEventListener("click", async () => {
         localizationProvider.reset();
@@ -1691,7 +1749,9 @@ class VideoHandler {
           );
 
           debug.log(resOrError.translatedInfo.url);
-          const streamURL = `https://${m3u8ProxyHost}/?all=yes&origin=${encodeURIComponent(
+          const streamURL = `https://${
+            this.data.m3u8ProxyHost
+          }/?all=yes&origin=${encodeURIComponent(
             "https://strm.yandex.ru",
           )}&referer=${encodeURIComponent(
             "https://strm.yandex.ru",
@@ -1862,7 +1922,7 @@ class VideoHandler {
             "https://vtrans.s3-private.mds.yandex.net/tts/prod/",
             "",
           );
-          const proxiedAudioUrl = `https://${workerHost}/video-translation/audio-proxy/${audioPath}`;
+          const proxiedAudioUrl = `https://${this.data.proxyWorkerHost}/video-translation/audio-proxy/${audioPath}`;
           console.log(`[VOT] Audio proxied via ${proxiedAudioUrl}`);
           this.audio.src = proxiedAudioUrl;
         }

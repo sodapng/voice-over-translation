@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Översätt fel från API",
   "VOTTranslationService": "översättningstjänst",
   "VOTDetectService": "Upptäck Service",
-  "VOTTranslatingError": "Översätta felet"
+  "VOTTranslatingError": "Översätta felet",
+  "VOTProxyWorkerHost": "Ange proxyarbetarens adress",
+  "VOTM3u8ProxyHost": "Ange adressen till M3U8-proxyarbetaren",
+  "proxySettings": "Proxyinställningar"
 }

@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "APIからのエラーの翻訳",
   "VOTTranslationService": "翻訳サービス",
   "VOTDetectService": "サービスの検出",
-  "VOTTranslatingError": "エラーの翻訳"
+  "VOTTranslatingError": "エラーの翻訳",
+  "VOTProxyWorkerHost": "プロキシワーカーアドレスを入力します",
+  "VOTM3u8ProxyHost": "M3u8プロキシワーカーのアドレスを入力します",
+  "proxySettings": "プロキシ設定"
 }

@@ -6,6 +6,25 @@ import {
 } from "../config/config.js";
 import { votStorage } from "./storage.js";
 
+const HTTP_TIMEOUT = 3000;
+
+async function fetchWithTimeout(url, options) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), HTTP_TIMEOUT);
+
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+  } catch (error) {
+    console.error("Fetch timed-out. Error:", error);
+    return error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 const YandexTranslateAPI = {
   async translate(text, lang) {
     // Limit: 10k symbols
@@ -13,8 +32,9 @@ const YandexTranslateAPI = {
     // Lang examples:
     // en-ru, uk-ru, ru-en...
     // ru, en (instead of auto-ru, auto-en)
+
     try {
-      const response = await fetch(translateUrls.yandex, {
+      const response = await fetchWithTimeout(translateUrls.yandex, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -25,10 +45,14 @@ const YandexTranslateAPI = {
         }),
       });
 
+      if (response instanceof Error) {
+        throw response;
+      }
+
       const content = await response.json();
 
       if (content.code !== 200) {
-        throw response.message;
+        throw content.message;
       }
 
       return content.text[0];
@@ -41,7 +65,7 @@ const YandexTranslateAPI = {
   async detect(text, lang) {
     // Limit: 10k symbols
     try {
-      const response = await fetch(detectUrls.yandex, {
+      const response = await fetchWithTimeout(detectUrls.yandex, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -52,9 +76,13 @@ const YandexTranslateAPI = {
         }),
       });
 
+      if (response instanceof Error) {
+        throw response;
+      }
+
       const content = await response.json();
       if (content.code !== 200) {
-        throw response.message;
+        throw content.message;
       }
 
       return content.lang ?? "en";
@@ -72,6 +100,11 @@ const RustServerAPI = {
         method: "POST",
         body: text,
       });
+
+      if (response instanceof Error) {
+        throw response;
+      }
+
       return await response.text();
     } catch (error) {
       console.error("Error getting lang from text:", error);

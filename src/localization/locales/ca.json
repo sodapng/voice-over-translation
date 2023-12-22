@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Traduir errors des DE L'API",
   "VOTTranslationService": "Servei De Traducció",
   "VOTDetectService": "Detecta El Servei",
-  "VOTTranslatingError": "Traducció de l'error"
+  "VOTTranslatingError": "Traducció de l'error",
+  "VOTProxyWorkerHost": "Introduïu l'adreça del treballador del servidor intermediari",
+  "VOTM3u8ProxyHost": "Introduïu l'adreça del treballador intermediari m3u8",
+  "proxySettings": "Arranjament Del Servidor Intermediari"
 }

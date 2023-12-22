@@ -161,7 +161,7 @@ const sites = () => {
       host: "coursera",
       url: "https://www.coursera.org/",
       match: /coursera.org$/,
-      selector: "#video_player",
+      selector: ".vjs-v6",
     },
     {
       // ONLY IF YOU LOGINED TO UDEMY /course/NAME/learn/lecture/XXXX

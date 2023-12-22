@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Μετάφραση σφαλμάτων από το API",
   "VOTTranslationService": "μετάφραση",
   "VOTDetectService": "Ανίχνευση Υπηρεσίας",
-  "VOTTranslatingError": "Μετάφραση του σφάλματος"
+  "VOTTranslatingError": "Μετάφραση του σφάλματος",
+  "VOTProxyWorkerHost": "Εισαγάγετε τη διεύθυνση διακομιστή μεσολάβησης",
+  "VOTM3u8ProxyHost": "Εισαγάγετε τη διεύθυνση του διακομιστή μεσολάβησης m3u8",
+  "proxySettings": "Ρυθμίσεις Διακομιστή Μεσολάβησης"
 }

@@ -1,14 +1,11 @@
 import { yandexHmacKey } from "./config/config.js";
-import { yandexHmacKey as yandexHmacKeyCloudflare } from "./config/config-cloudflare.js";
 
 async function getSignature(body) {
   // Create a key from the HMAC secret
   const utf8Encoder = new TextEncoder("utf-8");
   const key = await window.crypto.subtle.importKey(
     "raw",
-    utf8Encoder.encode(
-      BUILD_MODE === "cloudflare" ? yandexHmacKeyCloudflare : yandexHmacKey,
-    ),
+    utf8Encoder.encode(yandexHmacKey),
     { name: "HMAC", hash: { name: "SHA-256" } },
     false,
     ["sign", "verify"],

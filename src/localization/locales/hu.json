@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Hibák lefordítása az API - ból",
   "VOTTranslationService": "Fordítási Szolgáltatás",
   "VOTDetectService": "Szolgáltatás Észlelése",
-  "VOTTranslatingError": "A hiba fordítása"
+  "VOTTranslatingError": "A hiba fordítása",
+  "VOTProxyWorkerHost": "Adja meg a proxy munkavállaló címét",
+  "VOTM3u8ProxyHost": "Írja be az m3u8 proxy munkás címét",
+  "proxySettings": "Proxy Beállítások"
 }

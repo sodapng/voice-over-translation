@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Vertaal fouten uit de API",
   "VOTTranslationService": "vertaaldienst",
   "VOTDetectService": "Detect Service",
-  "VOTTranslatingError": "Vertaling van de fout"
+  "VOTTranslatingError": "Vertaling van de fout",
+  "VOTProxyWorkerHost": "Voer het proxy worker-adres in",
+  "VOTM3u8ProxyHost": "Voer het adres van de m3u8 proxy worker in",
+  "proxySettings": "Proxy-Instellingen"
 }
