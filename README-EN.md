@@ -17,6 +17,16 @@ The voice-over translation of the video is now available not only in YandexBrows
 2. Terminal version (vot-cli): **[Link](https://github.com/FOSWLY/vot-cli)**
 3. Wiki: **[Link](https://github.com/ilyhalight/voice-over-translation/wiki)**
 
+### Our domains:
+These domains can be set in the extension settings (only those domains that can be changed without rebuilding are listed here):
+
+#### Proxy-server
+- [vot.deno.dev](https://github.com/FOSWLY/vot-worker)
+- [vot-new.toil-dump.workers.dev](https://github.com/FOSWLY/vot-worker) (⚠️ doesn't work in Russia)
+
+#### M3U8 Proxy-server
+- [m3u8proxy.toil-dump.workers.dev](https://github.com/FOSWLY/m3u8CloudflareWorkerProxy) (⚠️ doesn't work in Russia)
+
 ## List of supported sites:
 You can see all the restrictions related to site support in [wiki](https://github.com/ilyhalight/voice-over-translation/wiki/%5BEN%5D-Supported-sites).
 - **[YouTube](https://www.youtube.com)**
@@ -101,6 +111,9 @@ npm i
    ```bash
    npm run prepare
    ```
+
+## How to deploy your own VOT Worker?
+[Click to go](https://github.com/FOSWLY/vot-worker)
 
 ## Note:
 1. I recommend allowing autoplay of "audio and video" to avoid errors when working with the extension

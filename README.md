@@ -18,6 +18,16 @@
 2. Версия для терминала (vot-cli): **[Ссылка](https://github.com/FOSWLY/vot-cli)**
 3. Вики: **[Link](https://github.com/ilyhalight/voice-over-translation/wiki)**
 
+### Наши домены:
+Эти домены могут быть установлены в настройках расширения (здесь указаны только те домены, которые можно изменить без пересборки):
+
+#### Proxy-сервер
+- [vot.deno.dev](https://github.com/FOSWLY/vot-worker)
+- [vot-new.toil-dump.workers.dev](https://github.com/FOSWLY/vot-worker) (⚠️ не работает в РФ)
+
+#### M3U8 Proxy-сервер
+- [m3u8proxy.toil-dump.workers.dev](https://github.com/FOSWLY/m3u8CloudflareWorkerProxy) (⚠️ не работает в РФ)
+
 ## Список поддерживаемых сайтов:
 Все ограничения, связанные с поддержкой сайтов вы можете увидеть в [вики](https://github.com/ilyhalight/voice-over-translation/wiki/%5BRU%5D-Supported-sites).
 - **[YouTube](https://www.youtube.com)**
@@ -103,9 +113,8 @@ npm i
    npm run prepare
    ```
 
-
-## Как задеплоить свой Cloudflare Worker?
-[Нажми, чтобы перейти](https://github.com/ilyhalight/voice-over-translation/wiki/%5BRU%5D-Deploy-Cloudflare-Worker)
+## Как задеплоить свой VOT Worker?
+[Нажми, чтобы перейти](https://github.com/FOSWLY/vot-worker)
 
 ## Примечание:
 1. Рекомендую разрешить автовоспроизведение "аудио и видео", чтобы избежать ошибок при работе расширения
