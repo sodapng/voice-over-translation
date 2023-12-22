@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Traduceți erorile din API",
   "VOTTranslationService": "Servicii De Traducere",
   "VOTDetectService": "Serviciu De Detectare",
-  "VOTTranslatingError": "Traducerea erorii"
+  "VOTTranslatingError": "Traducerea erorii",
+  "VOTProxyWorkerHost": "Introduceți adresa lucrătorului proxy",
+  "VOTM3u8ProxyHost": "Introduceți adresa lucrătorului proxy m3u8",
+  "proxySettings": "Setări Proxy"
 }

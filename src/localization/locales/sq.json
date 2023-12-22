@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Përktheni gabimet NGA API",
   "VOTTranslationService": "Shërbimi I Përkthimit",
   "VOTDetectService": "Zbuloni Shërbimin",
-  "VOTTranslatingError": "Përkthimi i gabimit"
+  "VOTTranslatingError": "Përkthimi i gabimit",
+  "VOTProxyWorkerHost": "Vendosni adresën e punonjësit të përfaqësuesit",
+  "VOTM3u8ProxyHost": "Vendosni adresën e punonjësit të përfaqësuesit m3u8",
+  "proxySettings": "Cilësimet E Përfaqësuesit"
 }

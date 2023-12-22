@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "എപിഐയിൽ നിന്ന് പിശകുകൾ വിവർത്തനം ചെയ്യുക",
   "VOTTranslationService": "വിവർത്തന സേവനം",
   "VOTDetectService": "സേവനം കണ്ടെത്തുക",
-  "VOTTranslatingError": "തെറ്റ് വിവർത്തനം ചെയ്യുക"
+  "VOTTranslatingError": "തെറ്റ് വിവർത്തനം ചെയ്യുക",
+  "VOTProxyWorkerHost": "പ്രോക്സി തൊഴിലാളിയുടെ വിലാസം നല്കുക",
+  "VOTM3u8ProxyHost": "എം 3 യു 8 പ്രോക്സി തൊഴിലാളിയുടെ വിലാസം നൽകുക",
+  "proxySettings": "പ്രോക്സി ക്രമീകരണങ്ങൾ"
 }

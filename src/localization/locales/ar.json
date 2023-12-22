@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "ترجمة الأخطاء من واجهة برمجة التطبيقات",
   "VOTTranslationService": "خدمة الترجمة",
   "VOTDetectService": "كشف الخدمة",
-  "VOTTranslatingError": "ترجمة الخطأ"
+  "VOTTranslatingError": "ترجمة الخطأ",
+  "VOTProxyWorkerHost": "أدخل عنوان عامل الوكيل",
+  "VOTM3u8ProxyHost": "أدخل عنوان عامل الوكيل إم 3 يو 8",
+  "proxySettings": "إعدادات الوكيل"
 }

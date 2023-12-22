@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Cyfieithu gwallau O'R API",
   "VOTTranslationService": "Gwasanaeth Cyfieithu",
   "VOTDetectService": "Canfod Gwasanaeth",
-  "VOTTranslatingError": "Cyfieithu'r gwall"
+  "VOTTranslatingError": "Cyfieithu'r gwall",
+  "VOTProxyWorkerHost": "Rhowch gyfeiriad y gweithiwr dirprwy",
+  "VOTM3u8ProxyHost": "Rhowch gyfeiriad y gweithiwr dirprwy m3u8",
+  "proxySettings": "Gosodiadau Dirprwy"
 }

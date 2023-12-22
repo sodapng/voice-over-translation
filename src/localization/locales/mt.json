@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Ittraduċi żbalji mill-API",
   "VOTTranslationService": "Servizz Ta'traduzzjoni",
   "VOTDetectService": "Servizz Ta'skoperta",
-  "VOTTranslatingError": "Traduzzjoni tal-iżball"
+  "VOTTranslatingError": "Traduzzjoni tal-iżball",
+  "VOTProxyWorkerHost": "Daħħal l indirizz tal ħaddiem tal prokura",
+  "VOTM3u8ProxyHost": "Daħħal l indirizz tal ħaddiem tal prokura m3u8",
+  "proxySettings": "Settings Tal-Prokura"
 }

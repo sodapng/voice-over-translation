@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Terjemahkan ralat dari API",
   "VOTTranslationService": "Perkhidmatan Terjemahan",
   "VOTDetectService": "Mengesan Perkhidmatan",
-  "VOTTranslatingError": "Menterjemahkan ralat"
+  "VOTTranslatingError": "Menterjemahkan ralat",
+  "VOTProxyWorkerHost": "Masukkan alamat pekerja proksi",
+  "VOTM3u8ProxyHost": "Masukkan alamat pekerja proksi m3u8",
+  "proxySettings": "Tetapan Proksi"
 }

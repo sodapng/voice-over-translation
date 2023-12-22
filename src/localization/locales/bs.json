@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Prevedi greške iz API-ja",
   "VOTTranslationService": "Prevodilačka Služba",
   "VOTDetectService": "Otkrijte Uslugu",
-  "VOTTranslatingError": "Prevođenje greške"
+  "VOTTranslatingError": "Prevođenje greške",
+  "VOTProxyWorkerHost": "Unesite adresu proxy radnika",
+  "VOTM3u8ProxyHost": "Unesite adresu m3u8 proxy radnika",
+  "proxySettings": "_postavke ... "
 }

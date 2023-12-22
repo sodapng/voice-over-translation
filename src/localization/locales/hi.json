@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "एपीआई से त्रुटियों का अनुवाद करें",
   "VOTTranslationService": "अनुवाद सेवा",
   "VOTDetectService": "सेवा का पता लगाएं",
-  "VOTTranslatingError": "त्रुटि का अनुवाद"
+  "VOTTranslatingError": "त्रुटि का अनुवाद",
+  "VOTProxyWorkerHost": "प्रॉक्सी कार्यकर्ता पता दर्ज करें",
+  "VOTM3u8ProxyHost": "एम 3 यू 8 प्रॉक्सी कार्यकर्ता का पता दर्ज करें",
+  "proxySettings": "प्रॉक्सी सेटिंग्स"
 }

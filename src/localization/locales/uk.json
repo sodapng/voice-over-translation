@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Переклад помилок з API",
   "VOTTranslationService": "Сервис перекладу",
   "VOTDetectService": "Служба виявлення",
-  "VOTTranslatingError": "Переклад помилки"
+  "VOTTranslatingError": "Переклад помилки",
+  "VOTProxyWorkerHost": "Введіть адресу worker проксі-сервера",
+  "VOTM3u8ProxyHost": "Введіть адресу m3u8 проксі-сервера",
+  "proxySettings": "Налаштування проксі-сервера"
 }

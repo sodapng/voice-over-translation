@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "从API翻译错误",
   "VOTTranslationService": "翻译服务",
   "VOTDetectService": "检测服务",
-  "VOTTranslatingError": "翻译错误"
+  "VOTTranslatingError": "翻译错误",
+  "VOTProxyWorkerHost": "输入代理工作者地址",
+  "VOTM3u8ProxyHost": "输入m3u8代理worker的地址",
+  "proxySettings": "代理设置"
 }

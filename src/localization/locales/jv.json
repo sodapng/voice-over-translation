@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Translate kasalahan SAKA API",
   "VOTTranslationService": "Layanan Terjemahan",
   "VOTDetectService": "Ndeteksi Layanan",
-  "VOTTranslatingError": "Nerjemahake kesalahan"
+  "VOTTranslatingError": "Nerjemahake kesalahan",
+  "VOTProxyWorkerHost": "Ketik alamat buruh proxy",
+  "VOTM3u8ProxyHost": "Pilih alamat m3u8 pekerja proxy",
+  "proxySettings": "Setelan Proxy"
 }

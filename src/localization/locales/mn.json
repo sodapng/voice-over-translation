@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "API - аас алдаа орчуулах",
   "VOTTranslationService": "Орчуулгын Үйлчилгээ",
   "VOTDetectService": "Үйлчилгээг Илрүүлэх",
-  "VOTTranslatingError": "Алдааг орчуулах"
+  "VOTTranslatingError": "Алдааг орчуулах",
+  "VOTProxyWorkerHost": "Прокси ажилчдын хаягийг оруулна уу",
+  "VOTM3u8ProxyHost": "M3u8 прокси ажилтны хаягийг оруулна уу",
+  "proxySettings": "Прокси Тохиргоо"
 }

@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Oversæt fejl fra API",
   "VOTTranslationService": "oversættelsestjenesterne",
   "VOTDetectService": "Opdag Service",
-  "VOTTranslatingError": "Oversættelse af fejlen"
+  "VOTTranslatingError": "Oversættelse af fejlen",
+  "VOTProxyWorkerHost": "Indtast adressen på fuldmægtig",
+  "VOTM3u8ProxyHost": "Indtast adressen på M3U8 fuldmægtig",
+  "proxySettings": "Fuldmagtsindstillinger"
 }

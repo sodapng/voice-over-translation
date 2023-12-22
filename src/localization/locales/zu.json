@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "Humusha amaphutha KUSUKA API",
   "VOTTranslationService": "Inkonzo Yokuhumusha",
   "VOTDetectService": "Thola Service",
-  "VOTTranslatingError": "Ukuhumusha iphutha"
+  "VOTTranslatingError": "Ukuhumusha iphutha",
+  "VOTProxyWorkerHost": "Faka ikheli proxy isisebenzi",
+  "VOTM3u8ProxyHost": "Faka ikheli le-m3u8 proxy worker",
+  "proxySettings": "Izilungiselelo Ze-Proxy"
 }

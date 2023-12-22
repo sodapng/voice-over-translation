@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "번역 오류",
   "VOTTranslationService": "번역 서비스",
   "VOTDetectService": "서비스 감지",
-  "VOTTranslatingError": "오류 번역"
+  "VOTTranslatingError": "오류 번역",
+  "VOTProxyWorkerHost": "프록시 작업자 주소를 입력합니다",
+  "VOTM3u8ProxyHost": "프록시 작업자의 주소를 입력합니다",
+  "proxySettings": "프록시 설정"
 }

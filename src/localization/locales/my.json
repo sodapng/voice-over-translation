@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "API မှအမှားများကိုဘာသာပြန်ပါ",
   "VOTTranslationService": "ဘာသာပြန်ဝန်ဆောင်မှု",
   "VOTDetectService": "ရှာဖွေရေးဝန်ဆောင်မှု",
-  "VOTTranslatingError": "အမှားကိုဘာသာပြန်ခြင်း"
+  "VOTTranslatingError": "အမှားကိုဘာသာပြန်ခြင်း",
+  "VOTProxyWorkerHost": "Proxy worker လိပ်စာကိုရိုက်ထည့်ပါ",
+  "VOTM3u8ProxyHost": "M3u8 proxy worker၏လိပ်စာကိုရိုက်ထည့်ပါ",
+  "proxySettings": "Proxy Setting များ"
 }

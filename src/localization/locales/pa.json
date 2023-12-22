@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "ਏਪੀਆਈ ਤੋਂ ਗਲਤੀਆਂ ਅਨੁਵਾਦ ਕਰੋ",
   "VOTTranslationService": "ਅਨੁਵਾਦ ਸੇਵਾ",
   "VOTDetectService": "ਖੋਜ ਸੇਵਾ",
-  "VOTTranslatingError": "ਗਲਤੀ ਅਨੁਵਾਦ"
+  "VOTTranslatingError": "ਗਲਤੀ ਅਨੁਵਾਦ",
+  "VOTProxyWorkerHost": "ਪਰਾਕਸੀ ਵਰਕਰ ਐਡਰੈੱਸ ਦਿਓ",
+  "VOTM3u8ProxyHost": "ਐਮ 3 ਯੂ 8 ਪ੍ਰੌਕਸੀ ਵਰਕਰ ਦਾ ਪਤਾ ਦਰਜ ਕਰੋ",
+  "proxySettings": "ਪਰਾਕਸੀ ਸੈਟਿੰਗ"
 }

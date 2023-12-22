@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "API-ден қателерді аудару",
   "VOTTranslationService": "Жазбаша аударма қызметі",
   "VOTDetectService": "Анықтау қызметі",
-  "VOTTranslatingError": "Қате аудармасы"
+  "VOTTranslatingError": "Қате аудармасы",
+  "VOTProxyWorkerHost": "Прокси-сервердің жұмыс мекенжайын енгізіңіз",
+  "VOTM3u8ProxyHost": "M3u8 жұмыс прокси мекенжайын енгізіңіз",
+  "proxySettings": "Прокси параметрлері"
 }

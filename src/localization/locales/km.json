@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "បកប្រែកំហុសពី API",
   "VOTTranslationService": "សេវាកម្មបកប្រែ",
   "VOTDetectService": "រកឃើញសេវា",
-  "VOTTranslatingError": "ការបកប្រែកំហុស"
+  "VOTTranslatingError": "ការបកប្រែកំហុស",
+  "VOTProxyWorkerHost": "បញ្ចូលអាសយដ្ឋានកម្មករប្រូកស៊ី",
+  "VOTM3u8ProxyHost": "បញ្ចូលអាសយដ្ឋានរបស់កម្មករប្រូកស៊ី m3u8",
+  "proxySettings": "ការកំណត់ប្រូកស៊ី"
 }

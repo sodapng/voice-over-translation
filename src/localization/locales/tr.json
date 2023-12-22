@@ -193,5 +193,8 @@
   "VOTTranslateAPIErrors": "API'DEN hataları çevir",
   "VOTTranslationService": "Çeviri Hizmeti",
   "VOTDetectService": "Hizmeti Algıla",
-  "VOTTranslatingError": "Hatayı çevirmek"
+  "VOTTranslatingError": "Hatayı çevirmek",
+  "VOTProxyWorkerHost": "Vekil çalışan adresini girin",
+  "VOTM3u8ProxyHost": "M3u8 proxy çalışanının adresini girin",
+  "proxySettings": "Proxy Ayarları"
 }
