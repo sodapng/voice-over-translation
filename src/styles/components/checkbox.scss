@@ -1,0 +1,168 @@
+.vot-checkbox {
+  &[hidden] {
+    display: none !important;
+  }
+
+  --vot-helper-theme: var(
+    --vot-theme-rgb,
+    var(--vot-primary-rgb, 33, 150, 243)
+  );
+  --vot-helper-ontheme: var(
+    --vot-ontheme-rgb,
+    var(--vot-onprimary-rgb, 255, 255, 255)
+  );
+  z-index: 0;
+  position: relative;
+  display: inline-block;
+  color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87);
+  font-family: var(
+    --vot-font-family,
+    "Roboto",
+    "Segoe UI",
+    BlinkMacSystemFont,
+    system-ui,
+    -apple-system
+  );
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: start;
+
+  & > input {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    z-index: 1;
+    position: absolute;
+    display: block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 3px 1px;
+    border: solid 2px;
+    background: transparent;
+    /* Safari */
+    border-color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6);
+    border-radius: 2px;
+    width: 18px;
+    height: 18px;
+    outline: none;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      background-color 0.2s;
+
+    & + span {
+      display: inline-block;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      padding-left: 30px;
+      width: inherit;
+      cursor: pointer;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: -10px;
+        top: -8px;
+        display: block;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        background-color: rgb(var(--vot-onsurface-rgb, 0, 0, 0));
+        opacity: 0;
+        transform: scale(1);
+        pointer-events: none;
+        transition:
+          opacity 0.3s,
+          transform 0.2s;
+      }
+
+      &::after {
+        content: "";
+        z-index: 1;
+        display: block;
+        position: absolute;
+        top: 3px;
+        left: 1px;
+        -webkit-box-sizing: content-box !important;
+        -moz-box-sizing: content-box !important;
+        box-sizing: content-box !important;
+        width: 10px;
+        height: 5px;
+        border: solid 2px transparent;
+        border-right-width: 0;
+        border-top-width: 0;
+        pointer-events: none;
+        transform: translate(3px, 4px) rotate(-45deg);
+        transition: border-color 0.2s;
+      }
+    }
+
+    &:checked,
+    &:indeterminate {
+      border-color: rgb(var(--vot-helper-theme));
+      background-color: rgb(var(--vot-helper-theme));
+
+      & + span::before {
+        background-color: rgb(var(--vot-helper-theme));
+      }
+
+      & + span::after {
+        border-color: rgb(var(--vot-helper-ontheme, 255, 255, 255));
+      }
+    }
+
+    &:indeterminate + span::after {
+      border-left-width: 0;
+      transform: translate(4px, 3px);
+    }
+  }
+
+  &:hover > input + span::before {
+    opacity: 0.04;
+  }
+
+  &:active {
+    & > input,
+    &:hover > input {
+      border-color: rgb(var(--vot-helper-theme));
+    }
+
+    & > input {
+      &:checked {
+        border-color: transparent;
+        background-color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6);
+      }
+
+      & + span::before {
+        opacity: 1;
+        transform: scale(0);
+        transition:
+          transform 0s,
+          opacity 0s;
+      }
+    }
+  }
+
+  & > input:disabled {
+    border-color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);
+    cursor: initial;
+
+    &:checked,
+    &:indeterminate {
+      border-color: transparent;
+      background-color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);
+    }
+
+    & + span {
+      color: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);
+      cursor: initial;
+
+      &::before {
+        opacity: 0;
+        transform: scale(0);
+      }
+    }
+  }
+}

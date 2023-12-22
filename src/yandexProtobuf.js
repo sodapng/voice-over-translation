@@ -1,6 +1,6 @@
 // coursera & udemy translation help object
 const VideoTranslationHelpObject = new protobuf.Type(
-  "VideoTranslationHelpObject"
+  "VideoTranslationHelpObject",
 )
   .add(new protobuf.Field("target", 1, "string")) // video_file_url or subtitles_file_url
   .add(new protobuf.Field("targetUrl", 2, "string")); // url to video_file or url to subtitles
@@ -19,10 +19,11 @@ const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
       "translationHelp",
       11,
       "VideoTranslationHelpObject",
-      "repeated"
-    )
+      "repeated",
+    ),
   ) // array for translation assistance ([0] -> {2: link to video, 1: "video_file_url"}, [1] -> {2: link to subtitles, 1: "subtitles_file_url"})
-  .add(new protobuf.Field("responseLanguage", 14, "string")); // target language code
+  .add(new protobuf.Field("responseLanguage", 14, "string"))
+  .add(new protobuf.Field("unknown5", 15, "int32")); // 0
 
 const VideoSubtitlesRequest = new protobuf.Type("VideoSubtitlesRequest")
   .add(new protobuf.Field("url", 1, "string"))
@@ -34,14 +35,14 @@ const VideoStreamRequest = new protobuf.Type("VideoStreamRequest")
   .add(new protobuf.Field("responseLanguage", 3, "string"));
 
 const VideoStreamPingRequest = new protobuf.Type("VideoStreamPingRequest").add(
-  new protobuf.Field("pingId", 1, "int32")
+  new protobuf.Field("pingId", 1, "int32"),
 );
 
 const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
   .add(new protobuf.Field("url", 1, "string"))
   .add(new protobuf.Field("duration", 2, "double"))
   .add(new protobuf.Field("status", 4, "int32"))
-  .add(new protobuf.Field("remainingTime", 5, "int32")) // secs before translation
+  .add(new protobuf.Field("remainingTime", 5, "int32")) // secs before translation (used as interval before next request in yaBrowser)
   .add(new protobuf.Field("unknown0", 6, "int32")) // unknown 0 (1st request) -> 10 (2nd, 3th and etc requests)
   .add(new protobuf.Field("unknown1", 7, "string"))
   .add(new protobuf.Field("language", 8, "string")) // detected language (if the wrong one is set)
@@ -62,10 +63,10 @@ const VideoSubtitlesResponse = new protobuf.Type("VideoSubtitlesResponse")
 
 const VideoStreamObject = new protobuf.Type("VideoStreamObject")
   .add(new protobuf.Field("url", 1, "string"))
-  .add(new protobuf.Field("timestamp", 2, "int32")); // timestamp in ms (probably means the time of 1 request to translate the stream)
+  .add(new protobuf.Field("timestamp", 2, "int64")); // timestamp in ms (probably means the time of 1 request to translate the stream)
 
 const VideoStreamResponse = new protobuf.Type("VideoStreamResponse")
-  .add(new protobuf.Field("interval", 1, "int32")) // 20s - streaming, 10s - translating
+  .add(new protobuf.Field("interval", 1, "int32")) // 20s - streaming, 10s - translating, 0s - there is no connection with the server (the broadcast is finished or deleted)
   .add(new protobuf.Field("translatedInfo", 2, "VideoStreamObject"))
   .add(new protobuf.Field("pingId", 3, "int32"));
 
@@ -99,7 +100,7 @@ export const yandexProtobuf = {
     duration,
     requestLang,
     responseLang,
-    translationHelp
+    translationHelp,
   ) {
     return root.VideoTranslationRequest.encode({
       url,
@@ -111,6 +112,7 @@ export const yandexProtobuf = {
       unknown4: 0,
       translationHelp,
       responseLanguage: responseLang,
+      unknown5: 0,
     }).finish();
   },
   decodeTranslationResponse(response) {

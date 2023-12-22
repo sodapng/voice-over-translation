@@ -1,0 +1,38 @@
+// @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+// @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@import "./components/buttons/contained.scss";
+@import "./components/buttons/outlined.scss";
+@import "./components/buttons/text.scss";
+@import "./components/buttons/icon.scss";
+
+@import "./components/textfield.scss";
+@import "./components/checkbox.scss";
+@import "./components/slider.scss";
+@import "./components/select.scss";
+@import "./components/header.scss";
+@import "./components/info.scss";
+
+@import "./components/lang-select.scss";
+@import "./components/segmented-button.scss";
+@import "./components/menu.scss";
+@import "./components/dialog.scss";
+@import "./subtitles.scss";
+
+:root {
+  --vot-font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui,
+    -apple-system;
+
+  --vot-primary-rgb: 139, 180, 245;
+  --vot-onprimary-rgb: 32, 33, 36;
+  --vot-surface-rgb: 32, 33, 36;
+  --vot-onsurface-rgb: 227, 227, 227;
+
+  --vot-subtitles-background: rgba(var(--vot-surface-rgb, 46, 47, 52), 0.8);
+  --vot-subtitles-color: rgb(var(--vot-onsurface-rgb, 227, 227, 227));
+  --vot-subtitles-passed-color: rgb(var(--vot-primary-rgb, 33, 150, 243));
+}
+
+vot-block {
+  display: block;
+}

@@ -14,9 +14,19 @@
 2. **[«Установите Скрипт»](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js)** (**[Cloudflare version](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**)
 
 ### Полезные ссылки:
-1. Версия для VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, OrangeMonkey, UserScripts и некоторых браузеров: **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
-2. Версия для терминала: **[Ссылка](https://github.com/FOSWLY/vot-cli)**
+1. Версия для VioletMonkey, FireMonkey, GreaseMonkey, AdGuard, OrangeMonkey, UserScripts и некоторых браузеров (cloudflare-version): **[Ссылка](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js)**
+2. Версия для терминала (vot-cli): **[Ссылка](https://github.com/FOSWLY/vot-cli)**
 3. Вики: **[Link](https://github.com/ilyhalight/voice-over-translation/wiki)**
+
+### Наши домены:
+Эти домены могут быть установлены в настройках расширения (здесь указаны только те домены, которые можно изменить без пересборки):
+
+#### Proxy-сервер
+- [vot.deno.dev](https://github.com/FOSWLY/vot-worker)
+- [vot-new.toil-dump.workers.dev](https://github.com/FOSWLY/vot-worker) (⚠️ не работает в РФ)
+
+#### M3U8 Proxy-сервер
+- [m3u8proxy.toil-dump.workers.dev](https://github.com/FOSWLY/m3u8CloudflareWorkerProxy) (⚠️ не работает в РФ)
 
 ## Список поддерживаемых сайтов:
 Все ограничения, связанные с поддержкой сайтов вы можете увидеть в [вики](https://github.com/ilyhalight/voice-over-translation/wiki/%5BRU%5D-Supported-sites).
@@ -29,20 +39,28 @@
 - **[Bilibili](https://bilibili.com/)**
 - **[Видео Mail.ru](https://my.mail.ru/video)**
 - **[Vimeo](https://vimeo.com/)**
-- **[XVideos](https://xvideos.com/)**
+- **[[⚠️] XVideos](https://xvideos.com/)**
 - **[PornHub](https://rt.pornhub.com/)**
 - **[Bitchute](https://www.bitchute.com/)**
 - **[Coursera](https://www.coursera.org/)**
 - **[[⚠️] Udemy](https://www.udemy.com/)**
 - **[[❌] Facebook*](https://facebook.com/)**
 - **[TikTok](https://tiktok.com/)**
+- **[Rumble](https://rumble.com/)**
+- **[EPorner](https://www.eporner.com/)**
+- **[Peertube](https://tube.shanti.cafe/)**
+- **[Dailymotion](https://www.dailymotion.com/)**
+- **[Trovo](https://trovo.live/)**
+- **[Yandex Disk](https://disk.yandex.ru/)**
 - **[ProxiTok](https://proxitok.pabloferreiro.es/)**
-- **[Invidious](https://yewtu.be)**
-- **[Piped](https://piped.video)**
+- **[[⚠️] Invidious](https://yewtu.be)**
+- **[[⚠️] Piped](https://piped.video)**
 
-⚠️ - Требует дополнительных действий, подробнее в **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki)**
+⚠️ - Требует дополнительных действий, подробнее в **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki/%5BRU%5D-Supported-sites)**
 
-❌ - Не работает
+❌ - Не поддерживается
+
+❔ - Возможно отключена поддержка со стороны Яндекса
 
 ## Список функционала:
 1. Перевод с одного из доступных языков на русский. Язык определяется автоматически, если языка нету в списке или не удалось его определить, то используется перевод с английского.
@@ -51,7 +69,7 @@
 4. Слайдер для изменения громкости видео
 5. Автоматически выставлять громкость видео (как в Яндекс браузере)
 6. [YouTube Only] Синхронизация громкости перевода с громкостью видео
-7. [YouTube Only] Ограничить перевод русскоязычных видео
+7. [YouTube Only] Ограничить перевод видео с родного языка
 
 ## Как собрать расширение?
 1. Установите NodeJS 18+
@@ -90,14 +108,47 @@ npm i
    ```bash
    npm run build:cloudflare-min
    ```
+4. Установка pre-commit хука:
+   ```bash
+   npm run prepare
+   ```
 
-
-## Как задеплоить свой Cloudflare Worker?
-[Нажми, чтобы перейти](https://github.com/ilyhalight/voice-over-translation/wiki/%5BRU%5D-Deploy-Cloudflare-Worker)
+## Как задеплоить свой VOT Worker?
+[Нажми, чтобы перейти](https://github.com/FOSWLY/vot-worker)
 
 ## Примечание:
 1. Рекомендую разрешить автовоспроизведение "аудио и видео", чтобы избежать ошибок при работе расширения
 2. Расширение не может переводить видео длиной более 4 часов (ограничение API переводчика)
+
+## Кастомизация внешнего вида:
+
+Расширение поддерживает кастомизацию внешнего вида с помощью Stylus, Stylish и других подобных расширений
+
+Пример изменения стилей:
+```css
+
+/* ==UserStyle==
+@name         VOT-styles
+@version      16.09.2023
+@namespace    vot-styles
+@description  LLL
+@author       Toil
+@license      No License
+==/UserStyle== */
+
+:root {
+ --vot-font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;
+
+ --vot-primary-rgb: 139, 180, 245;
+ --vot-onprimary-rgb: 32, 33, 36;
+ --vot-surface-rgb: 32, 33, 36;
+ --vot-onsurface-rgb: 227, 227, 227;
+
+ --vot-subtitles-background: rgba(var(--vot-surface-rgb, 46, 47, 52), 0.8);
+ --vot-subtitles-color: rgb(var(--vot-onsurface-rgb, 227, 227, 227));
+ --vot-subtitles-passed-color: rgb(var(--vot-primary-rgb, 33, 150, 243));
+}
+```
 
 ## Расширение протестировано в следующих браузерах:
 | Статус | Браузер | Версия браузера | Платформа | Расширение
@@ -114,19 +165,21 @@ npm i
 | ⠀✅ | Opera GX | LVL4 (core: 91.0.4516.36) | Windows | Tampermonkey
 | ⠀✅ | Opera | v92.0.4561.43 | Windows | Tampermonkey
 | ⠀✅ | Vivaldi | 5.7.2921.63 | Windows, Linux | Tampermonkey
-| ⠀❔ | Safari | v15.6.1 | MacOS, iOS | Userscripts
+| ⠀✅ | Safari | v15.6.1 | MacOS, iOS | Userscripts
 | ⠀✅ | Kiwi Browser | v116.0.5845.61 | Android | Tampermonkey
 
 ## Протестировано в следующих расширениях для юзерскриптов:
 | Статус | Браузер | Расширение
 |---|---|---
 | ⠀✅ | Любой | Tampermonkey
-| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Safari | Userscripts
-| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | Violetmonkey
-| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
-| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Firefox | Firemonkey
-| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | Greasemonkey
-| ⠀[Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | OrangeMonkey
+| ⠀[⚠️ Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Safari | Userscripts
+| ⠀[⚠️ Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | Violetmonkey
+| ⠀[⚠️ Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | [AdGuard Usercripts](https://kb.adguard.com/en/general/userscripts#supported-apps)
+| ⠀[⚠️ Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Firefox | Firemonkey
+| ⠀[⚠️ Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | Greasemonkey
+| ⠀[⚠️ Загрузить](https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js) | Любой | OrangeMonkey
+
+⚠️ - Не являются приоритетными расширениями. Эти расширения из-за "cloudflare" версии юзерскрипта не имеют межсайтовой синхронизации настроек, а так же (практически) не тестируются перед выходом новой версии юзерскрипта.
 
 ![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.jpg "btn")
 

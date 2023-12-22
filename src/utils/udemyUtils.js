@@ -13,7 +13,7 @@ async function getCourseLang(courseId) {
         "fields[course]": "locale",
         use_remote_version: "true",
         caching_intent: "true",
-      })
+      }),
   );
   return await response.json();
 }
@@ -41,20 +41,31 @@ async function getLectureData(udemyData, courseId, lectureId) {
         "x-udemy-authorization": bearerToken,
         authorization: bearerToken,
       },
-    }
+    },
   );
   return await response.json();
 }
 
-function getSubtitlesFileURL(captions, responseLang) {
-  const subtitle = captions?.find(
-    (caption) => langTo6391(caption.locale_id) === responseLang
+function getSubtitlesFileURL(captions, detectedLanguage, responseLang) {
+  let subtitle = captions?.find(
+    (caption) => langTo6391(caption.locale_id) === detectedLanguage,
   );
+
+  if (!subtitle) {
+    subtitle =
+      captions?.find(
+        (caption) => langTo6391(caption.locale_id) === responseLang,
+      ) || captions?.[0];
+  }
+
   return subtitle?.url;
 }
 
 function getVideoFileURLFromAPI(sources) {
-  const source = sources?.find((src) => src.type === "video/mp4");
+  const source = sources?.find(
+    (src) => src.type === "video/webm" || src.type === "video/mp4",
+  );
+
   return source?.src;
 }
 
@@ -64,7 +75,7 @@ function getPlayerData() {
 
 function getModuleData() {
   const moduleArgs = document.querySelector(
-    ".ud-app-loader[data-module-id='course-taking']"
+    ".ud-app-loader[data-module-id='course-taking']",
   )?.dataset?.moduleArgs;
   if (!moduleArgs) {
     console.error(localizationProvider.get("udemyModuleArgsNotFound"));
@@ -82,7 +93,8 @@ function getPlayer() {
 }
 
 function getVideoURLFromPlayer() {
-  return getPlayer()?.querySelector('video').src;
+  const src = getPlayer()?.querySelector("video")?.src;
+  return src?.startsWith("blob:") ? false : src;
 }
 
 // Get the video data from the player
@@ -101,7 +113,7 @@ async function getVideoData(udemyData, responseLang = "en") {
   const courseLang = await getCourseLang(courseId);
   debug.log("courseLang Data:", courseLang);
   const lectureData = await getLectureData(udemyData, courseId, lectureId);
-  debug.log("lecture Data:", lectureData);
+  console.log("lecture Data:", lectureData);
 
   let detectedLanguage = courseLang?.locale?.locale;
   detectedLanguage = detectedLanguage ? langTo6391(detectedLanguage) : "en";
@@ -111,12 +123,16 @@ async function getVideoData(udemyData, responseLang = "en") {
   }
 
   const duration = lectureData?.asset?.length || data?.cache_?.duration;
-  const videoURL = getVideoFileURLFromAPI(lectureData?.asset?.media_sources) || getVideoURLFromPlayer();
+  const videoURL =
+    getVideoFileURLFromAPI(lectureData?.asset?.media_sources) ||
+    getVideoURLFromPlayer();
   const subtitlesURL = getSubtitlesFileURL(
     lectureData?.asset?.captions,
-    responseLang
+    detectedLanguage,
+    responseLang,
   );
-  debug.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
+
+  console.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
 
   if (subtitlesURL && videoURL) {
     translationHelp = [
@@ -129,6 +145,10 @@ async function getVideoData(udemyData, responseLang = "en") {
         targetUrl: subtitlesURL,
       },
     ];
+  } else {
+    console.error(
+      `Failed to find subtitlesURL or videoURL. videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`,
+    );
   }
 
   const videoData = {

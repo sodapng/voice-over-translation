@@ -1,8 +1,6 @@
 import { youtubeUtils } from "./utils/youtubeUtils.js";
-import { sleep } from "./utils/utils.js";
+import { sleep, lang } from "./utils/utils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
-import { siteTranslates } from "./config/constants.js";
-import { lang } from "./menu.js";
 import requestVideoSubtitles from "./rvs.js";
 import debug from "./utils/debug.js";
 
@@ -19,7 +17,7 @@ function formatYandexSubtitlesTokens(line) {
           start: alignRangeEnd,
           end: newAlignRangeEnd,
         },
-      })
+      }),
     );
     if (nextToken) {
       const endMs = token.startMs + token.durationMs;
@@ -91,7 +89,7 @@ function getSubtitlesTokens(subtitles, source) {
     result.push(
       Object.assign(Object.assign({}, line), {
         tokens,
-      })
+      }),
     );
   }
   subtitles.containsTokens = true;
@@ -173,9 +171,9 @@ export async function fetchSubtitles(subtitlesObject) {
   return subtitles;
 }
 
-export async function getSubtitles(siteHostname, videoId, requestLang) {
+export async function getSubtitles(site, videoId, requestLang) {
   const ytSubtitles =
-    siteHostname === "youtube" ? youtubeUtils.getSubtitles() : [];
+    site.host === "youtube" ? youtubeUtils.getSubtitles() : [];
   let resolved = false;
   const yaSubtitles = await Promise.race([
     new Promise(async (resolve) => {
@@ -188,7 +186,7 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
     }),
     new Promise((resolve) => {
       requestVideoSubtitles(
-        `${siteTranslates[siteHostname]}${videoId}`,
+        `${site.url}${videoId}`,
         requestLang,
         (success, response) => {
           debug.log("[exec callback] Requesting video subtitles");
@@ -235,7 +233,7 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
           }, []);
           resolved = true;
           resolve(subtitles);
-        }
+        },
       );
     }),
   ]);
@@ -279,188 +277,217 @@ export async function getSubtitles(siteHostname, videoId, requestLang) {
   return subtitles;
 }
 
-var _subtitlesWidget = null;
+export class SubtitlesWidget {
+  dragging = false;
+  subtitlesContainerRect = null;
+  containerRect = null;
+  offsetX = null;
+  offsetY = null;
 
-export function addSubtitlesWidget(element) {
-  if (element.querySelector(".VOTSubtitlesWidget")) return;
+  lastContent = null;
+  highlightWords = false;
+  subtitles = null;
+  maxLength = 300;
+  maxLengthRegexp = /.{1,300}(?:\s|$)/g;
 
-  const container = document.createElement("div");
-  container.classList.add("VOTSubtitlesWidget");
-  element.appendChild(container);
-  _subtitlesWidget = container;
+  constructor(video, container, site) {
+    this.site = site;
+    this.video = video;
+    if (this.site.host === "youtube" && this.site.additionalData !== "mobile") {
+      this.container = container.parentElement;
+    } else {
+      this.container = container;
+    }
 
-  let dragging = false;
-  let containerRect, elementRect;
-  let offsetX, offsetY;
+    this.votSubtitlesContainer = document.createElement("vot-block");
+    this.votSubtitlesContainer.classList.add("vot-subtitles-widget");
+    this.container.appendChild(this.votSubtitlesContainer);
 
-  function onMouseDown(e) {
-    if (container.contains(e.target)) {
-      containerRect = container.getBoundingClientRect();
-      elementRect = element.getBoundingClientRect();
-      offsetX = e.clientX - containerRect.x;
-      offsetY = e.clientY - containerRect.y;
-      dragging = true;
+    this.onMouseDownBound = this.onMouseDown.bind(this);
+    this.onMouseUpBound = this.onMouseUp.bind(this);
+    this.onMouseMoveBound = this.onMouseMove.bind(this);
+    this.onTimeUpdateBound = this.onTimeUpdate.bind(this);
+
+    document.addEventListener("mousedown", this.onMouseDownBound);
+    document.addEventListener("mouseup", this.onMouseUpBound);
+    document.addEventListener("mousemove", this.onMouseMoveBound);
+
+    this.video?.addEventListener("timeupdate", this.onTimeUpdateBound);
+  }
+
+  release() {
+    this.video?.removeEventListener("timeupdate", this.onTimeUpdateBound);
+
+    document.removeEventListener("mousedown", this.onMouseDownBound);
+    document.removeEventListener("mouseup", this.onMouseUpBound);
+    document.removeEventListener("mousemove", this.onMouseMoveBound);
+
+    this.votSubtitlesContainer.remove();
+  }
+
+  onMouseDown(e) {
+    if (this.votSubtitlesContainer.contains(e.target)) {
+      this.subtitlesContainerRect =
+        this.votSubtitlesContainer.getBoundingClientRect();
+      this.containerRect = this.container.getBoundingClientRect();
+      this.offsetX = e.clientX - this.subtitlesContainerRect.x;
+      this.offsetY = e.clientY - this.subtitlesContainerRect.y;
+      this.dragging = true;
     }
   }
 
-  function onMouseUp() {
-    dragging = false;
+  onMouseUp() {
+    this.dragging = false;
   }
 
-  function onMouseMove(e) {
-    if (dragging) {
+  onMouseMove(e) {
+    if (this.dragging) {
       e.preventDefault();
-      const x = e.clientX - offsetX;
-      const y = e.clientY - offsetY;
-      const top = y >= elementRect.top;
-      const bottom = y + containerRect.height <= elementRect.bottom;
-      const left = x >= elementRect.left;
-      const right = x + containerRect.width <= elementRect.right;
+      const x = e.clientX - this.offsetX;
+      const y = e.clientY - this.offsetY;
+      const top = y >= this.containerRect.top;
+      const bottom =
+        y + this.subtitlesContainerRect.height <= this.containerRect.bottom;
+      const left = x >= this.containerRect.left;
+      const right =
+        x + this.subtitlesContainerRect.width <= this.containerRect.right;
 
       if (top && bottom) {
-        container.style.top = `${y - elementRect.y}px`;
+        this.votSubtitlesContainer.style.top = `${y - this.containerRect.y}px`;
       } else {
         if (!top) {
-          container.style.top = `${0}px`;
+          this.votSubtitlesContainer.style.top = `${0}px`;
         } else {
-          container.style.top = `${
-            elementRect.height - containerRect.height
+          this.votSubtitlesContainer.style.top = `${
+            this.containerRect.height - this.subtitlesContainerRect.height
           }px`;
         }
       }
       if (left && right) {
-        container.style.left = `${x - elementRect.x}px`;
+        this.votSubtitlesContainer.style.left = `${x - this.containerRect.x}px`;
       } else {
         if (!left) {
-          container.style.left = `${0}px`;
+          this.votSubtitlesContainer.style.left = `${0}px`;
         } else {
-          container.style.left = `${elementRect.width - containerRect.width}px`;
+          this.votSubtitlesContainer.style.left = `${
+            this.containerRect.width - this.subtitlesContainerRect.width
+          }px`;
         }
       }
     }
   }
 
-  document.addEventListener("mousedown", onMouseDown);
-  document.addEventListener("mouseup", onMouseUp);
-  document.addEventListener("mousemove", onMouseMove);
-}
+  onTimeUpdate() {
+    this.update();
+  }
 
-var _subtitles = null;
-var _video = null;
-var _lastContent = null;
-var _maxLength = 300;
-var _maxLengthRegexp = /.{1,300}(?:\s|$)/g;
-var _highlightWords = false;
-
-function updateSubtitles(video) {
-  if (!video) return;
-
-  let content = "";
-  let highlightWords = _highlightWords && _subtitles?.containsTokens;
-  const time = video.currentTime * 1000;
-  const line = _subtitles?.subtitles?.findLast((e) => {
-    return e.startMs < time && time < e.startMs + e.durationMs;
-  });
-  if (line) {
-    if (highlightWords) {
-      let tokens = line.tokens;
-      if (tokens.at(-1).alignRange.end > _maxLength) {
-        let chunks = [];
-        let chunkStartIndex = 0;
-        let chunkEndIndex = 0;
-        let length = 0;
-        for (let i = 0; i < tokens.length + 1; i++) {
-          length += tokens[i]?.text?.length ?? 0;
-          if (!tokens[i] || length > _maxLength) {
-            let t = tokens.slice(chunkStartIndex, chunkEndIndex + 1);
-            if (t.at(0) && t.at(0).text === " ") t = t.slice(1);
-            if (t.at(-1) && t.at(-1).text === " ") t = t.slice(0, t.length - 1);
-            chunks.push({
-              startMs: tokens[chunkStartIndex].startMs,
-              durationMs:
-                tokens[chunkEndIndex].startMs +
-                tokens[chunkEndIndex].durationMs -
-                tokens[chunkStartIndex].startMs,
-              tokens: t,
-            });
-            chunkStartIndex = i;
-            length = 0;
-          }
-          chunkEndIndex = i;
-        }
-        for (let i = 0; i < chunks.length; i++) {
-          if (
-            chunks[i].startMs < time &&
-            time < chunks[i].startMs + chunks[i].durationMs
-          ) {
-            tokens = chunks[i].tokens;
-            break;
-          }
-        }
-      }
-      for (let token of tokens) {
-        const passedMs = token.startMs + token.durationMs / 2;
-        content += `<span ${
-          time > passedMs ||
-          (time > token.startMs - 100 && passedMs - time < 275)
-            ? 'class="passed"'
-            : ""
-        }>${token.text}</span>`;
-      }
+  setContent(subtitles) {
+    if (subtitles && this.video) {
+      this.subtitles = subtitles;
+      this.update();
     } else {
-      if (line.text.length > _maxLength) {
-        let chunks = line.text.match(_maxLengthRegexp);
-        let chunkDurationMs = line.durationMs / chunks.length;
-        for (let i = 0; i < chunks.length; i++) {
-          if (
-            line.startMs + chunkDurationMs * i < time &&
-            time < line.startMs + chunkDurationMs * (i + 1)
-          ) {
-            content = chunks[i].trim();
-            break;
+      this.subtitles = null;
+      this.votSubtitlesContainer.innerHTML = "";
+    }
+  }
+
+  setMaxLength(len) {
+    if (typeof len === "number" && len) {
+      this.maxLength = len;
+      this.maxLengthRegexp = new RegExp(`.{1,${len}}(?:\\s|$)`, "g");
+      this.update();
+    }
+  }
+
+  setHighlightWords(value) {
+    if (this.highlightWords !== !!value) {
+      this.highlightWords = !!value;
+      this.update();
+    }
+  }
+
+  update() {
+    if (!this.video) return;
+
+    let content = "";
+    let highlightWords = this.highlightWords && this.subtitles?.containsTokens;
+    const time = this.video.currentTime * 1000;
+    const line = this.subtitles?.subtitles?.findLast((e) => {
+      return e.startMs < time && time < e.startMs + e.durationMs;
+    });
+    if (line) {
+      if (highlightWords) {
+        let tokens = line.tokens;
+        if (tokens.at(-1).alignRange.end > this.maxLength) {
+          let chunks = [];
+          let chunkStartIndex = 0;
+          let chunkEndIndex = 0;
+          let length = 0;
+          for (let i = 0; i < tokens.length + 1; i++) {
+            length += tokens[i]?.text?.length ?? 0;
+            if (!tokens[i] || length > this.maxLength) {
+              let t = tokens.slice(chunkStartIndex, chunkEndIndex + 1);
+              if (t.at(0) && t.at(0).text === " ") t = t.slice(1);
+              if (t.at(-1) && t.at(-1).text === " ")
+                t = t.slice(0, t.length - 1);
+              chunks.push({
+                startMs: tokens[chunkStartIndex].startMs,
+                durationMs:
+                  tokens[chunkEndIndex].startMs +
+                  tokens[chunkEndIndex].durationMs -
+                  tokens[chunkStartIndex].startMs,
+                tokens: t,
+              });
+              chunkStartIndex = i;
+              length = 0;
+            }
+            chunkEndIndex = i;
           }
+          for (let i = 0; i < chunks.length; i++) {
+            if (
+              chunks[i].startMs < time &&
+              time < chunks[i].startMs + chunks[i].durationMs
+            ) {
+              tokens = chunks[i].tokens;
+              break;
+            }
+          }
+        }
+        for (let token of tokens) {
+          const passedMs = token.startMs + token.durationMs / 2;
+          content += `<span ${
+            time > passedMs ||
+            (time > token.startMs - 100 && passedMs - time < 275)
+              ? 'class="passed"'
+              : ""
+          }>${token.text}</span>`;
         }
       } else {
-        content = line.text;
+        if (line.text.length > this.maxLength) {
+          let chunks = line.text.match(this.maxLengthRegexp);
+          let chunkDurationMs = line.durationMs / chunks.length;
+          for (let i = 0; i < chunks.length; i++) {
+            if (
+              line.startMs + chunkDurationMs * i < time &&
+              time < line.startMs + chunkDurationMs * (i + 1)
+            ) {
+              content = chunks[i].trim();
+              break;
+            }
+          }
+        } else {
+          content = line.text;
+        }
       }
     }
-  }
-  if (content !== _lastContent) {
-    _lastContent = content;
-    _subtitlesWidget.innerHTML = content
-      ? `<div>${content.replace("\\n", "<br>")}</div>`
-      : "";
-  }
-}
-
-function onTimeUpdate(event) {
-  updateSubtitles(event.target);
-}
-
-export function setSubtitlesWidgetContent(video, subtitles) {
-  if (subtitles && video) {
-    _subtitles = subtitles;
-    _video = video;
-    video?.addEventListener("timeupdate", onTimeUpdate);
-    updateSubtitles(video);
-  } else {
-    _subtitles = null;
-    video?.removeEventListener("timeupdate", onTimeUpdate);
-    _subtitlesWidget.innerHTML = "";
-  }
-}
-
-export function setSubtitlesMaxLength(len) {
-  if (typeof len === "number" && len) {
-    _maxLength = len;
-    _maxLengthRegexp = new RegExp(`.{1,${len}}(?:\\s|$)`, "g");
-    updateSubtitles(_video);
-  }
-}
-
-export function setSubtitlesHighlightWords(value) {
-  if (_highlightWords !== !!value) {
-    _highlightWords = !!value;
-    updateSubtitles(_video);
+    if (content !== this.lastContent) {
+      this.lastContent = content;
+      this.votSubtitlesContainer.innerHTML = content
+        ? `<vot-block class="vot-subtitles">${content.replace(
+            "\\n",
+            "<br>",
+          )}</vot-block>`
+        : "";
+    }
   }
 }

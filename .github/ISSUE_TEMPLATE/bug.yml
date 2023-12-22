@@ -12,9 +12,10 @@ body:
           * feature issus
           * other problems (not feature request)
         Please make sure to check other opened and closed issues, it could be your bug has been reported already.
+
         **ИСПОЛЬЗУЙТЕ ЭТУ ФОРМУ ТОЛЬКО ДЛЯ БАГОВ**
         Voice-over-translation не гарантирует ни 100% работу с каждым видео, ни работу вообще. Если Voice-over-translation не переводит некоторые медиа, вероятнее всего, это не программная ошибка, и не стоит о ней сообщать здесь.
-        Пожалуйста, сообщайте только об ошибках в программе, таких как:
+        Пожалуйста, сообщайте только об программных ошибках, таких как:
           * проблемы с меню
           * проблемы с функциями
           * другие ошибки/проблемы (не запрос функции)
@@ -68,7 +69,7 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: Describe the bug / Опишите ошибку программы
+      label: Describe the bug / Опишите ошибку
       description: A clear and concise description of what the bug is / Подробно опишите, в чём заключается ошибка
       placeholder: Attach the screenshots for clarity / При необходимости приложите скриншоты
     validations:

@@ -4,21 +4,32 @@ import { langTo6391 } from "./utils.js";
 
 async function getCourseData(courseId) {
   const response = await fetch(
-    `https://www.coursera.org/api/onDemandCourses.v1/${courseId}`
+    `https://www.coursera.org/api/onDemandCourses.v1/${courseId}`,
   );
   const resJSON = await response.json();
   return resJSON?.elements?.[0];
 }
 
-function getSubtitlesFileURL(responseLang, tracks) {
-  const subtitle = tracks.find(
-    (caption) => langTo6391(caption.srclang) === responseLang
+function getSubtitlesFileURL(captions, detectedLanguage, responseLang) {
+  let subtitle = captions?.find(
+    (caption) => langTo6391(caption.srclang) === detectedLanguage,
   );
+
+  if (!subtitle) {
+    subtitle =
+      captions?.find(
+        (caption) => langTo6391(caption.srclang) === responseLang,
+      ) || captions?.[0];
+  }
+
   return subtitle?.src;
 }
 
 function getVideoFileURL(sources) {
-  const source = sources.find((src) => src.type === "video/mp4");
+  const source = sources?.find(
+    (src) => src.type === "video/webm" || src.type === "video/mp4",
+  );
+
   return source?.src;
 }
 
@@ -27,7 +38,7 @@ function getPlayerData() {
 }
 
 function getPlayer() {
-  return document.querySelector("#video_player");
+  return document.querySelector(".vjs-v6");
 }
 
 // Get the video data from the player
@@ -48,8 +59,14 @@ async function getVideoData(responseLang = "en") {
     detectedLanguage = "en";
   }
 
-  const subtitlesURL = getSubtitlesFileURL(responseLang, tracks);
-  if (subtitlesURL) {
+  const subtitlesURL = getSubtitlesFileURL(
+    tracks,
+    detectedLanguage,
+    responseLang,
+  );
+  console.log(`videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`);
+
+  if (subtitlesURL && videoURL) {
     translationHelp = [
       {
         target: "video_file_url",
@@ -60,6 +77,10 @@ async function getVideoData(responseLang = "en") {
         targetUrl: `https://www.coursera.org${subtitlesURL}`,
       },
     ];
+  } else {
+    console.error(
+      `Failed to find subtitlesURL or videoURL. videoURL: ${videoURL}, subtitlesURL: ${subtitlesURL}`,
+    );
   }
 
   const videoData = {

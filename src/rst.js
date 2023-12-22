@@ -8,7 +8,7 @@ async function requestStreamTranslation(
   url,
   requestLang,
   responseLang,
-  callback
+  callback,
 ) {
   try {
     debug.log("requestStreamTranslation");
@@ -22,7 +22,7 @@ async function requestStreamTranslation(
     const body = yandexProtobuf.encodeStreamRequest(
       url,
       requestLang,
-      responseLang
+      responseLang,
     );
     // Send the request
     await yandexRequest(
@@ -32,7 +32,7 @@ async function requestStreamTranslation(
         "Vtrans-Signature": await getSignature(body),
         "Sec-Vtrans-Token": getUUID(false),
       },
-      callback
+      callback,
     );
   } catch (exception) {
     console.error("[VOT]", exception);

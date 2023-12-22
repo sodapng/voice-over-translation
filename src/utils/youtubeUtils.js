@@ -1,10 +1,14 @@
 import debug from "./debug.js";
 import { availableLangs } from "../config/constants.js";
-import { detectLang, langTo6391 } from "./utils.js";
+import { langTo6391 } from "./utils.js";
+import { detect } from "./translateApis.js";
 
 // Get the language code from the response or the text
-async function getLanguage(player, response, title, description, author) {
-  if (!window.location.hostname.includes("m.youtube.com")) {
+async function getLanguage(player, response, title, description) {
+  if (
+    !window.location.hostname.includes("m.youtube.com") &&
+    player?.getAudioTrack
+  ) {
     // ! Experimental ! get lang from selected audio track if availabled
     const audioTracks = player.getAudioTrack();
     const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
@@ -23,19 +27,26 @@ async function getLanguage(player, response, title, description, author) {
       return langTo6391(autoCaption.languageCode);
     }
   }
-  // If there is no caption track, use detect to get the language code from the text
-  const text = [description, title, author].join(" ");
-  // Remove anything that is not a letter or a space in any language
-  const cleanText = text
-  .split('\n')
-  .filter(line => !line.match(/https?:\/\/\S+/))
-  .join('\n')
-  .replace(/#\S+/g, "")
-  .replace(/[^\p{L}\s]/gu, "")
-  .replace(/\s+/g, " ")
-  .trim()
-  .slice(0, 250);
-  return await detectLang(cleanText);
+
+  // the "delayed video upload" fix for YouTube (#387)
+  if (!(description && title)) {
+    return "en";
+  }
+
+  // If there is no caption track, use detect to get the language code from the description
+  const cleanedDescription = description
+    .split("\n")
+    .filter((line) => !line.match(/https?:\/\/\S+/))
+    .join("\n")
+    .replace(/#\S+/g, "")
+    .replace(/[^\p{L}\s]/gu, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 250);
+
+  const cleanText = [cleanedDescription, title].join("");
+
+  return await detect(cleanText);
 }
 
 function isMobile() {
@@ -43,31 +54,52 @@ function isMobile() {
 }
 
 function getPlayer() {
-  return isMobile()
-    ? document.querySelector("#app")
-    : document.querySelector("#movie_player");
+  if (window.location.pathname.startsWith("/shorts/")) {
+    return isMobile()
+      ? document.querySelector("#movie_player")
+      : document.querySelector("#shorts-player");
+  }
+
+  return document.querySelector("#movie_player");
 }
 
 function getPlayerResponse() {
   const player = getPlayer();
-  if (isMobile()) return player?.data?.playerResponse ?? null;
-  return player?.getPlayerResponse?.call() ?? null;
+  if (player?.getPlayerResponse)
+    return player?.getPlayerResponse?.call() ?? null;
+  return player?.data?.playerResponse ?? null;
 }
 
 function getPlayerData() {
   const player = getPlayer();
-  if (isMobile()) return player?.data?.playerResponse?.videoDetails ?? null;
-  return player?.getVideoData?.call() ?? null;
+  if (player?.getVideoData) return player?.getVideoData?.call() ?? null;
+  return player?.data?.playerResponse?.videoDetails ?? null;
 }
 
 function getVideoVolume() {
-  return document.querySelector(".html5-video-player")?.getVolume() / 100;
+  const player = getPlayer();
+  if (player?.getVolume) {
+    return player.getVolume.call() / 100;
+  }
+
+  return 1;
 }
 
 function setVideoVolume(volume) {
-  return document
-    .querySelector(".html5-video-player")
-    ?.setVolume(Math.round(volume * 100));
+  const player = getPlayer();
+  if (player?.setVolume) {
+    player.setVolume(Math.round(volume * 100));
+    return true;
+  }
+}
+
+function videoSeek(video, time) {
+  // * TIME IN MS
+  debug.log("videoSeek", time);
+  const preTime =
+    getPlayer()?.getProgressState()?.seekableEnd || video.currentTime;
+  const finalTime = preTime - time; // we always throw it to the end of the stream - time
+  video.currentTime = finalTime;
 }
 
 function getSubtitles() {
@@ -115,7 +147,7 @@ async function getVideoData() {
     response,
     title,
     description,
-    author
+    author,
   );
   if (!availableLangs.includes(detectedLanguage)) {
     detectedLanguage = "en";
@@ -142,4 +174,5 @@ export const youtubeUtils = {
   getSubtitles,
   getVideoData,
   setVideoVolume,
+  videoSeek,
 };

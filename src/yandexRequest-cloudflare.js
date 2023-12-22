@@ -1,6 +1,6 @@
-import { workerHost } from "./config/config-cloudflare.js";
-import { yandexUserAgent } from "./config/config.js";
+import { yandexUserAgent, proxyWorkerHost } from "./config/config.js";
 import debug from "./utils/debug.js";
+import { votStorage } from "./utils/storage.js";
 
 async function yandexRequest(path, body, headers, callback) {
   let response;
@@ -33,6 +33,7 @@ async function yandexRequest(path, body, headers, callback) {
         body: Array.from(body),
       }),
     };
+    const workerHost = await votStorage.get("proxyWorkerHost", proxyWorkerHost);
     // Fetch the translation from the worker host
     response = await fetch(`https://${workerHost}${path}`, options);
     debug.log("yandexRequest:", response.status, response);

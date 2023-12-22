@@ -1,7 +1,7 @@
 {
   "name": "[VOT] - Voice Over Translation",
   "description": "A small extension that adds a Yandex Browser video translation to other browsers",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "author": "sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD",
   "namespace": "vot",
   "icon": "https://translate.yandex.ru/icons/favicon.ico",
@@ -12,6 +12,7 @@
   "match": [
     "*://*.youtube.com/*",
     "*://*.youtube-nocookie.com/*",
+    "*://*.youtubekids.com/*",
     "*://*.twitch.tv/*",
     "*://*.xvideos.com/*",
     "*://*.pornhub.com/*",
@@ -81,11 +82,33 @@
     "*://tt.vern.cc/*",
     "*://cringe.whatever.social/*",
     "*://proxitok.lunar.icu/*",
-    "*://proxitok.privacy.com.de/*"
+    "*://proxitok.privacy.com.de/*",
+    "*://rumble.com/*",
+    "*://*.eporner.com/*",
+    "*://peertube.1312.media/*",
+    "*://tube.shanti.cafe/*",
+    "*://bee-tube.fr/*",
+    "*://video.sadmin.io/*",
+    "*://dalek.zone/*",
+    "*://review.peertube.biz/*",
+    "*://peervideo.club/*",
+    "*://tube.la-dina.net/*",
+    "*://peertube.tmp.rcp.tf/*",
+    "*://geo.dailymotion.com/*",
+    "*://trovo.live/*",
+    "*://disk.yandex.ru/i/*"
   ],
   "require": [
-    "https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.2.3/light/protobuf.min.js"
+    "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",
+    "https://cdn.jsdelivr.net/npm/hls.js@1"
   ],
-  "grant": ["GM_xmlhttpRequest", "GM_info"],
+  "grant": [
+    "GM_xmlhttpRequest",
+    "GM_info",
+    "GM_setValue",
+    "GM_getValue",
+    "GM_deleteValue",
+    "GM_listValues"
+  ],
   "connect": ["api.browser.yandex.ru"]
 }

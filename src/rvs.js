@@ -22,7 +22,7 @@ async function requestVideoSubtitles(url, requestLang, callback) {
         "Vsubs-Signature": await getSignature(body),
         "Sec-Vsubs-Token": getUUID(false),
       },
-      callback
+      callback,
     );
   } catch (exception) {
     console.error("[VOT]", exception);
