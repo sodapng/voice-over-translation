@@ -112,12 +112,17 @@ export function createSlider(html, value = 50, min = 0, max = 100) {
   };
 }
 
-export function createTextfield(html, value = "", multiline = false) {
+export function createTextfield(
+  html,
+  value = "",
+  placeholder = " ",
+  multiline = false,
+) {
   const container = document.createElement("vot-block");
   container.classList.add("vot-textfield");
 
   const input = document.createElement(multiline ? "textarea" : "input");
-  input.placeholder = " ";
+  input.placeholder = placeholder;
   input.value = value;
 
   const label = document.createElement("span");
