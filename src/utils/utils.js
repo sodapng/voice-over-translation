@@ -247,7 +247,7 @@ const getVideoId = (service, video) => {
       return `${path}?vid=${vid}`;
     }
     case "yandexdisk": {
-      return url.pathname.match(/\/i\/([^/]+)/)?.[1];
+      return url.pathname.match(/\/[i|s|d]\/([^/]+)/)?.[1];
     }
     default:
       return false;
