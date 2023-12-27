@@ -33,7 +33,7 @@ async function getLanguage(player, response, title, description) {
     return "en";
   }
 
-  // If there is no caption track, use detect to get the language code from the description\
+  // If there is no caption track, use detect to get the language code from the description
 
   const deletefilter = [
     /https?:\/\/\S+/g, // remove links
