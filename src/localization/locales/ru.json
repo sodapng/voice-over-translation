@@ -1,5 +1,5 @@
 {
-  "__version__": 2,
+  "__version__": 3,
   "recommended": "рекомендуется",
   "translateVideo": "Перевести видео",
   "disableTranslate": "Отключить",
@@ -14,8 +14,8 @@
   "translationTakeMoreThanHour": "Перевод займёт больше часа",
   "translationTakeAboutMinute": "Перевод займёт около минуты",
   "translationTakeFewMinutes": "Перевод займёт несколько минут",
-  "translationTakeApproximatelyMinutes": "Перевод займёт примерно {0} мин.",
-  "translationTakeApproximatelyMinute": "Перевод займёт примерно {0} мин.",
+  "translationTakeApproximatelyMinutes": "Перевод займёт примерно {0} минут",
+  "translationTakeApproximatelyMinute": "Перевод займёт примерно {0} минуты",
   "unSupportedExtensionError": "Ошибка! {0} не поддерживается этой версией расширения!\n\nПожалуйста, используйте cloudflare-версию расширения VOT.",
   "requestTranslationFailed": "Не удалось запросить перевод видео",
   "audioNotReceived": "Не получена ссылка на аудио",
