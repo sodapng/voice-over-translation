@@ -23,6 +23,7 @@
 
 #### Proxy-сервер
 - [vot.deno.dev](https://github.com/FOSWLY/vot-worker)
+- [vot-worker.onrender.com](https://github.com/FOSWLY/vot-worker)
 - [vot-new.toil-dump.workers.dev](https://github.com/FOSWLY/vot-worker) (⚠️ не работает в РФ)
 
 #### M3U8 Proxy-сервер

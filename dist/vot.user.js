@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.5.0.2
+// @version 1.5.0.3
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -560,7 +560,7 @@ module.exports = styleTagTransform;
 const workerHost = "api.browser.yandex.ru";
 const m3u8ProxyHost = "m3u8proxy.toil-dump.workers.dev";
 const proxyWorkerHost =
-  _utils_utils_js__WEBPACK_IMPORTED_MODULE_0__/* .lang */ .KQ === "uk" ? "vot-new.toil-dump.workers.dev" : "vot.deno.dev"; // used for cloudflare version (vot-new.toil-dump.workers.dev || vot.deno.dev)
+  _utils_utils_js__WEBPACK_IMPORTED_MODULE_0__/* .lang */ .KQ === "uk" ? "vot-new.toil-dump.workers.dev" : "vot-worker.onrender.com"; // used for cloudflare version (vot-new.toil-dump.workers.dev || vot-worker.onrender.com)
 const yandexHmacKey = "xtGCyGdTY2Jy6OMEKdTuXev3Twhkamgm";
 const yandexUserAgent =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 YaBrowser/23.7.1.1140 Yowser/2.5 Safari/537.36";

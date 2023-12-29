@@ -22,6 +22,7 @@ These domains can be set in the extension settings (only those domains that can 
 
 #### Proxy-server
 - [vot.deno.dev](https://github.com/FOSWLY/vot-worker)
+- [vot-worker.onrender.com](https://github.com/FOSWLY/vot-worker)
 - [vot-new.toil-dump.workers.dev](https://github.com/FOSWLY/vot-worker) (⚠️ doesn't work in Russia)
 
 #### M3U8 Proxy-server
