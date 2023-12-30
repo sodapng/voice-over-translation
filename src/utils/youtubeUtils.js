@@ -43,9 +43,9 @@ async function getLanguage(player, response, title, description) {
   ];
 
   const cleanedDescription = description
-    .split("\n")
+    .split("\n\n")
     .filter((line) => !deletefilter.some((regex) => regex.test(line)))
-    .join("\n")
+    .join("\n\n")
     .replace(/[^\p{L}\s]/gu, " ")
     .trim()
     .replace(/\s+/g, " ")
