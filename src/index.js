@@ -862,9 +862,8 @@ class VideoHandler {
 
       this.votVideoVolumeSlider.input.addEventListener("input", (e) => {
         const value = Number(e.target.value);
-        this.votVideoVolumeSlider.label.querySelector(
-          "strong",
-        ).innerHTML = `${value}%`;
+        this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
+          `${value}%`;
         this.setVideoVolume(value / 100);
         if (this.data.syncVolume === 1) {
           const translateVolume = Number(
@@ -952,9 +951,8 @@ class VideoHandler {
         const presetAutoVolume = Number(e.target.value);
         this.data.autoVolume = presetAutoVolume / 100;
         await votStorage.set("autoVolume", presetAutoVolume);
-        this.votAutoSetVolumeSlider.label.querySelector(
-          "strong",
-        ).innerHTML = `${presetAutoVolume}%`;
+        this.votAutoSetVolumeSlider.label.querySelector("strong").innerHTML =
+          `${presetAutoVolume}%`;
       });
 
       this.votShowVideoSliderCheckbox.input.addEventListener(
@@ -1419,9 +1417,8 @@ class VideoHandler {
     const newSlidersVolume = Math.round(this.getVideoVolume() * 100);
 
     this.votVideoVolumeSlider.input.value = newSlidersVolume;
-    this.votVideoVolumeSlider.label.querySelector(
-      "strong",
-    ).innerHTML = `${newSlidersVolume}%`;
+    this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
+      `${newSlidersVolume}%`;
     ui.updateSlider(this.votVideoVolumeSlider.input);
 
     if (this.data.syncVolume === 1) {
@@ -1458,9 +1455,8 @@ class VideoHandler {
 
     // Set the video volume slider value to the synced value
     this.votVideoVolumeSlider.input.value = finalValue;
-    this.votVideoVolumeSlider.label.querySelector(
-      "strong",
-    ).innerHTML = `${finalValue}%`;
+    this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
+      `${finalValue}%`;
     ui.updateSlider(this.votVideoVolumeSlider.input);
 
     // Update the temp variables for future syncing
@@ -1839,9 +1835,8 @@ class VideoHandler {
 
           if (this.data.autoSetVolumeYandexStyle === 1) {
             this.votVideoVolumeSlider.input.value = this.data.autoVolume * 100;
-            this.votVideoVolumeSlider.label.querySelector(
-              "strong",
-            ).innerHTML = `${this.data.autoVolume * 100}%`;
+            this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
+              `${this.data.autoVolume * 100}%`;
             ui.updateSlider(this.votVideoVolumeSlider.input);
           }
 
@@ -2011,9 +2006,8 @@ class VideoHandler {
 
         if (this.data.autoSetVolumeYandexStyle === 1) {
           this.votVideoVolumeSlider.input.value = this.data.autoVolume * 100;
-          this.votVideoVolumeSlider.label.querySelector(
-            "strong",
-          ).innerHTML = `${this.data.autoVolume * 100}%`;
+          this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
+            `${this.data.autoVolume * 100}%`;
           ui.updateSlider(this.votVideoVolumeSlider.input);
         }
 
