@@ -201,29 +201,12 @@ const getVideoId = (service, video) => {
     case "dailymotion": {
       // we work in the context of the player
       // geo.dailymotion.com
-
-      const plainPlayerConfig = Array.from(document.scripts).filter((s) =>
-        s.innerText.trim().includes("window.__PLAYER_CONFIG__ = {"),
+      const plainPlayerConfig = Array.from(document.all).filter((s) =>
+        s.innerHTML.trim().includes(".m3u8"),
       );
-      if (!plainPlayerConfig.length) {
-        return false;
-      }
-
       try {
-        let clearPlainConfig = plainPlayerConfig[0].innerText
-          .trim()
-          .replace("window.__PLAYER_CONFIG__ = ", "");
-        if (clearPlainConfig.endsWith("};")) {
-          clearPlainConfig = clearPlainConfig.substring(
-            0,
-            clearPlainConfig.length - 1,
-          );
-        }
-        const playerConfig = JSON.parse(clearPlainConfig);
-        const videoUrl =
-          playerConfig.context.embedder ?? playerConfig.context.http_referer;
-        console.log(videoUrl, playerConfig);
-        return videoUrl.match(/\/video\/([^/]+)/)?.[1];
+        let videoUrl = plainPlayerConfig[1].lastChild.src;
+        return videoUrl.match(/\/video\/(\w+)\.m3u8/)?.[1];
       } catch (e) {
         console.error("[VOT]", e);
         return false;
