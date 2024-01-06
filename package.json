@@ -35,6 +35,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "stats": "webpack --profile --json=webpack-stats.json",
     "build:cloudflare": "webpack build -c webpack.config.js --env build_mode=cloudflare",
     "build:default": "webpack build -c webpack.config.js",
     "build:cloudflare-min": "webpack build -c webpack.config.js --env build_mode=cloudflare --env build_type=minify",
