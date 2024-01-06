@@ -43,9 +43,15 @@ jobs:
         run: npm install
 
       - name: Build 🔧
-        run: npm run build
+        run: npm run build --json webpack-stats.json
 
       - name: Upload Artifact 🚀
         uses: actions/upload-artifact@v3
         with:
           path: dist/vot*.user.js
+      - name: Send bundle stats to RelativeCI
+        uses: relative-ci/agent-action@v2
+        with:
+          webpackStatsFile: ./webpack-stats.json
+          key: ${{ secrets.RELATIVE_CI_KEY }}
+          token: ${{ secrets.GITHUB_TOKEN }}
