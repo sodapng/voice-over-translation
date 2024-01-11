@@ -1,5 +1,5 @@
 import { youtubeUtils } from "./utils/youtubeUtils.js";
-import { sleep, lang } from "./utils/utils.js";
+import { lang } from "./utils/utils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
 import requestVideoSubtitles from "./rvs.js";
 import debug from "./utils/debug.js";
@@ -137,17 +137,17 @@ function formatYoutubeSubtitles(subtitles) {
 export async function fetchSubtitles(subtitlesObject) {
   let resolved = false;
   let subtitles = await Promise.race([
-    new Promise(async (resolve) => {
-      await sleep(5000);
-      if (!resolved) {
-        console.error("[VOT] Failed to fetch subtitles. Reason: timeout");
-      }
-      resolved = true;
-      resolve([]);
+    new Promise((resolve) => {
+      setTimeout(() => {
+        if (!resolved) {
+          console.error("[VOT] Failed to fetch subtitles. Reason: timeout");
+          resolve([]);
+        }
+      }, 5000);
     }),
-    new Promise(async (resolve) => {
+    new Promise((resolve) => {
       debug.log("Fetching subtitles:", subtitlesObject);
-      await fetch(subtitlesObject.url)
+      fetch(subtitlesObject.url)
         .then((response) => response.json())
         .then((json) => {
           resolved = true;
@@ -176,13 +176,13 @@ export async function getSubtitles(site, videoId, requestLang) {
     site.host === "youtube" ? youtubeUtils.getSubtitles() : [];
   let resolved = false;
   const yaSubtitles = await Promise.race([
-    new Promise(async (resolve) => {
-      await sleep(5000);
-      if (!resolved) {
-        console.error("[VOT] Failed get yandex subtitles. Reason: timeout");
-      }
-      resolved = true;
-      resolve([]);
+    new Promise((resolve) => {
+      setTimeout(() => {
+        if (!resolved) {
+          console.error("[VOT] Failed get yandex subtitles. Reason: timeout");
+          resolve([]);
+        }
+      }, 5000);
     }),
     new Promise((resolve) => {
       requestVideoSubtitles(
@@ -417,7 +417,7 @@ export class SubtitlesWidget {
     });
     if (line) {
       if (highlightWords) {
-        let tokens = line.tokens;
+        let { tokens } = line;
         if (tokens.at(-1).alignRange.end > this.maxLength) {
           let chunks = [];
           let chunkStartIndex = 0;
