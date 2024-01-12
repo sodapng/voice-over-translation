@@ -7,7 +7,6 @@ import {
   secsToStrTime,
   lang,
   isPiPAvailable,
-  sleep,
   initHls,
 } from "./utils/utils.js";
 import {
@@ -793,6 +792,7 @@ class VideoHandler {
     }
   }
 
+  // В коде есть проблема "Promise returned in function argument where a void return was expected", но не вижу смысла её исправлять
   initUIEvents() {
     // VOT Button
     {
@@ -2026,20 +2026,22 @@ class VideoHandler {
   async waitInitialization() {
     let resolved = false;
     return await Promise.race([
-      new Promise(async (resolve) => {
-        await sleep(1000);
-        if (!resolved) {
-          console.error("[VOT] Initialization timeout");
-        }
-        resolved = true;
-        resolve(false);
+      new Promise((resolve) => {
+        setTimeout(() => {
+          if (!resolved) {
+            console.error("[VOT] Initialization timeout");
+            resolve(false);
+          }
+        }, 1000);
       }),
-      new Promise(async (resolve) => {
-        while (!this.initialized) {
-          await sleep(100);
-        }
-        resolved = true;
-        resolve(true);
+      new Promise((resolve) => {
+        const interval = setInterval(() => {
+          if (this.initialized) {
+            clearInterval(interval);
+            resolved = true;
+            resolve(true);
+          }
+        }, 100);
       }),
     ]);
   }

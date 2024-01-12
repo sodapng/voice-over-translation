@@ -96,6 +96,7 @@
     "*://peertube.tmp.rcp.tf/*",
     "*://geo.dailymotion.com/*",
     "*://trovo.live/*",
+    "*://ok.ru/*",
     "*://disk.yandex.ru/i/*"
   ],
   "require": [
