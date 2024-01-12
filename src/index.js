@@ -38,6 +38,7 @@ import requestVideoTranslation from "./rvt.js";
 import requestStreamTranslation from "./rst.js";
 import requestStreamPing from "./rsp.js";
 import { getSubtitles, fetchSubtitles, SubtitlesWidget } from "./subtitles.js";
+import { coursehunterUtils } from "./utils/coursehunterUtils.js";
 import { courseraUtils } from "./utils/courseraUtils.js";
 import { udemyUtils } from "./utils/udemyUtils.js";
 
@@ -862,8 +863,9 @@ class VideoHandler {
 
       this.votVideoVolumeSlider.input.addEventListener("input", (e) => {
         const value = Number(e.target.value);
-        this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
-          `${value}%`;
+        this.votVideoVolumeSlider.label.querySelector(
+          "strong",
+        ).innerHTML = `${value}%`;
         this.setVideoVolume(value / 100);
         if (this.data.syncVolume === 1) {
           const translateVolume = Number(
@@ -951,8 +953,9 @@ class VideoHandler {
         const presetAutoVolume = Number(e.target.value);
         this.data.autoVolume = presetAutoVolume / 100;
         await votStorage.set("autoVolume", presetAutoVolume);
-        this.votAutoSetVolumeSlider.label.querySelector("strong").innerHTML =
-          `${presetAutoVolume}%`;
+        this.votAutoSetVolumeSlider.label.querySelector(
+          "strong",
+        ).innerHTML = `${presetAutoVolume}%`;
       });
 
       this.votShowVideoSliderCheckbox.input.addEventListener(
@@ -1417,8 +1420,9 @@ class VideoHandler {
     const newSlidersVolume = Math.round(this.getVideoVolume() * 100);
 
     this.votVideoVolumeSlider.input.value = newSlidersVolume;
-    this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
-      `${newSlidersVolume}%`;
+    this.votVideoVolumeSlider.label.querySelector(
+      "strong",
+    ).innerHTML = `${newSlidersVolume}%`;
     ui.updateSlider(this.votVideoVolumeSlider.input);
 
     if (this.data.syncVolume === 1) {
@@ -1455,8 +1459,9 @@ class VideoHandler {
 
     // Set the video volume slider value to the synced value
     this.votVideoVolumeSlider.input.value = finalValue;
-    this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
-      `${finalValue}%`;
+    this.votVideoVolumeSlider.label.querySelector(
+      "strong",
+    ).innerHTML = `${finalValue}%`;
     ui.updateSlider(this.votVideoVolumeSlider.input);
 
     // Update the temp variables for future syncing
@@ -1467,7 +1472,10 @@ class VideoHandler {
   async getVideoData() {
     const videoData = {};
 
-    videoData.translationHelp = null; // ! should be null for ALL websites except coursera and udemy !
+    // ! should be null for ALL websites except coursera and udemy !
+    // else use direct link: `{url: xxx.mp4}`
+    videoData.translationHelp = null;
+
     videoData.isStream = false; // by default, we request the translation of the video
     videoData.duration = this.video?.duration || 343; // ! if 0 - we get 400 error
     videoData.videoId = getVideoId(this.site.host, this.video);
@@ -1500,6 +1508,13 @@ class VideoHandler {
       videoData.duration = courseraData.duration || videoData.duration; // courseraData.duration sometimes it can be equal to NaN
       videoData.detectedLanguage = courseraData.detectedLanguage;
       videoData.translationHelp = courseraData.translationHelp;
+    } else if (window.location.hostname.includes("coursehunter.net")) {
+      const coursehunterData = await coursehunterUtils.getVideoData();
+      videoData.translationHelp = {
+        // use direct link
+        url: coursehunterData.url,
+      };
+      videoData.duration = coursehunterData.duration || videoData.duration;
     } else if (window.location.hostname.includes("udemy.com")) {
       const udemyData = await udemyUtils.getVideoData(
         this.data.udemyData,
@@ -1517,7 +1532,8 @@ class VideoHandler {
       this.site.host === "peertube" ||
       this.site.host === "dailymotion" ||
       this.site.host === "trovo" ||
-      this.site.host === "yandexdisk"
+      this.site.host === "yandexdisk" ||
+      this.site.host === "coursehunter"
     ) {
       videoData.detectedLanguage = "auto";
     }
@@ -1668,7 +1684,9 @@ class VideoHandler {
     translationHelp,
   ) {
     console.log("[VOT] Video Data: ", this.videoData);
-    const videoURL = `${this.site.url}${VIDEO_ID}`;
+    const videoURL = translationHelp?.url
+      ? translationHelp.url
+      : `${this.site.url}${VIDEO_ID}`;
 
     // fix enabling the old requested voiceover when changing the language to the native language (#)
     this.videoValidator();
@@ -1835,8 +1853,9 @@ class VideoHandler {
 
           if (this.data.autoSetVolumeYandexStyle === 1) {
             this.votVideoVolumeSlider.input.value = this.data.autoVolume * 100;
-            this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
-              `${this.data.autoVolume * 100}%`;
+            this.votVideoVolumeSlider.label.querySelector(
+              "strong",
+            ).innerHTML = `${this.data.autoVolume * 100}%`;
             ui.updateSlider(this.votVideoVolumeSlider.input);
           }
 
@@ -2006,8 +2025,9 @@ class VideoHandler {
 
         if (this.data.autoSetVolumeYandexStyle === 1) {
           this.votVideoVolumeSlider.input.value = this.data.autoVolume * 100;
-          this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
-            `${this.data.autoVolume * 100}%`;
+          this.votVideoVolumeSlider.label.querySelector(
+            "strong",
+          ).innerHTML = `${this.data.autoVolume * 100}%`;
           ui.updateSlider(this.votVideoVolumeSlider.input);
         }
 

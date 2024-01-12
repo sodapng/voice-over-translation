@@ -221,6 +221,12 @@ const sites = () => {
       match: /^disk.yandex.ru$/,
       selector: "yaplayertag > div:nth-of-type(1)",
     },
+    {
+      host: "coursehunter",
+      url: "https://coursehunter.net/course/",
+      match: /^coursehunter.net$/,
+      selector: "#oframeplayer > pjsdiv:nth-of-type(1)",
+    },
   ];
 };
 
