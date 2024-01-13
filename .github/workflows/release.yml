@@ -1,0 +1,45 @@
+# adopted from https://github.com/MihailRis/VoxelEngine-Cpp
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+
+jobs:
+  build_release:
+    name: Build Release
+    uses: ./.github/workflows/build.yml
+
+  create_release:
+    needs: build_release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: vot
+          pattern: vot-*
+          merge-multiple: true
+      - name: Console log
+        run: ls -R vot
+      - name: Grab and store version
+        run: |
+          tag_name=$(echo ${{ github.ref }} | grep -oE "[^/]+$")
+          echo "VERSION=$tag_name" >> $GITHUB_ENV
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.ref }}
+          name: ${{ env.VERSION }}
+          draft: true
+          prerelease: false
+          files: |
+            vot/vot.user.js
+            vot/vot-min.user.js
+            vot/vot-cloudflare.user.js
+            vot/vot-cloudflare-min.user.js
