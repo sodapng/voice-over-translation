@@ -24,8 +24,6 @@ jobs:
           path: vot
           pattern: vot-*
           merge-multiple: true
-      - name: Console log
-        run: ls -R vot
       - name: Grab and store version
         run: |
           tag_name=$(echo ${{ github.ref }} | grep -oE "[^/]+$")
