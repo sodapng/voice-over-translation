@@ -95,10 +95,10 @@
     "*://tube.la-dina.net/*",
     "*://peertube.tmp.rcp.tf/*",
     "*://geo.dailymotion.com/*",
+    "*://*.ok.ru/*",
     "*://trovo.live/*",
     "*://disk.yandex.ru/i/*",
-    "*://coursehunter.net/*",
-    "*://*.ok.ru/*"
+    "*://coursehunter.net/*"
   ],
   "require": [
     "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",
