@@ -101,7 +101,7 @@ const sites = () => {
       selector: ".player",
     },
     {
-      host: "okru",
+      host: "ok.ru",
       url: "https://ok.ru/",
       match: /^ok.ru$/,
       selector: ".html5-vpl_vid",

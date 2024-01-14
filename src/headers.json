@@ -97,8 +97,7 @@
     "*://geo.dailymotion.com/*",
     "*://*.ok.ru/*",
     "*://trovo.live/*",
-    "*://disk.yandex.ru/i/*",
-    "*://coursehunter.net/*"
+    "*://disk.yandex.ru/i/*"
   ],
   "require": [
     "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",

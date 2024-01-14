@@ -1488,6 +1488,7 @@ class VideoHandler {
       }
     } else if (
       window.location.hostname.includes("rutube") ||
+      window.location.hostname.includes("ok.ru") ||
       window.location.hostname.includes("my.mail.ru")
     ) {
       videoData.detectedLanguage = "ru";
@@ -1500,8 +1501,6 @@ class VideoHandler {
       videoData.duration = courseraData.duration || videoData.duration; // courseraData.duration sometimes it can be equal to NaN
       videoData.detectedLanguage = courseraData.detectedLanguage;
       videoData.translationHelp = courseraData.translationHelp;
-    } else if (window.location.hostname.includes("ok.ru")) {
-      videoData.detectedLanguage = "ru";
     } else if (window.location.hostname.includes("udemy.com")) {
       const udemyData = await udemyUtils.getVideoData(
         this.data.udemyData,
@@ -1527,7 +1526,7 @@ class VideoHandler {
   }
 
   videoValidator() {
-    if (this.site.host === "youtube" || this.site.host === "okru") {
+    if (this.site.host === "youtube" || this.site.host === "ok.ru") {
       debug.log("VideoValidator videoData: ", this.videoData);
       if (
         this.data.dontTranslateYourLang === 1 &&
