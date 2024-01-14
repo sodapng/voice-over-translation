@@ -2034,7 +2034,7 @@ class VideoHandler {
             console.error("[VOT] Initialization timeout");
             resolve(false);
           }
-        }, 5000);
+        }, 1000);
       }),
       new Promise((resolve) => {
         const interval = setInterval(() => {
