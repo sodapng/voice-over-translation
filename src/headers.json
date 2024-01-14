@@ -96,8 +96,9 @@
     "*://peertube.tmp.rcp.tf/*",
     "*://geo.dailymotion.com/*",
     "*://trovo.live/*",
-    "*://*.ok.ru/*",
-    "*://disk.yandex.ru/i/*"
+    "*://disk.yandex.ru/i/*",
+    "*://coursehunter.net/*",
+    "*://*.ok.ru/*"
   ],
   "require": [
     "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",
