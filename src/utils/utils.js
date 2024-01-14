@@ -43,7 +43,8 @@ function waitForElm(selector) {
   });
 }
 
-const sleep = (m) => new Promise((r) => setTimeout(r, m));
+// not used
+// const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
 const getVideoId = (service, video) => {
   const url = new URL(window.location.href);
@@ -201,9 +202,9 @@ const getVideoId = (service, video) => {
     case "dailymotion": {
       // we work in the context of the player
       // geo.dailymotion.com
-      const plainPlayerConfig = Array.from(document.all).filter((s) =>
-        s.innerHTML.trim().includes(".m3u8"),
-      );
+      const plainPlayerConfig = Array.from(
+        document.querySelectorAll("*"),
+      ).filter((s) => s.innerHTML.trim().includes(".m3u8"));
       try {
         let videoUrl = plainPlayerConfig[1].lastChild.src;
         return videoUrl.match(/\/video\/(\w+)\.m3u8/)?.[1];
@@ -231,6 +232,9 @@ const getVideoId = (service, video) => {
     }
     case "yandexdisk": {
       return url.pathname.match(/\/[i|s|d]\/([^/]+)/)?.[1];
+    }
+    case "okru": {
+      return url.pathname.match(/\/video\/(\d+)/)?.[0];
     }
     default:
       return false;
@@ -278,7 +282,6 @@ function initHls() {
 
 export {
   waitForElm,
-  sleep,
   getVideoId,
   secsToStrTime,
   langTo6391,

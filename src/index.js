@@ -792,7 +792,7 @@ class VideoHandler {
     }
   }
 
-  // В коде есть проблема "Promise returned in function argument where a void return was expected", но не вижу смысла её исправлять
+  // В коде есть проблема "Promise returned in function argument where a void return was expected"
   initUIEvents() {
     // VOT Button
     {
@@ -1500,6 +1500,8 @@ class VideoHandler {
       videoData.duration = courseraData.duration || videoData.duration; // courseraData.duration sometimes it can be equal to NaN
       videoData.detectedLanguage = courseraData.detectedLanguage;
       videoData.translationHelp = courseraData.translationHelp;
+    } else if (window.location.hostname.includes("ok.ru")) {
+      videoData.detectedLanguage = "ru";
     } else if (window.location.hostname.includes("udemy.com")) {
       const udemyData = await udemyUtils.getVideoData(
         this.data.udemyData,
@@ -1525,7 +1527,7 @@ class VideoHandler {
   }
 
   videoValidator() {
-    if (this.site.host === "youtube") {
+    if (this.site.host === "youtube" || this.site.host === "okru") {
       debug.log("VideoValidator videoData: ", this.videoData);
       if (
         this.data.dontTranslateYourLang === 1 &&
@@ -2032,7 +2034,7 @@ class VideoHandler {
             console.error("[VOT] Initialization timeout");
             resolve(false);
           }
-        }, 1000);
+        }, 5000);
       }),
       new Promise((resolve) => {
         const interval = setInterval(() => {
