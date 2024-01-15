@@ -792,7 +792,6 @@ class VideoHandler {
     }
   }
 
-  // В коде есть проблема "Promise returned in function argument where a void return was expected"
   initUIEvents() {
     // VOT Button
     {
