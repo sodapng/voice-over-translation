@@ -792,6 +792,7 @@ class VideoHandler {
     }
   }
 
+  // В коде есть проблема "Promise returned in function argument where a void return was expected"
   initUIEvents() {
     // VOT Button
     {
@@ -1269,7 +1270,6 @@ class VideoHandler {
     addExtraEventListener(this.video, "abort", () => {
       debug.log("lipsync mode is abort");
       this.stopTranslation();
-      this.videoData = "";
     });
 
     addExtraEventListener(this.video, "progress", async () => {
