@@ -238,13 +238,20 @@ class VideoHandler {
     this.srcObserver.observe(this.video, {
       attributeFilter: ["src", "currentSrc"],
     });
-    this.srcObjectInterval = setInterval(async () => {
-      if (this.videoLastSrcObject !== this.video.srcObject) {
-        this.videoLastSrcObject = this.video.srcObject;
-        if (!this.video?.duration) return;
-        await this.handleSrcChanged();
-      }
-    }, 100);
+    this.srcObjectChangedEvent = new Event("srcObjectChanged");
+    this.video.addEventListener("srcObjectChanged", async () => {
+      if (!this.video?.duration) return;
+      await this.handleSrcChanged();
+    });
+    Object.defineProperty(this.video, "srcObject", {
+      get: function () {
+        return this._srcObject;
+      },
+      set: function (value) {
+        this._srcObject = value;
+        this.dispatchEvent(this.srcObjectChangedEvent);
+      },
+    });
     this.stopTranslationBound = this.stopTranslation.bind(this);
     this.handleVideoEventBound = this.handleVideoEvent.bind(this);
     this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
