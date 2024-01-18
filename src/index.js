@@ -241,6 +241,7 @@ class VideoHandler {
     this.srcObjectInterval = setInterval(async () => {
       if (this.videoLastSrcObject !== this.video.srcObject) {
         this.videoLastSrcObject = this.video.srcObject;
+        if (!this.video?.duration) return;
         await this.handleSrcChanged();
       }
     }, 100);
@@ -2069,8 +2070,6 @@ class VideoHandler {
     if (!(await this.waitInitialization())) return;
 
     this.stopTranslation();
-
-    if (!this.video?.duration) return;
 
     this.videoData = await this.getVideoData();
 
