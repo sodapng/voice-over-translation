@@ -1577,7 +1577,7 @@ class VideoHandler {
       return;
     }
 
-    if (mode === "play") {
+    if (mode == "play") {
       debug.log("lipsync mode is play");
       const audioPromise = this.audio.play();
       if (audioPromise !== undefined) {
@@ -1604,19 +1604,19 @@ class VideoHandler {
       }
       return;
     }
-    if (mode === "pause") {
+    if (mode == "pause") {
       debug.log("lipsync mode is pause");
       this.audio.pause();
     }
-    if (mode === "stop") {
+    if (mode == "stop") {
       debug.log("lipsync mode is stop");
       this.audio.pause();
     }
-    if (mode === "waiting") {
+    if (mode == "waiting") {
       debug.log("lipsync mode is waiting");
       this.audio.pause();
     }
-    if (mode === "playing") {
+    if (mode == "playing") {
       debug.log("lipsync mode is playing");
       this.audio.play();
     }
@@ -2069,6 +2069,8 @@ class VideoHandler {
     if (!(await this.waitInitialization())) return;
 
     this.stopTranslation();
+
+    if (!this.video?.duration) return;
 
     this.videoData = await this.getVideoData();
 
