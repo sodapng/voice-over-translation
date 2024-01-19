@@ -2055,6 +2055,7 @@ class VideoHandler {
   }
 
   async handleSrcChanged() {
+    if (!this.video.duration) return;
     debug.log("[VideoHandler] src changed", this);
 
     if (!(await this.waitInitialization())) return;
