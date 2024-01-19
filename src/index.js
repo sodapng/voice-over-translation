@@ -238,7 +238,7 @@ class VideoHandler {
     this.srcObserver.observe(this.video, {
       attributeFilter: ["src", "currentSrc"],
     });
-    this.video.addEventListener("loadeddata", this.handleSrcChangedBound);
+    this.video.addEventListener("canplaythrough", this.handleSrcChanged);
     this.stopTranslationBound = this.stopTranslation.bind(this);
     this.handleVideoEventBound = this.handleVideoEvent.bind(this);
     this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
@@ -1480,14 +1480,14 @@ class VideoHandler {
 
     videoData.translationHelp = null; // ! should be null for ALL websites except coursera and udemy !
     videoData.isStream = false; // by default, we request the translation of the video
-    videoData.duration = this.video.duration;
+    videoData.duration = this.video.duration; // ! if 0 - we get 400 error
     videoData.videoId = getVideoId(this.site.host, this.video);
     videoData.detectedLanguage = this.translateFromLang;
     videoData.responseLanguage = this.translateToLang;
 
     if (!videoData.videoId) {
       this.ytData = {};
-      return;
+      return videoData;
     }
 
     if (window.location.hostname.includes("youtube.com")) {
