@@ -234,24 +234,7 @@ class VideoHandler {
     this.container = container;
     this.site = site;
     this.handleSrcChangedBound = this.handleSrcChanged.bind(this);
-    this.srcObserver = new MutationObserver(this.handleSrcChangedBound);
-    this.srcObserver.observe(this.video, {
-      attributeFilter: ["src", "currentSrc"],
-    });
-    this.srcObjectChangedEvent = new Event("srcObjectChanged");
-    this.video.addEventListener("srcObjectChanged", async () => {
-      if (!this.video?.duration) return;
-      await this.handleSrcChanged();
-    });
-    Object.defineProperty(this.video, "srcObject", {
-      get: function () {
-        return this._srcObject;
-      },
-      set: function (value) {
-        this._srcObject = value;
-        this.dispatchEvent(this.srcObjectChangedEvent);
-      },
-    });
+    this.video.addEventListener("loadedmetadata", this.handleSrcChangedBound);
     this.stopTranslationBound = this.stopTranslation.bind(this);
     this.handleVideoEventBound = this.handleVideoEvent.bind(this);
     this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
