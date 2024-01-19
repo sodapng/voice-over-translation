@@ -238,7 +238,6 @@ class VideoHandler {
     this.srcObserver.observe(this.video, {
       attributeFilter: ["src", "currentSrc"],
     });
-    this.video.addEventListener("canplaythrough", this.handleSrcChanged);
     this.stopTranslationBound = this.stopTranslation.bind(this);
     this.handleVideoEventBound = this.handleVideoEvent.bind(this);
     this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
@@ -1270,6 +1269,7 @@ class VideoHandler {
       if (!(this.firstPlay && this.data.autoTranslate === 1)) {
         return;
       }
+
       const VIDEO_ID = getVideoId(this.site.host, this.video);
 
       if (!VIDEO_ID) {
@@ -1480,7 +1480,7 @@ class VideoHandler {
 
     videoData.translationHelp = null; // ! should be null for ALL websites except coursera and udemy !
     videoData.isStream = false; // by default, we request the translation of the video
-    videoData.duration = this.video.duration; // ! if 0 - we get 400 error
+    videoData.duration = this.video?.duration || 343; // ! if 0 - we get 400 error
     videoData.videoId = getVideoId(this.site.host, this.video);
     videoData.detectedLanguage = this.translateFromLang;
     videoData.responseLanguage = this.translateToLang;
@@ -1651,13 +1651,7 @@ class VideoHandler {
   }
 
   async translateExecutor(VIDEO_ID) {
-    if (!this.videoData.detectedLanguage) {
-      this.videoData = await this.getVideoData();
-      this.setSelectMenuValues(
-        this.videoData.detectedLanguage,
-        this.videoData.responseLanguage,
-      );
-    }
+    this.videoData = await this.getVideoData();
     debug.log("Run videoValidator");
     this.videoValidator();
 
@@ -1681,6 +1675,9 @@ class VideoHandler {
   ) {
     console.log("[VOT] Video Data: ", this.videoData);
     const videoURL = `${this.site.url}${VIDEO_ID}`;
+
+    // fix enabling the old requested voiceover when changing the language to the native language (#)
+    this.videoValidator();
 
     if (isStream) {
       debug.log("Executed stream translation");
@@ -2059,11 +2056,8 @@ class VideoHandler {
     debug.log("[VideoHandler] src changed", this);
 
     if (!(await this.waitInitialization())) return;
-    if (!this.video.duration) return;
 
     this.stopTranslation();
-
-    this.videoData = await this.getVideoData();
 
     this.firstPlay = true;
 
