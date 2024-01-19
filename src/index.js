@@ -1480,14 +1480,14 @@ class VideoHandler {
 
     videoData.translationHelp = null; // ! should be null for ALL websites except coursera and udemy !
     videoData.isStream = false; // by default, we request the translation of the video
-    videoData.duration = this.video?.duration || 343; // ! if 0 - we get 400 error
+    videoData.duration = this.video.duration;
     videoData.videoId = getVideoId(this.site.host, this.video);
     videoData.detectedLanguage = this.translateFromLang;
     videoData.responseLanguage = this.translateToLang;
 
     if (!videoData.videoId) {
       this.ytData = {};
-      return videoData;
+      return;
     }
 
     if (window.location.hostname.includes("youtube.com")) {
@@ -1681,9 +1681,6 @@ class VideoHandler {
   ) {
     console.log("[VOT] Video Data: ", this.videoData);
     const videoURL = `${this.site.url}${VIDEO_ID}`;
-
-    // fix enabling the old requested voiceover when changing the language to the native language (#)
-    this.videoValidator();
 
     if (isStream) {
       debug.log("Executed stream translation");
@@ -2059,11 +2056,10 @@ class VideoHandler {
   }
 
   async handleSrcChanged() {
-    if (!this.video.duration) return;
-
     debug.log("[VideoHandler] src changed", this);
 
     if (!(await this.waitInitialization())) return;
+    if (!this.video.duration) return;
 
     this.stopTranslation();
 
