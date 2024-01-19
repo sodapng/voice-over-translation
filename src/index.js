@@ -238,7 +238,7 @@ class VideoHandler {
     this.srcObserver.observe(this.video, {
       attributeFilter: ["src", "currentSrc"],
     });
-    this.video.addEventListener("loadedmetadata", this.handleSrcChangedBound);
+    this.video.addEventListener("loadeddata", this.handleSrcChangedBound);
     this.stopTranslationBound = this.stopTranslation.bind(this);
     this.handleVideoEventBound = this.handleVideoEvent.bind(this);
     this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
@@ -2060,6 +2060,7 @@ class VideoHandler {
 
   async handleSrcChanged() {
     if (!this.video.duration) return;
+
     debug.log("[VideoHandler] src changed", this);
 
     if (!(await this.waitInitialization())) return;
