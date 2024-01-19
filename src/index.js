@@ -1651,11 +1651,9 @@ class VideoHandler {
   }
 
   async translateExecutor(VIDEO_ID) {
-    debug.log("Run videoValidator");
-    this.videoValidator();
+    this.videoData = await this.getVideoData();
 
     debug.log("Run translateFunc");
-    this.videoData = await this.getVideoData();
     this.translateFunc(
       VIDEO_ID,
       this.videoData.isStream,
@@ -1677,6 +1675,7 @@ class VideoHandler {
     const videoURL = `${this.site.url}${VIDEO_ID}`;
 
     // fix enabling the old requested voiceover when changing the language to the native language (#)
+    debug.log("Run videoValidator");
     this.videoValidator();
 
     if (isStream) {
