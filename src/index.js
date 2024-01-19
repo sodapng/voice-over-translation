@@ -1651,11 +1651,11 @@ class VideoHandler {
   }
 
   async translateExecutor(VIDEO_ID) {
-    this.videoData = await this.getVideoData();
     debug.log("Run videoValidator");
     this.videoValidator();
 
     debug.log("Run translateFunc");
+    this.videoData = await this.getVideoData();
     this.translateFunc(
       VIDEO_ID,
       this.videoData.isStream,
