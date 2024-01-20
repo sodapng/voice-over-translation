@@ -1,5 +1,6 @@
 # 1.5.0.5
 - Исправлен перевод для Coursera
+- Обновлен Yandex Protobuf
 
 # 1.5.0.4
 - Добавлена поддержка coursehunter
