@@ -1652,10 +1652,6 @@ class VideoHandler {
 
   async translateExecutor(VIDEO_ID) {
     this.videoData = await this.getVideoData();
-    this.setSelectMenuValues(
-      this.videoData.detectedLanguage,
-      this.videoData.responseLanguage,
-    );
 
     debug.log("Run translateFunc");
     this.translateFunc(
