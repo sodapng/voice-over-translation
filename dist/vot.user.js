@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.5.0.4
+// @version 1.5.0.5
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -1894,7 +1894,7 @@ const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
   .add(new protobuf.Field("duration", 6, "double"))
   .add(new protobuf.Field("unknown2", 7, "int32")) // 1 1
   .add(new protobuf.Field("language", 8, "string")) // source language code
-  .add(new protobuf.Field("unknown3", 9, "int32")) // 0 0
+  .add(new protobuf.Field("unknown3", 9, "int32")) // 0 - without translationHelp | 1 - with translationHelp (??? But it works without it)
   .add(new protobuf.Field("unknown4", 10, "int32")) // 0 0
   .add(
     new protobuf.Field(
@@ -1905,7 +1905,9 @@ const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
     ),
   ) // array for translation assistance ([0] -> {2: link to video, 1: "video_file_url"}, [1] -> {2: link to subtitles, 1: "subtitles_file_url"})
   .add(new protobuf.Field("responseLanguage", 14, "string"))
-  .add(new protobuf.Field("unknown5", 15, "int32")); // 0
+  .add(new protobuf.Field("unknown5", 15, "int32")) // 0
+  .add(new protobuf.Field("unknown6", 16, "int32")) // 1
+  .add(new protobuf.Field("unknown7", 17, "int32")); // 0
 
 const VideoSubtitlesRequest = new protobuf.Type("VideoSubtitlesRequest")
   .add(new protobuf.Field("url", 1, "string"))
@@ -1995,6 +1997,8 @@ const yandexProtobuf = {
       translationHelp,
       responseLanguage: responseLang,
       unknown5: 0,
+      unknown6: 1,
+      unknown7: 0,
     }).finish();
   },
   decodeTranslationResponse(response) {
@@ -3371,9 +3375,8 @@ function getSubtitlesFileURL(captions, detectedLanguage, responseLang) {
 }
 
 function getVideoFileURL(sources) {
-  const source = sources?.find(
-    (src) => src.type === "video/webm" || src.type === "video/mp4",
-  );
+  // const source = sources?.find((src) => src.type === "video/webm" || src.type === "video/mp4",
+  const source = sources?.find((src) => src.type === "video/mp4");
 
   return source?.src;
 }
@@ -4059,12 +4062,20 @@ function translateVideo(
           );
           break;
         case 3:
+        case 6:
           /*
+            status: 3
             Иногда, в ответе приходит статус код 3, но видео всё, так же, ожидает перевода.
             В конечном итоге, это занимает слишком много времени,
             как-будто сервер не понимает, что данное видео уже недавно было переведено
             и заместо возвращения готовой ссылки на перевод начинает переводить видео заново
             при чём у него это получается за очень длительное время.
+
+            status: 6
+            Случайно встретил 6 статус код при котором видео так же продолжается перевод,
+            но после него ничего сверхъестественного не происходит.
+            Он появляется при первом запросе с 17=1, но не исключено,
+            что может появится и просто так
           */
           callback(false, localizationProvider/* localizationProvider */.V.get("videoBeingTranslated"));
           break;
@@ -4785,9 +4796,8 @@ class VideoHandler {
 
       this.votVideoVolumeSlider.input.addEventListener("input", (e) => {
         const value = Number(e.target.value);
-        this.votVideoVolumeSlider.label.querySelector(
-          "strong",
-        ).innerHTML = `${value}%`;
+        this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
+          `${value}%`;
         this.setVideoVolume(value / 100);
         if (this.data.syncVolume === 1) {
           const translateVolume = Number(
@@ -4875,9 +4885,8 @@ class VideoHandler {
         const presetAutoVolume = Number(e.target.value);
         this.data.autoVolume = presetAutoVolume / 100;
         await storage/* votStorage */.i.set("autoVolume", presetAutoVolume);
-        this.votAutoSetVolumeSlider.label.querySelector(
-          "strong",
-        ).innerHTML = `${presetAutoVolume}%`;
+        this.votAutoSetVolumeSlider.label.querySelector("strong").innerHTML =
+          `${presetAutoVolume}%`;
       });
 
       this.votShowVideoSliderCheckbox.input.addEventListener(
@@ -5342,9 +5351,8 @@ class VideoHandler {
     const newSlidersVolume = Math.round(this.getVideoVolume() * 100);
 
     this.votVideoVolumeSlider.input.value = newSlidersVolume;
-    this.votVideoVolumeSlider.label.querySelector(
-      "strong",
-    ).innerHTML = `${newSlidersVolume}%`;
+    this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
+      `${newSlidersVolume}%`;
     ui.updateSlider(this.votVideoVolumeSlider.input);
 
     if (this.data.syncVolume === 1) {
@@ -5381,9 +5389,8 @@ class VideoHandler {
 
     // Set the video volume slider value to the synced value
     this.votVideoVolumeSlider.input.value = finalValue;
-    this.votVideoVolumeSlider.label.querySelector(
-      "strong",
-    ).innerHTML = `${finalValue}%`;
+    this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
+      `${finalValue}%`;
     ui.updateSlider(this.votVideoVolumeSlider.input);
 
     // Update the temp variables for future syncing
@@ -5775,9 +5782,8 @@ class VideoHandler {
 
           if (this.data.autoSetVolumeYandexStyle === 1) {
             this.votVideoVolumeSlider.input.value = this.data.autoVolume * 100;
-            this.votVideoVolumeSlider.label.querySelector(
-              "strong",
-            ).innerHTML = `${this.data.autoVolume * 100}%`;
+            this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
+              `${this.data.autoVolume * 100}%`;
             ui.updateSlider(this.votVideoVolumeSlider.input);
           }
 
@@ -5937,9 +5943,8 @@ class VideoHandler {
 
         if (this.data.autoSetVolumeYandexStyle === 1) {
           this.votVideoVolumeSlider.input.value = this.data.autoVolume * 100;
-          this.votVideoVolumeSlider.label.querySelector(
-            "strong",
-          ).innerHTML = `${this.data.autoVolume * 100}%`;
+          this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
+            `${this.data.autoVolume * 100}%`;
           ui.updateSlider(this.votVideoVolumeSlider.input);
         }
 

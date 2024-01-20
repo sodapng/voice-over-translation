@@ -26,9 +26,8 @@ function getSubtitlesFileURL(captions, detectedLanguage, responseLang) {
 }
 
 function getVideoFileURL(sources) {
-  const source = sources?.find(
-    (src) => src.type === "video/webm" || src.type === "video/mp4",
-  );
+  // const source = sources?.find((src) => src.type === "video/webm" || src.type === "video/mp4",
+  const source = sources?.find((src) => src.type === "video/mp4");
 
   return source?.src;
 }
