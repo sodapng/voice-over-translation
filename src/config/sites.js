@@ -101,6 +101,12 @@ const sites = () => {
       selector: ".player",
     },
     {
+      host: "ok.ru",
+      url: "https://ok.ru/",
+      match: /^ok.ru$/,
+      selector: ".html5-vpl_vid",
+    },
+    {
       host: "nine_gag",
       url: "https://9gag.com/gag/",
       match: /^9gag.com$/,

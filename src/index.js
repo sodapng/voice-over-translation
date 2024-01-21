@@ -7,7 +7,6 @@ import {
   secsToStrTime,
   lang,
   isPiPAvailable,
-  sleep,
   initHls,
 } from "./utils/utils.js";
 import {
@@ -248,12 +247,6 @@ class VideoHandler {
     this.srcObserver.observe(this.video, {
       attributeFilter: ["src", "currentSrc"],
     });
-    this.srcObjectInterval = setInterval(async () => {
-      if (this.videoLastSrcObject !== this.video.srcObject) {
-        this.videoLastSrcObject = this.video.srcObject;
-        await this.handleSrcChanged();
-      }
-    }, 100);
     this.stopTranslationBound = this.stopTranslation.bind(this);
     this.handleVideoEventBound = this.handleVideoEvent.bind(this);
     this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
@@ -805,38 +798,42 @@ class VideoHandler {
   initUIEvents() {
     // VOT Button
     {
-      this.votButton.translateButton.addEventListener("click", async () => {
-        if (this.audio.src) {
-          debug.log("[click translationBtn] audio.src is not empty");
-          this.stopTraslate();
-          return;
-        }
-
-        try {
-          debug.log("[click translationBtn] trying execute translation");
-          const VIDEO_ID = getVideoId(this.site.host, this.video);
-
-          if (!VIDEO_ID) {
-            throw new VOTLocalizedError("VOTNoVideoIDFound");
+      this.votButton.translateButton.addEventListener("click", () => {
+        (async () => {
+          if (this.audio.src) {
+            debug.log("[click translationBtn] audio.src is not empty");
+            this.stopTraslate();
+            return;
           }
 
-          await this.translateExecutor(VIDEO_ID);
-        } catch (err) {
-          console.error("[VOT]", err);
-          if (err?.name === "VOTLocalizedError") {
-            this.transformBtn("error", err.localizedMessage);
-          } else {
-            this.transformBtn("error", err);
+          try {
+            debug.log("[click translationBtn] trying execute translation");
+            const VIDEO_ID = getVideoId(this.site.host, this.video);
+
+            if (!VIDEO_ID) {
+              throw new VOTLocalizedError("VOTNoVideoIDFound");
+            }
+
+            await this.translateExecutor(VIDEO_ID);
+          } catch (err) {
+            console.error("[VOT]", err);
+            if (err?.name === "VOTLocalizedError") {
+              this.transformBtn("error", err.localizedMessage);
+            } else {
+              this.transformBtn("error", err);
+            }
           }
-        }
+        })();
       });
 
-      this.votButton.pipButton.addEventListener("click", async () => {
-        if (this.video !== document.pictureInPictureElement) {
-          await this.video.requestPictureInPicture();
-        } else {
-          await document.exitPictureInPicture();
-        }
+      this.votButton.pipButton.addEventListener("click", () => {
+        (async () => {
+          if (this.video !== document.pictureInPictureElement) {
+            await this.video.requestPictureInPicture();
+          } else {
+            await document.exitPictureInPicture();
+          }
+        })();
       });
 
       this.votButton.menuButton.addEventListener("click", () => {
@@ -898,52 +895,54 @@ class VideoHandler {
 
       this.votVideoTranslationVolumeSlider.input.addEventListener(
         "input",
-        async (e) => {
-          this.data.defaultVolume = Number(e.target.value);
-          await votStorage.set("defaultVolume", this.data.defaultVolume);
-          this.votVideoTranslationVolumeSlider.label.querySelector(
-            "strong",
-          ).innerHTML = `${this.data.defaultVolume}%`;
-          this.audio.volume = this.data.defaultVolume / 100;
-          if (this.data.syncVolume === 1) {
-            this.syncTranslationWithVideo(this.data.defaultVolume);
-          }
+        (e) => {
+          (async () => {
+            this.data.defaultVolume = Number(e.target.value);
+            await votStorage.set("defaultVolume", this.data.defaultVolume);
+            this.votVideoTranslationVolumeSlider.label.querySelector(
+              "strong",
+            ).innerHTML = `${this.data.defaultVolume}%`;
+            this.audio.volume = this.data.defaultVolume / 100;
+            if (this.data.syncVolume === 1) {
+              this.syncTranslationWithVideo(this.data.defaultVolume);
+            }
+          })();
         },
       );
     }
 
     // VOT Settings
     {
-      this.votAutoTranslateCheckbox.input.addEventListener(
-        "change",
-        async (e) => {
+      this.votAutoTranslateCheckbox.input.addEventListener("change", (e) => {
+        (async () => {
           this.data.autoTranslate = Number(e.target.checked);
           await votStorage.set("autoTranslate", this.data.autoTranslate);
           debug.log(
             "autoTranslate value changed. New value: ",
             this.data.autoTranslate,
           );
-        },
-      );
+        })();
+      });
 
       this.votDontTranslateYourLangSelect.labelElement.addEventListener(
         "change",
-        async (e) => {
-          this.data.dontTranslateYourLang = Number(e.target.checked);
-          await votStorage.set(
-            "dontTranslateYourLang",
-            this.data.dontTranslateYourLang,
-          );
-          debug.log(
-            "dontTranslateYourLang value changed. New value: ",
-            this.data.dontTranslateYourLang,
-          );
+        (e) => {
+          (async () => {
+            this.data.dontTranslateYourLang = Number(e.target.checked);
+            await votStorage.set(
+              "dontTranslateYourLang",
+              this.data.dontTranslateYourLang,
+            );
+            debug.log(
+              "dontTranslateYourLang value changed. New value: ",
+              this.data.dontTranslateYourLang,
+            );
+          })();
         },
       );
 
-      this.votAutoSetVolumeCheckbox.input.addEventListener(
-        "change",
-        async (e) => {
+      this.votAutoSetVolumeCheckbox.input.addEventListener("change", (e) => {
+        (async () => {
           this.data.autoSetVolumeYandexStyle = Number(e.target.checked);
           await votStorage.set(
             "autoSetVolumeYandexStyle",
@@ -953,20 +952,21 @@ class VideoHandler {
             "autoSetVolumeYandexStyle value changed. New value: ",
             this.data.autoSetVolumeYandexStyle,
           );
-        },
-      );
-
-      this.votAutoSetVolumeSlider.input.addEventListener("input", async (e) => {
-        const presetAutoVolume = Number(e.target.value);
-        this.data.autoVolume = presetAutoVolume / 100;
-        await votStorage.set("autoVolume", presetAutoVolume);
-        this.votAutoSetVolumeSlider.label.querySelector("strong").innerHTML =
-          `${presetAutoVolume}%`;
+        })();
       });
 
-      this.votShowVideoSliderCheckbox.input.addEventListener(
-        "change",
-        async (e) => {
+      this.votAutoSetVolumeSlider.input.addEventListener("input", (e) => {
+        (async () => {
+          const presetAutoVolume = Number(e.target.value);
+          this.data.autoVolume = presetAutoVolume / 100;
+          await votStorage.set("autoVolume", presetAutoVolume);
+          this.votAutoSetVolumeSlider.label.querySelector("strong").innerHTML =
+            `${presetAutoVolume}%`;
+        })();
+      });
+
+      this.votShowVideoSliderCheckbox.input.addEventListener("change", (e) => {
+        (async () => {
           this.data.showVideoSlider = Number(e.target.checked);
           await votStorage.set("showVideoSlider", this.data.showVideoSlider);
           debug.log(
@@ -976,48 +976,56 @@ class VideoHandler {
           this.votVideoVolumeSlider.container.hidden =
             this.data.showVideoSlider !== 1 ||
             this.votButton.container.dataset.status !== "success";
-        },
-      );
-
-      this.votUdemyDataTextfield.input.addEventListener("change", async (e) => {
-        this.data.udemyData = {
-          accessToken: e.target.value,
-          expires: new Date().getTime(),
-        };
-        await votStorage.set("udemyData", this.data.udemyData);
-        debug.log("udemyData value changed. New value: ", this.data.udemyData);
-        window.location.reload();
+        })();
       });
 
-      this.votSyncVolumeCheckbox.input.addEventListener("change", async (e) => {
-        this.data.syncVolume = Number(e.target.checked);
-        await votStorage.set("syncVolume", this.data.syncVolume);
-        debug.log(
-          "syncVolume value changed. New value: ",
-          this.data.syncVolume,
-        );
+      this.votUdemyDataTextfield.input.addEventListener("change", (e) => {
+        (async () => {
+          this.data.udemyData = {
+            accessToken: e.target.value,
+            expires: new Date().getTime(),
+          };
+          await votStorage.set("udemyData", this.data.udemyData);
+          debug.log(
+            "udemyData value changed. New value: ",
+            this.data.udemyData,
+          );
+          window.location.reload();
+        })();
+      });
+
+      this.votSyncVolumeCheckbox.input.addEventListener("change", (e) => {
+        (async () => {
+          this.data.syncVolume = Number(e.target.checked);
+          await votStorage.set("syncVolume", this.data.syncVolume);
+          debug.log(
+            "syncVolume value changed. New value: ",
+            this.data.syncVolume,
+          );
+        })();
       });
 
       this.votTranslationServiceSelect.labelElement.addEventListener(
         "change",
-        async (e) => {
-          this.data.translateAPIErrors = Number(e.target.checked);
-          await votStorage.set(
-            "translateAPIErrors",
-            this.data.translateAPIErrors,
-          );
-          debug.log(
-            "translateAPIErrors value changed. New value: ",
-            this.data.translateAPIErrors,
-          );
+        (e) => {
+          (async () => {
+            this.data.translateAPIErrors = Number(e.target.checked);
+            await votStorage.set(
+              "translateAPIErrors",
+              this.data.translateAPIErrors,
+            );
+            debug.log(
+              "translateAPIErrors value changed. New value: ",
+              this.data.translateAPIErrors,
+            );
+          })();
         },
       );
 
       // SUBTITLES
 
-      this.votSubtitlesMaxLengthSlider.input.addEventListener(
-        "input",
-        async (e) => {
+      this.votSubtitlesMaxLengthSlider.input.addEventListener("input", (e) => {
+        (async () => {
           this.data.subtitlesMaxLength = Number(e.target.value);
           await votStorage.set(
             "subtitlesMaxLength",
@@ -1027,25 +1035,26 @@ class VideoHandler {
             "strong",
           ).innerHTML = `${this.data.subtitlesMaxLength}`;
           this.subtitlesWidget.setMaxLength(this.data.subtitlesMaxLength);
-        },
-      );
+        })();
+      });
 
       this.votSubtitlesHighlightWordsCheckbox.input.addEventListener(
         "change",
-        async (e) => {
-          this.data.highlightWords = Number(e.target.checked);
-          await votStorage.set("highlightWords", this.data.highlightWords);
-          debug.log(
-            "highlightWords value changed. New value: ",
-            this.data.highlightWords,
-          );
-          this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
+        (e) => {
+          (async () => {
+            this.data.highlightWords = Number(e.target.checked);
+            await votStorage.set("highlightWords", this.data.highlightWords);
+            debug.log(
+              "highlightWords value changed. New value: ",
+              this.data.highlightWords,
+            );
+            this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
+          })();
         },
       );
 
-      this.votShowPiPButtonCheckbox.input.addEventListener(
-        "change",
-        async (e) => {
+      this.votShowPiPButtonCheckbox.input.addEventListener("change", (e) => {
+        (async () => {
           this.data.showPiPButton = Number(e.target.checked);
           await votStorage.set("showPiPButton", this.data.showPiPButton);
           debug.log(
@@ -1056,26 +1065,24 @@ class VideoHandler {
             !isPiPAvailable() || !this.data.showPiPButton;
           this.votButton.separator2.hidden =
             !isPiPAvailable() || !this.data.showPiPButton;
-        },
-      );
+        })();
+      });
 
       // PROXY
 
-      this.votM3u8ProxyHostTextfield.input.addEventListener(
-        "change",
-        async (e) => {
+      this.votM3u8ProxyHostTextfield.input.addEventListener("change", (e) => {
+        (async () => {
           this.data.m3u8ProxyHost = e.target.value || m3u8ProxyHost;
           await votStorage.set("m3u8ProxyHost", this.data.m3u8ProxyHost);
           debug.log(
             "m3u8ProxyHost value changed. New value: ",
             this.data.m3u8ProxyHost,
           );
-        },
-      );
+        })();
+      });
 
-      this.votProxyWorkerHostTextfield.input.addEventListener(
-        "change",
-        async (e) => {
+      this.votProxyWorkerHostTextfield.input.addEventListener("change", (e) => {
+        (async () => {
           this.data.proxyWorkerHost = e.target.value || proxyWorkerHost;
           await votStorage.set("proxyWorkerHost", this.data.proxyWorkerHost);
           debug.log(
@@ -1083,25 +1090,29 @@ class VideoHandler {
             this.data.proxyWorkerHost,
           );
           window.location.reload();
-        },
-      );
-
-      this.votAudioProxyCheckbox.input.addEventListener("change", async (e) => {
-        this.data.audioProxy = Number(e.target.checked);
-        await votStorage.set("audioProxy", this.data.audioProxy);
-        debug.log(
-          "audioProxy value changed. New value: ",
-          this.data.audioProxy,
-        );
+        })();
       });
 
-      this.votResetSettingsButton.addEventListener("click", async () => {
-        localizationProvider.reset();
-        const valuesForClear = await votStorage.list();
-        valuesForClear
-          .filter((v) => !localizationProvider.gmValues.includes(v))
-          .forEach((v) => votStorage.syncDelete(v));
-        window.location.reload();
+      this.votAudioProxyCheckbox.input.addEventListener("change", (e) => {
+        (async () => {
+          this.data.audioProxy = Number(e.target.checked);
+          await votStorage.set("audioProxy", this.data.audioProxy);
+          debug.log(
+            "audioProxy value changed. New value: ",
+            this.data.audioProxy,
+          );
+        })();
+      });
+
+      this.votResetSettingsButton.addEventListener("click", () => {
+        (async () => {
+          localizationProvider.reset();
+          const valuesForClear = await votStorage.list();
+          valuesForClear
+            .filter((v) => !localizationProvider.gmValues.includes(v))
+            .forEach((v) => votStorage.syncDelete(v));
+          window.location.reload();
+        })();
       });
     }
   }
@@ -1261,13 +1272,13 @@ class VideoHandler {
     addExtraEventListener(this.video, "abort", () => {
       debug.log("lipsync mode is abort");
       this.stopTranslation();
-      this.videoData = "";
     });
 
     addExtraEventListener(this.video, "progress", async () => {
       if (!(this.firstPlay && this.data.autoTranslate === 1)) {
         return;
       }
+
       const VIDEO_ID = getVideoId(this.site.host, this.video);
 
       if (!VIDEO_ID) {
@@ -1500,6 +1511,7 @@ class VideoHandler {
       }
     } else if (
       window.location.hostname.includes("rutube") ||
+      window.location.hostname.includes("ok.ru") ||
       window.location.hostname.includes("my.mail.ru")
     ) {
       videoData.detectedLanguage = "ru";
@@ -1545,7 +1557,7 @@ class VideoHandler {
   }
 
   videoValidator() {
-    if (this.site.host === "youtube") {
+    if (this.site.host === "youtube" || this.site.host === "ok.ru") {
       debug.log("VideoValidator videoData: ", this.videoData);
       if (
         this.data.dontTranslateYourLang === 1 &&
@@ -1580,7 +1592,7 @@ class VideoHandler {
       return;
     }
 
-    if (mode === "play") {
+    if (mode == "play") {
       debug.log("lipsync mode is play");
       const audioPromise = this.audio.play();
       if (audioPromise !== undefined) {
@@ -1607,19 +1619,19 @@ class VideoHandler {
       }
       return;
     }
-    if (mode === "pause") {
+    if (mode == "pause") {
       debug.log("lipsync mode is pause");
       this.audio.pause();
     }
-    if (mode === "stop") {
+    if (mode == "stop") {
       debug.log("lipsync mode is stop");
       this.audio.pause();
     }
-    if (mode === "waiting") {
+    if (mode == "waiting") {
       debug.log("lipsync mode is waiting");
       this.audio.pause();
     }
-    if (mode === "playing") {
+    if (mode == "playing") {
       debug.log("lipsync mode is playing");
       this.audio.play();
     }
@@ -1659,15 +1671,13 @@ class VideoHandler {
   }
 
   async translateExecutor(VIDEO_ID) {
-    if (!this.videoData.detectedLanguage) {
+    if (this.firstPlay) {
       this.videoData = await this.getVideoData();
       this.setSelectMenuValues(
         this.videoData.detectedLanguage,
         this.videoData.responseLanguage,
       );
     }
-    debug.log("Run videoValidator");
-    this.videoValidator();
 
     debug.log("Run translateFunc");
     this.translateFunc(
@@ -1693,6 +1703,7 @@ class VideoHandler {
       : `${this.site.url}${VIDEO_ID}`;
 
     // fix enabling the old requested voiceover when changing the language to the native language (#)
+    debug.log("Run videoValidator");
     this.videoValidator();
 
     if (isStream) {
@@ -2048,20 +2059,22 @@ class VideoHandler {
   async waitInitialization() {
     let resolved = false;
     return await Promise.race([
-      new Promise(async (resolve) => {
-        await sleep(1000);
-        if (!resolved) {
-          console.error("[VOT] Initialization timeout");
-        }
-        resolved = true;
-        resolve(false);
+      new Promise((resolve) => {
+        setTimeout(() => {
+          if (!resolved) {
+            console.error("[VOT] Initialization timeout");
+            resolve(false);
+          }
+        }, 1000);
       }),
-      new Promise(async (resolve) => {
-        while (!this.initialized) {
-          await sleep(100);
-        }
-        resolved = true;
-        resolve(true);
+      new Promise((resolve) => {
+        const interval = setInterval(() => {
+          if (this.initialized) {
+            clearInterval(interval);
+            resolved = true;
+            resolve(true);
+          }
+        }, 100);
       }),
     ]);
   }
@@ -2072,8 +2085,6 @@ class VideoHandler {
     if (!(await this.waitInitialization())) return;
 
     this.stopTranslation();
-
-    this.videoData = await this.getVideoData();
 
     this.firstPlay = true;
 

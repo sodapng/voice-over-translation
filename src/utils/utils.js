@@ -43,7 +43,8 @@ function waitForElm(selector) {
   });
 }
 
-const sleep = (m) => new Promise((r) => setTimeout(r, m));
+// not used
+// const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
 const getVideoId = (service, video) => {
   const url = new URL(window.location.href);
@@ -201,29 +202,12 @@ const getVideoId = (service, video) => {
     case "dailymotion": {
       // we work in the context of the player
       // geo.dailymotion.com
-
-      const plainPlayerConfig = Array.from(document.scripts).filter((s) =>
-        s.innerText.trim().includes("window.__PLAYER_CONFIG__ = {"),
-      );
-      if (!plainPlayerConfig.length) {
-        return false;
-      }
-
+      const plainPlayerConfig = Array.from(
+        document.querySelectorAll("*"),
+      ).filter((s) => s.innerHTML.trim().includes(".m3u8"));
       try {
-        let clearPlainConfig = plainPlayerConfig[0].innerText
-          .trim()
-          .replace("window.__PLAYER_CONFIG__ = ", "");
-        if (clearPlainConfig.endsWith("};")) {
-          clearPlainConfig = clearPlainConfig.substring(
-            0,
-            clearPlainConfig.length - 1,
-          );
-        }
-        const playerConfig = JSON.parse(clearPlainConfig);
-        const videoUrl =
-          playerConfig.context.embedder ?? playerConfig.context.http_referer;
-        console.log(videoUrl, playerConfig);
-        return videoUrl.match(/\/video\/([^/]+)/)?.[1];
+        let videoUrl = plainPlayerConfig[1].lastChild.src;
+        return videoUrl.match(/\/video\/(\w+)\.m3u8/)?.[1];
       } catch (e) {
         console.error("[VOT]", e);
         return false;
@@ -251,6 +235,9 @@ const getVideoId = (service, video) => {
     case "coursehunter": {
       const courseId = url.pathname.match(/\/course\/([^/]+)/)?.[1];
       return courseId ? courseId + url.search : false;
+    }
+    case "ok.ru": {
+      return url.pathname.match(/\/video\/(\d+)/)?.[0];
     }
     default:
       return false;
@@ -298,7 +285,6 @@ function initHls() {
 
 export {
   waitForElm,
-  sleep,
   getVideoId,
   secsToStrTime,
   langTo6391,
