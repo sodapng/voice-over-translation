@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.5.0.5
+// @version 1.5.1-beta1
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -101,11 +101,12 @@
 // @match *://tube.la-dina.net/*
 // @match *://peertube.tmp.rcp.tf/*
 // @match *://geo.dailymotion.com/*
+// @match *://*.ok.ru/*
 // @match *://trovo.live/*
 // @match *://disk.yandex.ru/i/*
 // @match *://coursehunter.net/*
 // @connect api.browser.yandex.ru
-// @downloadURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js
+// @downloadURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/dev/dist/vot.user.js
 // @grant GM_xmlhttpRequest
 // @grant GM_info
 // @grant GM_setValue
@@ -117,7 +118,7 @@
 // @namespace vot
 // @require https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js
 // @require https://cdn.jsdelivr.net/npm/hls.js@1
-// @updateURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot.user.js
+// @updateURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/dev/dist/vot.user.js
 // ==/UserScript==
 
 /******/ (() => { // webpackBootstrap
@@ -607,7 +608,7 @@ var storage = __webpack_require__("./src/utils/storage.js");
 
 const localesVersion = 2;
 const localesUrl = `https://raw.githubusercontent.com/ilyhalight/voice-over-translation/${
-   false ? 0 : "master"
+   true ? "dev" : 0
 }/src/localization/locales`;
 
 const availableLocales = [
@@ -842,9 +843,7 @@ const votStorage = new (class {
       return await GM_getValue(name, def);
     }
 
-    return new Promise((resolve) => {
-      resolve(this.syncGet(name, def, toNumber));
-    });
+    return Promise.resolve(this.syncGet(name, def, toNumber));
   }
 
   syncSet(name, value) {
@@ -864,9 +863,7 @@ const votStorage = new (class {
       return await GM_setValue(name, value);
     }
 
-    return new Promise((resolve) => {
-      resolve(this.syncSet(name, value));
-    });
+    return Promise.resolve(this.syncSet(name, value));
   }
 
   syncDelete(name) {
@@ -882,9 +879,7 @@ const votStorage = new (class {
       return await GM_deleteValue(name);
     }
 
-    return new Promise((resolve) => {
-      resolve(this.syncDelete(name));
-    });
+    return Promise.resolve(this.syncDelete(name));
   }
 
   syncList() {
@@ -917,9 +912,7 @@ const votStorage = new (class {
       return await GM_listValues();
     }
 
-    return new Promise((resolve) => {
-      resolve(this.syncList());
-    });
+    return Promise.resolve(this.syncList());
   }
 })();
 
@@ -934,7 +927,6 @@ const votStorage = new (class {
 /* harmony export */   KQ: () => (/* binding */ lang),
 /* harmony export */   PG: () => (/* binding */ secsToStrTime),
 /* harmony export */   QZ: () => (/* binding */ initHls),
-/* harmony export */   _v: () => (/* binding */ sleep),
 /* harmony export */   eL: () => (/* binding */ langTo6391),
 /* harmony export */   gJ: () => (/* binding */ getVideoId),
 /* harmony export */   qq: () => (/* binding */ isPiPAvailable)
@@ -986,7 +978,8 @@ function waitForElm(selector) {
   });
 }
 
-const sleep = (m) => new Promise((r) => setTimeout(r, m));
+// not used
+// const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
 const getVideoId = (service, video) => {
   const url = new URL(window.location.href);
@@ -1144,29 +1137,12 @@ const getVideoId = (service, video) => {
     case "dailymotion": {
       // we work in the context of the player
       // geo.dailymotion.com
-
-      const plainPlayerConfig = Array.from(document.scripts).filter((s) =>
-        s.innerText.trim().includes("window.__PLAYER_CONFIG__ = {"),
-      );
-      if (!plainPlayerConfig.length) {
-        return false;
-      }
-
+      const plainPlayerConfig = Array.from(
+        document.querySelectorAll("*"),
+      ).filter((s) => s.innerHTML.trim().includes(".m3u8"));
       try {
-        let clearPlainConfig = plainPlayerConfig[0].innerText
-          .trim()
-          .replace("window.__PLAYER_CONFIG__ = ", "");
-        if (clearPlainConfig.endsWith("};")) {
-          clearPlainConfig = clearPlainConfig.substring(
-            0,
-            clearPlainConfig.length - 1,
-          );
-        }
-        const playerConfig = JSON.parse(clearPlainConfig);
-        const videoUrl =
-          playerConfig.context.embedder ?? playerConfig.context.http_referer;
-        console.log(videoUrl, playerConfig);
-        return videoUrl.match(/\/video\/([^/]+)/)?.[1];
+        let videoUrl = plainPlayerConfig[1].lastChild.src;
+        return videoUrl.match(/\/video\/(\w+)\.m3u8/)?.[1];
       } catch (e) {
         console.error("[VOT]", e);
         return false;
@@ -1194,6 +1170,9 @@ const getVideoId = (service, video) => {
     case "coursehunter": {
       const courseId = url.pathname.match(/\/course\/([^/]+)/)?.[1];
       return courseId ? courseId + url.search : false;
+    }
+    case "ok.ru": {
+      return url.pathname.match(/\/video\/(\d+)/)?.[0];
     }
     default:
       return false;
@@ -1728,7 +1707,9 @@ async function getLanguage(player, response, title, description) {
   // If there is no caption track, use detect to get the language code from the description
 
   const deletefilter = [
-    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g, // remove links
+    /(?:https?|ftp):\/\/[\n\S]+/g, //temp fix
+    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{0,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/gm, // remove links
+    /#[^\s#]+/g,
     /Auto-generated by YouTube/g,
     /Provided to YouTube by/g,
     /Released on/g,
@@ -2955,17 +2936,17 @@ function formatYoutubeSubtitles(subtitles) {
 async function fetchSubtitles(subtitlesObject) {
   let resolved = false;
   let subtitles = await Promise.race([
-    new Promise(async (resolve) => {
-      await (0,utils/* sleep */._v)(5000);
-      if (!resolved) {
-        console.error("[VOT] Failed to fetch subtitles. Reason: timeout");
-      }
-      resolved = true;
-      resolve([]);
+    new Promise((resolve) => {
+      setTimeout(() => {
+        if (!resolved) {
+          console.error("[VOT] Failed to fetch subtitles. Reason: timeout");
+          resolve([]);
+        }
+      }, 5000);
     }),
-    new Promise(async (resolve) => {
+    new Promise((resolve) => {
       debug/* default */.Z.log("Fetching subtitles:", subtitlesObject);
-      await fetch(subtitlesObject.url)
+      fetch(subtitlesObject.url)
         .then((response) => response.json())
         .then((json) => {
           resolved = true;
@@ -2994,13 +2975,13 @@ async function subtitles_getSubtitles(site, videoId, requestLang) {
     site.host === "youtube" ? youtubeUtils.getSubtitles() : [];
   let resolved = false;
   const yaSubtitles = await Promise.race([
-    new Promise(async (resolve) => {
-      await (0,utils/* sleep */._v)(5000);
-      if (!resolved) {
-        console.error("[VOT] Failed get yandex subtitles. Reason: timeout");
-      }
-      resolved = true;
-      resolve([]);
+    new Promise((resolve) => {
+      setTimeout(() => {
+        if (!resolved) {
+          console.error("[VOT] Failed get yandex subtitles. Reason: timeout");
+          resolve([]);
+        }
+      }, 5000);
     }),
     new Promise((resolve) => {
       rvs(
@@ -3235,7 +3216,7 @@ class SubtitlesWidget {
     });
     if (line) {
       if (highlightWords) {
-        let tokens = line.tokens;
+        let { tokens } = line;
         if (tokens.at(-1).alignRange.end > this.maxLength) {
           let chunks = [];
           let chunkStartIndex = 0;
@@ -3821,6 +3802,12 @@ const sites = () => {
       selector: ".player",
     },
     {
+      host: "ok.ru",
+      url: "https://ok.ru/",
+      match: /^ok.ru$/,
+      selector: ".html5-vpl_vid",
+    },
+    {
       host: "nine_gag",
       url: "https://9gag.com/gag/",
       match: /^9gag.com$/,
@@ -4173,12 +4160,6 @@ class VideoHandler {
     this.srcObserver.observe(this.video, {
       attributeFilter: ["src", "currentSrc"],
     });
-    this.srcObjectInterval = setInterval(async () => {
-      if (this.videoLastSrcObject !== this.video.srcObject) {
-        this.videoLastSrcObject = this.video.srcObject;
-        await this.handleSrcChanged();
-      }
-    }, 100);
     this.stopTranslationBound = this.stopTranslation.bind(this);
     this.handleVideoEventBound = this.handleVideoEvent.bind(this);
     this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
@@ -4730,38 +4711,42 @@ class VideoHandler {
   initUIEvents() {
     // VOT Button
     {
-      this.votButton.translateButton.addEventListener("click", async () => {
-        if (this.audio.src) {
-          debug/* default */.Z.log("[click translationBtn] audio.src is not empty");
-          this.stopTraslate();
-          return;
-        }
-
-        try {
-          debug/* default */.Z.log("[click translationBtn] trying execute translation");
-          const VIDEO_ID = (0,utils/* getVideoId */.gJ)(this.site.host, this.video);
-
-          if (!VIDEO_ID) {
-            throw new VOTLocalizedError("VOTNoVideoIDFound");
+      this.votButton.translateButton.addEventListener("click", () => {
+        (async () => {
+          if (this.audio.src) {
+            debug/* default */.Z.log("[click translationBtn] audio.src is not empty");
+            this.stopTraslate();
+            return;
           }
 
-          await this.translateExecutor(VIDEO_ID);
-        } catch (err) {
-          console.error("[VOT]", err);
-          if (err?.name === "VOTLocalizedError") {
-            this.transformBtn("error", err.localizedMessage);
-          } else {
-            this.transformBtn("error", err);
+          try {
+            debug/* default */.Z.log("[click translationBtn] trying execute translation");
+            const VIDEO_ID = (0,utils/* getVideoId */.gJ)(this.site.host, this.video);
+
+            if (!VIDEO_ID) {
+              throw new VOTLocalizedError("VOTNoVideoIDFound");
+            }
+
+            await this.translateExecutor(VIDEO_ID);
+          } catch (err) {
+            console.error("[VOT]", err);
+            if (err?.name === "VOTLocalizedError") {
+              this.transformBtn("error", err.localizedMessage);
+            } else {
+              this.transformBtn("error", err);
+            }
           }
-        }
+        })();
       });
 
-      this.votButton.pipButton.addEventListener("click", async () => {
-        if (this.video !== document.pictureInPictureElement) {
-          await this.video.requestPictureInPicture();
-        } else {
-          await document.exitPictureInPicture();
-        }
+      this.votButton.pipButton.addEventListener("click", () => {
+        (async () => {
+          if (this.video !== document.pictureInPictureElement) {
+            await this.video.requestPictureInPicture();
+          } else {
+            await document.exitPictureInPicture();
+          }
+        })();
       });
 
       this.votButton.menuButton.addEventListener("click", () => {
@@ -4823,52 +4808,54 @@ class VideoHandler {
 
       this.votVideoTranslationVolumeSlider.input.addEventListener(
         "input",
-        async (e) => {
-          this.data.defaultVolume = Number(e.target.value);
-          await storage/* votStorage */.i.set("defaultVolume", this.data.defaultVolume);
-          this.votVideoTranslationVolumeSlider.label.querySelector(
-            "strong",
-          ).innerHTML = `${this.data.defaultVolume}%`;
-          this.audio.volume = this.data.defaultVolume / 100;
-          if (this.data.syncVolume === 1) {
-            this.syncTranslationWithVideo(this.data.defaultVolume);
-          }
+        (e) => {
+          (async () => {
+            this.data.defaultVolume = Number(e.target.value);
+            await storage/* votStorage */.i.set("defaultVolume", this.data.defaultVolume);
+            this.votVideoTranslationVolumeSlider.label.querySelector(
+              "strong",
+            ).innerHTML = `${this.data.defaultVolume}%`;
+            this.audio.volume = this.data.defaultVolume / 100;
+            if (this.data.syncVolume === 1) {
+              this.syncTranslationWithVideo(this.data.defaultVolume);
+            }
+          })();
         },
       );
     }
 
     // VOT Settings
     {
-      this.votAutoTranslateCheckbox.input.addEventListener(
-        "change",
-        async (e) => {
+      this.votAutoTranslateCheckbox.input.addEventListener("change", (e) => {
+        (async () => {
           this.data.autoTranslate = Number(e.target.checked);
           await storage/* votStorage */.i.set("autoTranslate", this.data.autoTranslate);
           debug/* default */.Z.log(
             "autoTranslate value changed. New value: ",
             this.data.autoTranslate,
           );
-        },
-      );
+        })();
+      });
 
       this.votDontTranslateYourLangSelect.labelElement.addEventListener(
         "change",
-        async (e) => {
-          this.data.dontTranslateYourLang = Number(e.target.checked);
-          await storage/* votStorage */.i.set(
-            "dontTranslateYourLang",
-            this.data.dontTranslateYourLang,
-          );
-          debug/* default */.Z.log(
-            "dontTranslateYourLang value changed. New value: ",
-            this.data.dontTranslateYourLang,
-          );
+        (e) => {
+          (async () => {
+            this.data.dontTranslateYourLang = Number(e.target.checked);
+            await storage/* votStorage */.i.set(
+              "dontTranslateYourLang",
+              this.data.dontTranslateYourLang,
+            );
+            debug/* default */.Z.log(
+              "dontTranslateYourLang value changed. New value: ",
+              this.data.dontTranslateYourLang,
+            );
+          })();
         },
       );
 
-      this.votAutoSetVolumeCheckbox.input.addEventListener(
-        "change",
-        async (e) => {
+      this.votAutoSetVolumeCheckbox.input.addEventListener("change", (e) => {
+        (async () => {
           this.data.autoSetVolumeYandexStyle = Number(e.target.checked);
           await storage/* votStorage */.i.set(
             "autoSetVolumeYandexStyle",
@@ -4878,20 +4865,21 @@ class VideoHandler {
             "autoSetVolumeYandexStyle value changed. New value: ",
             this.data.autoSetVolumeYandexStyle,
           );
-        },
-      );
-
-      this.votAutoSetVolumeSlider.input.addEventListener("input", async (e) => {
-        const presetAutoVolume = Number(e.target.value);
-        this.data.autoVolume = presetAutoVolume / 100;
-        await storage/* votStorage */.i.set("autoVolume", presetAutoVolume);
-        this.votAutoSetVolumeSlider.label.querySelector("strong").innerHTML =
-          `${presetAutoVolume}%`;
+        })();
       });
 
-      this.votShowVideoSliderCheckbox.input.addEventListener(
-        "change",
-        async (e) => {
+      this.votAutoSetVolumeSlider.input.addEventListener("input", (e) => {
+        (async () => {
+          const presetAutoVolume = Number(e.target.value);
+          this.data.autoVolume = presetAutoVolume / 100;
+          await storage/* votStorage */.i.set("autoVolume", presetAutoVolume);
+          this.votAutoSetVolumeSlider.label.querySelector("strong").innerHTML =
+            `${presetAutoVolume}%`;
+        })();
+      });
+
+      this.votShowVideoSliderCheckbox.input.addEventListener("change", (e) => {
+        (async () => {
           this.data.showVideoSlider = Number(e.target.checked);
           await storage/* votStorage */.i.set("showVideoSlider", this.data.showVideoSlider);
           debug/* default */.Z.log(
@@ -4901,48 +4889,56 @@ class VideoHandler {
           this.votVideoVolumeSlider.container.hidden =
             this.data.showVideoSlider !== 1 ||
             this.votButton.container.dataset.status !== "success";
-        },
-      );
-
-      this.votUdemyDataTextfield.input.addEventListener("change", async (e) => {
-        this.data.udemyData = {
-          accessToken: e.target.value,
-          expires: new Date().getTime(),
-        };
-        await storage/* votStorage */.i.set("udemyData", this.data.udemyData);
-        debug/* default */.Z.log("udemyData value changed. New value: ", this.data.udemyData);
-        window.location.reload();
+        })();
       });
 
-      this.votSyncVolumeCheckbox.input.addEventListener("change", async (e) => {
-        this.data.syncVolume = Number(e.target.checked);
-        await storage/* votStorage */.i.set("syncVolume", this.data.syncVolume);
-        debug/* default */.Z.log(
-          "syncVolume value changed. New value: ",
-          this.data.syncVolume,
-        );
+      this.votUdemyDataTextfield.input.addEventListener("change", (e) => {
+        (async () => {
+          this.data.udemyData = {
+            accessToken: e.target.value,
+            expires: new Date().getTime(),
+          };
+          await storage/* votStorage */.i.set("udemyData", this.data.udemyData);
+          debug/* default */.Z.log(
+            "udemyData value changed. New value: ",
+            this.data.udemyData,
+          );
+          window.location.reload();
+        })();
+      });
+
+      this.votSyncVolumeCheckbox.input.addEventListener("change", (e) => {
+        (async () => {
+          this.data.syncVolume = Number(e.target.checked);
+          await storage/* votStorage */.i.set("syncVolume", this.data.syncVolume);
+          debug/* default */.Z.log(
+            "syncVolume value changed. New value: ",
+            this.data.syncVolume,
+          );
+        })();
       });
 
       this.votTranslationServiceSelect.labelElement.addEventListener(
         "change",
-        async (e) => {
-          this.data.translateAPIErrors = Number(e.target.checked);
-          await storage/* votStorage */.i.set(
-            "translateAPIErrors",
-            this.data.translateAPIErrors,
-          );
-          debug/* default */.Z.log(
-            "translateAPIErrors value changed. New value: ",
-            this.data.translateAPIErrors,
-          );
+        (e) => {
+          (async () => {
+            this.data.translateAPIErrors = Number(e.target.checked);
+            await storage/* votStorage */.i.set(
+              "translateAPIErrors",
+              this.data.translateAPIErrors,
+            );
+            debug/* default */.Z.log(
+              "translateAPIErrors value changed. New value: ",
+              this.data.translateAPIErrors,
+            );
+          })();
         },
       );
 
       // SUBTITLES
 
-      this.votSubtitlesMaxLengthSlider.input.addEventListener(
-        "input",
-        async (e) => {
+      this.votSubtitlesMaxLengthSlider.input.addEventListener("input", (e) => {
+        (async () => {
           this.data.subtitlesMaxLength = Number(e.target.value);
           await storage/* votStorage */.i.set(
             "subtitlesMaxLength",
@@ -4952,25 +4948,26 @@ class VideoHandler {
             "strong",
           ).innerHTML = `${this.data.subtitlesMaxLength}`;
           this.subtitlesWidget.setMaxLength(this.data.subtitlesMaxLength);
-        },
-      );
+        })();
+      });
 
       this.votSubtitlesHighlightWordsCheckbox.input.addEventListener(
         "change",
-        async (e) => {
-          this.data.highlightWords = Number(e.target.checked);
-          await storage/* votStorage */.i.set("highlightWords", this.data.highlightWords);
-          debug/* default */.Z.log(
-            "highlightWords value changed. New value: ",
-            this.data.highlightWords,
-          );
-          this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
+        (e) => {
+          (async () => {
+            this.data.highlightWords = Number(e.target.checked);
+            await storage/* votStorage */.i.set("highlightWords", this.data.highlightWords);
+            debug/* default */.Z.log(
+              "highlightWords value changed. New value: ",
+              this.data.highlightWords,
+            );
+            this.subtitlesWidget.setHighlightWords(this.data.highlightWords);
+          })();
         },
       );
 
-      this.votShowPiPButtonCheckbox.input.addEventListener(
-        "change",
-        async (e) => {
+      this.votShowPiPButtonCheckbox.input.addEventListener("change", (e) => {
+        (async () => {
           this.data.showPiPButton = Number(e.target.checked);
           await storage/* votStorage */.i.set("showPiPButton", this.data.showPiPButton);
           debug/* default */.Z.log(
@@ -4981,26 +4978,24 @@ class VideoHandler {
             !(0,utils/* isPiPAvailable */.qq)() || !this.data.showPiPButton;
           this.votButton.separator2.hidden =
             !(0,utils/* isPiPAvailable */.qq)() || !this.data.showPiPButton;
-        },
-      );
+        })();
+      });
 
       // PROXY
 
-      this.votM3u8ProxyHostTextfield.input.addEventListener(
-        "change",
-        async (e) => {
+      this.votM3u8ProxyHostTextfield.input.addEventListener("change", (e) => {
+        (async () => {
           this.data.m3u8ProxyHost = e.target.value || config/* m3u8ProxyHost */.e6;
           await storage/* votStorage */.i.set("m3u8ProxyHost", this.data.m3u8ProxyHost);
           debug/* default */.Z.log(
             "m3u8ProxyHost value changed. New value: ",
             this.data.m3u8ProxyHost,
           );
-        },
-      );
+        })();
+      });
 
-      this.votProxyWorkerHostTextfield.input.addEventListener(
-        "change",
-        async (e) => {
+      this.votProxyWorkerHostTextfield.input.addEventListener("change", (e) => {
+        (async () => {
           this.data.proxyWorkerHost = e.target.value || config/* proxyWorkerHost */.ez;
           await storage/* votStorage */.i.set("proxyWorkerHost", this.data.proxyWorkerHost);
           debug/* default */.Z.log(
@@ -5008,25 +5003,29 @@ class VideoHandler {
             this.data.proxyWorkerHost,
           );
           window.location.reload();
-        },
-      );
-
-      this.votAudioProxyCheckbox.input.addEventListener("change", async (e) => {
-        this.data.audioProxy = Number(e.target.checked);
-        await storage/* votStorage */.i.set("audioProxy", this.data.audioProxy);
-        debug/* default */.Z.log(
-          "audioProxy value changed. New value: ",
-          this.data.audioProxy,
-        );
+        })();
       });
 
-      this.votResetSettingsButton.addEventListener("click", async () => {
-        localizationProvider/* localizationProvider */.V.reset();
-        const valuesForClear = await storage/* votStorage */.i.list();
-        valuesForClear
-          .filter((v) => !localizationProvider/* localizationProvider */.V.gmValues.includes(v))
-          .forEach((v) => storage/* votStorage */.i.syncDelete(v));
-        window.location.reload();
+      this.votAudioProxyCheckbox.input.addEventListener("change", (e) => {
+        (async () => {
+          this.data.audioProxy = Number(e.target.checked);
+          await storage/* votStorage */.i.set("audioProxy", this.data.audioProxy);
+          debug/* default */.Z.log(
+            "audioProxy value changed. New value: ",
+            this.data.audioProxy,
+          );
+        })();
+      });
+
+      this.votResetSettingsButton.addEventListener("click", () => {
+        (async () => {
+          localizationProvider/* localizationProvider */.V.reset();
+          const valuesForClear = await storage/* votStorage */.i.list();
+          valuesForClear
+            .filter((v) => !localizationProvider/* localizationProvider */.V.gmValues.includes(v))
+            .forEach((v) => storage/* votStorage */.i.syncDelete(v));
+          window.location.reload();
+        })();
       });
     }
   }
@@ -5186,13 +5185,13 @@ class VideoHandler {
     addExtraEventListener(this.video, "abort", () => {
       debug/* default */.Z.log("lipsync mode is abort");
       this.stopTranslation();
-      this.videoData = "";
     });
 
     addExtraEventListener(this.video, "progress", async () => {
       if (!(this.firstPlay && this.data.autoTranslate === 1)) {
         return;
       }
+
       const VIDEO_ID = (0,utils/* getVideoId */.gJ)(this.site.host, this.video);
 
       if (!VIDEO_ID) {
@@ -5425,6 +5424,7 @@ class VideoHandler {
       }
     } else if (
       window.location.hostname.includes("rutube") ||
+      window.location.hostname.includes("ok.ru") ||
       window.location.hostname.includes("my.mail.ru")
     ) {
       videoData.detectedLanguage = "ru";
@@ -5470,7 +5470,7 @@ class VideoHandler {
   }
 
   videoValidator() {
-    if (this.site.host === "youtube") {
+    if (this.site.host === "youtube" || this.site.host === "ok.ru") {
       debug/* default */.Z.log("VideoValidator videoData: ", this.videoData);
       if (
         this.data.dontTranslateYourLang === 1 &&
@@ -5505,7 +5505,7 @@ class VideoHandler {
       return;
     }
 
-    if (mode === "play") {
+    if (mode == "play") {
       debug/* default */.Z.log("lipsync mode is play");
       const audioPromise = this.audio.play();
       if (audioPromise !== undefined) {
@@ -5532,19 +5532,19 @@ class VideoHandler {
       }
       return;
     }
-    if (mode === "pause") {
+    if (mode == "pause") {
       debug/* default */.Z.log("lipsync mode is pause");
       this.audio.pause();
     }
-    if (mode === "stop") {
+    if (mode == "stop") {
       debug/* default */.Z.log("lipsync mode is stop");
       this.audio.pause();
     }
-    if (mode === "waiting") {
+    if (mode == "waiting") {
       debug/* default */.Z.log("lipsync mode is waiting");
       this.audio.pause();
     }
-    if (mode === "playing") {
+    if (mode == "playing") {
       debug/* default */.Z.log("lipsync mode is playing");
       this.audio.play();
     }
@@ -5584,15 +5584,13 @@ class VideoHandler {
   }
 
   async translateExecutor(VIDEO_ID) {
-    if (!this.videoData.detectedLanguage) {
+    if (this.firstPlay) {
       this.videoData = await this.getVideoData();
       this.setSelectMenuValues(
         this.videoData.detectedLanguage,
         this.videoData.responseLanguage,
       );
     }
-    debug/* default */.Z.log("Run videoValidator");
-    this.videoValidator();
 
     debug/* default */.Z.log("Run translateFunc");
     this.translateFunc(
@@ -5618,6 +5616,7 @@ class VideoHandler {
       : `${this.site.url}${VIDEO_ID}`;
 
     // fix enabling the old requested voiceover when changing the language to the native language (#)
+    debug/* default */.Z.log("Run videoValidator");
     this.videoValidator();
 
     if (isStream) {
@@ -5963,20 +5962,22 @@ class VideoHandler {
   async waitInitialization() {
     let resolved = false;
     return await Promise.race([
-      new Promise(async (resolve) => {
-        await (0,utils/* sleep */._v)(1000);
-        if (!resolved) {
-          console.error("[VOT] Initialization timeout");
-        }
-        resolved = true;
-        resolve(false);
+      new Promise((resolve) => {
+        setTimeout(() => {
+          if (!resolved) {
+            console.error("[VOT] Initialization timeout");
+            resolve(false);
+          }
+        }, 1000);
       }),
-      new Promise(async (resolve) => {
-        while (!this.initialized) {
-          await (0,utils/* sleep */._v)(100);
-        }
-        resolved = true;
-        resolve(true);
+      new Promise((resolve) => {
+        const interval = setInterval(() => {
+          if (this.initialized) {
+            clearInterval(interval);
+            resolved = true;
+            resolve(true);
+          }
+        }, 100);
       }),
     ]);
   }
@@ -5987,8 +5988,6 @@ class VideoHandler {
     if (!(await this.waitInitialization())) return;
 
     this.stopTranslation();
-
-    this.videoData = await this.getVideoData();
 
     this.firstPlay = true;
 

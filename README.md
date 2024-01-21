@@ -53,6 +53,7 @@
 - **[Dailymotion](https://www.dailymotion.com/)**
 - **[Trovo](https://trovo.live/)**
 - **[Yandex Disk](https://disk.yandex.ru/)**
+- **[OK](https://ok.ru/)**
 - **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[[⚠️] Invidious](https://yewtu.be)**
 - **[[⚠️] Piped](https://piped.video)**
