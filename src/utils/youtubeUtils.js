@@ -28,11 +28,6 @@ async function getLanguage(player, response, title, description) {
     }
   }
 
-  // the "delayed video upload" fix for YouTube (#387)
-  if (!(description && title)) {
-    return "en";
-  }
-
   // If there is no caption track, use detect to get the language code from the description
 
   const deletefilter = [

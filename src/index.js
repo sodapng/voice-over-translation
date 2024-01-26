@@ -1391,14 +1391,6 @@ class VideoHandler {
       return;
     }
 
-    if (!this.videoData.detectedLanguage) {
-      this.videoData = await this.getVideoData();
-      this.setSelectMenuValues(
-        this.videoData.detectedLanguage,
-        this.videoData.responseLanguage,
-      );
-    }
-
     this.subtitlesList = await getSubtitles(
       this.site,
       VIDEO_ID,
@@ -1485,17 +1477,14 @@ class VideoHandler {
   }
 
   async getVideoData() {
-    const videoData = {};
-
-    // ! should be null for ALL websites except coursera and udemy !
-    // else use direct link: `{url: xxx.mp4}`
-    videoData.translationHelp = null;
-
-    videoData.isStream = false; // by default, we request the translation of the video
-    videoData.duration = this.video?.duration || 343; // ! if 0 - we get 400 error
-    videoData.videoId = getVideoId(this.site.host, this.video);
-    videoData.detectedLanguage = this.translateFromLang;
-    videoData.responseLanguage = this.translateToLang;
+    const videoData = {
+      translationHelp: null,
+      isStream: false,
+      duration: this.video?.duration || 343,
+      videoId: getVideoId(this.site.host, this.video),
+      detectedLanguage: this.translateFromLang,
+      responseLanguage: this.translateToLang,
+    };
 
     if (!videoData.videoId) {
       this.ytData = {};
@@ -1540,16 +1529,18 @@ class VideoHandler {
       videoData.detectedLanguage = udemyData.detectedLanguage;
       videoData.translationHelp = udemyData.translationHelp;
     } else if (
-      this.site.host === "vk" ||
-      this.site.host === "piped" ||
-      this.site.host === "invidious" ||
-      this.site.host === "bitchute" ||
-      this.site.host === "rumble" ||
-      this.site.host === "peertube" ||
-      this.site.host === "dailymotion" ||
-      this.site.host === "trovo" ||
-      this.site.host === "yandexdisk" ||
-      this.site.host === "coursehunter"
+      [
+        "vk",
+        "piped",
+        "invidious",
+        "bitchute",
+        "rumble",
+        "peertube",
+        "dailymotion",
+        "trovo",
+        "yandexdisk",
+        "coursehunter",
+      ].includes(this.site.host)
     ) {
       videoData.detectedLanguage = "auto";
     }
@@ -1572,7 +1563,7 @@ class VideoHandler {
       // if (this.ytData.isLive) {
       //   throw new VOTLocalizedError("VOTLiveNotSupported");
       // }
-      if (this.videoData.duration > 14_400) {
+      if (!this.videoData.isStream && this.videoData.duration > 14_400) {
         throw new VOTLocalizedError("VOTVideoIsTooLong");
       }
     }
@@ -2056,33 +2047,8 @@ class VideoHandler {
     this.syncVideoVolumeSlider();
   }
 
-  async waitInitialization() {
-    let resolved = false;
-    return await Promise.race([
-      new Promise((resolve) => {
-        setTimeout(() => {
-          if (!resolved) {
-            console.error("[VOT] Initialization timeout");
-            resolve(false);
-          }
-        }, 1000);
-      }),
-      new Promise((resolve) => {
-        const interval = setInterval(() => {
-          if (this.initialized) {
-            clearInterval(interval);
-            resolved = true;
-            resolve(true);
-          }
-        }, 100);
-      }),
-    ]);
-  }
-
   async handleSrcChanged() {
     debug.log("[VideoHandler] src changed", this);
-
-    if (!(await this.waitInitialization())) return;
 
     this.stopTranslation();
 
@@ -2104,19 +2070,13 @@ class VideoHandler {
 
     await this.updateSubtitles();
     await this.changeSubtitlesLang("disabled");
-    this.setSelectMenuValues(
-      this.videoData.detectedLanguage,
-      this.data.responseLanguage ?? "ru",
-    );
     this.translateToLang = this.data.responseLanguage ?? "ru";
   }
 
   async release() {
     debug.log("[VideoHandler] release");
 
-    if (!(await this.waitInitialization())) return;
     this.initialized = false;
-
     this.stopTranslation();
     this.releaseExtraEvents();
     this.subtitlesWidget.release();
@@ -2163,14 +2123,10 @@ async function main() {
     cfOnlyExtensions.includes(GM_info.scriptHandler)
   ) {
     console.error(
-      `[VOT] ${localizationProvider
-        .getDefault("unSupportedExtensionError")
-        .format(GM_info.scriptHandler)}`,
+      `[VOT] ${localizationProvider.getDefault("unSupportedExtensionError").replace("{0}", GM_info.scriptHandler)}`,
     );
     return alert(
-      `[VOT] ${localizationProvider
-        .get("unSupportedExtensionError")
-        .format(GM_info.scriptHandler)}`,
+      `[VOT] ${localizationProvider.get("unSupportedExtensionError").replace("{0}", GM_info.scriptHandler)}`,
     );
   }
 

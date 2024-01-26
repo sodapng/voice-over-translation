@@ -11,14 +11,13 @@ function formatYandexSubtitlesTokens(line) {
     const lastToken = result[result.length - 1];
     const alignRangeEnd = lastToken?.alignRange?.end ?? 0;
     const newAlignRangeEnd = alignRangeEnd + token.text.length;
-    result.push(
-      Object.assign(Object.assign({}, token), {
-        alignRange: {
-          start: alignRangeEnd,
-          end: newAlignRangeEnd,
-        },
-      }),
-    );
+    result.push({
+      ...token,
+      alignRange: {
+        start: alignRangeEnd,
+        end: newAlignRangeEnd,
+      },
+    });
     if (nextToken) {
       const endMs = token.startMs + token.durationMs;
       const durationMs = nextToken.startMs
@@ -39,33 +38,32 @@ function formatYandexSubtitlesTokens(line) {
 }
 
 function createSubtitlesTokens(line, previousLineLastToken) {
-  const tokens = line.text
-    .split(new RegExp("([\n \t])"))
-    .reduce((result, tokenText) => {
-      if (tokenText.length) {
-        const lastToken = result[result.length - 1] ?? previousLineLastToken;
-        const alignRangeStart = lastToken?.alignRange?.end ?? 0;
-        const alignRangeEnd = alignRangeStart + tokenText.length;
-        result.push({
-          text: tokenText,
-          alignRange: {
-            start: alignRangeStart,
-            end: alignRangeEnd,
-          },
-        });
-      }
-      return result;
-    }, []);
+  const tokens = line.text.split(/([\n \t])/).reduce((result, tokenText) => {
+    if (tokenText.length) {
+      const lastToken = result[result.length - 1] ?? previousLineLastToken;
+      const alignRangeStart = lastToken?.alignRange?.end ?? 0;
+      const alignRangeEnd = alignRangeStart + tokenText.length;
+      result.push({
+        text: tokenText,
+        alignRange: {
+          start: alignRangeStart,
+          end: alignRangeEnd,
+        },
+      });
+    }
+    return result;
+  }, []);
   const tokenDurationMs = Math.floor(line.durationMs / tokens.length);
   const lineEndMs = line.startMs + line.durationMs;
   return tokens.map((token, index) => {
     const isLastToken = index === tokens.length - 1;
     const startMs = line.startMs + tokenDurationMs * index;
     const durationMs = isLastToken ? lineEndMs - startMs : tokenDurationMs;
-    return Object.assign(Object.assign({}, token), {
+    return {
+      ...token,
       startMs,
       durationMs,
-    });
+    };
   });
 }
 
@@ -86,11 +84,10 @@ function getSubtitlesTokens(subtitles, source) {
       tokens = createSubtitlesTokens(line, lastToken);
     }
     lastToken = tokens[tokens.length - 1];
-    result.push(
-      Object.assign(Object.assign({}, line), {
-        tokens,
-      }),
-    );
+    result.push({
+      ...line,
+      tokens,
+    });
   }
   subtitles.containsTokens = true;
   return result;
