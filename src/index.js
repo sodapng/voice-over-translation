@@ -243,10 +243,7 @@ class VideoHandler {
     this.container = container;
     this.site = site;
     this.handleSrcChangedBound = this.handleSrcChanged.bind(this);
-    this.srcObserver = new MutationObserver(this.handleSrcChangedBound);
-    this.srcObserver.observe(this.video, {
-      attributeFilter: ["src", "currentSrc"],
-    });
+    this.video.addEventListener("loadedmetadata", this.handleSrcChangedBound);
     this.stopTranslationBound = this.stopTranslation.bind(this);
     this.handleVideoEventBound = this.handleVideoEvent.bind(this);
     this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
@@ -1478,9 +1475,11 @@ class VideoHandler {
 
   async getVideoData() {
     const videoData = {
+      // ! should be null for ALL websites except coursera and udemy !
+      // else use direct link: `{url: xxx.mp4}`
       translationHelp: null,
-      isStream: false,
-      duration: this.video?.duration || 343,
+      isStream: false, // by default, we request the translation of the video
+      duration: this.video?.duration || 343, // ! if 0 - we get 400 error
       videoId: getVideoId(this.site.host, this.video),
       detectedLanguage: this.translateFromLang,
       responseLanguage: this.translateToLang,
@@ -2080,7 +2079,6 @@ class VideoHandler {
     this.stopTranslation();
     this.releaseExtraEvents();
     this.subtitlesWidget.release();
-    this.srcObserver.disconnect();
     clearInterval(this.srcObjectInterval);
     this.votButton.container.remove();
     this.votMenu.container.remove();
