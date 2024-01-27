@@ -1279,7 +1279,8 @@ class VideoHandler {
 
     addExtraEventListener(this.video, "volumechange", () => {
       debug.log("lipsync mode is volumechange");
-      if (this.video.volume !== this.data.autoVolume) {
+      let videoVolume = this.getVideoVolume();
+      if (videoVolume !== this.data.autoVolume) {
         this.volumeOnStart = this.getVideoVolume();
       }
     });
@@ -1503,6 +1504,10 @@ class VideoHandler {
       return videoData;
     }
 
+    if (!this.volumeOnStart) {
+      this.volumeOnStart = this.getVideoVolume();
+    }
+
     if (window.location.hostname.includes("youtube.com")) {
       this.ytData = await youtubeUtils.getVideoData();
       videoData.isStream = this.ytData.isLive;
@@ -1660,13 +1665,11 @@ class VideoHandler {
     this.votDownloadButton.hidden = true;
     this.downloadTranslationUrl = null;
     this.transformBtn("none", localizationProvider.get("translateVideo"));
-    if (this.video.volume === this.data.autoVolume) {
-      debug.log(`Volume on start: ${this.volumeOnStart}`);
-      if (this.site.host === "youtube") {
-        youtubeUtils.setVideoVolume(this.volumeOnStart);
-      } else {
-        this.video.volume = this.volumeOnStart;
-      }
+    debug.log(`Volume on start: ${this.volumeOnStart}`);
+    if (this.site.host === "youtube") {
+      youtubeUtils.setVideoVolume(this.volumeOnStart);
+    } else {
+      this.video.volume = this.volumeOnStart;
     }
     clearInterval(this.streamPing);
     this.hls?.destroy();
@@ -2064,8 +2067,6 @@ class VideoHandler {
     this.stopTranslation();
 
     this.firstPlay = true;
-
-    this.volumeOnStart = this.getVideoVolume();
 
     const hide =
       !this.video.src && !this.video.currentSrc && !this.video.srcObject;
