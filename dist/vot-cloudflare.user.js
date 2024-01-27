@@ -5174,6 +5174,13 @@ class VideoHandler {
       this.stopTranslation();
     });
 
+    addExtraEventListener(this.video, "volumechange", () => {
+      debug/* default */.Z.log("lipsync mode is volumechange");
+      if (this.video.volume !== this.data.autoVolume) {
+        this.volumeOnStart = this.getVideoVolume();
+      }
+    });
+
     addExtraEventListener(this.video, "progress", async () => {
       if (!(this.firstPlay && this.data.autoTranslate === 1)) {
         return;
@@ -5550,7 +5557,7 @@ class VideoHandler {
     this.votDownloadButton.hidden = true;
     this.downloadTranslationUrl = null;
     this.transformBtn("none", localizationProvider/* localizationProvider */.V.get("translateVideo"));
-    if (this.volumeOnStart) {
+    if (this.video.volume === this.data.autoVolume) {
       debug/* default */.Z.log(`Volume on start: ${this.volumeOnStart}`);
       if (this.site.host === "youtube") {
         youtubeUtils.setVideoVolume(this.volumeOnStart);
@@ -5565,8 +5572,7 @@ class VideoHandler {
 
   async translateExecutor(VIDEO_ID) {
     // доработать логику
-    const audioSouce = this.audio.src || this.hls;
-    if (this.firstPlay && !audioSouce) {
+    if (this.firstPlay) {
       this.videoData = await this.getVideoData();
       this.setSelectMenuValues(
         this.videoData.detectedLanguage,
@@ -5729,7 +5735,6 @@ class VideoHandler {
 
           youtubeUtils.videoSeek(this.video, 10); // 10 is the most successful number for streaming. With it, the audio is not so far behind the original
 
-          this.volumeOnStart = this.getVideoVolume();
           if (typeof this.data.defaultVolume === "number") {
             this.audio.volume = this.data.defaultVolume / 100;
           }
@@ -5850,7 +5855,6 @@ class VideoHandler {
           this.audio.src = proxiedAudioUrl;
         }
 
-        this.volumeOnStart = this.getVideoVolume();
         if (typeof this.data.defaultVolume === "number") {
           this.audio.volume = this.data.defaultVolume / 100;
         }
@@ -5957,6 +5961,8 @@ class VideoHandler {
     this.stopTranslation();
 
     this.firstPlay = true;
+
+    this.volumeOnStart = this.getVideoVolume();
 
     const hide =
       !this.video.src && !this.video.currentSrc && !this.video.srcObject;
