@@ -803,6 +803,12 @@ class VideoHandler {
             return;
           }
 
+          if (this.hls.url) {
+            debug.log("[click translationBtn] hls is not empty");
+            this.stopTraslate();
+            return;
+          }
+
           try {
             debug.log("[click translationBtn] trying execute translation");
             const VIDEO_ID = getVideoId(this.site.host, this.video);
@@ -1661,7 +1667,10 @@ class VideoHandler {
   }
 
   async translateExecutor(VIDEO_ID) {
-    if (this.firstPlay) {
+    // доработать логику
+    const audioSouce = this.audio.src || this.hls;
+    console.log("audioSouce", audioSouce);
+    if (this.firstPlay && !audioSouce) {
       this.videoData = await this.getVideoData();
       this.setSelectMenuValues(
         this.videoData.detectedLanguage,

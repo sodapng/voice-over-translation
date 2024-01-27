@@ -4129,10 +4129,7 @@ class VideoHandler {
     this.container = container;
     this.site = site;
     this.handleSrcChangedBound = this.handleSrcChanged.bind(this);
-    this.srcObserver = new MutationObserver(this.handleSrcChangedBound);
-    this.srcObserver.observe(this.video, {
-      attributeFilter: ["src", "currentSrc"],
-    });
+    this.video.addEventListener("loadedmetadata", this.handleSrcChangedBound);
     this.stopTranslationBound = this.stopTranslation.bind(this);
     this.handleVideoEventBound = this.handleVideoEvent.bind(this);
     this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
@@ -4688,6 +4685,12 @@ class VideoHandler {
         (async () => {
           if (this.audio.src) {
             debug/* default */.Z.log("[click translationBtn] audio.src is not empty");
+            this.stopTraslate();
+            return;
+          }
+
+          if (this.hls.url) {
+            debug/* default */.Z.log("[click translationBtn] hls is not empty");
             this.stopTraslate();
             return;
           }
@@ -5364,9 +5367,11 @@ class VideoHandler {
 
   async getVideoData() {
     const videoData = {
+      // ! should be null for ALL websites except coursera and udemy !
+      // else use direct link: `{url: xxx.mp4}`
       translationHelp: null,
-      isStream: false,
-      duration: this.video?.duration || 343,
+      isStream: false, // by default, we request the translation of the video
+      duration: this.video?.duration || 343, // ! if 0 - we get 400 error
       videoId: (0,utils/* getVideoId */.gJ)(this.site.host, this.video),
       detectedLanguage: this.translateFromLang,
       responseLanguage: this.translateToLang,
@@ -5548,7 +5553,9 @@ class VideoHandler {
   }
 
   async translateExecutor(VIDEO_ID) {
-    if (this.firstPlay) {
+    // доработать логику
+    const audioSouce = this.audio.src || this.hls;
+    if (this.firstPlay && !audioSouce) {
       this.videoData = await this.getVideoData();
       this.setSelectMenuValues(
         this.videoData.detectedLanguage,
@@ -5956,7 +5963,6 @@ class VideoHandler {
     this.stopTranslation();
     this.releaseExtraEvents();
     this.subtitlesWidget.release();
-    this.srcObserver.disconnect();
     clearInterval(this.srcObjectInterval);
     this.votButton.container.remove();
     this.votMenu.container.remove();
