@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.5.1-beta1
+// @version 1.5.1-beta2
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -3951,6 +3951,7 @@ const videoLipSyncEvents = [
   "play",
   "waiting",
   "pause",
+  "volumechange",
 ];
 
 function genOptionsByOBJ(obj, conditionString, validateLangs = false) {
@@ -5167,7 +5168,7 @@ class VideoHandler {
       debug/* default */.Z.log("lipsync mode is volumechange");
       let videoVolume = this.getVideoVolume();
       if (videoVolume !== this.data.autoVolume) {
-        this.volumeOnStart = this.getVideoVolume();
+        this.volumeOnStart = videoVolume;
       }
     });
 

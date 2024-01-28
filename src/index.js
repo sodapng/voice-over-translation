@@ -60,6 +60,7 @@ const videoLipSyncEvents = [
   "play",
   "waiting",
   "pause",
+  "volumechange",
 ];
 
 function genOptionsByOBJ(obj, conditionString, validateLangs = false) {
@@ -1281,7 +1282,7 @@ class VideoHandler {
       debug.log("lipsync mode is volumechange");
       let videoVolume = this.getVideoVolume();
       if (videoVolume !== this.data.autoVolume) {
-        this.volumeOnStart = this.getVideoVolume();
+        this.volumeOnStart = videoVolume;
       }
     });
 
