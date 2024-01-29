@@ -302,6 +302,8 @@ class VideoHandler {
       proxyWorkerHost: await votStorage.get("proxyWorkerHost", proxyWorkerHost),
     };
 
+    this.videoData = await this.getVideoData();
+
     console.log("[db] data from db: ", this.data);
 
     this.subtitlesWidget = new SubtitlesWidget(
@@ -320,6 +322,12 @@ class VideoHandler {
     this.votButton.container.hidden = hide;
     hide && (this.votMenu.container.hidden = hide);
 
+    await this.updateSubtitles();
+    await this.changeSubtitlesLang("disabled");
+    this.setSelectMenuValues(
+      this.videoData.detectedLanguage,
+      this.data.responseLanguage ?? "ru",
+    );
     this.translateToLang = this.data.responseLanguage ?? "ru";
 
     this.initExtraEvents();
@@ -2084,7 +2092,6 @@ class VideoHandler {
     this.stopTranslation();
     this.releaseExtraEvents();
     this.subtitlesWidget.release();
-    clearInterval(this.srcObjectInterval);
     this.votButton.container.remove();
     this.votMenu.container.remove();
   }
