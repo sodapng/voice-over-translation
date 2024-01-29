@@ -215,7 +215,7 @@ class VideoHandler {
 
   ytData = "";
   videoData = "";
-  firstPlay = false;
+  firstPlay = true;
   audio = new Audio();
   hls = initHls(); // debug enabled only in dev mode
   downloadTranslationUrl = null;
@@ -320,18 +320,9 @@ class VideoHandler {
     this.votButton.container.hidden = hide;
     hide && (this.votMenu.container.hidden = hide);
 
-    await this.changeSubtitlesLang("disabled");
     this.translateToLang = this.data.responseLanguage ?? "ru";
 
     this.initExtraEvents();
-
-    if (!this.votButton.container.hidden && !this.videoData) {
-      this.videoData = await this.getVideoData();
-      this.setSelectMenuValues(
-        this.videoData.detectedLanguage,
-        this.data.responseLanguage,
-      );
-    }
 
     this.initialized = true;
   }
@@ -1289,7 +1280,10 @@ class VideoHandler {
     });
 
     addExtraEventListener(this.video, "progress", async () => {
-      if (!(this.firstPlay && this.data.autoTranslate === 1)) {
+      if (
+        !(this.firstPlay && this.data.autoTranslate === 1) ||
+        getVideoId(this.site.host, this.video) !== this.videoData.videoId
+      ) {
         return;
       }
 
@@ -1630,18 +1624,12 @@ class VideoHandler {
       }
       return;
     }
-    if (mode == "pause") {
-      debug.log("lipsync mode is pause");
+    // video is inactive
+    if (["pause", "stop", "waiting"].includes(mode)) {
+      debug.log(`lipsync mode is ${mode}`);
       this.audio.pause();
     }
-    if (mode == "stop") {
-      debug.log("lipsync mode is stop");
-      this.audio.pause();
-    }
-    if (mode == "waiting") {
-      debug.log("lipsync mode is waiting");
-      this.audio.pause();
-    }
+
     if (mode == "playing") {
       debug.log("lipsync mode is playing");
       this.audio.play();
@@ -1680,8 +1668,6 @@ class VideoHandler {
   }
 
   async translateExecutor(VIDEO_ID) {
-    if (!this.videoValidator()) return;
-
     debug.log("Run translateFunc");
     this.translateFunc(
       VIDEO_ID,
@@ -2065,10 +2051,12 @@ class VideoHandler {
     this.firstPlay = true;
 
     this.videoData = await this.getVideoData();
-    this.setSelectMenuValues(
-      this.videoData.detectedLanguage,
-      this.videoData.responseLanguage,
-    );
+    if (this.videoData.detectedLanguage) {
+      this.setSelectMenuValues(
+        this.videoData.detectedLanguage,
+        this.videoData.responseLanguage,
+      );
+    }
 
     const hide =
       !this.video.src && !this.video.currentSrc && !this.video.srcObject;
