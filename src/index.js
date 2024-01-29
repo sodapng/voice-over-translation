@@ -1,52 +1,52 @@
-import "./styles/main.scss";
-import { VOTLocalizedError } from "./utils/VOTLocalizedError.js";
-import { youtubeUtils } from "./utils/youtubeUtils.js";
-import { yandexProtobuf } from "./yandexProtobuf.js";
-import {
-  getVideoId,
-  secsToStrTime,
-  lang,
-  isPiPAvailable,
-  initHls,
-} from "./utils/utils.js";
+import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
 import {
   defaultAutoVolume,
-  defaultTranslationService,
   defaultDetectService,
+  defaultTranslationService,
   m3u8ProxyHost,
   proxyWorkerHost,
 } from "./config/config.js";
-import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
 import {
-  availableLangs,
-  additionalTTS,
   actualTTS,
+  additionalTTS,
+  availableLangs,
   cfOnlyExtensions,
 } from "./config/constants.js";
 import {
-  localizationProvider,
   availableLocales,
+  localizationProvider,
 } from "./localization/localizationProvider.js";
+import "./styles/main.scss";
 import ui from "./ui.js";
-import { syncVolume } from "./utils/volume.js";
+import { VOTLocalizedError } from "./utils/VOTLocalizedError.js";
 import debug from "./utils/debug.js";
+import {
+  getVideoId,
+  initHls,
+  isPiPAvailable,
+  lang,
+  secsToStrTime,
+} from "./utils/utils.js";
+import { syncVolume } from "./utils/volume.js";
+import { youtubeUtils } from "./utils/youtubeUtils.js";
+import { yandexProtobuf } from "./yandexProtobuf.js";
 
 import Bowser from "bowser";
 
-import requestVideoTranslation from "./rvt.js";
-import requestStreamTranslation from "./rst.js";
 import requestStreamPing from "./rsp.js";
-import { getSubtitles, fetchSubtitles, SubtitlesWidget } from "./subtitles.js";
+import requestStreamTranslation from "./rst.js";
+import requestVideoTranslation from "./rvt.js";
+import { SubtitlesWidget, fetchSubtitles, getSubtitles } from "./subtitles.js";
 import { coursehunterUtils } from "./utils/coursehunterUtils.js";
 import { courseraUtils } from "./utils/courseraUtils.js";
 import { udemyUtils } from "./utils/udemyUtils.js";
 
-import { VideoObserver } from "./utils/VideoObserver.js";
 import sites from "./config/sites.js";
+import { VideoObserver } from "./utils/VideoObserver.js";
 import { votStorage } from "./utils/storage.js";
 import {
-  translate,
   detectServices,
+  translate,
   translateServices,
 } from "./utils/translateApis.js";
 
@@ -1680,11 +1680,7 @@ class VideoHandler {
   async translateExecutor(VIDEO_ID) {
     // доработать логику
     if (this.firstPlay) {
-      this.videoData = await this.getVideoData();
-      this.setSelectMenuValues(
-        this.videoData.detectedLanguage,
-        this.videoData.responseLanguage,
-      );
+      this.videoValidator();
     }
 
     debug.log("Run translateFunc");
@@ -2068,6 +2064,12 @@ class VideoHandler {
     this.stopTranslation();
 
     this.firstPlay = true;
+
+    this.videoData = await this.getVideoData();
+    this.setSelectMenuValues(
+      this.videoData.detectedLanguage,
+      this.videoData.responseLanguage,
+    );
 
     const hide =
       !this.video.src && !this.video.currentSrc && !this.video.srcObject;
