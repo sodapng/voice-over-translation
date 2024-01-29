@@ -4112,7 +4112,7 @@ class VideoHandler {
 
   ytData = "";
   videoData = "";
-  firstPlay = true;
+  firstPlay = false;
   audio = new Audio();
   hls = (0,utils/* initHls */.QZ)(); // debug enabled only in dev mode
   downloadTranslationUrl = null;
@@ -4198,7 +4198,6 @@ class VideoHandler {
       m3u8ProxyHost: await storage/* votStorage */.i.get("m3u8ProxyHost", config/* m3u8ProxyHost */.e6),
       proxyWorkerHost: await storage/* votStorage */.i.get("proxyWorkerHost", config/* proxyWorkerHost */.ez),
     };
-    this.videoData = await this.getVideoData();
 
     console.log("[db] data from db: ", this.data);
 
@@ -4218,12 +4217,7 @@ class VideoHandler {
     this.votButton.container.hidden = hide;
     hide && (this.votMenu.container.hidden = hide);
 
-    await this.updateSubtitles();
     await this.changeSubtitlesLang("disabled");
-    this.setSelectMenuValues(
-      this.videoData.detectedLanguage,
-      this.data.responseLanguage ?? "ru",
-    );
     this.translateToLang = this.data.responseLanguage ?? "ru";
 
     this.initExtraEvents();
@@ -5195,8 +5189,8 @@ class VideoHandler {
       }
 
       try {
-        await this.translateExecutor(VIDEO_ID);
         this.firstPlay = false;
+        await this.translateExecutor(VIDEO_ID);
       } catch (err) {
         console.error("[VOT]", err);
         if (err?.name === "VOTLocalizedError") {
@@ -5575,10 +5569,7 @@ class VideoHandler {
   }
 
   async translateExecutor(VIDEO_ID) {
-    // доработать логику
-    if (this.firstPlay) {
-      this.videoValidator();
-    }
+    if (!this.videoValidator()) return;
 
     debug/* default */.Z.log("Run translateFunc");
     this.translateFunc(
