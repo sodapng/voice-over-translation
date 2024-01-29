@@ -325,6 +325,14 @@ class VideoHandler {
 
     this.initExtraEvents();
 
+    if (!this.votButton.container.hidden && !this.videoData) {
+      this.videoData = await this.getVideoData();
+      this.setSelectMenuValues(
+        this.videoData.detectedLanguage,
+        this.data.responseLanguage,
+      );
+    }
+
     this.initialized = true;
   }
 
@@ -1267,8 +1275,8 @@ class VideoHandler {
       this.container.draggable = false;
     }
 
-    addExtraEventListener(this.video, "abort", () => {
-      debug.log("lipsync mode is abort");
+    addExtraEventListener(this.video, "emptied", () => {
+      debug.log("lipsync mode is emptied");
       this.stopTranslation();
     });
 
