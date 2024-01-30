@@ -5165,14 +5165,6 @@ class VideoHandler {
       this.stopTranslation();
     });
 
-    addExtraEventListener(this.video, "volumechange", () => {
-      debug/* default */.Z.log("lipsync mode is volumechange");
-      let videoVolume = this.getVideoVolume();
-      if (videoVolume !== this.data.autoVolume) {
-        this.volumeOnStart = videoVolume;
-      }
-    });
-
     addExtraEventListener(this.video, "progress", async () => {
       if (
         !(this.firstPlay && this.data.autoTranslate === 1) ||
@@ -5393,10 +5385,6 @@ class VideoHandler {
     if (!videoData.videoId) {
       this.ytData = {};
       return videoData;
-    }
-
-    if (!this.volumeOnStart) {
-      this.volumeOnStart = this.getVideoVolume();
     }
 
     if (window.location.hostname.includes("youtube.com")) {
@@ -5717,6 +5705,7 @@ class VideoHandler {
 
           youtubeUtils.videoSeek(this.video, 10); // 10 is the most successful number for streaming. With it, the audio is not so far behind the original
 
+          this.volumeOnStart = this.getVideoVolume();
           if (typeof this.data.defaultVolume === "number") {
             this.audio.volume = this.data.defaultVolume / 100;
           }
@@ -5827,6 +5816,7 @@ class VideoHandler {
           false
         ) {}
 
+        this.volumeOnStart = this.getVideoVolume();
         if (typeof this.data.defaultVolume === "number") {
           this.audio.volume = this.data.defaultVolume / 100;
         }
