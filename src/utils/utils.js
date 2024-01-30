@@ -3,22 +3,6 @@ import { localizationProvider } from "../localization/localizationProvider.js";
 const userlang = navigator.language || navigator.userLanguage;
 export const lang = userlang?.substr(0, 2)?.toLowerCase() ?? "en";
 
-if (!String.prototype.format) {
-  // https://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format
-  // syntax example: "is {0} function".format("format")
-  String.prototype.format = function () {
-    // store arguments in an array
-    var args = arguments;
-    // use replace to iterate over the string
-    // select the match and check if the related argument is present
-    // if yes, replace the match with the argument
-    return this.replace(/{(\d+)}/g, function (match, index) {
-      // check if the argument is present
-      return typeof args[index] != "undefined" ? args[index] : match;
-    });
-  };
-}
-
 function waitForElm(selector) {
   // https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
   return new Promise((resolve) => {
@@ -252,16 +236,15 @@ function secsToStrTime(secs) {
   } else if (minutes >= 10 && minutes % 10) {
     return localizationProvider
       .get("translationTakeApproximatelyMinutes")
-      .format(minutes);
+      .replace("{0}", minutes);
   } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
     return localizationProvider.get("translationTakeAboutMinute");
   } else {
     return localizationProvider
       .get("translationTakeApproximatelyMinute")
-      .format(minutes);
+      .replace("{0}", minutes);
   }
 }
-
 function langTo6391(lang) {
   // convert lang to ISO 639-1
   return lang.toLowerCase().split(";")[0].trim().split("-")[0].split("_")[0];

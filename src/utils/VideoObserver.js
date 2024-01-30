@@ -1,22 +1,18 @@
 import "requestidlecallback-polyfill";
 import { EventImpl } from "./EventImpl.js";
 
-function filterVideoNodes(e) {
-  return Array.from(e)
-    .map((e) => {
-      const result = [];
-      if (e instanceof HTMLVideoElement) {
-        result.push(e);
-      }
-      if (e instanceof HTMLElement) {
-        result.push(...Array.from(e.querySelectorAll("video")));
-      }
-      if (e?.shadowRoot?.querySelectorAll) {
-        result.push(...Array.from(e.shadowRoot.querySelectorAll("video")));
-      }
-      return result;
-    })
-    .flat();
+function filterVideoNodes(nodes) {
+  return Array.from(nodes).flatMap((node) => {
+    if (node instanceof HTMLVideoElement) {
+      return [node];
+    }
+    if (node instanceof HTMLElement) {
+      return Array.from(node.querySelectorAll("video"));
+    }
+    return node.shadowRoot
+      ? Array.from(node.shadowRoot.querySelectorAll("video"))
+      : [];
+  });
 }
 
 export class VideoObserver {
@@ -29,7 +25,7 @@ export class VideoObserver {
       window.requestIdleCallback(
         () => {
           mutationsList.forEach((mutation) => {
-            if ("childList" !== mutation.type) return;
+            if (mutation.type !== "childList") return;
 
             filterVideoNodes(mutation.addedNodes).forEach(
               this.handleVideoAddedBound,
@@ -39,7 +35,7 @@ export class VideoObserver {
             );
           });
         },
-        { timeout: 1e3 },
+        { timeout: 1000 },
       );
     });
   }
@@ -57,6 +53,8 @@ export class VideoObserver {
     this.onVideoAdded.dispatch(video);
   }
   handleVideoRemoved(video) {
-    document.contains(video) || this.onVideoRemoved.dispatch(video);
+    if (!document.contains(video)) {
+      this.onVideoRemoved.dispatch(video);
+    }
   }
 }

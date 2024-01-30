@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.5.1-beta1
+// @version 1.5.1-beta2
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -147,7 +147,7 @@
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `.vot-button{--vot-helper-theme: var( --vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243) );--vot-helper-ontheme: var( --vot-ontheme-rgb, var(--vot-onprimary-rgb, 255, 255, 255) );position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;border:none;border-radius:4px;padding:0 16px;min-width:64px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;color:rgb(var(--vot-helper-ontheme));background-color:rgb(var(--vot-helper-theme));box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:36px;outline:none;cursor:pointer;transition:box-shadow .2s}.vot-button[hidden]{display:none !important}.vot-button::-moz-focus-inner{border:none}.vot-button::before,.vot-button::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-button::before{background-color:rgb(var(--vot-helper-ontheme));transition:opacity .2s}.vot-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-button:hover{box-shadow:0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)}.vot-button:hover::before{opacity:.08}.vot-button:active{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}.vot-button:active::after{opacity:.32;background-size:100% 100%;transition:background-size 0s}.vot-button:disabled{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.12);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);box-shadow:none;cursor:initial}.vot-button:disabled::before,.vot-button:disabled::after{opacity:0}.vot-outlined-button{--vot-helper-theme: var( --vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243) );position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0;border:solid 1px;border-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.24);border-radius:4px;padding:0 16px;min-width:64px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;color:rgb(var(--vot-helper-theme));background-color:rgba(0,0,0,0);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:34px;outline:none;cursor:pointer}.vot-outlined-button[hidden]{display:none !important}.vot-outlined-button::-moz-focus-inner{border:none}.vot-outlined-button::before,.vot-outlined-button::after{content:"";position:absolute;border-radius:3px;top:0;right:0;bottom:0;left:0;opacity:0}.vot-outlined-button::before{background-color:rgb(var(--vot-helper-theme));transition:opacity .2s}.vot-outlined-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-outlined-button:hover::before{opacity:.04}.vot-outlined-button:active::after{opacity:.16;background-size:100% 100%;transition:background-size 0s}.vot-outlined-button:disabled{background-color:rgba(0,0,0,0);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-outlined-button:disabled::before,.vot-outlined-button:disabled::after{opacity:0}.vot-text-button{--vot-helper-theme: var( --vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243) );position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0;border:none;border-radius:4px;padding:0 8px;min-width:64px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;color:rgb(var(--vot-helper-theme));background-color:rgba(0,0,0,0);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:36px;outline:none;cursor:pointer}.vot-text-button[hidden]{display:none !important}.vot-text-button::-moz-focus-inner{border:none}.vot-text-button::before,.vot-text-button::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-text-button::before{background-color:rgb(var(--vot-helper-theme));transition:opacity .2s}.vot-text-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-text-button:hover::before{opacity:.04}.vot-text-button:active::after{opacity:.16;background-size:100% 100%;transition:background-size 0s}.vot-text-button:disabled{background-color:rgba(0,0,0,0);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-text-button:disabled::before,.vot-text-button:disabled::after{opacity:0}.vot-icon-button{--vot-helper-onsurface: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87);position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0;border:none;border-radius:50%;padding:0;width:36px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;fill:var(--vot-helper-onsurface);color:var(--vot-helper-onsurface);background-color:rgba(0,0,0,0);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:36px;outline:none;cursor:pointer}.vot-icon-button[hidden]{display:none !important}.vot-icon-button::-moz-focus-inner{border:none}.vot-icon-button::before,.vot-icon-button::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-icon-button::before{background-color:var(--vot-helper-onsurface);transition:opacity .2s}.vot-icon-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity .3s,background-size .4s}.vot-icon-button:hover::before{opacity:.04}.vot-icon-button:active::after{opacity:.32;background-size:100% 100%;transition:background-size 0s,opacity 0s}.vot-icon-button:disabled{background-color:rgba(0,0,0,0);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);fill:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-icon-button:disabled::before,.vot-icon-button:disabled::after{opacity:0}.vot-textfield{--vot-helper-theme: rgb( var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243)) ) !important;--vot-helper-safari1: rgba( var(--vot-onsurface-rgb, 0, 0, 0), 0.38 ) !important;--vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;--vot-helper-safari3: rgba( var(--vot-onsurface-rgb, 0, 0, 0), 0.87 ) !important;position:relative !important;display:inline-block;padding-top:6px !important;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;font-size:16px !important;line-height:1.5 !important;text-align:start !important}.vot-textfield[hidden]{display:none !important}.vot-textfield>input,.vot-textfield>textarea{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin:0 !important;border-style:solid !important;border-width:1px !important;border-color:rgba(0,0,0,0) var(--vot-helper-safari2) var(--vot-helper-safari2) !important;border-radius:4px !important;padding:15px 13px 15px !important;width:100% !important;height:inherit !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;-webkit-text-fill-color:currentColor !important;background-color:rgba(0,0,0,0) !important;box-shadow:inset 1px 0 rgba(0,0,0,0),inset -1px 0 rgba(0,0,0,0),inset 0 -1px rgba(0,0,0,0) !important;font-family:inherit !important;font-size:inherit !important;line-height:inherit !important;caret-color:var(--vot-helper-theme) !important;transition:border .2s,box-shadow .2s !important}.vot-textfield>input:not(:focus):placeholder-shown,.vot-textfield>textarea:not(:focus):placeholder-shown{border-top-color:var(--vot-helper-safari2) !important}.vot-textfield>input+span,.vot-textfield>textarea+span{position:absolute !important;top:0 !important;left:0 !important;display:flex !important;width:100% !important;max-height:100% !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;font-size:75% !important;line-height:15px !important;cursor:text !important;transition:color .2s,font-size .2s,line-height .2s !important;pointer-events:none !important}.vot-textfield>input:not(:focus):placeholder-shown+span,.vot-textfield>textarea:not(:focus):placeholder-shown+span{font-size:inherit !important;line-height:68px !important}.vot-textfield>input+span::before,.vot-textfield>input+span::after,.vot-textfield>textarea+span::before,.vot-textfield>textarea+span::after{content:"" !important;display:block !important;-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin-top:6px !important;border-top:solid 1px var(--vot-helper-safari2) !important;min-width:10px !important;height:8px !important;pointer-events:none !important;box-shadow:inset 0 1px rgba(0,0,0,0) !important;transition:border .2s,box-shadow .2s !important}.vot-textfield>input+span::before,.vot-textfield>textarea+span::before{margin-right:4px !important;border-left:solid 1px rgba(0,0,0,0) !important;border-radius:4px 0 !important}.vot-textfield>input+span::after,.vot-textfield>textarea+span::after{flex-grow:1 !important;margin-left:4px !important;border-right:solid 1px rgba(0,0,0,0) !important;border-radius:0 4px !important}.vot-textfield>input:not(:focus):placeholder-shown+span::before,.vot-textfield>input:not(:focus):placeholder-shown+span::after,.vot-textfield>textarea:not(:focus):placeholder-shown+span::before,.vot-textfield>textarea:not(:focus):placeholder-shown+span::after{border-top-color:rgba(0,0,0,0) !important}.vot-textfield:hover>input,.vot-textfield:hover>textarea{border-color:rgba(0,0,0,0) var(--vot-helper-safari3) var(--vot-helper-safari3) !important}.vot-textfield:hover>input+span::before,.vot-textfield:hover>input+span::after,.vot-textfield:hover>textarea+span::before,.vot-textfield:hover>textarea+span::after{border-top-color:var(--vot-helper-safari3) !important}.vot-textfield:hover>input:not(:focus):placeholder-shown,.vot-textfield:hover>textarea:not(:focus):placeholder-shown{border-color:var(--vot-helper-safari3) !important}.vot-textfield>input:focus,.vot-textfield>textarea:focus{border-color:rgba(0,0,0,0) var(--vot-helper-theme) var(--vot-helper-theme) !important;box-shadow:inset 1px 0 var(--vot-helper-theme),inset -1px 0 var(--vot-helper-theme),inset 0 -1px var(--vot-helper-theme) !important;outline:none !important}.vot-textfield>input:focus+span,.vot-textfield>textarea:focus+span{color:var(--vot-helper-theme) !important}.vot-textfield>input:focus+span::before,.vot-textfield>input:focus+span::after,.vot-textfield>textarea:focus+span::before,.vot-textfield>textarea:focus+span::after{border-top-color:var(--vot-helper-theme) !important;box-shadow:inset 0 1px var(--vot-helper-theme) !important}.vot-textfield>input:disabled,.vot-textfield>input:disabled+span,.vot-textfield>textarea:disabled,.vot-textfield>textarea:disabled+span{border-color:rgba(0,0,0,0) var(--vot-helper-safari1) var(--vot-helper-safari1) !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;pointer-events:none !important}.vot-textfield>input:disabled+span::before,.vot-textfield>input:disabled+span::after,.vot-textfield>textarea:disabled+span::before,.vot-textfield>textarea:disabled+span::after{border-top-color:var(--vot-helper-safari1) !important}.vot-textfield>input:disabled:placeholder-shown,.vot-textfield>input:disabled:placeholder-shown+span,.vot-textfield>textarea:disabled:placeholder-shown,.vot-textfield>textarea:disabled:placeholder-shown+span{border-top-color:var(--vot-helper-safari1) !important}.vot-textfield>input:disabled:placeholder-shown+span::before,.vot-textfield>input:disabled:placeholder-shown+span::after,.vot-textfield>textarea:disabled:placeholder-shown+span::before,.vot-textfield>textarea:disabled:placeholder-shown+span::after{border-top-color:rgba(0,0,0,0) !important}@media not all and (min-resolution: 0.001dpcm){@supports(-webkit-appearance: none){.vot-textfield>input,.vot-textfield>input+span,.vot-textfield>textarea,.vot-textfield>textarea+span,.vot-textfield>input+span::before,.vot-textfield>input+span::after,.vot-textfield>textarea+span::before,.vot-textfield>textarea+span::after{transition-duration:.1s !important}}}.vot-checkbox{--vot-helper-theme: var( --vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243) );--vot-helper-ontheme: var( --vot-ontheme-rgb, var(--vot-onprimary-rgb, 255, 255, 255) );z-index:0;position:relative;display:inline-block;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;text-align:start}.vot-checkbox[hidden]{display:none !important}.vot-checkbox>input{appearance:none;-moz-appearance:none;-webkit-appearance:none;z-index:1;position:absolute;display:block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:3px 1px;border:solid 2px;background:rgba(0,0,0,0);border-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6);border-radius:2px;width:18px;height:18px;outline:none;cursor:pointer;transition:border-color .2s,background-color .2s}.vot-checkbox>input+span{display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding-left:30px;width:inherit;cursor:pointer}.vot-checkbox>input+span::before{content:"";position:absolute;left:-10px;top:-8px;display:block;border-radius:50%;width:40px;height:40px;background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0));opacity:0;transform:scale(1);pointer-events:none;transition:opacity .3s,transform .2s}.vot-checkbox>input+span::after{content:"";z-index:1;display:block;position:absolute;top:3px;left:1px;-webkit-box-sizing:content-box !important;-moz-box-sizing:content-box !important;box-sizing:content-box !important;width:10px;height:5px;border:solid 2px rgba(0,0,0,0);border-right-width:0;border-top-width:0;pointer-events:none;transform:translate(3px, 4px) rotate(-45deg);transition:border-color .2s}.vot-checkbox>input:checked,.vot-checkbox>input:indeterminate{border-color:rgb(var(--vot-helper-theme));background-color:rgb(var(--vot-helper-theme))}.vot-checkbox>input:checked+span::before,.vot-checkbox>input:indeterminate+span::before{background-color:rgb(var(--vot-helper-theme))}.vot-checkbox>input:checked+span::after,.vot-checkbox>input:indeterminate+span::after{border-color:rgb(var(--vot-helper-ontheme, 255, 255, 255))}.vot-checkbox>input:indeterminate+span::after{border-left-width:0;transform:translate(4px, 3px)}.vot-checkbox:hover>input+span::before{opacity:.04}.vot-checkbox:active>input,.vot-checkbox:active:hover>input{border-color:rgb(var(--vot-helper-theme))}.vot-checkbox:active>input:checked{border-color:rgba(0,0,0,0);background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6)}.vot-checkbox:active>input+span::before{opacity:1;transform:scale(0);transition:transform 0s,opacity 0s}.vot-checkbox>input:disabled{border-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-checkbox>input:disabled:checked,.vot-checkbox>input:disabled:indeterminate{border-color:rgba(0,0,0,0);background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38)}.vot-checkbox>input:disabled+span{color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-checkbox>input:disabled+span::before{opacity:0;transform:scale(0)}.vot-slider{--vot-safari-helper1: rgba( var(--vot-primary-rgb, 33, 150, 243), 0.04 ) !important;--vot-safari-helper2: rgba( var(--vot-primary-rgb, 33, 150, 243), 0.12 ) !important;--vot-safari-helper3: rgba( var(--vot-primary-rgb, 33, 150, 243), 0.16 ) !important;--vot-safari-helper4: rgba( var(--vot-primary-rgb, 33, 150, 243), 0.24 ) !important;display:inline-block;width:100% !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;font-family:var(--vot-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;font-size:16px !important;line-height:1.5 !important;text-align:start !important}.vot-slider[hidden]{display:none !important}.vot-slider>input{-webkit-appearance:none !important;appearance:none !important;position:relative !important;top:24px !important;display:block !important;margin:0 0 -36px !important;width:100% !important;height:36px !important;background-color:rgba(0,0,0,0) !important;cursor:pointer !important}.vot-slider>input:last-child{position:static !important;margin:0 !important}.vot-slider>span{display:inline-block !important;margin-bottom:36px !important}.vot-slider>input:disabled{cursor:default !important;opacity:.38 !important}.vot-slider>input:disabled+span{color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input::-webkit-slider-runnable-track{margin:17px 0 !important;border-radius:1px !important;width:100% !important;height:2px !important;background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input::-webkit-slider-thumb{margin:0 !important;appearance:none !important;-webkit-appearance:none !important;border:none !important;border-radius:50% !important;height:2px !important;width:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important;transform:scale(6, 6) !important;transition:box-shadow .2s !important}.vot-slider:hover>input::-webkit-slider-thumb{box-shadow:0 0 0 2px var(--vot-safari-helper1) !important}.vot-slider>input:active::-webkit-slider-thumb{box-shadow:0 0 0 2px var(--vot-safari-helper4) !important}.vot-slider>input:disabled::-webkit-slider-runnable-track{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input:disabled::-webkit-slider-thumb{background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0)) !important;color:rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;box-shadow:0 0 0 1px rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;transform:scale(4, 4) !important}.vot-slider>input::-moz-range-track{margin:17px 0 !important;border-radius:1px !important;width:100% !important;height:2px !important;background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input::-moz-range-thumb{appearance:none !important;-moz-appearance:none !important;border:none !important;border-radius:50% !important;height:2px !important;width:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important;transform:scale(6, 6) !important;transition:box-shadow .2s !important}.vot-slider>input::-moz-range-progress{border-radius:1px !important;height:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important}.vot-slider:hover>input:hover::-moz-range-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.04) !important}.vot-slider>input:active::-moz-range-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input:disabled::-moz-range-track{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input:disabled::-moz-range-progress{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important}.vot-slider>input:disabled::-moz-range-thumb{background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0)) !important;box-shadow:0 0 0 1px rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;transform:scale(4, 4) !important}.vot-slider>input::-moz-focus-outer{border:none !important}.vot-slider>input::-ms-track{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin:17px 0 !important;border:none !important;border-radius:1px !important;padding:0 17px !important;width:100% !important;height:2px !important;background-color:rgba(0,0,0,0) !important}.vot-slider>input::-ms-fill-lower{border-radius:1px !important;height:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important}.vot-slider>input::-ms-fill-upper{border-radius:1px !important;height:2px !important;background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input::-ms-thumb{appearance:none !important;margin:0 17px !important;border:none !important;border-radius:50% !important;height:2px !important;width:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important;transform:scale(6, 6) !important;transition:box-shadow .2s !important}.vot-slider:hover>input::-ms-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.04) !important}.vot-slider>input:active::-ms-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input:disabled::-ms-fill-lower{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input:disabled::-ms-fill-upper{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;opacity:.38 !important}.vot-slider>input:disabled::-ms-thumb{background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0)) !important;box-shadow:0 0 0 1px rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;transform:scale(4, 4) !important}.vot-slider>input::before{content:"" !important;display:block !important;position:absolute !important;width:calc(100%*var(--vot-progress, 0)) !important;height:2px !important;top:calc(50% - 1px) !important;background:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important}.vot-select{--vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0) !important;--vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87) !important;--vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;--vot-helper-safari2: rgba( var(--vot-onsurface-rgb, 0, 0, 0), 0.87 ) !important;display:flex;align-items:center;justify-content:space-between;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;line-height:1.5;text-align:start;color:var(--vot-helper-theme);fill:var(--vot-helper-theme)}.vot-select[hidden]{display:none !important}.vot-select-label{font-size:16px}.vot-select-outer{display:flex;align-items:center;justify-content:space-between;max-width:120px;width:120px;padding:0 5px;border-style:solid !important;border-width:1px !important;border-color:var(--vot-helper-safari1) !important;border-radius:4px !important;cursor:pointer;transition:border .2s !important}.vot-select-outer:hover{border-color:var(--vot-helper-safari2) !important}.vot-select-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vot-select-arrow-icon{width:20px;height:32px;display:flex;justify-content:center;align-items:center}.vot-select-content-list{display:flex;flex-direction:column}.vot-select-content-list .vot-select-content-item{padding:5px 10px;border-radius:8px;cursor:pointer}.vot-select-content-list .vot-select-content-item:not([inert]):hover{background-color:#2a2c31}.vot-select-content-list .vot-select-content-item[data-vot-selected=true]{color:rgb(var(--vot-primary-rgb, 33, 150, 243));background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.2)}.vot-select-content-list .vot-select-content-item[data-vot-selected=true]:hover{background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.1) !important}.vot-select-content-list .vot-select-content-item[data-vot-disabled=true]{cursor:default}.vot-select-content-list .vot-select-content-item[hidden]{display:none !important}.vot-header{color:rgba(var(--vot-helper-onsurface-rgb), 0.87);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-weight:bold;line-height:1.5;text-align:start}.vot-header[hidden]{display:none !important}.vot-header:not(:first-child){padding-top:8px}.vot-header-level-1{font-size:2em}.vot-header-level-2{font-size:1.5em}.vot-header-level-3{font-size:1.17em}.vot-header-level-4{font-size:1em}.vot-header-level-5{font-size:.83em}.vot-header-level-6{font-size:.67em}.vot-info{display:flex;color:rgba(var(--vot-helper-onsurface-rgb), 0.87);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;text-align:start}.vot-info[hidden]{display:none !important}.vot-info>:not(:first-child){color:rgba(var(--vot-helper-onsurface-rgb), 0.5);flex:1;margin-left:8px}.vot-lang-select{--vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87);display:flex;align-items:center;justify-content:space-between;color:var(--vot-helper-theme);fill:var(--vot-helper-theme)}.vot-lang-select[hidden]{display:none !important}.vot-lang-select-icon{width:32px;height:32px;display:flex;justify-content:center;align-items:center}.vot-segmented-button{--vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87);overflow:hidden;position:absolute;left:50%;top:5rem;transform:translate(-50%);user-select:none;display:flex;align-items:center;height:32px;max-width:100vw;background:rgb(var(--vot-surface-rgb, 255, 255, 255));color:var(--vot-helper-theme);fill:var(--vot-helper-theme);border-radius:4px;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;cursor:default;transition:opacity .5s;z-index:100}.vot-segmented-button[hidden]{display:none !important}.vot-segmented-button *{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important}.vot-segmented-button .vot-separator{width:1px;height:50%;background:rgba(var(--vot-helper-theme-rgb), 0.1)}.vot-segmented-button .vot-separator[hidden]{display:none !important}.vot-segmented-button .vot-segment,.vot-segmented-button .vot-segment-only-icon{position:relative;overflow:hidden;display:flex;justify-content:center;align-items:center;height:100%;padding:0 8px;background-color:rgba(0,0,0,0);color:inherit;transition:background-color 100ms ease-in-out;border:none}.vot-segmented-button .vot-segment[hidden],.vot-segmented-button [hidden].vot-segment-only-icon{display:none !important}.vot-segmented-button .vot-segment::before,.vot-segmented-button .vot-segment-only-icon::before,.vot-segmented-button .vot-segment::after,.vot-segmented-button .vot-segment-only-icon::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-segmented-button .vot-segment::before,.vot-segmented-button .vot-segment-only-icon::before{background-color:rgb(var(--vot-helper-theme-rgb));transition:opacity .2s}.vot-segmented-button .vot-segment::after,.vot-segmented-button .vot-segment-only-icon::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-segmented-button .vot-segment:hover::before,.vot-segmented-button .vot-segment-only-icon:hover::before{opacity:.04}.vot-segmented-button .vot-segment:active::after,.vot-segmented-button .vot-segment-only-icon:active::after{opacity:.16;background-size:100% 100%;transition:background-size 0s}.vot-segmented-button .vot-segment-only-icon{min-width:32px;padding:0}.vot-segmented-button .vot-segment-label{margin-left:8px;white-space:nowrap}.vot-segmented-button[data-status=success] .vot-translate-button{color:rgb(var(--vot-primary-rgb, 33, 150, 243));fill:rgb(var(--vot-primary-rgb, 33, 150, 243))}.vot-segmented-button[data-status=error] .vot-translate-button{color:#f28b82;fill:#f28b82}.vot-segmented-button svg{width:fit-content}.vot-menu{--vot-helper-surface-rgb: var(--vot-surface-rgb, 255, 255, 255);--vot-helper-surface: rgb(var(--vot-helper-surface-rgb));--vot-helper-onsurface-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-onsurface: rgba(var(--vot-helper-onsurface-rgb), 0.87);overflow:hidden;position:absolute;left:50%;top:calc(5rem + 32px + 16px);user-select:none;background-color:var(--vot-helper-surface);color:var(--vot-helper-onsurface);border-radius:8px;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;min-width:300px;cursor:default;z-index:100;visibility:visible;opacity:1;transform-origin:top;transform:translate(-50%) scale(1);transition:opacity .3s,transform .1s}.vot-menu *{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important}.vot-menu[hidden]{pointer-events:none;display:block !important;pointer-events:none;visibility:hidden;opacity:0;transform:translate(-50%) scale(0)}.vot-menu-content-wrapper{display:flex;flex-direction:column;min-height:100px;max-height:calc(var(--vot-container-height, 75vh) - (5rem + 32px + 16px)*2);overflow:auto}.vot-menu-header-container{flex-shrink:0;align-items:flex-start;display:flex;min-height:31px}.vot-menu-header-container:empty{padding:0 0 16px 0}.vot-menu-header-container>.vot-icon-button{margin-inline-end:4px;margin-top:4px}.vot-menu-title-container{display:flex;flex:1;font-size:inherit;font-weight:inherit;margin:0;outline:0;text-align:start}.vot-menu-title{flex:1;font-size:16px;line-height:1;padding-bottom:16px;padding-inline-end:16px;padding-inline-start:16px;padding-top:16px}.vot-menu-body-container{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:flex;flex-direction:column;min-height:1.375rem;overflow:auto;padding:0 16px;gap:8px;overscroll-behavior:contain;scrollbar-color:rgba(var(--vot-helper-onsurface-rgb), 0.1) var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar,.vot-menu-body-container::-webkit-scrollbar-track{height:12px !important;width:12px !important;background:var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar-thumb{background:rgba(var(--vot-helper-onsurface-rgb), 0.1) !important;-webkit-border-radius:1ex !important;border:5px solid var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar-thumb:hover{border:3px solid var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar-corner{background:var(--vot-helper-surface) !important}.vot-menu-footer-container{flex-shrink:0;display:flex;justify-content:flex-end;padding-bottom:16px;padding-inline-end:16px;padding-inline-start:16px;padding-top:16px}.vot-menu-footer-container:empty{padding:16px 0 0 0}.vot-dialog-container{visibility:visible;position:absolute;z-index:10000}.vot-dialog-container[hidden]{display:block !important;pointer-events:none;visibility:hidden}.vot-dialog-container *{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important}.vot-dialog-backdrop{background-color:rgba(0,0,0,.6);position:fixed;top:0;right:0;bottom:0;left:0;opacity:1;transition:opacity .3s}[hidden]>.vot-dialog-backdrop{pointer-events:none;opacity:0}.vot-dialog{--vot-helper-surface-rgb: var(--vot-surface-rgb, 255, 255, 255);--vot-helper-surface: rgb(var(--vot-helper-surface-rgb));--vot-helper-onsurface-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-onsurface: rgba(var(--vot-helper-onsurface-rgb), 0.87);display:block;position:fixed;top:50%;bottom:50%;max-width:initial;max-height:initial;width:min(var(--vot-dialog-width, 512px),100%);height:fit-content;inset-inline-start:0px;inset-inline-end:0px;inset-block-start:0px;inset-block-end:0px;border-radius:8px;margin:auto;padding:0;background-color:var(--vot-helper-surface);color:var(--vot-helper-onsurface);box-shadow:0 0 16px rgba(0,0,0,.12),0 16px 16px rgba(0,0,0,.24);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;user-select:none;visibility:visible;overflow:auto;overflow-y:hidden;opacity:1;transform-origin:center;transform:scale(1);transition:opacity .3s,transform .1s}[hidden]>.vot-dialog{pointer-events:none;opacity:0;transform:scale(0.5);transition:opacity .1s,transform .2s}.vot-dialog-content-wrapper{display:flex;flex-direction:column;max-height:75vh;overflow:auto}.vot-dialog-header-container{flex-shrink:0;align-items:flex-start;display:flex;min-height:31px}.vot-dialog-header-container:empty{padding:0 0 20px 0}.vot-dialog-header-container>.vot-icon-button{margin-inline-end:4px;margin-top:4px}.vot-dialog-title-container{display:flex;flex:1;font-size:inherit;font-weight:inherit;margin:0;outline:0}.vot-dialog-title{flex:1;font-size:115.3846153846%;font-weight:bold;line-height:1;padding-bottom:16px;padding-inline-end:20px;padding-inline-start:20px;padding-top:20px}.vot-dialog-body-container{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:flex;flex-direction:column;min-height:1.375rem;overflow:auto;padding:0 20px;gap:16px;overscroll-behavior:contain;scrollbar-color:rgba(var(--vot-helper-onsurface-rgb), 0.1) var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar,.vot-dialog-body-container::-webkit-scrollbar-track{height:12px !important;width:12px !important;background:var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar-thumb{background:rgba(var(--vot-helper-onsurface-rgb), 0.1) !important;-webkit-border-radius:1ex !important;border:5px solid var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar-thumb:hover{border:3px solid var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar-corner{background:var(--vot-helper-surface) !important}.vot-dialog-footer-container{flex-shrink:0;display:flex;justify-content:flex-end;padding-bottom:16px;padding-inline-end:16px;padding-inline-start:16px;padding-top:16px}.vot-dialog-footer-container:empty{padding:20px 0 0 0}.vot-subtitles-widget{display:flex;justify-content:center;align-items:center;position:absolute;width:50%;max-height:100%;min-height:20%;z-index:100;left:25%;top:75%;pointer-events:none}.vot-subtitles{position:relative;max-width:100%;max-height:100%;width:max-content;background:var(--vot-subtitles-background, rgba(46, 47, 52, 0.8));color:var(--vot-subtitles-color, rgb(227, 227, 227));border-radius:1rem;pointer-events:all;padding:1rem;font-size:2rem;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.vot-subtitles .passed{color:var(--vot-subtitles-passed-color, rgb(33, 150, 243))}:root{--vot-font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;--vot-primary-rgb: 139, 180, 245;--vot-onprimary-rgb: 32, 33, 36;--vot-surface-rgb: 32, 33, 36;--vot-onsurface-rgb: 227, 227, 227;--vot-subtitles-background: rgba(var(--vot-surface-rgb, 46, 47, 52), 0.8);--vot-subtitles-color: rgb(var(--vot-onsurface-rgb, 227, 227, 227));--vot-subtitles-passed-color: rgb(var(--vot-primary-rgb, 33, 150, 243))}vot-block{display:block}`, ""]);
+___CSS_LOADER_EXPORT___.push([module.id, `.vot-button{--vot-helper-theme: var( --vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243) );--vot-helper-ontheme: var( --vot-ontheme-rgb, var(--vot-onprimary-rgb, 255, 255, 255) );position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;border:none;border-radius:4px;padding:0 16px;min-width:64px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;color:rgb(var(--vot-helper-ontheme));background-color:rgb(var(--vot-helper-theme));box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:36px;outline:none;cursor:pointer;transition:box-shadow .2s}.vot-button[hidden]{display:none !important}.vot-button::-moz-focus-inner{border:none}.vot-button::before,.vot-button::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-button::before{background-color:rgb(var(--vot-helper-ontheme));transition:opacity .2s}.vot-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-button:hover{box-shadow:0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)}.vot-button:hover::before{opacity:.08}.vot-button:active{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}.vot-button:active::after{opacity:.32;background-size:100% 100%;transition:background-size 0s}.vot-button:disabled{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.12);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);box-shadow:none;cursor:initial}.vot-button:disabled::before,.vot-button:disabled::after{opacity:0}.vot-outlined-button{--vot-helper-theme: var( --vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243) );position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0;border:solid 1px;border-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.24);border-radius:4px;padding:0 16px;min-width:64px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;color:rgb(var(--vot-helper-theme));background-color:rgba(0,0,0,0);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:34px;outline:none;cursor:pointer}.vot-outlined-button[hidden]{display:none !important}.vot-outlined-button::-moz-focus-inner{border:none}.vot-outlined-button::before,.vot-outlined-button::after{content:"";position:absolute;border-radius:3px;top:0;right:0;bottom:0;left:0;opacity:0}.vot-outlined-button::before{background-color:rgb(var(--vot-helper-theme));transition:opacity .2s}.vot-outlined-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-outlined-button:hover::before{opacity:.04}.vot-outlined-button:active::after{opacity:.16;background-size:100% 100%;transition:background-size 0s}.vot-outlined-button:disabled{background-color:rgba(0,0,0,0);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-outlined-button:disabled::before,.vot-outlined-button:disabled::after{opacity:0}.vot-text-button{--vot-helper-theme: var( --vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243) );position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0;border:none;border-radius:4px;padding:0 8px;min-width:64px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;color:rgb(var(--vot-helper-theme));background-color:rgba(0,0,0,0);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:36px;outline:none;cursor:pointer}.vot-text-button[hidden]{display:none !important}.vot-text-button::-moz-focus-inner{border:none}.vot-text-button::before,.vot-text-button::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-text-button::before{background-color:rgb(var(--vot-helper-theme));transition:opacity .2s}.vot-text-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-text-button:hover::before{opacity:.04}.vot-text-button:active::after{opacity:.16;background-size:100% 100%;transition:background-size 0s}.vot-text-button:disabled{background-color:rgba(0,0,0,0);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-text-button:disabled::before,.vot-text-button:disabled::after{opacity:0}.vot-icon-button{--vot-helper-onsurface: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87);position:relative;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0;border:none;border-radius:50%;padding:0;width:36px;height:36px;vertical-align:middle;text-align:center;text-overflow:ellipsis;fill:var(--vot-helper-onsurface);color:var(--vot-helper-onsurface);background-color:rgba(0,0,0,0);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;font-weight:500;line-height:36px;outline:none;cursor:pointer}.vot-icon-button[hidden]{display:none !important}.vot-icon-button::-moz-focus-inner{border:none}.vot-icon-button::before,.vot-icon-button::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-icon-button::before{background-color:var(--vot-helper-onsurface);transition:opacity .2s}.vot-icon-button::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity .3s,background-size .4s}.vot-icon-button:hover::before{opacity:.04}.vot-icon-button:active::after{opacity:.32;background-size:100% 100%;transition:background-size 0s,opacity 0s}.vot-icon-button:disabled{background-color:rgba(0,0,0,0);color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);fill:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-icon-button:disabled::before,.vot-icon-button:disabled::after{opacity:0}.vot-textfield{--vot-helper-theme: rgb( var(--vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243)) ) !important;--vot-helper-safari1: rgba( var(--vot-onsurface-rgb, 0, 0, 0), 0.38 ) !important;--vot-helper-safari2: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;--vot-helper-safari3: rgba( var(--vot-onsurface-rgb, 0, 0, 0), 0.87 ) !important;position:relative !important;display:inline-block;padding-top:6px !important;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;font-size:16px !important;line-height:1.5 !important;text-align:start !important}.vot-textfield[hidden]{display:none !important}.vot-textfield>input,.vot-textfield>textarea{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin:0 !important;border-style:solid !important;border-width:1px !important;border-color:rgba(0,0,0,0) var(--vot-helper-safari2) var(--vot-helper-safari2) !important;border-radius:4px !important;padding:15px 13px 15px !important;width:100% !important;height:inherit !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;-webkit-text-fill-color:currentColor !important;background-color:rgba(0,0,0,0) !important;box-shadow:inset 1px 0 rgba(0,0,0,0),inset -1px 0 rgba(0,0,0,0),inset 0 -1px rgba(0,0,0,0) !important;font-family:inherit !important;font-size:inherit !important;line-height:inherit !important;caret-color:var(--vot-helper-theme) !important;transition:border .2s,box-shadow .2s !important}.vot-textfield>input:not(:focus):placeholder-shown,.vot-textfield>textarea:not(:focus):placeholder-shown{border-top-color:var(--vot-helper-safari2) !important}.vot-textfield>input+span,.vot-textfield>textarea+span{position:absolute !important;top:0 !important;left:0 !important;display:flex !important;width:100% !important;max-height:100% !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;font-size:75% !important;line-height:15px !important;cursor:text !important;transition:color .2s,font-size .2s,line-height .2s !important;pointer-events:none !important}.vot-textfield>input:not(:focus):placeholder-shown+span,.vot-textfield>textarea:not(:focus):placeholder-shown+span{font-size:inherit !important;line-height:68px !important}.vot-textfield>input+span::before,.vot-textfield>input+span::after,.vot-textfield>textarea+span::before,.vot-textfield>textarea+span::after{content:"" !important;display:block !important;-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin-top:6px !important;border-top:solid 1px var(--vot-helper-safari2) !important;min-width:10px !important;height:8px !important;pointer-events:none !important;box-shadow:inset 0 1px rgba(0,0,0,0) !important;transition:border .2s,box-shadow .2s !important}.vot-textfield>input+span::before,.vot-textfield>textarea+span::before{margin-right:4px !important;border-left:solid 1px rgba(0,0,0,0) !important;border-radius:4px 0 !important}.vot-textfield>input+span::after,.vot-textfield>textarea+span::after{flex-grow:1 !important;margin-left:4px !important;border-right:solid 1px rgba(0,0,0,0) !important;border-radius:0 4px !important}.vot-textfield>input:not(:focus):placeholder-shown+span::before,.vot-textfield>input:not(:focus):placeholder-shown+span::after,.vot-textfield>textarea:not(:focus):placeholder-shown+span::before,.vot-textfield>textarea:not(:focus):placeholder-shown+span::after{border-top-color:rgba(0,0,0,0) !important}.vot-textfield:hover>input,.vot-textfield:hover>textarea{border-color:rgba(0,0,0,0) var(--vot-helper-safari3) var(--vot-helper-safari3) !important}.vot-textfield:hover>input+span::before,.vot-textfield:hover>input+span::after,.vot-textfield:hover>textarea+span::before,.vot-textfield:hover>textarea+span::after{border-top-color:var(--vot-helper-safari3) !important}.vot-textfield:hover>input:not(:focus):placeholder-shown,.vot-textfield:hover>textarea:not(:focus):placeholder-shown{border-color:var(--vot-helper-safari3) !important}.vot-textfield>input:focus,.vot-textfield>textarea:focus{border-color:rgba(0,0,0,0) var(--vot-helper-theme) var(--vot-helper-theme) !important;box-shadow:inset 1px 0 var(--vot-helper-theme),inset -1px 0 var(--vot-helper-theme),inset 0 -1px var(--vot-helper-theme) !important;outline:none !important}.vot-textfield>input:focus+span,.vot-textfield>textarea:focus+span{color:var(--vot-helper-theme) !important}.vot-textfield>input:focus+span::before,.vot-textfield>input:focus+span::after,.vot-textfield>textarea:focus+span::before,.vot-textfield>textarea:focus+span::after{border-top-color:var(--vot-helper-theme) !important;box-shadow:inset 0 1px var(--vot-helper-theme) !important}.vot-textfield>input:disabled,.vot-textfield>input:disabled+span,.vot-textfield>textarea:disabled,.vot-textfield>textarea:disabled+span{border-color:rgba(0,0,0,0) var(--vot-helper-safari1) var(--vot-helper-safari1) !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;pointer-events:none !important}.vot-textfield>input:disabled+span::before,.vot-textfield>input:disabled+span::after,.vot-textfield>textarea:disabled+span::before,.vot-textfield>textarea:disabled+span::after{border-top-color:var(--vot-helper-safari1) !important}.vot-textfield>input:disabled:placeholder-shown,.vot-textfield>input:disabled:placeholder-shown+span,.vot-textfield>textarea:disabled:placeholder-shown,.vot-textfield>textarea:disabled:placeholder-shown+span{border-top-color:var(--vot-helper-safari1) !important}.vot-textfield>input:disabled:placeholder-shown+span::before,.vot-textfield>input:disabled:placeholder-shown+span::after,.vot-textfield>textarea:disabled:placeholder-shown+span::before,.vot-textfield>textarea:disabled:placeholder-shown+span::after{border-top-color:rgba(0,0,0,0) !important}@media not all and (min-resolution: 0.001dpcm){@supports(-webkit-appearance: none){.vot-textfield>input,.vot-textfield>input+span,.vot-textfield>textarea,.vot-textfield>textarea+span,.vot-textfield>input+span::before,.vot-textfield>input+span::after,.vot-textfield>textarea+span::before,.vot-textfield>textarea+span::after{transition-duration:.1s !important}}}.vot-checkbox{--vot-helper-theme: var( --vot-theme-rgb, var(--vot-primary-rgb, 33, 150, 243) );--vot-helper-ontheme: var( --vot-ontheme-rgb, var(--vot-onprimary-rgb, 255, 255, 255) );z-index:0;position:relative;display:inline-block;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;text-align:start}.vot-checkbox[hidden]{display:none !important}.vot-checkbox>input{appearance:none;-moz-appearance:none;-webkit-appearance:none;z-index:1;position:absolute;display:block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:3px 1px;border:solid 2px;background:rgba(0,0,0,0);border-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6);border-radius:2px;width:18px;height:18px;outline:none;cursor:pointer;transition:border-color .2s,background-color .2s}.vot-checkbox>input+span{display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding-left:30px;width:inherit;cursor:pointer}.vot-checkbox>input+span::before{content:"";position:absolute;left:-10px;top:-8px;display:block;border-radius:50%;width:40px;height:40px;background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0));opacity:0;transform:scale(1);pointer-events:none;transition:opacity .3s,transform .2s}.vot-checkbox>input+span::after{content:"";z-index:1;display:block;position:absolute;top:3px;left:1px;-webkit-box-sizing:content-box !important;-moz-box-sizing:content-box !important;box-sizing:content-box !important;width:10px;height:5px;border:solid 2px rgba(0,0,0,0);border-right-width:0;border-top-width:0;pointer-events:none;transform:translate(3px, 4px) rotate(-45deg);transition:border-color .2s}.vot-checkbox>input:checked,.vot-checkbox>input:indeterminate{border-color:rgb(var(--vot-helper-theme));background-color:rgb(var(--vot-helper-theme))}.vot-checkbox>input:checked+span::before,.vot-checkbox>input:indeterminate+span::before{background-color:rgb(var(--vot-helper-theme))}.vot-checkbox>input:checked+span::after,.vot-checkbox>input:indeterminate+span::after{border-color:rgb(var(--vot-helper-ontheme, 255, 255, 255))}.vot-checkbox>input:indeterminate+span::after{border-left-width:0;transform:translate(4px, 3px)}.vot-checkbox:hover>input+span::before{opacity:.04}.vot-checkbox:active>input,.vot-checkbox:active:hover>input{border-color:rgb(var(--vot-helper-theme))}.vot-checkbox:active>input:checked{border-color:rgba(0,0,0,0);background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6)}.vot-checkbox:active>input+span::before{opacity:1;transform:scale(0);transition:transform 0s,opacity 0s}.vot-checkbox>input:disabled{border-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-checkbox>input:disabled:checked,.vot-checkbox>input:disabled:indeterminate{border-color:rgba(0,0,0,0);background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38)}.vot-checkbox>input:disabled+span{color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38);cursor:initial}.vot-checkbox>input:disabled+span::before{opacity:0;transform:scale(0)}.vot-slider{--vot-safari-helper1: rgba( var(--vot-primary-rgb, 33, 150, 243), 0.04 ) !important;--vot-safari-helper2: rgba( var(--vot-primary-rgb, 33, 150, 243), 0.12 ) !important;--vot-safari-helper3: rgba( var(--vot-primary-rgb, 33, 150, 243), 0.16 ) !important;--vot-safari-helper4: rgba( var(--vot-primary-rgb, 33, 150, 243), 0.24 ) !important;display:inline-block;width:100% !important;color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important;font-family:var(--vot-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system) !important;font-size:16px !important;line-height:1.5 !important;text-align:start !important}.vot-slider[hidden]{display:none !important}.vot-slider>input{-webkit-appearance:none !important;appearance:none !important;position:relative !important;top:24px !important;display:block !important;margin:0 0 -36px !important;width:100% !important;height:36px !important;background-color:rgba(0,0,0,0) !important;cursor:pointer !important}.vot-slider>input:last-child{position:static !important;margin:0 !important}.vot-slider>span{display:inline-block !important;margin-bottom:36px !important}.vot-slider>input:disabled{cursor:default !important;opacity:.38 !important}.vot-slider>input:disabled+span{color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input::-webkit-slider-runnable-track{margin:17px 0 !important;border-radius:1px !important;width:100% !important;height:2px !important;background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input::-webkit-slider-thumb{margin:0 !important;appearance:none !important;-webkit-appearance:none !important;border:none !important;border-radius:50% !important;height:2px !important;width:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important;transform:scale(6, 6) !important;transition:box-shadow .2s !important}.vot-slider:hover>input::-webkit-slider-thumb{box-shadow:0 0 0 2px var(--vot-safari-helper1) !important}.vot-slider>input:active::-webkit-slider-thumb{box-shadow:0 0 0 2px var(--vot-safari-helper4) !important}.vot-slider>input:disabled::-webkit-slider-runnable-track{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input:disabled::-webkit-slider-thumb{background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0)) !important;color:rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;box-shadow:0 0 0 1px rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;transform:scale(4, 4) !important}.vot-slider>input::-moz-range-track{margin:17px 0 !important;border-radius:1px !important;width:100% !important;height:2px !important;background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input::-moz-range-thumb{appearance:none !important;-moz-appearance:none !important;border:none !important;border-radius:50% !important;height:2px !important;width:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important;transform:scale(6, 6) !important;transition:box-shadow .2s !important}.vot-slider>input::-moz-range-progress{border-radius:1px !important;height:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important}.vot-slider:hover>input:hover::-moz-range-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.04) !important}.vot-slider>input:active::-moz-range-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input:disabled::-moz-range-track{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input:disabled::-moz-range-progress{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.87) !important}.vot-slider>input:disabled::-moz-range-thumb{background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0)) !important;box-shadow:0 0 0 1px rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;transform:scale(4, 4) !important}.vot-slider>input::-moz-focus-outer{border:none !important}.vot-slider>input::-ms-track{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important;margin:17px 0 !important;border:none !important;border-radius:1px !important;padding:0 17px !important;width:100% !important;height:2px !important;background-color:rgba(0,0,0,0) !important}.vot-slider>input::-ms-fill-lower{border-radius:1px !important;height:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important}.vot-slider>input::-ms-fill-upper{border-radius:1px !important;height:2px !important;background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input::-ms-thumb{appearance:none !important;margin:0 17px !important;border:none !important;border-radius:50% !important;height:2px !important;width:2px !important;background-color:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important;transform:scale(6, 6) !important;transition:box-shadow .2s !important}.vot-slider:hover>input::-ms-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.04) !important}.vot-slider>input:active::-ms-thumb{box-shadow:0 0 0 2px rgba(var(--vot-primary-rgb, 33, 150, 243), 0.24) !important}.vot-slider>input:disabled::-ms-fill-lower{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important}.vot-slider>input:disabled::-ms-fill-upper{background-color:rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.38) !important;opacity:.38 !important}.vot-slider>input:disabled::-ms-thumb{background-color:rgb(var(--vot-onsurface-rgb, 0, 0, 0)) !important;box-shadow:0 0 0 1px rgb(var(--vot-surface-rgb, 255, 255, 255)) !important;transform:scale(4, 4) !important}.vot-slider>input::before{content:"" !important;display:block !important;position:absolute !important;width:calc(100%*var(--vot-progress, 0)) !important;height:2px !important;top:calc(50% - 1px) !important;background:rgb(var(--vot-primary-rgb, 33, 150, 243)) !important}.vot-select{--vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0) !important;--vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87) !important;--vot-helper-safari1: rgba(var(--vot-onsurface-rgb, 0, 0, 0), 0.6) !important;--vot-helper-safari2: rgba( var(--vot-onsurface-rgb, 0, 0, 0), 0.87 ) !important;display:flex;align-items:center;justify-content:space-between;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:14px;line-height:1.5;text-align:start;color:var(--vot-helper-theme);fill:var(--vot-helper-theme)}.vot-select[hidden]{display:none !important}.vot-select-label{font-size:16px}.vot-select-outer{display:flex;align-items:center;justify-content:space-between;max-width:120px;width:120px;padding:0 5px;border-style:solid !important;border-width:1px !important;border-color:var(--vot-helper-safari1) !important;border-radius:4px !important;cursor:pointer;transition:border .2s !important}.vot-select-outer:hover{border-color:var(--vot-helper-safari2) !important}.vot-select-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vot-select-arrow-icon{width:20px;height:32px;display:flex;justify-content:center;align-items:center}.vot-select-content-list{display:flex;flex-direction:column}.vot-select-content-list .vot-select-content-item{padding:5px 10px;border-radius:8px;cursor:pointer}.vot-select-content-list .vot-select-content-item:not([inert]):hover{background-color:#2a2c31}.vot-select-content-list .vot-select-content-item[data-vot-selected=true]{color:rgb(var(--vot-primary-rgb, 33, 150, 243));background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.2)}.vot-select-content-list .vot-select-content-item[data-vot-selected=true]:hover{background-color:rgba(var(--vot-primary-rgb, 33, 150, 243), 0.1) !important}.vot-select-content-list .vot-select-content-item[data-vot-disabled=true]{cursor:default}.vot-select-content-list .vot-select-content-item[hidden]{display:none !important}.vot-header{color:rgba(var(--vot-helper-onsurface-rgb), 0.87);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-weight:bold;line-height:1.5;text-align:start}.vot-header[hidden]{display:none !important}.vot-header:not(:first-child){padding-top:8px}.vot-header-level-1{font-size:2em}.vot-header-level-2{font-size:1.5em}.vot-header-level-3{font-size:1.17em}.vot-header-level-4{font-size:1em}.vot-header-level-5{font-size:.83em}.vot-header-level-6{font-size:.67em}.vot-info{display:flex;color:rgba(var(--vot-helper-onsurface-rgb), 0.87);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;text-align:start}.vot-info[hidden]{display:none !important}.vot-info>:not(:first-child){color:rgba(var(--vot-helper-onsurface-rgb), 0.5);flex:1;margin-left:8px}.vot-lang-select{--vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87);display:flex;align-items:center;justify-content:space-between;color:var(--vot-helper-theme);fill:var(--vot-helper-theme)}.vot-lang-select[hidden]{display:none !important}.vot-lang-select-icon{width:32px;height:32px;display:flex;justify-content:center;align-items:center}.vot-segmented-button{--vot-helper-theme-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-theme: rgba(var(--vot-helper-theme-rgb), 0.87);overflow:hidden;position:absolute;left:50%;top:5rem;transform:translate(-50%);user-select:none;display:flex;align-items:center;height:32px;max-width:100vw;background:rgb(var(--vot-surface-rgb, 255, 255, 255));color:var(--vot-helper-theme);fill:var(--vot-helper-theme);border-radius:4px;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;cursor:default;transition:opacity .5s;z-index:100}.vot-segmented-button[hidden]{display:none !important}.vot-segmented-button *{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important}.vot-segmented-button .vot-separator{width:1px;height:50%;background:rgba(var(--vot-helper-theme-rgb), 0.1)}.vot-segmented-button .vot-separator[hidden]{display:none !important}.vot-segmented-button .vot-segment,.vot-segmented-button .vot-segment-only-icon{position:relative;overflow:hidden;display:flex;justify-content:center;align-items:center;height:100%;padding:0 8px;background-color:rgba(0,0,0,0);color:inherit;transition:background-color 100ms ease-in-out;border:none}.vot-segmented-button .vot-segment[hidden],.vot-segmented-button [hidden].vot-segment-only-icon{display:none !important}.vot-segmented-button .vot-segment::before,.vot-segmented-button .vot-segment-only-icon::before,.vot-segmented-button .vot-segment::after,.vot-segmented-button .vot-segment-only-icon::after{content:"";position:absolute;border-radius:inherit;top:0;right:0;bottom:0;left:0;opacity:0}.vot-segmented-button .vot-segment::before,.vot-segmented-button .vot-segment-only-icon::before{background-color:rgb(var(--vot-helper-theme-rgb));transition:opacity .2s}.vot-segmented-button .vot-segment::after,.vot-segmented-button .vot-segment-only-icon::after{background:radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;transition:opacity 1s,background-size .5s}.vot-segmented-button .vot-segment:hover::before,.vot-segmented-button .vot-segment-only-icon:hover::before{opacity:.04}.vot-segmented-button .vot-segment:active::after,.vot-segmented-button .vot-segment-only-icon:active::after{opacity:.16;background-size:100% 100%;transition:background-size 0s}.vot-segmented-button .vot-segment-only-icon{min-width:32px;padding:0}.vot-segmented-button .vot-segment-label{margin-left:8px;white-space:nowrap}.vot-segmented-button[data-status=success] .vot-translate-button{color:rgb(var(--vot-primary-rgb, 33, 150, 243));fill:rgb(var(--vot-primary-rgb, 33, 150, 243))}.vot-segmented-button[data-status=error] .vot-translate-button{color:#f28b82;fill:#f28b82}.vot-segmented-button svg{width:fit-content}.vot-menu{--vot-helper-surface-rgb: var(--vot-surface-rgb, 255, 255, 255);--vot-helper-surface: rgb(var(--vot-helper-surface-rgb));--vot-helper-onsurface-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-onsurface: rgba(var(--vot-helper-onsurface-rgb), 0.87);overflow:hidden;position:absolute;left:50%;top:calc(5rem + 32px + 16px);user-select:none;background-color:var(--vot-helper-surface);color:var(--vot-helper-onsurface);border-radius:8px;font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;min-width:300px;cursor:default;z-index:100;visibility:visible;opacity:1;transform-origin:top;transform:translate(-50%) scale(1);transition:opacity .3s,transform .1s}.vot-menu *{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important}.vot-menu[hidden]{pointer-events:none;display:block !important;visibility:hidden;opacity:0;transform:translate(-50%) scale(0)}.vot-menu-content-wrapper{display:flex;flex-direction:column;min-height:100px;max-height:calc(var(--vot-container-height, 75vh) - (5rem + 32px + 16px)*2);overflow:auto}.vot-menu-header-container{flex-shrink:0;align-items:flex-start;display:flex;min-height:31px}.vot-menu-header-container:empty{padding:0 0 16px 0}.vot-menu-header-container>.vot-icon-button{margin-inline-end:4px;margin-top:4px}.vot-menu-title-container{display:flex;flex:1;font-size:inherit;font-weight:inherit;margin:0;outline:0;text-align:start}.vot-menu-title{flex:1;font-size:16px;line-height:1;padding-bottom:16px;padding-inline-end:16px;padding-inline-start:16px;padding-top:16px}.vot-menu-body-container{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:flex;flex-direction:column;min-height:1.375rem;overflow:auto;padding:0 16px;gap:8px;overscroll-behavior:contain;scrollbar-color:rgba(var(--vot-helper-onsurface-rgb), 0.1) var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar,.vot-menu-body-container::-webkit-scrollbar-track{height:12px !important;width:12px !important;background:var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar-thumb{background:rgba(var(--vot-helper-onsurface-rgb), 0.1) !important;-webkit-border-radius:1ex !important;border:5px solid var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar-thumb:hover{border:3px solid var(--vot-helper-surface) !important}.vot-menu-body-container::-webkit-scrollbar-corner{background:var(--vot-helper-surface) !important}.vot-menu-footer-container{flex-shrink:0;display:flex;justify-content:flex-end;padding-bottom:16px;padding-inline-end:16px;padding-inline-start:16px;padding-top:16px}.vot-menu-footer-container:empty{padding:16px 0 0 0}.vot-dialog-container{visibility:visible;position:absolute;z-index:10000}.vot-dialog-container[hidden]{display:block !important;pointer-events:none;visibility:hidden}.vot-dialog-container *{-webkit-box-sizing:border-box !important;-moz-box-sizing:border-box !important;box-sizing:border-box !important}.vot-dialog-backdrop{background-color:rgba(0,0,0,.6);position:fixed;top:0;right:0;bottom:0;left:0;opacity:1;transition:opacity .3s}[hidden]>.vot-dialog-backdrop{pointer-events:none;opacity:0}.vot-dialog{--vot-helper-surface-rgb: var(--vot-surface-rgb, 255, 255, 255);--vot-helper-surface: rgb(var(--vot-helper-surface-rgb));--vot-helper-onsurface-rgb: var(--vot-onsurface-rgb, 0, 0, 0);--vot-helper-onsurface: rgba(var(--vot-helper-onsurface-rgb), 0.87);display:block;position:fixed;top:50%;bottom:50%;max-width:initial;max-height:initial;width:min(var(--vot-dialog-width, 512px),100%);height:fit-content;inset-inline-start:0px;inset-inline-end:0px;inset-block-start:0px;inset-block-end:0px;border-radius:8px;margin:auto;padding:0;background-color:var(--vot-helper-surface);color:var(--vot-helper-onsurface);box-shadow:0 0 16px rgba(0,0,0,.12),0 16px 16px rgba(0,0,0,.24);font-family:var(--vot-font-family, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);font-size:16px;line-height:1.5;user-select:none;visibility:visible;overflow:auto;overflow-y:hidden;opacity:1;transform-origin:center;transform:scale(1);transition:opacity .3s,transform .1s}[hidden]>.vot-dialog{pointer-events:none;opacity:0;transform:scale(0.5);transition:opacity .1s,transform .2s}.vot-dialog-content-wrapper{display:flex;flex-direction:column;max-height:75vh;overflow:auto}.vot-dialog-header-container{flex-shrink:0;align-items:flex-start;display:flex;min-height:31px}.vot-dialog-header-container:empty{padding:0 0 20px 0}.vot-dialog-header-container>.vot-icon-button{margin-inline-end:4px;margin-top:4px}.vot-dialog-title-container{display:flex;flex:1;font-size:inherit;font-weight:inherit;margin:0;outline:0}.vot-dialog-title{flex:1;font-size:115.3846153846%;font-weight:bold;line-height:1;padding-bottom:16px;padding-inline-end:20px;padding-inline-start:20px;padding-top:20px}.vot-dialog-body-container{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:flex;flex-direction:column;min-height:1.375rem;overflow:auto;padding:0 20px;gap:16px;overscroll-behavior:contain;scrollbar-color:rgba(var(--vot-helper-onsurface-rgb), 0.1) var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar,.vot-dialog-body-container::-webkit-scrollbar-track{height:12px !important;width:12px !important;background:var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar-thumb{background:rgba(var(--vot-helper-onsurface-rgb), 0.1) !important;-webkit-border-radius:1ex !important;border:5px solid var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar-thumb:hover{border:3px solid var(--vot-helper-surface) !important}.vot-dialog-body-container::-webkit-scrollbar-corner{background:var(--vot-helper-surface) !important}.vot-dialog-footer-container{flex-shrink:0;display:flex;justify-content:flex-end;padding-bottom:16px;padding-inline-end:16px;padding-inline-start:16px;padding-top:16px}.vot-dialog-footer-container:empty{padding:20px 0 0 0}.vot-subtitles-widget{display:flex;justify-content:center;align-items:center;position:absolute;width:50%;max-height:100%;min-height:20%;z-index:100;left:25%;top:75%;pointer-events:none}.vot-subtitles{position:relative;max-width:100%;max-height:100%;width:max-content;background:var(--vot-subtitles-background, rgba(46, 47, 52, 0.8));color:var(--vot-subtitles-color, rgb(227, 227, 227));border-radius:1rem;pointer-events:all;padding:1rem;font-size:2rem;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.vot-subtitles .passed{color:var(--vot-subtitles-passed-color, rgb(33, 150, 243))}:root{--vot-font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;--vot-primary-rgb: 139, 180, 245;--vot-onprimary-rgb: 32, 33, 36;--vot-surface-rgb: 32, 33, 36;--vot-onsurface-rgb: 227, 227, 227;--vot-subtitles-background: rgba(var(--vot-surface-rgb, 46, 47, 52), 0.8);--vot-subtitles-color: rgb(var(--vot-onsurface-rgb, 227, 227, 227));--vot-subtitles-passed-color: rgb(var(--vot-primary-rgb, 33, 150, 243))}vot-block{display:block}`, ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -596,7 +596,7 @@ __webpack_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./src/localization/locales/en.json
-const en_namespaceObject = JSON.parse('{"__version__":3,"recommended":"recommended","translateVideo":"Translate video","disableTranslate":"Turn off","translationSettings":"Translation settings","subtitlesSettings":"Subtitles settings","about":"About extension","resetSettings":"Reset settings","videoBeingTranslated":"The video is being translated","videoLanguage":"Video language","translationLanguage":"Translation language","translationTake":"The translation will take","translationTakeMoreThanHour":"The translation will take more than an hour","translationTakeAboutMinute":"The translation will take about a minute","translationTakeFewMinutes":"The translation will take a few minutes","translationTakeApproximatelyMinutes":"The translation will take approximately {0} minutes","translationTakeApproximatelyMinute":"The translation will take approximately {0} minutes","unSupportedExtensionError":"Error! {0} is not supported by this version of the extension!\\n\\nPlease use the cloudflare version of the VOT extension.","requestTranslationFailed":"Failed to request video translation","audioNotReceived":"Audio link not received","grantPermissionToAutoPlay":"Grant permission to autoplay","neededAdditionalExtension":"An additional extension is needed to support this site","audioFormatNotSupported":"The audio format is not supported","VOTAutoTranslate":"Translate on open","VOTDontTranslateYourLang":"Do not translate from my language","VOTVolume":"Video volume","VOTVolumeTranslation":"Translation Volume","VOTAutoSetVolume":"Reduce video volume to ","VOTShowVideoSlider":"Video volume slider","VOTSyncVolume":"Link translation and video volume","VOTAudioProxy":"Proxy received audio","VOTDisableFromYourLang":"You have disabled the translation of the video in your language","VOTLiveNotSupported":"Translation of live streams is not supported","VOTPremiere":"Wait for the premiere to end before translating","VOTVideoIsTooLong":"Video is too long","VOTNoVideoIDFound":"No video ID found","VOTSubtitles":"Subtitles","VOTSubtitlesDisabled":"Disabled","VOTSubtitlesMaxLength":"Subtitles max length","VOTHighlightWords":"Highlight words","VOTTranslatedFrom":"translated from","VOTAutogenerated":"autogenerated","VOTSettings":"VOT Settings","VOTMenuLanguage":"Menu language","VOTAuthors":"Authors","VOTVersion":"Version","VOTLoader":"Loader","VOTBrowser":"Browser","VOTShowPiPButton":"Show PiP button","langs":{"auto":"Auto","af":"Afrikaans","ak":"Akan","sq":"Albanian","am":"Amharic","ar":"Arabic","hy":"Armenian","as":"Assamese","ay":"Aymara","az":"Azerbaijani","bn":"Bangla","eu":"Basque","be":"Belarusian","bho":"Bhojpuri","bs":"Bosnian","bg":"Bulgarian","my":"Burmese","ca":"Catalan","ceb":"Cebuano","zh":"Chinese","zh-Hans":"Chinese (Simplified)","zh-Hant":"Chinese (Traditional)","co":"Corsican","hr":"Croatian","cs":"Czech","da":"Danish","dv":"Divehi","nl":"Dutch","en":"English","eo":"Esperanto","et":"Estonian","ee":"Ewe","fil":"Filipino","fi":"Finnish","fr":"French","gl":"Galician","lg":"Ganda","ka":"Georgian","de":"German","el":"Greek","gn":"Guarani","gu":"Gujarati","ht":"Haitian Creole","ha":"Hausa","haw":"Hawaiian","iw":"Hebrew","hi":"Hindi","hmn":"Hmong","hu":"Hungarian","is":"Icelandic","ig":"Igbo","id":"Indonesian","ga":"Irish","it":"Italian","ja":"Japanese","jv":"Javanese","kn":"Kannada","kk":"Kazakh","km":"Khmer","rw":"Kinyarwanda","ko":"Korean","kri":"Krio","ku":"Kurdish","ky":"Kyrgyz","lo":"Lao","la":"Latin","lv":"Latvian","ln":"Lingala","lt":"Lithuanian","lb":"Luxembourgish","mk":"Macedonian","mg":"Malagasy","ms":"Malay","ml":"Malayalam","mt":"Maltese","mi":"Māori","mr":"Marathi","mn":"Mongolian","ne":"Nepali","nso":"Northern Sotho","no":"Norwegian","ny":"Nyanja","or":"Odia","om":"Oromo","ps":"Pashto","fa":"Persian","pl":"Polish","pt":"Portuguese","pa":"Punjabi","qu":"Quechua","ro":"Romanian","ru":"Russian","sm":"Samoan","sa":"Sanskrit","gd":"Scottish Gaelic","sr":"Serbian","sn":"Shona","sd":"Sindhi","si":"Sinhala","sk":"Slovak","sl":"Slovenian","so":"Somali","st":"Southern Sotho","es":"Spanish","su":"Sundanese","sw":"Swahili","sv":"Swedish","tg":"Tajik","ta":"Tamil","tt":"Tatar","te":"Telugu","th":"Thai","ti":"Tigrinya","ts":"Tsonga","tr":"Turkish","tk":"Turkmen","uk":"Ukrainian","ur":"Urdu","ug":"Uyghur","uz":"Uzbek","vi":"Vietnamese","cy":"Welsh","fy":"Western Frisian","xh":"Xhosa","yi":"Yiddish","yo":"Yoruba","zu":"Zulu"},"udemyAccessTokenExpired":"Your entered Udemy Access Token has expired","udemyModuleArgsNotFound":"Could not get udemy module data due to the fact that ModuleArgs was not found","VOTTranslationHelpNull":"Could not get the data required for the translate","enterUdemyAccessToken":"Enter Udemy Access Token","VOTUdemyData":"Udemy Data","streamNoConnectionToServer":"There is no connection to the server","searchField":"Search...","VOTTranslateAPIErrors":"Translate errors from the API","VOTTranslationService":"Translation Service","VOTDetectService":"Detect Service","VOTTranslatingError":"Translating the error","VOTProxyWorkerHost":"Enter the proxy worker address","VOTM3u8ProxyHost":"Enter the address of the m3u8 proxy worker","proxySettings":"Proxy Settings"}');
+const en_namespaceObject = /*#__PURE__*/JSON.parse('{"__version__":3,"recommended":"recommended","translateVideo":"Translate video","disableTranslate":"Turn off","translationSettings":"Translation settings","subtitlesSettings":"Subtitles settings","about":"About extension","resetSettings":"Reset settings","videoBeingTranslated":"The video is being translated","videoLanguage":"Video language","translationLanguage":"Translation language","translationTake":"The translation will take","translationTakeMoreThanHour":"The translation will take more than an hour","translationTakeAboutMinute":"The translation will take about a minute","translationTakeFewMinutes":"The translation will take a few minutes","translationTakeApproximatelyMinutes":"The translation will take approximately {0} minutes","translationTakeApproximatelyMinute":"The translation will take approximately {0} minutes","unSupportedExtensionError":"Error! {0} is not supported by this version of the extension!\\n\\nPlease use the cloudflare version of the VOT extension.","requestTranslationFailed":"Failed to request video translation","audioNotReceived":"Audio link not received","grantPermissionToAutoPlay":"Grant permission to autoplay","neededAdditionalExtension":"An additional extension is needed to support this site","audioFormatNotSupported":"The audio format is not supported","VOTAutoTranslate":"Translate on open","VOTDontTranslateYourLang":"Do not translate from my language","VOTVolume":"Video volume","VOTVolumeTranslation":"Translation Volume","VOTAutoSetVolume":"Reduce video volume to ","VOTShowVideoSlider":"Video volume slider","VOTSyncVolume":"Link translation and video volume","VOTAudioProxy":"Proxy received audio","VOTDisableFromYourLang":"You have disabled the translation of the video in your language","VOTLiveNotSupported":"Translation of live streams is not supported","VOTPremiere":"Wait for the premiere to end before translating","VOTVideoIsTooLong":"Video is too long","VOTNoVideoIDFound":"No video ID found","VOTSubtitles":"Subtitles","VOTSubtitlesDisabled":"Disabled","VOTSubtitlesMaxLength":"Subtitles max length","VOTHighlightWords":"Highlight words","VOTTranslatedFrom":"translated from","VOTAutogenerated":"autogenerated","VOTSettings":"VOT Settings","VOTMenuLanguage":"Menu language","VOTAuthors":"Authors","VOTVersion":"Version","VOTLoader":"Loader","VOTBrowser":"Browser","VOTShowPiPButton":"Show PiP button","langs":{"auto":"Auto","af":"Afrikaans","ak":"Akan","sq":"Albanian","am":"Amharic","ar":"Arabic","hy":"Armenian","as":"Assamese","ay":"Aymara","az":"Azerbaijani","bn":"Bangla","eu":"Basque","be":"Belarusian","bho":"Bhojpuri","bs":"Bosnian","bg":"Bulgarian","my":"Burmese","ca":"Catalan","ceb":"Cebuano","zh":"Chinese","zh-Hans":"Chinese (Simplified)","zh-Hant":"Chinese (Traditional)","co":"Corsican","hr":"Croatian","cs":"Czech","da":"Danish","dv":"Divehi","nl":"Dutch","en":"English","eo":"Esperanto","et":"Estonian","ee":"Ewe","fil":"Filipino","fi":"Finnish","fr":"French","gl":"Galician","lg":"Ganda","ka":"Georgian","de":"German","el":"Greek","gn":"Guarani","gu":"Gujarati","ht":"Haitian Creole","ha":"Hausa","haw":"Hawaiian","iw":"Hebrew","hi":"Hindi","hmn":"Hmong","hu":"Hungarian","is":"Icelandic","ig":"Igbo","id":"Indonesian","ga":"Irish","it":"Italian","ja":"Japanese","jv":"Javanese","kn":"Kannada","kk":"Kazakh","km":"Khmer","rw":"Kinyarwanda","ko":"Korean","kri":"Krio","ku":"Kurdish","ky":"Kyrgyz","lo":"Lao","la":"Latin","lv":"Latvian","ln":"Lingala","lt":"Lithuanian","lb":"Luxembourgish","mk":"Macedonian","mg":"Malagasy","ms":"Malay","ml":"Malayalam","mt":"Maltese","mi":"Māori","mr":"Marathi","mn":"Mongolian","ne":"Nepali","nso":"Northern Sotho","no":"Norwegian","ny":"Nyanja","or":"Odia","om":"Oromo","ps":"Pashto","fa":"Persian","pl":"Polish","pt":"Portuguese","pa":"Punjabi","qu":"Quechua","ro":"Romanian","ru":"Russian","sm":"Samoan","sa":"Sanskrit","gd":"Scottish Gaelic","sr":"Serbian","sn":"Shona","sd":"Sindhi","si":"Sinhala","sk":"Slovak","sl":"Slovenian","so":"Somali","st":"Southern Sotho","es":"Spanish","su":"Sundanese","sw":"Swahili","sv":"Swedish","tg":"Tajik","ta":"Tamil","tt":"Tatar","te":"Telugu","th":"Thai","ti":"Tigrinya","ts":"Tsonga","tr":"Turkish","tk":"Turkmen","uk":"Ukrainian","ur":"Urdu","ug":"Uyghur","uz":"Uzbek","vi":"Vietnamese","cy":"Welsh","fy":"Western Frisian","xh":"Xhosa","yi":"Yiddish","yo":"Yoruba","zu":"Zulu"},"udemyAccessTokenExpired":"Your entered Udemy Access Token has expired","udemyModuleArgsNotFound":"Could not get udemy module data due to the fact that ModuleArgs was not found","VOTTranslationHelpNull":"Could not get the data required for the translate","enterUdemyAccessToken":"Enter Udemy Access Token","VOTUdemyData":"Udemy Data","streamNoConnectionToServer":"There is no connection to the server","searchField":"Search...","VOTTranslateAPIErrors":"Translate errors from the API","VOTTranslationService":"Translation Service","VOTDetectService":"Detect Service","VOTTranslatingError":"Translating the error","VOTProxyWorkerHost":"Enter the proxy worker address","VOTM3u8ProxyHost":"Enter the address of the m3u8 proxy worker","proxySettings":"Proxy Settings"}');
 // EXTERNAL MODULE: ./src/utils/debug.js
 var debug = __webpack_require__("./src/utils/debug.js");
 // EXTERNAL MODULE: ./src/utils/storage.js
@@ -938,22 +938,6 @@ const votStorage = new (class {
 const userlang = navigator.language || navigator.userLanguage;
 const lang = userlang?.substr(0, 2)?.toLowerCase() ?? "en";
 
-if (!String.prototype.format) {
-  // https://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format
-  // syntax example: "is {0} function".format("format")
-  String.prototype.format = function () {
-    // store arguments in an array
-    var args = arguments;
-    // use replace to iterate over the string
-    // select the match and check if the related argument is present
-    // if yes, replace the match with the argument
-    return this.replace(/{(\d+)}/g, function (match, index) {
-      // check if the argument is present
-      return typeof args[index] != "undefined" ? args[index] : match;
-    });
-  };
-}
-
 function waitForElm(selector) {
   // https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
   return new Promise((resolve) => {
@@ -1187,16 +1171,15 @@ function secsToStrTime(secs) {
   } else if (minutes >= 10 && minutes % 10) {
     return _localization_localizationProvider_js__WEBPACK_IMPORTED_MODULE_0__/* .localizationProvider */ .V
       .get("translationTakeApproximatelyMinutes")
-      .format(minutes);
+      .replace("{0}", minutes);
   } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
     return _localization_localizationProvider_js__WEBPACK_IMPORTED_MODULE_0__/* .localizationProvider */ .V.get("translationTakeAboutMinute");
   } else {
     return _localization_localizationProvider_js__WEBPACK_IMPORTED_MODULE_0__/* .localizationProvider */ .V
       .get("translationTakeApproximatelyMinute")
-      .format(minutes);
+      .replace("{0}", minutes);
   }
 }
-
 function langTo6391(lang) {
   // convert lang to ISO 639-1
   return lang.toLowerCase().split(";")[0].trim().split("-")[0].split("_")[0];
@@ -1364,71 +1347,90 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 
-// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js
-var injectStylesIntoStyleTag = __webpack_require__("./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
-var injectStylesIntoStyleTag_default = /*#__PURE__*/__webpack_require__.n(injectStylesIntoStyleTag);
-// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleDomAPI.js
-var styleDomAPI = __webpack_require__("./node_modules/style-loader/dist/runtime/styleDomAPI.js");
-var styleDomAPI_default = /*#__PURE__*/__webpack_require__.n(styleDomAPI);
-// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertBySelector.js
-var insertBySelector = __webpack_require__("./node_modules/style-loader/dist/runtime/insertBySelector.js");
-var insertBySelector_default = /*#__PURE__*/__webpack_require__.n(insertBySelector);
-// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js
-var setAttributesWithoutAttributes = __webpack_require__("./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
-var setAttributesWithoutAttributes_default = /*#__PURE__*/__webpack_require__.n(setAttributesWithoutAttributes);
-// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertStyleElement.js
-var insertStyleElement = __webpack_require__("./node_modules/style-loader/dist/runtime/insertStyleElement.js");
-var insertStyleElement_default = /*#__PURE__*/__webpack_require__.n(insertStyleElement);
-// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleTagTransform.js
-var styleTagTransform = __webpack_require__("./node_modules/style-loader/dist/runtime/styleTagTransform.js");
-var styleTagTransform_default = /*#__PURE__*/__webpack_require__.n(styleTagTransform);
-// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss
-var main = __webpack_require__("./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss");
-;// CONCATENATED MODULE: ./src/styles/main.scss
+;// CONCATENATED MODULE: ./src/config/alternativeUrls.js
+// Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
+const sitesInvidious = [
+  "invidious.snopyta.org",
+  "yewtu.be",
+  "invidious.kavin.rocks",
+  "vid.puffyan.us",
+  "invidious.namazso.eu",
+  "inv.riverside.rocks",
+  "yt.artemislena.eu",
+  "invidious.flokinet.to",
+  "invidious.esmailelbob.xyz",
+  "y.com.sb",
+  "invidious.nerdvpn.de",
+  "inv.vern.cc",
+  "invidious.slipfox.xyz",
+  "invidio.xamh.de",
+  "invidious.dhusch.de",
+];
 
-      
-      
-      
-      
-      
-      
-      
-      
-      
+// Sites host Piped. I tested the performance only on piped.video
+const sitesPiped = [
+  "piped.video",
+  "piped.tokhmi.xyz",
+  "piped.moomoo.me",
+  "piped.syncpundit.io",
+  "piped.mha.fi",
+  "watch.whatever.social",
+  "piped.garudalinux.org",
+  "efy.piped.pages.dev",
+  "watch.leptons.xyz",
+  "piped.lunar.icu",
+  "yt.dc09.ru",
+  "piped.mint.lgbt",
+  "il.ax",
+  "piped.privacy.com.de",
+  "piped.esmailelbob.xyz",
+  "piped.projectsegfau.lt",
+  "piped.in.projectsegfau.lt",
+  "piped.us.projectsegfau.lt",
+  "piped.privacydev.net",
+  "piped.palveluntarjoaja.eu",
+  "piped.smnz.de",
+  "piped.adminforge.de",
+  "piped.qdi.fi",
+  "piped.hostux.net",
+  "piped.chauvet.pro",
+  "piped.jotoma.de",
+  "piped.pfcd.me",
+  "piped.frontendfriendly.xyz",
+];
 
-var options = {};
+const sitesProxyTok = [
+  "proxitok.pabloferreiro.es",
+  "proxitok.pussthecat.org",
+  "tok.habedieeh.re",
+  "proxitok.esmailelbob.xyz",
+  "proxitok.privacydev.net",
+  "tok.artemislena.eu",
+  "tok.adminforge.de",
+  "tik.hostux.net", // maybe instance doesn't working
+  "tt.vern.cc",
+  "cringe.whatever.social",
+  "proxitok.lunar.icu",
+  "proxitok.privacy.com.de", // maybe instance doesn't working
+];
 
-options.styleTagTransform = (styleTagTransform_default());
-options.setAttributes = (setAttributesWithoutAttributes_default());
-
-      options.insert = insertBySelector_default().bind(null, "head");
-    
-options.domAPI = (styleDomAPI_default());
-options.insertStyleElement = (insertStyleElement_default());
-
-var update = injectStylesIntoStyleTag_default()(main/* default */.Z, options);
-
-
-
-
-       /* harmony default export */ const styles_main = (main/* default */.Z && main/* default */.Z.locals ? main/* default */.Z.locals : undefined);
-
-// EXTERNAL MODULE: ./src/localization/localizationProvider.js + 1 modules
-var localizationProvider = __webpack_require__("./src/localization/localizationProvider.js");
-;// CONCATENATED MODULE: ./src/utils/VOTLocalizedError.js
+// Sites host Peertube. I tested the performance only on dalek.zone and tube.shanti.cafe
+const sitesPeertube = [
+  "peertube.1312.media",
+  "tube.shanti.cafe",
+  "bee-tube.fr",
+  "video.sadmin.io",
+  "dalek.zone",
+  "review.peertube.biz",
+  "peervideo.club",
+  "tube.la-dina.net",
+  "peertube.tmp.rcp.tf",
+];
 
 
-class VOTLocalizedError extends Error {
-  constructor(message) {
-    super(localizationProvider/* localizationProvider */.V.getDefault(message));
-    this.name = "VOTLocalizedError";
-    this.unlocalizedMessage = message;
-    this.localizedMessage = localizationProvider/* localizationProvider */.V.get(message);
-  }
-}
 
-// EXTERNAL MODULE: ./src/utils/debug.js
-var debug = __webpack_require__("./src/utils/debug.js");
+// EXTERNAL MODULE: ./src/config/config.js
+var config = __webpack_require__("./src/config/config.js");
 ;// CONCATENATED MODULE: ./src/config/constants.js
 // available languages for translation
 const availableLangs = [
@@ -1519,579 +1521,56 @@ const cfOnlyExtensions = [
 
 
 
-// EXTERNAL MODULE: ./src/utils/utils.js
-var utils = __webpack_require__("./src/utils/utils.js");
-// EXTERNAL MODULE: ./src/config/config.js
-var config = __webpack_require__("./src/config/config.js");
-// EXTERNAL MODULE: ./src/utils/storage.js
-var storage = __webpack_require__("./src/utils/storage.js");
-;// CONCATENATED MODULE: ./src/utils/translateApis.js
-
-
-
-const HTTP_TIMEOUT = 3000;
-
-async function fetchWithTimeout(url, options) {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), HTTP_TIMEOUT);
-
-  try {
-    return await fetch(url, {
-      ...options,
-      signal: controller.signal,
-    });
-  } catch (error) {
-    console.error("Fetch timed-out. Error:", error);
-    return error;
-  } finally {
-    clearTimeout(timeoutId);
-  }
-}
-
-const YandexTranslateAPI = {
-  async translate(text, lang) {
-    // Limit: 10k symbols
-    //
-    // Lang examples:
-    // en-ru, uk-ru, ru-en...
-    // ru, en (instead of auto-ru, auto-en)
-
-    try {
-      const response = await fetchWithTimeout(config/* translateUrls */.rm.yandex, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          text,
-          lang,
-        }),
-      });
-
-      if (response instanceof Error) {
-        throw response;
-      }
-
-      const content = await response.json();
-
-      if (content.code !== 200) {
-        throw content.message;
-      }
-
-      return content.text[0];
-    } catch (error) {
-      console.error("Error translating text:", error);
-      return text;
-    }
-  },
-
-  async detect(text, lang) {
-    // Limit: 10k symbols
-    try {
-      const response = await fetchWithTimeout(config/* detectUrls */.jm.yandex, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          text,
-          lang,
-        }),
-      });
-
-      if (response instanceof Error) {
-        throw response;
-      }
-
-      const content = await response.json();
-      if (content.code !== 200) {
-        throw content.message;
-      }
-
-      return content.lang ?? "en";
-    } catch (error) {
-      console.error("Error translating text:", error);
-      return "en";
-    }
-  },
-};
-
-const RustServerAPI = {
-  async detect(text) {
-    try {
-      const response = await fetch(config/* detectUrls */.jm.rustServer, {
-        method: "POST",
-        body: text,
-      });
-
-      if (response instanceof Error) {
-        throw response;
-      }
-
-      return await response.text();
-    } catch (error) {
-      console.error("Error getting lang from text:", error);
-      return "en";
-    }
-  },
-};
-
-async function translate(text, fromLang = "", toLang = "ru") {
-  const service = await storage/* votStorage */.i.get(
-    "translationService",
-    config/* defaultTranslationService */.kF,
-  );
-  switch (service) {
-    case "yandex": {
-      const langPair = fromLang && toLang ? `${fromLang}-${toLang}` : toLang;
-      return await YandexTranslateAPI.translate(text, langPair);
-    }
-    default:
-      return text;
-  }
-}
-
-async function detect(text) {
-  const service = await storage/* votStorage */.i.get("detectService", config/* defaultDetectService */.EY);
-  switch (service) {
-    case "yandex":
-      return await YandexTranslateAPI.detect(text);
-    case "rust-server":
-      return await RustServerAPI.detect(text);
-    default:
-      return "en";
-  }
-}
-
-const translateServices = ["yandex"];
-const detectServices = ["yandex", "rust-server"];
-
-
-
-;// CONCATENATED MODULE: ./src/utils/youtubeUtils.js
-
-
-
-
-
-// Get the language code from the response or the text
-async function getLanguage(player, response, title, description) {
-  if (
-    !window.location.hostname.includes("m.youtube.com") &&
-    player?.getAudioTrack
-  ) {
-    // ! Experimental ! get lang from selected audio track if availabled
-    const audioTracks = player.getAudioTrack();
-    const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
-    if (trackInfo?.id !== "und") {
-      return (0,utils/* langTo6391 */.eL)(trackInfo.id.split(".")[0]);
-    }
-  }
-
-  // TODO: If the audio tracks will work fine, transfer the receipt of captions to the audioTracks variable
-  // Check if there is an automatic caption track in the response
-  const captionTracks =
-    response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
-  if (captionTracks?.length) {
-    const autoCaption = captionTracks.find((caption) => caption.kind === "asr");
-    if (autoCaption && autoCaption.languageCode) {
-      return (0,utils/* langTo6391 */.eL)(autoCaption.languageCode);
-    }
-  }
-
-  // the "delayed video upload" fix for YouTube (#387)
-  if (!(description && title)) {
-    return "en";
-  }
-
-  // If there is no caption track, use detect to get the language code from the description
-
-  const deletefilter = [
-    /(?:https?|ftp):\/\/[\n\S]+/g, //temp fix
-    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{0,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/gm, // remove links
-    /#[^\s#]+/g,
-    /Auto-generated by YouTube/g,
-    /Provided to YouTube by/g,
-    /Released on/g,
-    /Bitcoin/g,
-    /USDT/g,
-    /Paypal/g,
-  ];
-
-  const cleanedDescription = description
-    .split("\n\n")
-    .filter((line) => !deletefilter.some((regex) => regex.test(line)))
-    .join("\n\n")
-    .replace(/[^\p{L}\s]/gu, " ")
-    .trim()
-    .replace(/\s+/g, " ")
-    .slice(0, 250);
-
-  const cleanText = [cleanedDescription, title].join(" ");
-
-  return await detect(cleanText);
-}
-
-function isMobile() {
-  return /^m\.youtube\.com$/.test(window.location.hostname);
-}
-
-function getPlayer() {
-  if (window.location.pathname.startsWith("/shorts/")) {
-    return isMobile()
-      ? document.querySelector("#movie_player")
-      : document.querySelector("#shorts-player");
-  }
-
-  return document.querySelector("#movie_player");
-}
-
-function getPlayerResponse() {
-  const player = getPlayer();
-  if (player?.getPlayerResponse)
-    return player?.getPlayerResponse?.call() ?? null;
-  return player?.data?.playerResponse ?? null;
-}
-
-function getPlayerData() {
-  const player = getPlayer();
-  if (player?.getVideoData) return player?.getVideoData?.call() ?? null;
-  return player?.data?.playerResponse?.videoDetails ?? null;
-}
-
-function getVideoVolume() {
-  const player = getPlayer();
-  if (player?.getVolume) {
-    return player.getVolume.call() / 100;
-  }
-
-  return 1;
-}
-
-function setVideoVolume(volume) {
-  const player = getPlayer();
-  if (player?.setVolume) {
-    player.setVolume(Math.round(volume * 100));
-    return true;
-  }
-}
-
-function videoSeek(video, time) {
-  // * TIME IN MS
-  debug/* default */.Z.log("videoSeek", time);
-  const preTime =
-    getPlayer()?.getProgressState()?.seekableEnd || video.currentTime;
-  const finalTime = preTime - time; // we always throw it to the end of the stream - time
-  video.currentTime = finalTime;
-}
-
-function getSubtitles() {
-  const response = getPlayerResponse();
-  let captionTracks =
-    response?.captions?.playerCaptionsTracklistRenderer?.captionTracks ?? [];
-  captionTracks = captionTracks.reduce((result, captionTrack) => {
-    if ("languageCode" in captionTrack) {
-      const language = captionTrack?.languageCode
-        ? (0,utils/* langTo6391 */.eL)(captionTrack?.languageCode)
-        : undefined;
-      const url = captionTrack?.url || captionTrack?.baseUrl;
-      language &&
-        url &&
-        result.push({
-          source: "youtube",
-          language,
-          isAutoGenerated: captionTrack?.kind === "asr",
-          url: `${
-            url.startsWith("http") ? url : `${window.location.origin}/${url}`
-          }&fmt=json3`,
-        });
-    }
-    return result;
-  }, []);
-  debug/* default */.Z.log("youtube subtitles:", captionTracks);
-  return captionTracks;
-}
-
-// Get the video data from the player
-async function getVideoData() {
-  const player = getPlayer();
-  const response = getPlayerResponse(); // null in /embed
-  const data = getPlayerData();
-  const { author, title } = data ?? {};
-  const {
-    shortDescription: description,
-    isLive,
-    isLiveContent,
-    isUpcoming,
-  } = response?.videoDetails ?? {};
-  const isPremiere = (!!isLive || !!isUpcoming) && !isLiveContent;
-  let detectedLanguage = await getLanguage(
-    player,
-    response,
-    title,
-    description,
-    author,
-  );
-  if (!availableLangs.includes(detectedLanguage)) {
-    detectedLanguage = "en";
-  }
-  const videoData = {
-    isLive: !!isLive,
-    isPremiere,
-    title,
-    description,
-    author,
-    detectedLanguage,
-  };
-  debug/* default */.Z.log("youtube video data:", videoData);
-  console.log("[VOT] Detected language: ", videoData.detectedLanguage);
-  return videoData;
-}
-
-const youtubeUtils = {
-  isMobile,
-  getPlayer,
-  getPlayerResponse,
-  getPlayerData,
-  getVideoVolume,
-  getSubtitles,
-  getVideoData,
-  setVideoVolume,
-  videoSeek,
-};
-
-;// CONCATENATED MODULE: ./src/yandexProtobuf.js
-// coursera & udemy translation help object
-const VideoTranslationHelpObject = new protobuf.Type(
-  "VideoTranslationHelpObject",
-)
-  .add(new protobuf.Field("target", 1, "string")) // video_file_url or subtitles_file_url
-  .add(new protobuf.Field("targetUrl", 2, "string")); // url to video_file or url to subtitles
-
-const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
-  .add(new protobuf.Field("url", 3, "string"))
-  .add(new protobuf.Field("deviceId", 4, "string")) // removed?
-  .add(new protobuf.Field("firstRequest", 5, "bool")) // true for the first request, false for subsequent ones
-  .add(new protobuf.Field("duration", 6, "double"))
-  .add(new protobuf.Field("unknown2", 7, "int32")) // 1 1
-  .add(new protobuf.Field("language", 8, "string")) // source language code
-  .add(new protobuf.Field("unknown3", 9, "int32")) // 0 - without translationHelp | 1 - with translationHelp (??? But it works without it)
-  .add(new protobuf.Field("unknown4", 10, "int32")) // 0 0
-  .add(
-    new protobuf.Field(
-      "translationHelp",
-      11,
-      "VideoTranslationHelpObject",
-      "repeated",
-    ),
-  ) // array for translation assistance ([0] -> {2: link to video, 1: "video_file_url"}, [1] -> {2: link to subtitles, 1: "subtitles_file_url"})
-  .add(new protobuf.Field("responseLanguage", 14, "string"))
-  .add(new protobuf.Field("unknown5", 15, "int32")) // 0
-  .add(new protobuf.Field("unknown6", 16, "int32")) // 1
-  .add(new protobuf.Field("unknown7", 17, "int32")); // 0
-
-const VideoSubtitlesRequest = new protobuf.Type("VideoSubtitlesRequest")
-  .add(new protobuf.Field("url", 1, "string"))
-  .add(new protobuf.Field("language", 2, "string")); // source language code
-
-const VideoStreamRequest = new protobuf.Type("VideoStreamRequest")
-  .add(new protobuf.Field("url", 1, "string"))
-  .add(new protobuf.Field("language", 2, "string"))
-  .add(new protobuf.Field("responseLanguage", 3, "string"));
-
-const VideoStreamPingRequest = new protobuf.Type("VideoStreamPingRequest").add(
-  new protobuf.Field("pingId", 1, "int32"),
-);
-
-const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
-  .add(new protobuf.Field("url", 1, "string"))
-  .add(new protobuf.Field("duration", 2, "double"))
-  .add(new protobuf.Field("status", 4, "int32"))
-  .add(new protobuf.Field("remainingTime", 5, "int32")) // secs before translation (used as interval before next request in yaBrowser)
-  .add(new protobuf.Field("unknown0", 6, "int32")) // unknown 0 (1st request) -> 10 (2nd, 3th and etc requests)
-  .add(new protobuf.Field("unknown1", 7, "string"))
-  .add(new protobuf.Field("language", 8, "string")) // detected language (if the wrong one is set)
-  .add(new protobuf.Field("message", 9, "string"));
-
-const VideoSubtitlesObject = new protobuf.Type("VideoSubtitlesObject")
-  .add(new protobuf.Field("language", 1, "string"))
-  .add(new protobuf.Field("url", 2, "string"))
-  .add(new protobuf.Field("unknown2", 3, "int32"))
-  .add(new protobuf.Field("translatedLanguage", 4, "string"))
-  .add(new protobuf.Field("translatedUrl", 5, "string"))
-  .add(new protobuf.Field("unknown5", 6, "int32"))
-  .add(new protobuf.Field("unknown6", 7, "int32"));
-
-const VideoSubtitlesResponse = new protobuf.Type("VideoSubtitlesResponse")
-  .add(new protobuf.Field("unknown0", 1, "int32"))
-  .add(new protobuf.Field("subtitles", 2, "VideoSubtitlesObject", "repeated"));
-
-const VideoStreamObject = new protobuf.Type("VideoStreamObject")
-  .add(new protobuf.Field("url", 1, "string"))
-  .add(new protobuf.Field("timestamp", 2, "int64")); // timestamp in ms (probably means the time of 1 request to translate the stream)
-
-const VideoStreamResponse = new protobuf.Type("VideoStreamResponse")
-  .add(new protobuf.Field("interval", 1, "int32")) // 20s - streaming, 10s - translating, 0s - there is no connection with the server (the broadcast is finished or deleted)
-  .add(new protobuf.Field("translatedInfo", 2, "VideoStreamObject"))
-  .add(new protobuf.Field("pingId", 3, "int32"));
-
-// * Yandex has been skipping any translation streams for a long time (whitelist always return true)
-// * Most likely, it is already outdated and will not be used
-// const VideoWhitelistStreamRequest = new protobuf.Type("VideoWhitelistStreamRequest")
-//   .add(new protobuf.Field("url", 1, "string"))
-//   .add(new protobuf.Field("deviceId", 4, "string"))
-
-// const VideoWhitelistStreamResponse = new protobuf.Type("VideoWhitelistStreamResponse")
-//   .add(new protobuf.Field("inWhitelist", 1, "bool"))
-
-// Create a root namespace and add the types
-const root = new protobuf.Root()
-  .define("yandex")
-  .add(VideoTranslationHelpObject)
-  .add(VideoTranslationRequest)
-  .add(VideoTranslationResponse)
-  .add(VideoSubtitlesRequest)
-  .add(VideoSubtitlesObject)
-  .add(VideoSubtitlesResponse)
-  .add(VideoStreamPingRequest)
-  .add(VideoStreamRequest)
-  .add(VideoStreamObject)
-  .add(VideoStreamResponse);
-
-// Export the encoding and decoding functions
-const yandexProtobuf = {
-  encodeTranslationRequest(
-    url,
-    duration,
-    requestLang,
-    responseLang,
-    translationHelp,
-  ) {
-    return root.VideoTranslationRequest.encode({
-      url,
-      firstRequest: true,
-      duration,
-      unknown2: 1,
-      language: requestLang,
-      unknown3: 0,
-      unknown4: 0,
-      translationHelp,
-      responseLanguage: responseLang,
-      unknown5: 0,
-      unknown6: 1,
-      unknown7: 0,
-    }).finish();
-  },
-  decodeTranslationResponse(response) {
-    return root.VideoTranslationResponse.decode(new Uint8Array(response));
-  },
-  encodeSubtitlesRequest(url, requestLang) {
-    return root.VideoSubtitlesRequest.encode({
-      url,
-      language: requestLang,
-    }).finish();
-  },
-  decodeSubtitlesResponse(response) {
-    return root.VideoSubtitlesResponse.decode(new Uint8Array(response));
-  },
-  encodeStreamPingRequest(pingId) {
-    return root.VideoStreamPingRequest.encode({
-      pingId,
-    }).finish();
-  },
-  encodeStreamRequest(url, requestLang, responseLang) {
-    return root.VideoStreamRequest.encode({
-      url,
-      language: requestLang,
-      responseLanguage: responseLang,
-    }).finish();
-  },
-  decodeStreamResponse(response) {
-    return root.VideoStreamResponse.decode(new Uint8Array(response));
-  },
-};
-
-;// CONCATENATED MODULE: ./src/config/alternativeUrls.js
-// Sites host Invidious. I tested the performance only on invidious.kevin.rocks, youtu.be and inv.vern.cc
-const sitesInvidious = [
-  "invidious.snopyta.org",
-  "yewtu.be",
-  "invidious.kavin.rocks",
-  "vid.puffyan.us",
-  "invidious.namazso.eu",
-  "inv.riverside.rocks",
-  "yt.artemislena.eu",
-  "invidious.flokinet.to",
-  "invidious.esmailelbob.xyz",
-  "y.com.sb",
-  "invidious.nerdvpn.de",
-  "inv.vern.cc",
-  "invidious.slipfox.xyz",
-  "invidio.xamh.de",
-  "invidious.dhusch.de",
-];
-
-// Sites host Piped. I tested the performance only on piped.video
-const sitesPiped = [
-  "piped.video",
-  "piped.tokhmi.xyz",
-  "piped.moomoo.me",
-  "piped.syncpundit.io",
-  "piped.mha.fi",
-  "watch.whatever.social",
-  "piped.garudalinux.org",
-  "efy.piped.pages.dev",
-  "watch.leptons.xyz",
-  "piped.lunar.icu",
-  "yt.dc09.ru",
-  "piped.mint.lgbt",
-  "il.ax",
-  "piped.privacy.com.de",
-  "piped.esmailelbob.xyz",
-  "piped.projectsegfau.lt",
-  "piped.in.projectsegfau.lt",
-  "piped.us.projectsegfau.lt",
-  "piped.privacydev.net",
-  "piped.palveluntarjoaja.eu",
-  "piped.smnz.de",
-  "piped.adminforge.de",
-  "piped.qdi.fi",
-  "piped.hostux.net",
-  "piped.chauvet.pro",
-  "piped.jotoma.de",
-  "piped.pfcd.me",
-  "piped.frontendfriendly.xyz",
-];
-
-const sitesProxyTok = [
-  "proxitok.pabloferreiro.es",
-  "proxitok.pussthecat.org",
-  "tok.habedieeh.re",
-  "proxitok.esmailelbob.xyz",
-  "proxitok.privacydev.net",
-  "tok.artemislena.eu",
-  "tok.adminforge.de",
-  "tik.hostux.net", // maybe instance doesn't working
-  "tt.vern.cc",
-  "cringe.whatever.social",
-  "proxitok.lunar.icu",
-  "proxitok.privacy.com.de", // maybe instance doesn't working
-];
-
-// Sites host Peertube. I tested the performance only on dalek.zone and tube.shanti.cafe
-const sitesPeertube = [
-  "peertube.1312.media",
-  "tube.shanti.cafe",
-  "bee-tube.fr",
-  "video.sadmin.io",
-  "dalek.zone",
-  "review.peertube.biz",
-  "peervideo.club",
-  "tube.la-dina.net",
-  "peertube.tmp.rcp.tf",
-];
-
-
+// EXTERNAL MODULE: ./src/localization/localizationProvider.js + 1 modules
+var localizationProvider = __webpack_require__("./src/localization/localizationProvider.js");
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js
+var injectStylesIntoStyleTag = __webpack_require__("./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+var injectStylesIntoStyleTag_default = /*#__PURE__*/__webpack_require__.n(injectStylesIntoStyleTag);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleDomAPI.js
+var styleDomAPI = __webpack_require__("./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+var styleDomAPI_default = /*#__PURE__*/__webpack_require__.n(styleDomAPI);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertBySelector.js
+var insertBySelector = __webpack_require__("./node_modules/style-loader/dist/runtime/insertBySelector.js");
+var insertBySelector_default = /*#__PURE__*/__webpack_require__.n(insertBySelector);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js
+var setAttributesWithoutAttributes = __webpack_require__("./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+var setAttributesWithoutAttributes_default = /*#__PURE__*/__webpack_require__.n(setAttributesWithoutAttributes);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertStyleElement.js
+var insertStyleElement = __webpack_require__("./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+var insertStyleElement_default = /*#__PURE__*/__webpack_require__.n(insertStyleElement);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleTagTransform.js
+var styleTagTransform = __webpack_require__("./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+var styleTagTransform_default = /*#__PURE__*/__webpack_require__.n(styleTagTransform);
+// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss
+var main = __webpack_require__("./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss");
+;// CONCATENATED MODULE: ./src/styles/main.scss
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (styleTagTransform_default());
+options.setAttributes = (setAttributesWithoutAttributes_default());
+
+      options.insert = insertBySelector_default().bind(null, "head");
+    
+options.domAPI = (styleDomAPI_default());
+options.insertStyleElement = (insertStyleElement_default());
+
+var update = injectStylesIntoStyleTag_default()(main/* default */.Z, options);
+
+
+
+
+       /* harmony default export */ const styles_main = (main/* default */.Z && main/* default */.Z.locals ? main/* default */.Z.locals : undefined);
 
 ;// CONCATENATED MODULE: ./src/ui.js
 
@@ -2565,6 +2044,22 @@ function createVOTLanguageSelect(options) {
   updateSlider,
 });
 
+;// CONCATENATED MODULE: ./src/utils/VOTLocalizedError.js
+
+
+class VOTLocalizedError extends Error {
+  constructor(message) {
+    super(localizationProvider/* localizationProvider */.V.getDefault(message));
+    this.name = "VOTLocalizedError";
+    this.unlocalizedMessage = message;
+    this.localizedMessage = localizationProvider/* localizationProvider */.V.get(message);
+  }
+}
+
+// EXTERNAL MODULE: ./src/utils/debug.js
+var debug = __webpack_require__("./src/utils/debug.js");
+// EXTERNAL MODULE: ./src/utils/utils.js
+var utils = __webpack_require__("./src/utils/utils.js");
 ;// CONCATENATED MODULE: ./src/utils/volume.js
 // element - audio / video element
 function syncVolume(element, sliderVolume, otherSliderVolume, tempVolume) {
@@ -2595,6 +2090,489 @@ function syncVolume(element, sliderVolume, otherSliderVolume, tempVolume) {
 }
 
 
+
+// EXTERNAL MODULE: ./src/utils/storage.js
+var storage = __webpack_require__("./src/utils/storage.js");
+;// CONCATENATED MODULE: ./src/utils/translateApis.js
+
+
+
+const HTTP_TIMEOUT = 3000;
+
+async function fetchWithTimeout(url, options) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), HTTP_TIMEOUT);
+
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+  } catch (error) {
+    console.error("Fetch timed-out. Error:", error);
+    return error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+const YandexTranslateAPI = {
+  async translate(text, lang) {
+    // Limit: 10k symbols
+    //
+    // Lang examples:
+    // en-ru, uk-ru, ru-en...
+    // ru, en (instead of auto-ru, auto-en)
+
+    try {
+      const response = await fetchWithTimeout(config/* translateUrls */.rm.yandex, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          text,
+          lang,
+        }),
+      });
+
+      if (response instanceof Error) {
+        throw response;
+      }
+
+      const content = await response.json();
+
+      if (content.code !== 200) {
+        throw content.message;
+      }
+
+      return content.text[0];
+    } catch (error) {
+      console.error("Error translating text:", error);
+      return text;
+    }
+  },
+
+  async detect(text, lang) {
+    // Limit: 10k symbols
+    try {
+      const response = await fetchWithTimeout(config/* detectUrls */.jm.yandex, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          text,
+          lang,
+        }),
+      });
+
+      if (response instanceof Error) {
+        throw response;
+      }
+
+      const content = await response.json();
+      if (content.code !== 200) {
+        throw content.message;
+      }
+
+      return content.lang ?? "en";
+    } catch (error) {
+      console.error("Error translating text:", error);
+      return "en";
+    }
+  },
+};
+
+const RustServerAPI = {
+  async detect(text) {
+    try {
+      const response = await fetch(config/* detectUrls */.jm.rustServer, {
+        method: "POST",
+        body: text,
+      });
+
+      if (response instanceof Error) {
+        throw response;
+      }
+
+      return await response.text();
+    } catch (error) {
+      console.error("Error getting lang from text:", error);
+      return "en";
+    }
+  },
+};
+
+async function translate(text, fromLang = "", toLang = "ru") {
+  const service = await storage/* votStorage */.i.get(
+    "translationService",
+    config/* defaultTranslationService */.kF,
+  );
+  switch (service) {
+    case "yandex": {
+      const langPair = fromLang && toLang ? `${fromLang}-${toLang}` : toLang;
+      return await YandexTranslateAPI.translate(text, langPair);
+    }
+    default:
+      return text;
+  }
+}
+
+async function detect(text) {
+  const service = await storage/* votStorage */.i.get("detectService", config/* defaultDetectService */.EY);
+  switch (service) {
+    case "yandex":
+      return await YandexTranslateAPI.detect(text);
+    case "rust-server":
+      return await RustServerAPI.detect(text);
+    default:
+      return "en";
+  }
+}
+
+const translateServices = ["yandex"];
+const detectServices = ["yandex", "rust-server"];
+
+
+
+;// CONCATENATED MODULE: ./src/utils/youtubeUtils.js
+
+
+
+
+
+// Get the language code from the response or the text
+async function getLanguage(player, response, title, description) {
+  if (
+    !window.location.hostname.includes("m.youtube.com") &&
+    player?.getAudioTrack
+  ) {
+    // ! Experimental ! get lang from selected audio track if availabled
+    const audioTracks = player.getAudioTrack();
+    const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
+    if (trackInfo?.id !== "und") {
+      return (0,utils/* langTo6391 */.eL)(trackInfo.id.split(".")[0]);
+    }
+  }
+
+  // TODO: If the audio tracks will work fine, transfer the receipt of captions to the audioTracks variable
+  // Check if there is an automatic caption track in the response
+  const captionTracks =
+    response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
+  if (captionTracks?.length) {
+    const autoCaption = captionTracks.find((caption) => caption.kind === "asr");
+    if (autoCaption && autoCaption.languageCode) {
+      return (0,utils/* langTo6391 */.eL)(autoCaption.languageCode);
+    }
+  }
+
+  // If there is no caption track, use detect to get the language code from the description
+
+  const deletefilter = [
+    /(?:https?|ftp):\/\/[\n\S]+/g, //temp fix
+    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{0,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/gm, // remove links
+    /#[^\s#]+/g,
+    /Auto-generated by YouTube/g,
+    /Provided to YouTube by/g,
+    /Released on/g,
+    /Bitcoin/g,
+    /USDT/g,
+    /Paypal/g,
+  ];
+
+  const cleanedDescription = description
+    .split("\n\n")
+    .filter((line) => !deletefilter.some((regex) => regex.test(line)))
+    .join("\n\n")
+    .replace(/[^\p{L}\s]/gu, " ")
+    .trim()
+    .replace(/\s+/g, " ")
+    .slice(0, 250);
+
+  const cleanText = [cleanedDescription, title].join(" ");
+
+  return await detect(cleanText);
+}
+
+function isMobile() {
+  return /^m\.youtube\.com$/.test(window.location.hostname);
+}
+
+function getPlayer() {
+  if (window.location.pathname.startsWith("/shorts/")) {
+    return isMobile()
+      ? document.querySelector("#movie_player")
+      : document.querySelector("#shorts-player");
+  }
+
+  return document.querySelector("#movie_player");
+}
+
+function getPlayerResponse() {
+  const player = getPlayer();
+  if (player?.getPlayerResponse)
+    return player?.getPlayerResponse?.call() ?? null;
+  return player?.data?.playerResponse ?? null;
+}
+
+function getPlayerData() {
+  const player = getPlayer();
+  if (player?.getVideoData) return player?.getVideoData?.call() ?? null;
+  return player?.data?.playerResponse?.videoDetails ?? null;
+}
+
+function getVideoVolume() {
+  const player = getPlayer();
+  if (player?.getVolume) {
+    return player.getVolume.call() / 100;
+  }
+
+  return 1;
+}
+
+function setVideoVolume(volume) {
+  const player = getPlayer();
+  if (player?.setVolume) {
+    player.setVolume(Math.round(volume * 100));
+    return true;
+  }
+}
+
+function videoSeek(video, time) {
+  // * TIME IN MS
+  debug/* default */.Z.log("videoSeek", time);
+  const preTime =
+    getPlayer()?.getProgressState()?.seekableEnd || video.currentTime;
+  const finalTime = preTime - time; // we always throw it to the end of the stream - time
+  video.currentTime = finalTime;
+}
+
+function getSubtitles() {
+  const response = getPlayerResponse();
+  let captionTracks =
+    response?.captions?.playerCaptionsTracklistRenderer?.captionTracks ?? [];
+  captionTracks = captionTracks.reduce((result, captionTrack) => {
+    if ("languageCode" in captionTrack) {
+      const language = captionTrack?.languageCode
+        ? (0,utils/* langTo6391 */.eL)(captionTrack?.languageCode)
+        : undefined;
+      const url = captionTrack?.url || captionTrack?.baseUrl;
+      language &&
+        url &&
+        result.push({
+          source: "youtube",
+          language,
+          isAutoGenerated: captionTrack?.kind === "asr",
+          url: `${
+            url.startsWith("http") ? url : `${window.location.origin}/${url}`
+          }&fmt=json3`,
+        });
+    }
+    return result;
+  }, []);
+  debug/* default */.Z.log("youtube subtitles:", captionTracks);
+  return captionTracks;
+}
+
+// Get the video data from the player
+async function getVideoData() {
+  const player = getPlayer();
+  const response = getPlayerResponse(); // null in /embed
+  const data = getPlayerData();
+  const { author, title } = data ?? {};
+  const {
+    shortDescription: description,
+    isLive,
+    isLiveContent,
+    isUpcoming,
+  } = response?.videoDetails ?? {};
+  const isPremiere = (!!isLive || !!isUpcoming) && !isLiveContent;
+  let detectedLanguage = await getLanguage(
+    player,
+    response,
+    title,
+    description,
+    author,
+  );
+  if (!availableLangs.includes(detectedLanguage)) {
+    detectedLanguage = "en";
+  }
+  const videoData = {
+    isLive: !!isLive,
+    isPremiere,
+    title,
+    description,
+    author,
+    detectedLanguage,
+  };
+  debug/* default */.Z.log("youtube video data:", videoData);
+  console.log("[VOT] Detected language: ", videoData.detectedLanguage);
+  return videoData;
+}
+
+const youtubeUtils = {
+  isMobile,
+  getPlayer,
+  getPlayerResponse,
+  getPlayerData,
+  getVideoVolume,
+  getSubtitles,
+  getVideoData,
+  setVideoVolume,
+  videoSeek,
+};
+
+;// CONCATENATED MODULE: ./src/yandexProtobuf.js
+// coursera & udemy translation help object
+const VideoTranslationHelpObject = new protobuf.Type(
+  "VideoTranslationHelpObject",
+)
+  .add(new protobuf.Field("target", 1, "string")) // video_file_url or subtitles_file_url
+  .add(new protobuf.Field("targetUrl", 2, "string")); // url to video_file or url to subtitles
+
+const VideoTranslationRequest = new protobuf.Type("VideoTranslationRequest")
+  .add(new protobuf.Field("url", 3, "string"))
+  .add(new protobuf.Field("deviceId", 4, "string")) // removed?
+  .add(new protobuf.Field("firstRequest", 5, "bool")) // true for the first request, false for subsequent ones
+  .add(new protobuf.Field("duration", 6, "double"))
+  .add(new protobuf.Field("unknown2", 7, "int32")) // 1 1
+  .add(new protobuf.Field("language", 8, "string")) // source language code
+  .add(new protobuf.Field("unknown3", 9, "int32")) // 0 - without translationHelp | 1 - with translationHelp (??? But it works without it)
+  .add(new protobuf.Field("unknown4", 10, "int32")) // 0 0
+  .add(
+    new protobuf.Field(
+      "translationHelp",
+      11,
+      "VideoTranslationHelpObject",
+      "repeated",
+    ),
+  ) // array for translation assistance ([0] -> {2: link to video, 1: "video_file_url"}, [1] -> {2: link to subtitles, 1: "subtitles_file_url"})
+  .add(new protobuf.Field("responseLanguage", 14, "string"))
+  .add(new protobuf.Field("unknown5", 15, "int32")) // 0
+  .add(new protobuf.Field("unknown6", 16, "int32")) // 1
+  .add(new protobuf.Field("unknown7", 17, "int32")); // 0
+
+const VideoSubtitlesRequest = new protobuf.Type("VideoSubtitlesRequest")
+  .add(new protobuf.Field("url", 1, "string"))
+  .add(new protobuf.Field("language", 2, "string")); // source language code
+
+const VideoStreamRequest = new protobuf.Type("VideoStreamRequest")
+  .add(new protobuf.Field("url", 1, "string"))
+  .add(new protobuf.Field("language", 2, "string"))
+  .add(new protobuf.Field("responseLanguage", 3, "string"));
+
+const VideoStreamPingRequest = new protobuf.Type("VideoStreamPingRequest").add(
+  new protobuf.Field("pingId", 1, "int32"),
+);
+
+const VideoTranslationResponse = new protobuf.Type("VideoTranslationResponse")
+  .add(new protobuf.Field("url", 1, "string"))
+  .add(new protobuf.Field("duration", 2, "double"))
+  .add(new protobuf.Field("status", 4, "int32"))
+  .add(new protobuf.Field("remainingTime", 5, "int32")) // secs before translation (used as interval before next request in yaBrowser)
+  .add(new protobuf.Field("unknown0", 6, "int32")) // unknown 0 (1st request) -> 10 (2nd, 3th and etc requests)
+  .add(new protobuf.Field("unknown1", 7, "string"))
+  .add(new protobuf.Field("language", 8, "string")) // detected language (if the wrong one is set)
+  .add(new protobuf.Field("message", 9, "string"));
+
+const VideoSubtitlesObject = new protobuf.Type("VideoSubtitlesObject")
+  .add(new protobuf.Field("language", 1, "string"))
+  .add(new protobuf.Field("url", 2, "string"))
+  .add(new protobuf.Field("unknown2", 3, "int32"))
+  .add(new protobuf.Field("translatedLanguage", 4, "string"))
+  .add(new protobuf.Field("translatedUrl", 5, "string"))
+  .add(new protobuf.Field("unknown5", 6, "int32"))
+  .add(new protobuf.Field("unknown6", 7, "int32"));
+
+const VideoSubtitlesResponse = new protobuf.Type("VideoSubtitlesResponse")
+  .add(new protobuf.Field("unknown0", 1, "int32"))
+  .add(new protobuf.Field("subtitles", 2, "VideoSubtitlesObject", "repeated"));
+
+const VideoStreamObject = new protobuf.Type("VideoStreamObject")
+  .add(new protobuf.Field("url", 1, "string"))
+  .add(new protobuf.Field("timestamp", 2, "int64")); // timestamp in ms (probably means the time of 1 request to translate the stream)
+
+const VideoStreamResponse = new protobuf.Type("VideoStreamResponse")
+  .add(new protobuf.Field("interval", 1, "int32")) // 20s - streaming, 10s - translating, 0s - there is no connection with the server (the broadcast is finished or deleted)
+  .add(new protobuf.Field("translatedInfo", 2, "VideoStreamObject"))
+  .add(new protobuf.Field("pingId", 3, "int32"));
+
+// * Yandex has been skipping any translation streams for a long time (whitelist always return true)
+// * Most likely, it is already outdated and will not be used
+// const VideoWhitelistStreamRequest = new protobuf.Type("VideoWhitelistStreamRequest")
+//   .add(new protobuf.Field("url", 1, "string"))
+//   .add(new protobuf.Field("deviceId", 4, "string"))
+
+// const VideoWhitelistStreamResponse = new protobuf.Type("VideoWhitelistStreamResponse")
+//   .add(new protobuf.Field("inWhitelist", 1, "bool"))
+
+// Create a root namespace and add the types
+const root = new protobuf.Root()
+  .define("yandex")
+  .add(VideoTranslationHelpObject)
+  .add(VideoTranslationRequest)
+  .add(VideoTranslationResponse)
+  .add(VideoSubtitlesRequest)
+  .add(VideoSubtitlesObject)
+  .add(VideoSubtitlesResponse)
+  .add(VideoStreamPingRequest)
+  .add(VideoStreamRequest)
+  .add(VideoStreamObject)
+  .add(VideoStreamResponse);
+
+// Export the encoding and decoding functions
+const yandexProtobuf = {
+  encodeTranslationRequest(
+    url,
+    duration,
+    requestLang,
+    responseLang,
+    translationHelp,
+  ) {
+    return root.VideoTranslationRequest.encode({
+      url,
+      firstRequest: true,
+      duration,
+      unknown2: 1,
+      language: requestLang,
+      unknown3: 0,
+      unknown4: 0,
+      translationHelp,
+      responseLanguage: responseLang,
+      unknown5: 0,
+      unknown6: 1,
+      unknown7: 0,
+    }).finish();
+  },
+  decodeTranslationResponse(response) {
+    return root.VideoTranslationResponse.decode(new Uint8Array(response));
+  },
+  encodeSubtitlesRequest(url, requestLang) {
+    return root.VideoSubtitlesRequest.encode({
+      url,
+      language: requestLang,
+    }).finish();
+  },
+  decodeSubtitlesResponse(response) {
+    return root.VideoSubtitlesResponse.decode(new Uint8Array(response));
+  },
+  encodeStreamPingRequest(pingId) {
+    return root.VideoStreamPingRequest.encode({
+      pingId,
+    }).finish();
+  },
+  encodeStreamRequest(url, requestLang, responseLang) {
+    return root.VideoStreamRequest.encode({
+      url,
+      language: requestLang,
+      responseLanguage: responseLang,
+    }).finish();
+  },
+  decodeStreamResponse(response) {
+    return root.VideoStreamResponse.decode(new Uint8Array(response));
+  },
+};
 
 // EXTERNAL MODULE: ./node_modules/bowser/es5.js
 var es5 = __webpack_require__("./node_modules/bowser/es5.js");
@@ -2633,6 +2611,85 @@ async function getSignature(body) {
 }
 
 
+
+;// CONCATENATED MODULE: ./src/rsp.js
+
+
+
+
+
+// Request stream ping from Yandex API
+async function requestStreamPing(pingId, callback) {
+  try {
+    debug/* default */.Z.log("requestStreamPing");
+    // ! CURRENT CLOUDFLARE WORKER DOESN'T SUPPORT STREAM TRANSLATIONS
+    const yar = await Promise.resolve(/* import() */).then(__webpack_require__.bind(__webpack_require__, "./src/yandexRequest.js"));
+    const yandexRequest = yar.default;
+    debug/* default */.Z.log("Inited yandexRequest...");
+    // Initialize variables
+    const body = yandexProtobuf.encodeStreamPingRequest(pingId);
+    // Send the request
+    await yandexRequest(
+      "/stream-translation/ping-stream",
+      body,
+      {
+        "Vtrans-Signature": await getSignature(body),
+        "Sec-Vtrans-Token": getUUID(false),
+      },
+      callback,
+    );
+  } catch (exception) {
+    console.error("[VOT]", exception);
+    // Handle errors
+    callback(false);
+  }
+}
+
+/* harmony default export */ const rsp = (requestStreamPing);
+
+;// CONCATENATED MODULE: ./src/rst.js
+
+
+
+
+
+// Request stream translation from Yandex API
+async function requestStreamTranslation(
+  url,
+  requestLang,
+  responseLang,
+  callback,
+) {
+  try {
+    debug/* default */.Z.log("requestStreamTranslation");
+    // ! CURRENT CLOUDFLARE WORKER DOESN'T SUPPORT STREAM TRANSLATIONS
+    const yar = await Promise.resolve(/* import() */).then(__webpack_require__.bind(__webpack_require__, "./src/yandexRequest.js"));
+    const yandexRequest = yar.default;
+    debug/* default */.Z.log("Inited yandexRequest...");
+    // Initialize variables
+    const body = yandexProtobuf.encodeStreamRequest(
+      url,
+      requestLang,
+      responseLang,
+    );
+    // Send the request
+    await yandexRequest(
+      "/stream-translation/translate-stream",
+      body,
+      {
+        "Vtrans-Signature": await getSignature(body),
+        "Sec-Vtrans-Token": getUUID(false),
+      },
+      callback,
+    );
+  } catch (exception) {
+    console.error("[VOT]", exception);
+    // Handle errors
+    callback(false);
+  }
+}
+
+/* harmony default export */ const rst = (requestStreamTranslation);
 
 ;// CONCATENATED MODULE: ./src/rvt.js
 
@@ -2683,85 +2740,6 @@ async function requestVideoTranslation(
 
 /* harmony default export */ const rvt = (requestVideoTranslation);
 
-;// CONCATENATED MODULE: ./src/rst.js
-
-
-
-
-
-// Request stream translation from Yandex API
-async function requestStreamTranslation(
-  url,
-  requestLang,
-  responseLang,
-  callback,
-) {
-  try {
-    debug/* default */.Z.log("requestStreamTranslation");
-    // ! CURRENT CLOUDFLARE WORKER DOESN'T SUPPORT STREAM TRANSLATIONS
-    const yar = await Promise.resolve(/* import() */).then(__webpack_require__.bind(__webpack_require__, "./src/yandexRequest.js"));
-    const yandexRequest = yar.default;
-    debug/* default */.Z.log("Inited yandexRequest...");
-    // Initialize variables
-    const body = yandexProtobuf.encodeStreamRequest(
-      url,
-      requestLang,
-      responseLang,
-    );
-    // Send the request
-    await yandexRequest(
-      "/stream-translation/translate-stream",
-      body,
-      {
-        "Vtrans-Signature": await getSignature(body),
-        "Sec-Vtrans-Token": getUUID(false),
-      },
-      callback,
-    );
-  } catch (exception) {
-    console.error("[VOT]", exception);
-    // Handle errors
-    callback(false);
-  }
-}
-
-/* harmony default export */ const rst = (requestStreamTranslation);
-
-;// CONCATENATED MODULE: ./src/rsp.js
-
-
-
-
-
-// Request stream ping from Yandex API
-async function requestStreamPing(pingId, callback) {
-  try {
-    debug/* default */.Z.log("requestStreamPing");
-    // ! CURRENT CLOUDFLARE WORKER DOESN'T SUPPORT STREAM TRANSLATIONS
-    const yar = await Promise.resolve(/* import() */).then(__webpack_require__.bind(__webpack_require__, "./src/yandexRequest.js"));
-    const yandexRequest = yar.default;
-    debug/* default */.Z.log("Inited yandexRequest...");
-    // Initialize variables
-    const body = yandexProtobuf.encodeStreamPingRequest(pingId);
-    // Send the request
-    await yandexRequest(
-      "/stream-translation/ping-stream",
-      body,
-      {
-        "Vtrans-Signature": await getSignature(body),
-        "Sec-Vtrans-Token": getUUID(false),
-      },
-      callback,
-    );
-  } catch (exception) {
-    console.error("[VOT]", exception);
-    // Handle errors
-    callback(false);
-  }
-}
-
-/* harmony default export */ const rsp = (requestStreamPing);
-
 ;// CONCATENATED MODULE: ./src/rvs.js
 
 
@@ -2810,14 +2788,13 @@ function formatYandexSubtitlesTokens(line) {
     const lastToken = result[result.length - 1];
     const alignRangeEnd = lastToken?.alignRange?.end ?? 0;
     const newAlignRangeEnd = alignRangeEnd + token.text.length;
-    result.push(
-      Object.assign(Object.assign({}, token), {
-        alignRange: {
-          start: alignRangeEnd,
-          end: newAlignRangeEnd,
-        },
-      }),
-    );
+    result.push({
+      ...token,
+      alignRange: {
+        start: alignRangeEnd,
+        end: newAlignRangeEnd,
+      },
+    });
     if (nextToken) {
       const endMs = token.startMs + token.durationMs;
       const durationMs = nextToken.startMs
@@ -2838,33 +2815,32 @@ function formatYandexSubtitlesTokens(line) {
 }
 
 function createSubtitlesTokens(line, previousLineLastToken) {
-  const tokens = line.text
-    .split(new RegExp("([\n \t])"))
-    .reduce((result, tokenText) => {
-      if (tokenText.length) {
-        const lastToken = result[result.length - 1] ?? previousLineLastToken;
-        const alignRangeStart = lastToken?.alignRange?.end ?? 0;
-        const alignRangeEnd = alignRangeStart + tokenText.length;
-        result.push({
-          text: tokenText,
-          alignRange: {
-            start: alignRangeStart,
-            end: alignRangeEnd,
-          },
-        });
-      }
-      return result;
-    }, []);
+  const tokens = line.text.split(/([\n \t])/).reduce((result, tokenText) => {
+    if (tokenText.length) {
+      const lastToken = result[result.length - 1] ?? previousLineLastToken;
+      const alignRangeStart = lastToken?.alignRange?.end ?? 0;
+      const alignRangeEnd = alignRangeStart + tokenText.length;
+      result.push({
+        text: tokenText,
+        alignRange: {
+          start: alignRangeStart,
+          end: alignRangeEnd,
+        },
+      });
+    }
+    return result;
+  }, []);
   const tokenDurationMs = Math.floor(line.durationMs / tokens.length);
   const lineEndMs = line.startMs + line.durationMs;
   return tokens.map((token, index) => {
     const isLastToken = index === tokens.length - 1;
     const startMs = line.startMs + tokenDurationMs * index;
     const durationMs = isLastToken ? lineEndMs - startMs : tokenDurationMs;
-    return Object.assign(Object.assign({}, token), {
+    return {
+      ...token,
       startMs,
       durationMs,
-    });
+    };
   });
 }
 
@@ -2885,11 +2861,10 @@ function getSubtitlesTokens(subtitles, source) {
       tokens = createSubtitlesTokens(line, lastToken);
     }
     lastToken = tokens[tokens.length - 1];
-    result.push(
-      Object.assign(Object.assign({}, line), {
-        tokens,
-      }),
-    );
+    result.push({
+      ...line,
+      tokens,
+    });
   }
   subtitles.containsTokens = true;
   return result;
@@ -3603,106 +3578,6 @@ const udemyUtils = {
   getLectureData,
 };
 
-// EXTERNAL MODULE: ./node_modules/requestidlecallback-polyfill/index.js
-var requestidlecallback_polyfill = __webpack_require__("./node_modules/requestidlecallback-polyfill/index.js");
-;// CONCATENATED MODULE: ./src/utils/EventImpl.js
-class EventImpl {
-  constructor() {
-    this.listeners = new Set();
-  }
-  hasListener(e) {
-    return this.listeners.has(e);
-  }
-  dispatchToListener(handler, ...args) {
-    try {
-      handler(...args);
-    } catch (exception) {
-      console.error("[VOT]", exception);
-    }
-  }
-  addListener(handler) {
-    if (this.hasListener(handler)) {
-      throw new Error("[VOT] The listener has already been added.");
-    }
-    this.listeners.add(handler);
-  }
-  removeListener(handler) {
-    if (!this.hasListener(handler)) {
-      throw new Error("[VOT] The listener has not been added yet.");
-    }
-    this.listeners.delete(handler);
-  }
-  dispatch(...args) {
-    for (const handler of Array.from(this.listeners)) {
-      this.dispatchToListener(handler, ...args);
-    }
-  }
-}
-
-;// CONCATENATED MODULE: ./src/utils/VideoObserver.js
-
-
-
-function filterVideoNodes(e) {
-  return Array.from(e)
-    .map((e) => {
-      const result = [];
-      if (e instanceof HTMLVideoElement) {
-        result.push(e);
-      }
-      if (e instanceof HTMLElement) {
-        result.push(...Array.from(e.querySelectorAll("video")));
-      }
-      if (e?.shadowRoot?.querySelectorAll) {
-        result.push(...Array.from(e.shadowRoot.querySelectorAll("video")));
-      }
-      return result;
-    })
-    .flat();
-}
-
-class VideoObserver {
-  constructor() {
-    this.onVideoAdded = new EventImpl();
-    this.onVideoRemoved = new EventImpl();
-    this.handleVideoAddedBound = this.handleVideoAdded.bind(this);
-    this.handleVideoRemovedBound = this.handleVideoRemoved.bind(this);
-    this.observer = new MutationObserver((mutationsList) => {
-      window.requestIdleCallback(
-        () => {
-          mutationsList.forEach((mutation) => {
-            if ("childList" !== mutation.type) return;
-
-            filterVideoNodes(mutation.addedNodes).forEach(
-              this.handleVideoAddedBound,
-            );
-            filterVideoNodes(mutation.removedNodes).forEach(
-              this.handleVideoRemovedBound,
-            );
-          });
-        },
-        { timeout: 1e3 },
-      );
-    });
-  }
-  enable() {
-    this.observer.observe(document, {
-      childList: true,
-      subtree: true,
-    });
-    document.querySelectorAll("video").forEach(this.handleVideoAddedBound);
-  }
-  disable() {
-    this.observer.disconnect();
-  }
-  handleVideoAdded(video) {
-    this.onVideoAdded.dispatch(video);
-  }
-  handleVideoRemoved(video) {
-    document.contains(video) || this.onVideoRemoved.dispatch(video);
-  }
-}
-
 ;// CONCATENATED MODULE: ./src/config/sites.js
 
 
@@ -3939,6 +3814,104 @@ const sites = () => {
 
 /* harmony default export */ const config_sites = (sites());
 
+// EXTERNAL MODULE: ./node_modules/requestidlecallback-polyfill/index.js
+var requestidlecallback_polyfill = __webpack_require__("./node_modules/requestidlecallback-polyfill/index.js");
+;// CONCATENATED MODULE: ./src/utils/EventImpl.js
+class EventImpl {
+  constructor() {
+    this.listeners = new Set();
+  }
+  hasListener(e) {
+    return this.listeners.has(e);
+  }
+  dispatchToListener(handler, ...args) {
+    try {
+      handler(...args);
+    } catch (exception) {
+      console.error("[VOT]", exception);
+    }
+  }
+  addListener(handler) {
+    if (this.hasListener(handler)) {
+      throw new Error("[VOT] The listener has already been added.");
+    }
+    this.listeners.add(handler);
+  }
+  removeListener(handler) {
+    if (!this.hasListener(handler)) {
+      throw new Error("[VOT] The listener has not been added yet.");
+    }
+    this.listeners.delete(handler);
+  }
+  dispatch(...args) {
+    for (const handler of Array.from(this.listeners)) {
+      this.dispatchToListener(handler, ...args);
+    }
+  }
+}
+
+;// CONCATENATED MODULE: ./src/utils/VideoObserver.js
+
+
+
+function filterVideoNodes(nodes) {
+  return Array.from(nodes).flatMap((node) => {
+    if (node instanceof HTMLVideoElement) {
+      return [node];
+    }
+    if (node instanceof HTMLElement) {
+      return Array.from(node.querySelectorAll("video"));
+    }
+    return node.shadowRoot
+      ? Array.from(node.shadowRoot.querySelectorAll("video"))
+      : [];
+  });
+}
+
+class VideoObserver {
+  constructor() {
+    this.onVideoAdded = new EventImpl();
+    this.onVideoRemoved = new EventImpl();
+    this.handleVideoAddedBound = this.handleVideoAdded.bind(this);
+    this.handleVideoRemovedBound = this.handleVideoRemoved.bind(this);
+    this.observer = new MutationObserver((mutationsList) => {
+      window.requestIdleCallback(
+        () => {
+          mutationsList.forEach((mutation) => {
+            if (mutation.type !== "childList") return;
+
+            filterVideoNodes(mutation.addedNodes).forEach(
+              this.handleVideoAddedBound,
+            );
+            filterVideoNodes(mutation.removedNodes).forEach(
+              this.handleVideoRemovedBound,
+            );
+          });
+        },
+        { timeout: 1000 },
+      );
+    });
+  }
+  enable() {
+    this.observer.observe(document, {
+      childList: true,
+      subtree: true,
+    });
+    document.querySelectorAll("video").forEach(this.handleVideoAddedBound);
+  }
+  disable() {
+    this.observer.disconnect();
+  }
+  handleVideoAdded(video) {
+    this.onVideoAdded.dispatch(video);
+  }
+  handleVideoRemoved(video) {
+    if (!document.contains(video)) {
+      this.onVideoRemoved.dispatch(video);
+    }
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/index.js
 
 
@@ -3978,6 +3951,7 @@ const videoLipSyncEvents = [
   "play",
   "waiting",
   "pause",
+  "volumechange",
 ];
 
 function genOptionsByOBJ(obj, conditionString, validateLangs = false) {
@@ -4156,10 +4130,7 @@ class VideoHandler {
     this.container = container;
     this.site = site;
     this.handleSrcChangedBound = this.handleSrcChanged.bind(this);
-    this.srcObserver = new MutationObserver(this.handleSrcChangedBound);
-    this.srcObserver.observe(this.video, {
-      attributeFilter: ["src", "currentSrc"],
-    });
+    this.video.addEventListener("loadedmetadata", this.handleSrcChangedBound);
     this.stopTranslationBound = this.stopTranslation.bind(this);
     this.handleVideoEventBound = this.handleVideoEvent.bind(this);
     this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
@@ -4216,6 +4187,7 @@ class VideoHandler {
       m3u8ProxyHost: await storage/* votStorage */.i.get("m3u8ProxyHost", config/* m3u8ProxyHost */.e6),
       proxyWorkerHost: await storage/* votStorage */.i.get("proxyWorkerHost", config/* proxyWorkerHost */.ez),
     };
+
     this.videoData = await this.getVideoData();
 
     console.log("[db] data from db: ", this.data);
@@ -4719,6 +4691,12 @@ class VideoHandler {
             return;
           }
 
+          if (this.hls.url) {
+            debug/* default */.Z.log("[click translationBtn] hls is not empty");
+            this.stopTraslate();
+            return;
+          }
+
           try {
             debug/* default */.Z.log("[click translationBtn] trying execute translation");
             const VIDEO_ID = (0,utils/* getVideoId */.gJ)(this.site.host, this.video);
@@ -5182,13 +5160,16 @@ class VideoHandler {
       this.container.draggable = false;
     }
 
-    addExtraEventListener(this.video, "abort", () => {
-      debug/* default */.Z.log("lipsync mode is abort");
+    addExtraEventListener(this.video, "emptied", () => {
+      debug/* default */.Z.log("lipsync mode is emptied");
       this.stopTranslation();
     });
 
     addExtraEventListener(this.video, "progress", async () => {
-      if (!(this.firstPlay && this.data.autoTranslate === 1)) {
+      if (
+        !(this.firstPlay && this.data.autoTranslate === 1) ||
+        (0,utils/* getVideoId */.gJ)(this.site.host, this.video) !== this.videoData.videoId
+      ) {
         return;
       }
 
@@ -5199,8 +5180,8 @@ class VideoHandler {
       }
 
       try {
-        await this.translateExecutor(VIDEO_ID);
         this.firstPlay = false;
+        await this.translateExecutor(VIDEO_ID);
       } catch (err) {
         console.error("[VOT]", err);
         if (err?.name === "VOTLocalizedError") {
@@ -5304,14 +5285,6 @@ class VideoHandler {
       return;
     }
 
-    if (!this.videoData.detectedLanguage) {
-      this.videoData = await this.getVideoData();
-      this.setSelectMenuValues(
-        this.videoData.detectedLanguage,
-        this.videoData.responseLanguage,
-      );
-    }
-
     this.subtitlesList = await subtitles_getSubtitles(
       this.site,
       VIDEO_ID,
@@ -5398,17 +5371,16 @@ class VideoHandler {
   }
 
   async getVideoData() {
-    const videoData = {};
-
-    // ! should be null for ALL websites except coursera and udemy !
-    // else use direct link: `{url: xxx.mp4}`
-    videoData.translationHelp = null;
-
-    videoData.isStream = false; // by default, we request the translation of the video
-    videoData.duration = this.video?.duration || 343; // ! if 0 - we get 400 error
-    videoData.videoId = (0,utils/* getVideoId */.gJ)(this.site.host, this.video);
-    videoData.detectedLanguage = this.translateFromLang;
-    videoData.responseLanguage = this.translateToLang;
+    const videoData = {
+      // ! should be null for ALL websites except coursera and udemy !
+      // else use direct link: `{url: xxx.mp4}`
+      translationHelp: null,
+      isStream: false, // by default, we request the translation of the video
+      duration: this.video?.duration || 343, // ! if 0 - we get 400 error
+      videoId: (0,utils/* getVideoId */.gJ)(this.site.host, this.video),
+      detectedLanguage: this.translateFromLang,
+      responseLanguage: this.translateToLang,
+    };
 
     if (!videoData.videoId) {
       this.ytData = {};
@@ -5453,16 +5425,18 @@ class VideoHandler {
       videoData.detectedLanguage = udemyData.detectedLanguage;
       videoData.translationHelp = udemyData.translationHelp;
     } else if (
-      this.site.host === "vk" ||
-      this.site.host === "piped" ||
-      this.site.host === "invidious" ||
-      this.site.host === "bitchute" ||
-      this.site.host === "rumble" ||
-      this.site.host === "peertube" ||
-      this.site.host === "dailymotion" ||
-      this.site.host === "trovo" ||
-      this.site.host === "yandexdisk" ||
-      this.site.host === "coursehunter"
+      [
+        "vk",
+        "piped",
+        "invidious",
+        "bitchute",
+        "rumble",
+        "peertube",
+        "dailymotion",
+        "trovo",
+        "yandexdisk",
+        "coursehunter",
+      ].includes(this.site.host)
     ) {
       videoData.detectedLanguage = "auto";
     }
@@ -5485,7 +5459,7 @@ class VideoHandler {
       // if (this.ytData.isLive) {
       //   throw new VOTLocalizedError("VOTLiveNotSupported");
       // }
-      if (this.videoData.duration > 14_400) {
+      if (!this.videoData.isStream && this.videoData.duration > 14_400) {
         throw new VOTLocalizedError("VOTVideoIsTooLong");
       }
     }
@@ -5532,18 +5506,12 @@ class VideoHandler {
       }
       return;
     }
-    if (mode == "pause") {
-      debug/* default */.Z.log("lipsync mode is pause");
+    // video is inactive
+    if (["pause", "stop", "waiting"].includes(mode)) {
+      debug/* default */.Z.log(`lipsync mode is ${mode}`);
       this.audio.pause();
     }
-    if (mode == "stop") {
-      debug/* default */.Z.log("lipsync mode is stop");
-      this.audio.pause();
-    }
-    if (mode == "waiting") {
-      debug/* default */.Z.log("lipsync mode is waiting");
-      this.audio.pause();
-    }
+
     if (mode == "playing") {
       debug/* default */.Z.log("lipsync mode is playing");
       this.audio.play();
@@ -5570,13 +5538,11 @@ class VideoHandler {
     this.votDownloadButton.hidden = true;
     this.downloadTranslationUrl = null;
     this.transformBtn("none", localizationProvider/* localizationProvider */.V.get("translateVideo"));
-    if (this.volumeOnStart) {
-      debug/* default */.Z.log(`Volume on start: ${this.volumeOnStart}`);
-      if (this.site.host === "youtube") {
-        youtubeUtils.setVideoVolume(this.volumeOnStart);
-      } else {
-        this.video.volume = this.volumeOnStart;
-      }
+    debug/* default */.Z.log(`Volume on start: ${this.volumeOnStart}`);
+    if (this.site.host === "youtube") {
+      youtubeUtils.setVideoVolume(this.volumeOnStart);
+    } else {
+      this.video.volume = this.volumeOnStart;
     }
     clearInterval(this.streamPing);
     this.hls?.destroy();
@@ -5584,14 +5550,6 @@ class VideoHandler {
   }
 
   async translateExecutor(VIDEO_ID) {
-    if (this.firstPlay) {
-      this.videoData = await this.getVideoData();
-      this.setSelectMenuValues(
-        this.videoData.detectedLanguage,
-        this.videoData.responseLanguage,
-      );
-    }
-
     debug/* default */.Z.log("Run translateFunc");
     this.translateFunc(
       VIDEO_ID,
@@ -5959,37 +5917,20 @@ class VideoHandler {
     this.syncVideoVolumeSlider();
   }
 
-  async waitInitialization() {
-    let resolved = false;
-    return await Promise.race([
-      new Promise((resolve) => {
-        setTimeout(() => {
-          if (!resolved) {
-            console.error("[VOT] Initialization timeout");
-            resolve(false);
-          }
-        }, 1000);
-      }),
-      new Promise((resolve) => {
-        const interval = setInterval(() => {
-          if (this.initialized) {
-            clearInterval(interval);
-            resolved = true;
-            resolve(true);
-          }
-        }, 100);
-      }),
-    ]);
-  }
-
   async handleSrcChanged() {
     debug/* default */.Z.log("[VideoHandler] src changed", this);
-
-    if (!(await this.waitInitialization())) return;
 
     this.stopTranslation();
 
     this.firstPlay = true;
+
+    this.videoData = await this.getVideoData();
+    if (this.videoData.detectedLanguage) {
+      this.setSelectMenuValues(
+        this.videoData.detectedLanguage,
+        this.videoData.responseLanguage,
+      );
+    }
 
     const hide =
       !this.video.src && !this.video.currentSrc && !this.video.srcObject;
@@ -6007,24 +5948,16 @@ class VideoHandler {
 
     await this.updateSubtitles();
     await this.changeSubtitlesLang("disabled");
-    this.setSelectMenuValues(
-      this.videoData.detectedLanguage,
-      this.data.responseLanguage ?? "ru",
-    );
     this.translateToLang = this.data.responseLanguage ?? "ru";
   }
 
   async release() {
     debug/* default */.Z.log("[VideoHandler] release");
 
-    if (!(await this.waitInitialization())) return;
     this.initialized = false;
-
     this.stopTranslation();
     this.releaseExtraEvents();
     this.subtitlesWidget.release();
-    this.srcObserver.disconnect();
-    clearInterval(this.srcObjectInterval);
     this.votButton.container.remove();
     this.votMenu.container.remove();
   }
@@ -6066,14 +5999,10 @@ async function src_main() {
     cfOnlyExtensions.includes(GM_info.scriptHandler)
   ) {
     console.error(
-      `[VOT] ${localizationProvider/* localizationProvider */.V
-        .getDefault("unSupportedExtensionError")
-        .format(GM_info.scriptHandler)}`,
+      `[VOT] ${localizationProvider/* localizationProvider */.V.getDefault("unSupportedExtensionError").replace("{0}", GM_info.scriptHandler)}`,
     );
     return alert(
-      `[VOT] ${localizationProvider/* localizationProvider */.V
-        .get("unSupportedExtensionError")
-        .format(GM_info.scriptHandler)}`,
+      `[VOT] ${localizationProvider/* localizationProvider */.V.get("unSupportedExtensionError").replace("{0}", GM_info.scriptHandler)}`,
     );
   }
 

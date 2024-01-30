@@ -1,52 +1,52 @@
-import "./styles/main.scss";
-import { VOTLocalizedError } from "./utils/VOTLocalizedError.js";
-import { youtubeUtils } from "./utils/youtubeUtils.js";
-import { yandexProtobuf } from "./yandexProtobuf.js";
-import {
-  getVideoId,
-  secsToStrTime,
-  lang,
-  isPiPAvailable,
-  initHls,
-} from "./utils/utils.js";
+import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
 import {
   defaultAutoVolume,
-  defaultTranslationService,
   defaultDetectService,
+  defaultTranslationService,
   m3u8ProxyHost,
   proxyWorkerHost,
 } from "./config/config.js";
-import { sitesInvidious, sitesPiped } from "./config/alternativeUrls.js";
 import {
-  availableLangs,
-  additionalTTS,
   actualTTS,
+  additionalTTS,
+  availableLangs,
   cfOnlyExtensions,
 } from "./config/constants.js";
 import {
-  localizationProvider,
   availableLocales,
+  localizationProvider,
 } from "./localization/localizationProvider.js";
+import "./styles/main.scss";
 import ui from "./ui.js";
-import { syncVolume } from "./utils/volume.js";
+import { VOTLocalizedError } from "./utils/VOTLocalizedError.js";
 import debug from "./utils/debug.js";
+import {
+  getVideoId,
+  initHls,
+  isPiPAvailable,
+  lang,
+  secsToStrTime,
+} from "./utils/utils.js";
+import { syncVolume } from "./utils/volume.js";
+import { youtubeUtils } from "./utils/youtubeUtils.js";
+import { yandexProtobuf } from "./yandexProtobuf.js";
 
 import Bowser from "bowser";
 
-import requestVideoTranslation from "./rvt.js";
-import requestStreamTranslation from "./rst.js";
 import requestStreamPing from "./rsp.js";
-import { getSubtitles, fetchSubtitles, SubtitlesWidget } from "./subtitles.js";
+import requestStreamTranslation from "./rst.js";
+import requestVideoTranslation from "./rvt.js";
+import { SubtitlesWidget, fetchSubtitles, getSubtitles } from "./subtitles.js";
 import { coursehunterUtils } from "./utils/coursehunterUtils.js";
 import { courseraUtils } from "./utils/courseraUtils.js";
 import { udemyUtils } from "./utils/udemyUtils.js";
 
-import { VideoObserver } from "./utils/VideoObserver.js";
 import sites from "./config/sites.js";
+import { VideoObserver } from "./utils/VideoObserver.js";
 import { votStorage } from "./utils/storage.js";
 import {
-  translate,
   detectServices,
+  translate,
   translateServices,
 } from "./utils/translateApis.js";
 
@@ -60,6 +60,7 @@ const videoLipSyncEvents = [
   "play",
   "waiting",
   "pause",
+  "volumechange",
 ];
 
 function genOptionsByOBJ(obj, conditionString, validateLangs = false) {
@@ -243,10 +244,7 @@ class VideoHandler {
     this.container = container;
     this.site = site;
     this.handleSrcChangedBound = this.handleSrcChanged.bind(this);
-    this.srcObserver = new MutationObserver(this.handleSrcChangedBound);
-    this.srcObserver.observe(this.video, {
-      attributeFilter: ["src", "currentSrc"],
-    });
+    this.video.addEventListener("loadedmetadata", this.handleSrcChangedBound);
     this.stopTranslationBound = this.stopTranslation.bind(this);
     this.handleVideoEventBound = this.handleVideoEvent.bind(this);
     this.changeOpacityOnEventBound = this.changeOpacityOnEvent.bind(this);
@@ -303,6 +301,7 @@ class VideoHandler {
       m3u8ProxyHost: await votStorage.get("m3u8ProxyHost", m3u8ProxyHost),
       proxyWorkerHost: await votStorage.get("proxyWorkerHost", proxyWorkerHost),
     };
+
     this.videoData = await this.getVideoData();
 
     console.log("[db] data from db: ", this.data);
@@ -806,6 +805,12 @@ class VideoHandler {
             return;
           }
 
+          if (this.hls.url) {
+            debug.log("[click translationBtn] hls is not empty");
+            this.stopTraslate();
+            return;
+          }
+
           try {
             debug.log("[click translationBtn] trying execute translation");
             const VIDEO_ID = getVideoId(this.site.host, this.video);
@@ -1269,13 +1274,16 @@ class VideoHandler {
       this.container.draggable = false;
     }
 
-    addExtraEventListener(this.video, "abort", () => {
-      debug.log("lipsync mode is abort");
+    addExtraEventListener(this.video, "emptied", () => {
+      debug.log("lipsync mode is emptied");
       this.stopTranslation();
     });
 
     addExtraEventListener(this.video, "progress", async () => {
-      if (!(this.firstPlay && this.data.autoTranslate === 1)) {
+      if (
+        !(this.firstPlay && this.data.autoTranslate === 1) ||
+        getVideoId(this.site.host, this.video) !== this.videoData.videoId
+      ) {
         return;
       }
 
@@ -1286,8 +1294,8 @@ class VideoHandler {
       }
 
       try {
-        await this.translateExecutor(VIDEO_ID);
         this.firstPlay = false;
+        await this.translateExecutor(VIDEO_ID);
       } catch (err) {
         console.error("[VOT]", err);
         if (err?.name === "VOTLocalizedError") {
@@ -1391,14 +1399,6 @@ class VideoHandler {
       return;
     }
 
-    if (!this.videoData.detectedLanguage) {
-      this.videoData = await this.getVideoData();
-      this.setSelectMenuValues(
-        this.videoData.detectedLanguage,
-        this.videoData.responseLanguage,
-      );
-    }
-
     this.subtitlesList = await getSubtitles(
       this.site,
       VIDEO_ID,
@@ -1485,17 +1485,16 @@ class VideoHandler {
   }
 
   async getVideoData() {
-    const videoData = {};
-
-    // ! should be null for ALL websites except coursera and udemy !
-    // else use direct link: `{url: xxx.mp4}`
-    videoData.translationHelp = null;
-
-    videoData.isStream = false; // by default, we request the translation of the video
-    videoData.duration = this.video?.duration || 343; // ! if 0 - we get 400 error
-    videoData.videoId = getVideoId(this.site.host, this.video);
-    videoData.detectedLanguage = this.translateFromLang;
-    videoData.responseLanguage = this.translateToLang;
+    const videoData = {
+      // ! should be null for ALL websites except coursera and udemy !
+      // else use direct link: `{url: xxx.mp4}`
+      translationHelp: null,
+      isStream: false, // by default, we request the translation of the video
+      duration: this.video?.duration || 343, // ! if 0 - we get 400 error
+      videoId: getVideoId(this.site.host, this.video),
+      detectedLanguage: this.translateFromLang,
+      responseLanguage: this.translateToLang,
+    };
 
     if (!videoData.videoId) {
       this.ytData = {};
@@ -1540,16 +1539,18 @@ class VideoHandler {
       videoData.detectedLanguage = udemyData.detectedLanguage;
       videoData.translationHelp = udemyData.translationHelp;
     } else if (
-      this.site.host === "vk" ||
-      this.site.host === "piped" ||
-      this.site.host === "invidious" ||
-      this.site.host === "bitchute" ||
-      this.site.host === "rumble" ||
-      this.site.host === "peertube" ||
-      this.site.host === "dailymotion" ||
-      this.site.host === "trovo" ||
-      this.site.host === "yandexdisk" ||
-      this.site.host === "coursehunter"
+      [
+        "vk",
+        "piped",
+        "invidious",
+        "bitchute",
+        "rumble",
+        "peertube",
+        "dailymotion",
+        "trovo",
+        "yandexdisk",
+        "coursehunter",
+      ].includes(this.site.host)
     ) {
       videoData.detectedLanguage = "auto";
     }
@@ -1572,7 +1573,7 @@ class VideoHandler {
       // if (this.ytData.isLive) {
       //   throw new VOTLocalizedError("VOTLiveNotSupported");
       // }
-      if (this.videoData.duration > 14_400) {
+      if (!this.videoData.isStream && this.videoData.duration > 14_400) {
         throw new VOTLocalizedError("VOTVideoIsTooLong");
       }
     }
@@ -1619,18 +1620,12 @@ class VideoHandler {
       }
       return;
     }
-    if (mode == "pause") {
-      debug.log("lipsync mode is pause");
+    // video is inactive
+    if (["pause", "stop", "waiting"].includes(mode)) {
+      debug.log(`lipsync mode is ${mode}`);
       this.audio.pause();
     }
-    if (mode == "stop") {
-      debug.log("lipsync mode is stop");
-      this.audio.pause();
-    }
-    if (mode == "waiting") {
-      debug.log("lipsync mode is waiting");
-      this.audio.pause();
-    }
+
     if (mode == "playing") {
       debug.log("lipsync mode is playing");
       this.audio.play();
@@ -1657,13 +1652,11 @@ class VideoHandler {
     this.votDownloadButton.hidden = true;
     this.downloadTranslationUrl = null;
     this.transformBtn("none", localizationProvider.get("translateVideo"));
-    if (this.volumeOnStart) {
-      debug.log(`Volume on start: ${this.volumeOnStart}`);
-      if (this.site.host === "youtube") {
-        youtubeUtils.setVideoVolume(this.volumeOnStart);
-      } else {
-        this.video.volume = this.volumeOnStart;
-      }
+    debug.log(`Volume on start: ${this.volumeOnStart}`);
+    if (this.site.host === "youtube") {
+      youtubeUtils.setVideoVolume(this.volumeOnStart);
+    } else {
+      this.video.volume = this.volumeOnStart;
     }
     clearInterval(this.streamPing);
     this.hls?.destroy();
@@ -1671,14 +1664,6 @@ class VideoHandler {
   }
 
   async translateExecutor(VIDEO_ID) {
-    if (this.firstPlay) {
-      this.videoData = await this.getVideoData();
-      this.setSelectMenuValues(
-        this.videoData.detectedLanguage,
-        this.videoData.responseLanguage,
-      );
-    }
-
     debug.log("Run translateFunc");
     this.translateFunc(
       VIDEO_ID,
@@ -2056,37 +2041,20 @@ class VideoHandler {
     this.syncVideoVolumeSlider();
   }
 
-  async waitInitialization() {
-    let resolved = false;
-    return await Promise.race([
-      new Promise((resolve) => {
-        setTimeout(() => {
-          if (!resolved) {
-            console.error("[VOT] Initialization timeout");
-            resolve(false);
-          }
-        }, 1000);
-      }),
-      new Promise((resolve) => {
-        const interval = setInterval(() => {
-          if (this.initialized) {
-            clearInterval(interval);
-            resolved = true;
-            resolve(true);
-          }
-        }, 100);
-      }),
-    ]);
-  }
-
   async handleSrcChanged() {
     debug.log("[VideoHandler] src changed", this);
-
-    if (!(await this.waitInitialization())) return;
 
     this.stopTranslation();
 
     this.firstPlay = true;
+
+    this.videoData = await this.getVideoData();
+    if (this.videoData.detectedLanguage) {
+      this.setSelectMenuValues(
+        this.videoData.detectedLanguage,
+        this.videoData.responseLanguage,
+      );
+    }
 
     const hide =
       !this.video.src && !this.video.currentSrc && !this.video.srcObject;
@@ -2104,24 +2072,16 @@ class VideoHandler {
 
     await this.updateSubtitles();
     await this.changeSubtitlesLang("disabled");
-    this.setSelectMenuValues(
-      this.videoData.detectedLanguage,
-      this.data.responseLanguage ?? "ru",
-    );
     this.translateToLang = this.data.responseLanguage ?? "ru";
   }
 
   async release() {
     debug.log("[VideoHandler] release");
 
-    if (!(await this.waitInitialization())) return;
     this.initialized = false;
-
     this.stopTranslation();
     this.releaseExtraEvents();
     this.subtitlesWidget.release();
-    this.srcObserver.disconnect();
-    clearInterval(this.srcObjectInterval);
     this.votButton.container.remove();
     this.votMenu.container.remove();
   }
@@ -2163,14 +2123,10 @@ async function main() {
     cfOnlyExtensions.includes(GM_info.scriptHandler)
   ) {
     console.error(
-      `[VOT] ${localizationProvider
-        .getDefault("unSupportedExtensionError")
-        .format(GM_info.scriptHandler)}`,
+      `[VOT] ${localizationProvider.getDefault("unSupportedExtensionError").replace("{0}", GM_info.scriptHandler)}`,
     );
     return alert(
-      `[VOT] ${localizationProvider
-        .get("unSupportedExtensionError")
-        .format(GM_info.scriptHandler)}`,
+      `[VOT] ${localizationProvider.get("unSupportedExtensionError").replace("{0}", GM_info.scriptHandler)}`,
     );
   }
 
