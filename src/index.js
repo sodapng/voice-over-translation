@@ -60,7 +60,6 @@ const videoLipSyncEvents = [
   "play",
   "waiting",
   "pause",
-  "volumechange",
 ];
 
 function genOptionsByOBJ(obj, conditionString, validateLangs = false) {
@@ -1653,10 +1652,12 @@ class VideoHandler {
     this.downloadTranslationUrl = null;
     this.transformBtn("none", localizationProvider.get("translateVideo"));
     debug.log(`Volume on start: ${this.volumeOnStart}`);
-    if (this.site.host === "youtube") {
-      youtubeUtils.setVideoVolume(this.volumeOnStart);
-    } else {
-      this.video.volume = this.volumeOnStart;
+    if (this.volumeOnStart) {
+      if (this.site.host === "youtube") {
+        youtubeUtils.setVideoVolume(this.volumeOnStart);
+      } else {
+        this.video.volume = this.volumeOnStart;
+      }
     }
     clearInterval(this.streamPing);
     this.hls?.destroy();
