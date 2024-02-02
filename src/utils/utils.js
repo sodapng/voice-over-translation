@@ -215,7 +215,7 @@ const getVideoId = (service, video) => {
       return `${path}?vid=${vid}`;
     }
     case "yandexdisk":
-      return url.pathname.match(/\/[i|s|d]\/([^/]+)/)?.[1];
+      return url.pathname.match(/\/i\/([^/]+)/)?.[1];
     case "coursehunter": {
       const courseId = url.pathname.match(/\/course\/([^/]+)/)?.[1];
       return courseId ? courseId + url.search : false;
