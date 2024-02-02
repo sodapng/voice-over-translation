@@ -4174,8 +4174,7 @@ class VideoHandler {
         1,
         true,
       ),
-      autoVolume:
-        (await storage/* votStorage */.i.get("autoVolume", config/* defaultAutoVolume */.sN, true)) / 100,
+      autoVolume: await storage/* votStorage */.i.get("autoVolume", config/* defaultAutoVolume */.sN, true),
       showVideoSlider: await storage/* votStorage */.i.get("showVideoSlider", 1, true),
       syncVolume: await storage/* votStorage */.i.get("syncVolume", 0, true),
       subtitlesMaxLength: await storage/* votStorage */.i.get("subtitlesMaxLength", 300, true),
@@ -4461,8 +4460,8 @@ class VideoHandler {
         this.votAutoSetVolumeCheckbox.container,
       );
       this.votAutoSetVolumeSlider = ui.createSlider(
-        `<strong>${
-          (this.data?.autoVolume ?? config/* defaultAutoVolume */.sN) * 100
+        `<strong>${(this.data?.autoVolume ?? config/* defaultAutoVolume */.sN) * 100}% ${
+          this.data?.autoVolume ?? config/* defaultAutoVolume */.sN
         }%</strong>`,
         (this.data?.autoVolume ?? config/* defaultAutoVolume */.sN) * 100,
         0,
@@ -4866,8 +4865,8 @@ class VideoHandler {
       this.votAutoSetVolumeSlider.input.addEventListener("input", (e) => {
         (async () => {
           const presetAutoVolume = Number(e.target.value);
-          this.data.autoVolume = presetAutoVolume / 100;
-          await storage/* votStorage */.i.set("autoVolume", presetAutoVolume);
+          this.data.autoVolume = (presetAutoVolume / 100).toFixed(2);
+          await storage/* votStorage */.i.set("autoVolume", this.data.autoVolume);
           this.votAutoSetVolumeSlider.label.querySelector("strong").innerHTML =
             `${presetAutoVolume}%`;
         })();
