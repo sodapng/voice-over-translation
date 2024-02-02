@@ -270,8 +270,7 @@ class VideoHandler {
         1,
         true,
       ),
-      autoVolume:
-        (await votStorage.get("autoVolume", defaultAutoVolume, true)) / 100,
+      autoVolume: await votStorage.get("autoVolume", defaultAutoVolume, true),
       showVideoSlider: await votStorage.get("showVideoSlider", 1, true),
       syncVolume: await votStorage.get("syncVolume", 0, true),
       subtitlesMaxLength: await votStorage.get("subtitlesMaxLength", 300, true),
@@ -557,8 +556,8 @@ class VideoHandler {
         this.votAutoSetVolumeCheckbox.container,
       );
       this.votAutoSetVolumeSlider = ui.createSlider(
-        `<strong>${
-          (this.data?.autoVolume ?? defaultAutoVolume) * 100
+        `<strong>${(this.data?.autoVolume ?? defaultAutoVolume) * 100}% ${
+          this.data?.autoVolume ?? defaultAutoVolume
         }%</strong>`,
         (this.data?.autoVolume ?? defaultAutoVolume) * 100,
         0,
@@ -962,8 +961,8 @@ class VideoHandler {
       this.votAutoSetVolumeSlider.input.addEventListener("input", (e) => {
         (async () => {
           const presetAutoVolume = Number(e.target.value);
-          this.data.autoVolume = presetAutoVolume / 100;
-          await votStorage.set("autoVolume", presetAutoVolume);
+          this.data.autoVolume = (presetAutoVolume / 100).toFixed(2);
+          await votStorage.set("autoVolume", this.data.autoVolume);
           this.votAutoSetVolumeSlider.label.querySelector("strong").innerHTML =
             `${presetAutoVolume}%`;
         })();
