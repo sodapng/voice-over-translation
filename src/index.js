@@ -556,9 +556,7 @@ class VideoHandler {
         this.votAutoSetVolumeCheckbox.container,
       );
       this.votAutoSetVolumeSlider = ui.createSlider(
-        `<strong>${(this.data?.autoVolume ?? defaultAutoVolume) * 100}% ${
-          this.data?.autoVolume ?? defaultAutoVolume
-        }%</strong>`,
+        `<strong>${(this.data?.autoVolume ?? defaultAutoVolume) * 100}%</strong>`,
         (this.data?.autoVolume ?? defaultAutoVolume) * 100,
         0,
         100,
