@@ -21,16 +21,12 @@ jobs:
           path: vot
           pattern: vot-*
           merge-multiple: true
-      - name: Grab and store version
-        run: |
-          tag_name=$(echo ${{ github.ref }} | grep -oE "[^/]+$")
-          echo "VERSION=$tag_name" >> $GITHUB_ENV
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.ref }}
-          name: ${{ env.VERSION }} ${{ github.sha }}
+          name: ${{ github.sha }}
           draft: true
           prerelease: false
           files: |
