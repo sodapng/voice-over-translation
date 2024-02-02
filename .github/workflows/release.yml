@@ -1,10 +1,7 @@
 # adopted from https://github.com/MihailRis/VoxelEngine-Cpp
 name: Build and Release
 
-on:
-  push:
-    tags:
-      - "*"
+on: [push]
 
 permissions:
   contents: write
@@ -33,7 +30,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.ref }}
-          name: ${{ env.VERSION }}
+          name: ${{ env.VERSION }} ${{ github.sha }}
           draft: true
           prerelease: false
           files: |
