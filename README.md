@@ -34,6 +34,7 @@
 - **[YouTube](https://www.youtube.com)**
 - **[Twitch](https://www.twitch.tv)**
 - **[VK](https://vk.com)**
+- **[OK](https://ok.ru/)**
 - **[Twitter](https://twitter.com/)**
 - **[9GAG](https://9gag.com/gag/)**
 - **[Rutube](https://rutube.ru/)**
@@ -52,8 +53,7 @@
 - **[Peertube](https://tube.shanti.cafe/)**
 - **[Dailymotion](https://www.dailymotion.com/)**
 - **[Trovo](https://trovo.live/)**
-- **[Yandex Disk](https://disk.yandex.ru/)**
-- **[OK](https://ok.ru/)**
+- **[[⚠️] Yandex Disk](https://disk.yandex.ru/)**
 - **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[[⚠️] Invidious](https://yewtu.be)**
 - **[[⚠️] Piped](https://piped.video)**
