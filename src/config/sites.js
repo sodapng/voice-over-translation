@@ -233,6 +233,13 @@ const sites = () => {
       match: /^coursehunter.net$/,
       selector: "#oframeplayer > pjsdiv:nth-of-type(1)",
     },
+    // Нужно куда-то заливать данные о плейлисте
+    // {
+    //   host: "epicgames",
+    //   url: "https://dev.epicgames.com/community/learning/tutorials/",
+    //   match: /^dev.epicgames.com$/,
+    //   selector: "#vjs_video_3",
+    // },
   ];
 };
 

@@ -102,7 +102,7 @@
   ],
   "require": [
     "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",
-    "https://cdn.jsdelivr.net/npm/hls.js@1"
+    "https://cdn.jsdelivr.net/npm/@mistweaverco/hls.js-light/dist/hls.light.min.js"
   ],
   "grant": [
     "GM_xmlhttpRequest",
