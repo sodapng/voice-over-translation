@@ -141,7 +141,7 @@ async function getVideoData() {
   const player = getPlayer();
   const response = getPlayerResponse(); // null in /embed
   const data = getPlayerData();
-  const { author, title } = data ?? {};
+  const { title } = data ?? {};
   const {
     shortDescription: description,
     isLive,
@@ -154,7 +154,6 @@ async function getVideoData() {
     response,
     title,
     description,
-    author,
   );
   if (!availableLangs.includes(detectedLanguage)) {
     detectedLanguage = "en";
@@ -164,7 +163,6 @@ async function getVideoData() {
     isPremiere,
     title,
     description,
-    author,
     detectedLanguage,
   };
   debug.log("youtube video data:", videoData);

@@ -3,29 +3,30 @@ import { localizationProvider } from "../localization/localizationProvider.js";
 const userlang = navigator.language || navigator.userLanguage;
 export const lang = userlang?.substr(0, 2)?.toLowerCase() ?? "en";
 
-function waitForElm(selector) {
-  // https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
-  return new Promise((resolve) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      return resolve(element);
-    }
+// not used
+// function waitForElm(selector) {
+//   // https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
+//   return new Promise((resolve) => {
+//     const element = document.querySelector(selector);
+//     if (element) {
+//       return resolve(element);
+//     }
 
-    const observer = new MutationObserver(() => {
-      const element = document.querySelector(selector);
-      if (element) {
-        resolve(element);
-        observer.disconnect();
-      }
-    });
+//     const observer = new MutationObserver(() => {
+//       const element = document.querySelector(selector);
+//       if (element) {
+//         resolve(element);
+//         observer.disconnect();
+//       }
+//     });
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      once: true,
-    });
-  });
-}
+//     observer.observe(document.body, {
+//       childList: true,
+//       subtree: true,
+//       once: true,
+//     });
+//   });
+// }
 
 // not used
 // const sleep = (m) => new Promise((r) => setTimeout(r, m));
@@ -266,11 +267,4 @@ function initHls() {
     : undefined;
 }
 
-export {
-  waitForElm,
-  getVideoId,
-  secsToStrTime,
-  langTo6391,
-  isPiPAvailable,
-  initHls,
-};
+export { getVideoId, secsToStrTime, langTo6391, isPiPAvailable, initHls };

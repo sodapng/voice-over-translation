@@ -1656,6 +1656,7 @@ class VideoHandler {
         this.video.volume = this.volumeOnStart;
       }
     }
+    this.volumeOnStart = "";
     clearInterval(this.streamPing);
     this.hls?.destroy();
     this.hls = initHls();
@@ -1774,7 +1775,7 @@ class VideoHandler {
             this.hls.on(Hls.Events.MEDIA_ATTACHED, function () {
               debug.log("audio and hls.js are now bound together !");
             });
-            this.hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+            this.hls.on(Hls.Events.MANIFEST_PARSED, function (data) {
               debug.log(
                 "manifest loaded, found " +
                   data.levels.length +
@@ -1783,7 +1784,7 @@ class VideoHandler {
             });
             this.hls.loadSource(streamURL);
             this.hls.attachMedia(this.audio);
-            this.hls.on(Hls.Events.ERROR, function (event, data) {
+            this.hls.on(Hls.Events.ERROR, function (data) {
               if (data.fatal) {
                 switch (data.type) {
                   case Hls.ErrorTypes.MEDIA_ERROR:
@@ -1958,51 +1959,6 @@ class VideoHandler {
           case "invidious":
           case "piped":
             break;
-        }
-
-        if (
-          !this.video.src &&
-          !this.video.currentSrc &&
-          !this.video.srcObject
-        ) {
-          this.stopTranslation();
-          return;
-        }
-
-        const siteHostnames = [
-          "twitch",
-          "vimeo",
-          "facebook",
-          "rutube",
-          "twitter",
-          "bilibili",
-          "mail_ru",
-          "rumble",
-          "eporner",
-        ];
-        for (let i = 0; i < siteHostnames.length; i++) {
-          if (this.site.host === siteHostnames[i]) {
-            const mutationObserver = new MutationObserver((mutations) => {
-              mutations.forEach((mutation) => {
-                if (
-                  mutation.type === "attributes" &&
-                  mutation.attributeName === "src" &&
-                  mutation.target === this.video &&
-                  mutation.target.src !== ""
-                ) {
-                  this.stopTranslation();
-                  this.firstPlay = true;
-                }
-              });
-            });
-            mutationObserver.observe(this.container, {
-              attributes: true,
-              childList: false,
-              subtree: true,
-              attributeOldValue: true,
-            });
-            break;
-          }
         }
 
         if (this.video && !this.video.paused) this.lipSync("play");
