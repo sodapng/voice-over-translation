@@ -43,14 +43,10 @@ async function getLanguage(player, response, title, description) {
     /Paypal/g,
   ];
 
-  let cleanedDescription;
-
-  if (description.length < 3500) {
-    cleanedDescription = description
-      .split("\n\n")
-      .filter((line) => !deletefilter.some((regex) => regex.test(line)))
-      .join("\n\n");
-  }
+  const cleanedDescription = description
+    .split("\n\n")
+    .filter((line) => !deletefilter.some((regex) => regex.test(line)))
+    .join("\n\n");
 
   const cleanText = [title, cleanedDescription]
     .join(" ")
