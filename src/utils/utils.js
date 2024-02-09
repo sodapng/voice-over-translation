@@ -107,11 +107,14 @@ const getVideoId = (service, video) => {
       }
       return id;
     }
-    case "vimeo":
-      return (
+    case "vimeo": {
+      const appId = url.searchParams.get("app_id");
+      const videoId =
         url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||
-        url.pathname.match(/[^/]+$/)?.[0]
-      );
+        url.pathname.match(/[^/]+$/)?.[0];
+
+      return appId ? `${videoId}?app_id=${appId}` : videoId;
+    }
     case "xvideos":
       return url.pathname.match(/[^/]+\/[^/]+$/)?.[0];
     case "pornhub":
