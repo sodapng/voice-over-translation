@@ -233,6 +233,12 @@ const sites = () => {
       match: /^coursehunter.net$/,
       selector: "#oframeplayer > pjsdiv:nth-of-type(1)",
     },
+    {
+      host: "googledrive",
+      url: "https://drive.google.com/file/d/",
+      match: /^youtube.googleapis.com$/,
+      selector: ".html5-video-container",
+    },
     // Нужно куда-то заливать данные о плейлисте
     // {
     //   host: "epicgames",

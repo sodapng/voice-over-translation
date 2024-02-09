@@ -589,7 +589,8 @@ class VideoHandler {
         this.data?.syncVolume ?? false,
       );
       this.votSyncVolumeCheckbox.container.hidden =
-        this.site.host !== "youtube" || this.site.additionalData === "mobile";
+        !["youtube", "googledrive"].includes(this.site.host) ||
+        this.site.additionalData === "mobile";
       this.votSettingsDialog.bodyContainer.appendChild(
         this.votSyncVolumeCheckbox.container,
       );
@@ -1121,7 +1122,10 @@ class VideoHandler {
   releaseExtraEvents() {
     clearInterval(this.resizeInterval);
     this.resizeObserver?.disconnect();
-    if (this.site.host === "youtube" && this.site.additionalData !== "mobile") {
+    if (
+      ["youtube", "googledrive"].includes(this.site.host) &&
+      this.site.additionalData !== "mobile"
+    ) {
       this.syncVolumeObserver?.disconnect();
     }
 
@@ -1170,7 +1174,10 @@ class VideoHandler {
       );
     }, 500);
     // Sync volume slider with original video (youtube only)
-    if (this.site.host === "youtube" && this.site.additionalData !== "mobile") {
+    if (
+      ["youtube", "googledrive"].includes(this.site.host) &&
+      this.site.additionalData !== "mobile"
+    ) {
       this.syncVolumeObserver = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           if (
@@ -1411,7 +1418,7 @@ class VideoHandler {
   // Get video volume in 0.00-1.00 format
   getVideoVolume() {
     let videoVolume = this.video?.volume;
-    if (this.site.host === "youtube") {
+    if (["youtube", "googledrive"].includes(this.site.host)) {
       videoVolume = youtubeUtils.getVideoVolume() || videoVolume;
     }
     return videoVolume;
@@ -1419,7 +1426,7 @@ class VideoHandler {
 
   // Set video volume in 0.00-1.00 format
   setVideoVolume(volume) {
-    if (this.site.host === "youtube") {
+    if (["youtube", "googledrive"].includes(this.site.host)) {
       const videoVolume = youtubeUtils.setVideoVolume(volume);
       if (videoVolume) {
         return;
@@ -1650,7 +1657,7 @@ class VideoHandler {
     this.transformBtn("none", localizationProvider.get("translateVideo"));
     debug.log(`Volume on start: ${this.volumeOnStart}`);
     if (this.volumeOnStart) {
-      if (this.site.host === "youtube") {
+      if (["youtube", "googledrive"].includes(this.site.host)) {
         youtubeUtils.setVideoVolume(this.volumeOnStart);
       } else {
         this.video.volume = this.volumeOnStart;

@@ -224,6 +224,8 @@ const getVideoId = (service, video) => {
     case "ok.ru": {
       return url.pathname.match(/\/video\/(\d+)/)?.[0];
     }
+    case "googledrive":
+      return url.searchParams.get("docid");
     default:
       return false;
   }
