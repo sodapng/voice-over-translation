@@ -258,6 +258,14 @@ const sites = () => {
         url.host.includes("facebook.com") && url.pathname.includes("/videos/"),
       selector: 'div[data-pagelet="WatchPermalinkVideo"]',
     },
+    {
+      additionalData: "reels",
+      host: "facebook",
+      url: "https://facebook.com", // <-- there should be no slash because we take the whole pathname
+      match: (url) =>
+        url.host.includes("facebook.com") && url.pathname.includes("/reel/"),
+      selector: 'div[role="main"]',
+    },
     // Нужно куда-то заливать данные о плейлисте
     // {
     //   host: "epicgames",
