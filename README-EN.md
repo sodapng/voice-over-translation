@@ -34,7 +34,7 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[Twitch](https://www.twitch.tv)**
 - **[VK](https://vk.com)**
 - **[OK](https://ok.ru/)**
-- **[Twitter](https://twitter.com/)**
+- **[[⚠️] Twitter](https://twitter.com/)**
 - **[9GAG](https://9gag.com/gag/)**
 - **[Rutube](https://rutube.ru/)**
 - **[Bilibili](https://bilibili.com/)**
@@ -45,7 +45,7 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[Bitchute](https://www.bitchute.com/)**
 - **[Coursera](https://www.coursera.org/)**
 - **[[⚠️] Udemy](https://www.udemy.com/)**
-- **[[❌] Facebook*](https://facebook.com/)**
+- **[[⚠️] Facebook*](https://facebook.com/)**
 - **[TikTok](https://tiktok.com/)**
 - **[Rumble](https://rumble.com/)**
 - **[EPorner](https://www.eporner.com/)**
@@ -53,6 +53,8 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[Dailymotion](https://www.dailymotion.com/)**
 - **[Trovo](https://trovo.live/)**
 - **[[⚠️] Yandex Disk](https://disk.yandex.ru/)**
+- **[Google Drive](https://drive.google.com/)**
+- **[Banned Video](https://banned.video/)**
 - **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[[⚠️] Invidious](https://yewtu.be)**
 - **[[⚠️] Piped](https://piped.video)**
