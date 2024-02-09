@@ -226,6 +226,8 @@ const getVideoId = (service, video) => {
     }
     case "googledrive":
       return url.searchParams.get("docid");
+    case "bannedvideo":
+      return url.searchParams.get("id");
     default:
       return false;
   }

@@ -239,6 +239,12 @@ const sites = () => {
       match: /^youtube.googleapis.com$/,
       selector: ".html5-video-container",
     },
+    {
+      host: "bannedvideo",
+      url: "https://banned.video/watch?id=",
+      match: /^(www.)?banned.video$/,
+      selector: ".vjs-v7",
+    },
     // Нужно куда-то заливать данные о плейлисте
     // {
     //   host: "epicgames",

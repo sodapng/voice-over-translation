@@ -40,6 +40,7 @@ import { SubtitlesWidget, fetchSubtitles, getSubtitles } from "./subtitles.js";
 import { coursehunterUtils } from "./utils/coursehunterUtils.js";
 import { courseraUtils } from "./utils/courseraUtils.js";
 import { udemyUtils } from "./utils/udemyUtils.js";
+import { bannedvideoUtils } from "./utils/bannedvideoUtils.js";
 
 import sites from "./config/sites.js";
 import { VideoObserver } from "./utils/VideoObserver.js";
@@ -1533,6 +1534,16 @@ class VideoHandler {
         url: coursehunterData.url,
       };
       videoData.duration = coursehunterData.duration || videoData.duration;
+    } else if (window.location.hostname.includes("banned.video")) {
+      const bannedvideoData = await bannedvideoUtils.getVideoData(
+        videoData.videoId,
+      );
+      videoData.translationHelp = {
+        url: bannedvideoData.url,
+      };
+
+      videoData.duration = bannedvideoData.duration || videoData.duration;
+      videoData.isStream = bannedvideoData.live;
     } else if (window.location.hostname.includes("udemy.com")) {
       const udemyData = await udemyUtils.getVideoData(
         this.data.udemyData,

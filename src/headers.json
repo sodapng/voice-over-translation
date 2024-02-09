@@ -99,7 +99,8 @@
     "*://trovo.live/*",
     "*://disk.yandex.ru/i/*",
     "*://coursehunter.net/*",
-    "*://youtube.googleapis.com/embed/*"
+    "*://youtube.googleapis.com/embed/*",
+    "*://*.banned.video/*"
   ],
   "require": [
     "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",
