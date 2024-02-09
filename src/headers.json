@@ -100,7 +100,8 @@
     "*://disk.yandex.ru/i/*",
     "*://coursehunter.net/*",
     "*://youtube.googleapis.com/embed/*",
-    "*://*.banned.video/*"
+    "*://*.banned.video/*",
+    "*://*.facebook.com/*"
   ],
   "require": [
     "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",

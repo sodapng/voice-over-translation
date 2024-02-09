@@ -129,17 +129,7 @@ const getVideoId = (service, video) => {
     case "rumble":
       return url.pathname;
     case "facebook":
-      // ...watch?v=XXX
-      // CHANNEL_ID/videos/VIDEO_ID/
-      // returning "Видео недоступно для перевода"
-
-      // fb.watch/YYY
-      // returning "Возникла ошибка, попробуйте позже"
-      if (url.searchParams.get("v")) {
-        return url.searchParams.get("v");
-      }
-
-      return false;
+      return url.pathname;
     case "rutube":
       return url.pathname.match(/(?:video|embed)\/([^/]+)/)?.[1];
     case "coub":
