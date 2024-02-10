@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.5.1-beta3
+// @version 1.5.1-beta5
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -105,6 +105,9 @@
 // @match *://trovo.live/*
 // @match *://disk.yandex.ru/i/*
 // @match *://coursehunter.net/*
+// @match *://youtube.googleapis.com/embed/*
+// @match *://*.banned.video/*
+// @match *://*.weverse.io/*
 // @connect api.browser.yandex.ru
 // @downloadURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/dev/dist/vot.user.js
 // @grant GM_xmlhttpRequest
@@ -117,7 +120,7 @@
 // @icon https://translate.yandex.ru/icons/favicon.ico
 // @namespace vot
 // @require https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js
-// @require https://cdn.jsdelivr.net/npm/@mistweaverco/hls.js-light/dist/hls.light.min.js
+// @require https://cdn.jsdelivr.net/npm/hls.js/dist/hls.light.min.js
 // @updateURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/dev/dist/vot.user.js
 // ==/UserScript==
 
@@ -931,36 +934,36 @@ const votStorage = new (class {
 /* harmony export */   gJ: () => (/* binding */ getVideoId),
 /* harmony export */   qq: () => (/* binding */ isPiPAvailable)
 /* harmony export */ });
-/* unused harmony export waitForElm */
 /* harmony import */ var _localization_localizationProvider_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./src/localization/localizationProvider.js");
 
 
 const userlang = navigator.language || navigator.userLanguage;
 const lang = userlang?.substr(0, 2)?.toLowerCase() ?? "en";
 
-function waitForElm(selector) {
-  // https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
-  return new Promise((resolve) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      return resolve(element);
-    }
+// not used
+// function waitForElm(selector) {
+//   // https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
+//   return new Promise((resolve) => {
+//     const element = document.querySelector(selector);
+//     if (element) {
+//       return resolve(element);
+//     }
 
-    const observer = new MutationObserver(() => {
-      const element = document.querySelector(selector);
-      if (element) {
-        resolve(element);
-        observer.disconnect();
-      }
-    });
+//     const observer = new MutationObserver(() => {
+//       const element = document.querySelector(selector);
+//       if (element) {
+//         resolve(element);
+//         observer.disconnect();
+//       }
+//     });
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      once: true,
-    });
-  });
-}
+//     observer.observe(document.body, {
+//       childList: true,
+//       subtree: true,
+//       once: true,
+//     });
+//   });
+// }
 
 // not used
 // const sleep = (m) => new Promise((r) => setTimeout(r, m));
@@ -1041,11 +1044,14 @@ const getVideoId = (service, video) => {
       }
       return id;
     }
-    case "vimeo":
-      return (
+    case "vimeo": {
+      const appId = url.searchParams.get("app_id");
+      const videoId =
         url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||
-        url.pathname.match(/[^/]+$/)?.[0]
-      );
+        url.pathname.match(/[^/]+$/)?.[0];
+
+      return appId ? `${videoId}?app_id=${appId}` : videoId;
+    }
     case "xvideos":
       return url.pathname.match(/[^/]+\/[^/]+$/)?.[0];
     case "pornhub":
@@ -1060,17 +1066,7 @@ const getVideoId = (service, video) => {
     case "rumble":
       return url.pathname;
     case "facebook":
-      // ...watch?v=XXX
-      // CHANNEL_ID/videos/VIDEO_ID/
-      // returning "Видео недоступно для перевода"
-
-      // fb.watch/YYY
-      // returning "Возникла ошибка, попробуйте позже"
-      if (url.searchParams.get("v")) {
-        return url.searchParams.get("v");
-      }
-
-      return false;
+      return url.pathname;
     case "rutube":
       return url.pathname.match(/(?:video|embed)\/([^/]+)/)?.[1];
     case "coub":
@@ -1158,6 +1154,12 @@ const getVideoId = (service, video) => {
     case "ok.ru": {
       return url.pathname.match(/\/video\/(\d+)/)?.[0];
     }
+    case "googledrive":
+      return url.searchParams.get("docid");
+    case "bannedvideo":
+      return url.searchParams.get("id");
+    case "weverse":
+      return url.pathname.match(/([^/]+)\/(live|media)\/([^/]+)/)?.[0];
     default:
       return false;
   }
@@ -2091,338 +2093,6 @@ function syncVolume(element, sliderVolume, otherSliderVolume, tempVolume) {
 
 
 
-// EXTERNAL MODULE: ./src/utils/storage.js
-var storage = __webpack_require__("./src/utils/storage.js");
-;// CONCATENATED MODULE: ./src/utils/translateApis.js
-
-
-
-const HTTP_TIMEOUT = 3000;
-
-async function fetchWithTimeout(url, options) {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), HTTP_TIMEOUT);
-
-  try {
-    return await fetch(url, {
-      ...options,
-      signal: controller.signal,
-    });
-  } catch (error) {
-    console.error("Fetch timed-out. Error:", error);
-    return error;
-  } finally {
-    clearTimeout(timeoutId);
-  }
-}
-
-const YandexTranslateAPI = {
-  async translate(text, lang) {
-    // Limit: 10k symbols
-    //
-    // Lang examples:
-    // en-ru, uk-ru, ru-en...
-    // ru, en (instead of auto-ru, auto-en)
-
-    try {
-      const response = await fetchWithTimeout(config/* translateUrls */.rm.yandex, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          text,
-          lang,
-        }),
-      });
-
-      if (response instanceof Error) {
-        throw response;
-      }
-
-      const content = await response.json();
-
-      if (content.code !== 200) {
-        throw content.message;
-      }
-
-      return content.text[0];
-    } catch (error) {
-      console.error("Error translating text:", error);
-      return text;
-    }
-  },
-
-  async detect(text, lang) {
-    // Limit: 10k symbols
-    try {
-      const response = await fetchWithTimeout(config/* detectUrls */.jm.yandex, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          text,
-          lang,
-        }),
-      });
-
-      if (response instanceof Error) {
-        throw response;
-      }
-
-      const content = await response.json();
-      if (content.code !== 200) {
-        throw content.message;
-      }
-
-      return content.lang ?? "en";
-    } catch (error) {
-      console.error("Error translating text:", error);
-      return "en";
-    }
-  },
-};
-
-const RustServerAPI = {
-  async detect(text) {
-    try {
-      const response = await fetch(config/* detectUrls */.jm.rustServer, {
-        method: "POST",
-        body: text,
-      });
-
-      if (response instanceof Error) {
-        throw response;
-      }
-
-      return await response.text();
-    } catch (error) {
-      console.error("Error getting lang from text:", error);
-      return "en";
-    }
-  },
-};
-
-async function translate(text, fromLang = "", toLang = "ru") {
-  const service = await storage/* votStorage */.i.get(
-    "translationService",
-    config/* defaultTranslationService */.kF,
-  );
-  switch (service) {
-    case "yandex": {
-      const langPair = fromLang && toLang ? `${fromLang}-${toLang}` : toLang;
-      return await YandexTranslateAPI.translate(text, langPair);
-    }
-    default:
-      return text;
-  }
-}
-
-async function detect(text) {
-  const service = await storage/* votStorage */.i.get("detectService", config/* defaultDetectService */.EY);
-  switch (service) {
-    case "yandex":
-      return await YandexTranslateAPI.detect(text);
-    case "rust-server":
-      return await RustServerAPI.detect(text);
-    default:
-      return "en";
-  }
-}
-
-const translateServices = ["yandex"];
-const detectServices = ["yandex", "rust-server"];
-
-
-
-;// CONCATENATED MODULE: ./src/utils/youtubeUtils.js
-
-
-
-
-
-// Get the language code from the response or the text
-async function getLanguage(player, response, title, description) {
-  if (
-    !window.location.hostname.includes("m.youtube.com") &&
-    player?.getAudioTrack
-  ) {
-    // ! Experimental ! get lang from selected audio track if availabled
-    const audioTracks = player.getAudioTrack();
-    const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
-    if (trackInfo?.id !== "und") {
-      return (0,utils/* langTo6391 */.eL)(trackInfo.id.split(".")[0]);
-    }
-  }
-
-  // TODO: If the audio tracks will work fine, transfer the receipt of captions to the audioTracks variable
-  // Check if there is an automatic caption track in the response
-  const captionTracks =
-    response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
-  if (captionTracks?.length) {
-    const autoCaption = captionTracks.find((caption) => caption.kind === "asr");
-    if (autoCaption && autoCaption.languageCode) {
-      return (0,utils/* langTo6391 */.eL)(autoCaption.languageCode);
-    }
-  }
-
-  // If there is no caption track, use detect to get the language code from the description
-
-  const deletefilter = [
-    /(?:https?|ftp):\/\/[\n\S]+/g, //temp fix
-    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{0,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/gm, // remove links
-    /#[^\s#]+/g,
-    /Auto-generated by YouTube/g,
-    /Provided to YouTube by/g,
-    /Released on/g,
-    /Bitcoin/g,
-    /USDT/g,
-    /Paypal/g,
-  ];
-
-  const cleanedDescription = description
-    .split("\n\n")
-    .filter((line) => !deletefilter.some((regex) => regex.test(line)))
-    .join("\n\n")
-    .replace(/[^\p{L}\s]/gu, " ")
-    .trim()
-    .replace(/\s+/g, " ")
-    .slice(0, 250);
-
-  const cleanText = [cleanedDescription, title].join(" ");
-
-  return await detect(cleanText);
-}
-
-function isMobile() {
-  return /^m\.youtube\.com$/.test(window.location.hostname);
-}
-
-function getPlayer() {
-  if (window.location.pathname.startsWith("/shorts/")) {
-    return isMobile()
-      ? document.querySelector("#movie_player")
-      : document.querySelector("#shorts-player");
-  }
-
-  return document.querySelector("#movie_player");
-}
-
-function getPlayerResponse() {
-  const player = getPlayer();
-  if (player?.getPlayerResponse)
-    return player?.getPlayerResponse?.call() ?? null;
-  return player?.data?.playerResponse ?? null;
-}
-
-function getPlayerData() {
-  const player = getPlayer();
-  if (player?.getVideoData) return player?.getVideoData?.call() ?? null;
-  return player?.data?.playerResponse?.videoDetails ?? null;
-}
-
-function getVideoVolume() {
-  const player = getPlayer();
-  if (player?.getVolume) {
-    return player.getVolume.call() / 100;
-  }
-
-  return 1;
-}
-
-function setVideoVolume(volume) {
-  const player = getPlayer();
-  if (player?.setVolume) {
-    player.setVolume(Math.round(volume * 100));
-    return true;
-  }
-}
-
-function videoSeek(video, time) {
-  // * TIME IN MS
-  debug/* default */.Z.log("videoSeek", time);
-  const preTime =
-    getPlayer()?.getProgressState()?.seekableEnd || video.currentTime;
-  const finalTime = preTime - time; // we always throw it to the end of the stream - time
-  video.currentTime = finalTime;
-}
-
-function getSubtitles() {
-  const response = getPlayerResponse();
-  let captionTracks =
-    response?.captions?.playerCaptionsTracklistRenderer?.captionTracks ?? [];
-  captionTracks = captionTracks.reduce((result, captionTrack) => {
-    if ("languageCode" in captionTrack) {
-      const language = captionTrack?.languageCode
-        ? (0,utils/* langTo6391 */.eL)(captionTrack?.languageCode)
-        : undefined;
-      const url = captionTrack?.url || captionTrack?.baseUrl;
-      language &&
-        url &&
-        result.push({
-          source: "youtube",
-          language,
-          isAutoGenerated: captionTrack?.kind === "asr",
-          url: `${
-            url.startsWith("http") ? url : `${window.location.origin}/${url}`
-          }&fmt=json3`,
-        });
-    }
-    return result;
-  }, []);
-  debug/* default */.Z.log("youtube subtitles:", captionTracks);
-  return captionTracks;
-}
-
-// Get the video data from the player
-async function getVideoData() {
-  const player = getPlayer();
-  const response = getPlayerResponse(); // null in /embed
-  const data = getPlayerData();
-  const { author, title } = data ?? {};
-  const {
-    shortDescription: description,
-    isLive,
-    isLiveContent,
-    isUpcoming,
-  } = response?.videoDetails ?? {};
-  const isPremiere = (!!isLive || !!isUpcoming) && !isLiveContent;
-  let detectedLanguage = await getLanguage(
-    player,
-    response,
-    title,
-    description,
-    author,
-  );
-  if (!availableLangs.includes(detectedLanguage)) {
-    detectedLanguage = "en";
-  }
-  const videoData = {
-    isLive: !!isLive,
-    isPremiere,
-    title,
-    description,
-    author,
-    detectedLanguage,
-  };
-  debug/* default */.Z.log("youtube video data:", videoData);
-  console.log("[VOT] Detected language: ", videoData.detectedLanguage);
-  return videoData;
-}
-
-const youtubeUtils = {
-  isMobile,
-  getPlayer,
-  getPlayerResponse,
-  getPlayerData,
-  getVideoVolume,
-  getSubtitles,
-  getVideoData,
-  setVideoVolume,
-  videoSeek,
-};
-
 ;// CONCATENATED MODULE: ./src/yandexProtobuf.js
 // coursera & udemy translation help object
 const VideoTranslationHelpObject = new protobuf.Type(
@@ -2739,6 +2409,338 @@ async function requestVideoTranslation(
 }
 
 /* harmony default export */ const rvt = (requestVideoTranslation);
+
+// EXTERNAL MODULE: ./src/utils/storage.js
+var storage = __webpack_require__("./src/utils/storage.js");
+;// CONCATENATED MODULE: ./src/utils/translateApis.js
+
+
+
+const HTTP_TIMEOUT = 3000;
+
+async function fetchWithTimeout(url, options) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), HTTP_TIMEOUT);
+
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+  } catch (error) {
+    console.error("Fetch timed-out. Error:", error);
+    return error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+const YandexTranslateAPI = {
+  async translate(text, lang) {
+    // Limit: 10k symbols
+    //
+    // Lang examples:
+    // en-ru, uk-ru, ru-en...
+    // ru, en (instead of auto-ru, auto-en)
+
+    try {
+      const response = await fetchWithTimeout(config/* translateUrls */.rm.yandex, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          text,
+          lang,
+        }),
+      });
+
+      if (response instanceof Error) {
+        throw response;
+      }
+
+      const content = await response.json();
+
+      if (content.code !== 200) {
+        throw content.message;
+      }
+
+      return content.text[0];
+    } catch (error) {
+      console.error("Error translating text:", error);
+      return text;
+    }
+  },
+
+  async detect(text, lang) {
+    // Limit: 10k symbols
+    try {
+      const response = await fetchWithTimeout(config/* detectUrls */.jm.yandex, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          text,
+          lang,
+        }),
+      });
+
+      if (response instanceof Error) {
+        throw response;
+      }
+
+      const content = await response.json();
+      if (content.code !== 200) {
+        throw content.message;
+      }
+
+      return content.lang ?? "en";
+    } catch (error) {
+      console.error("Error translating text:", error);
+      return "en";
+    }
+  },
+};
+
+const RustServerAPI = {
+  async detect(text) {
+    try {
+      const response = await fetch(config/* detectUrls */.jm.rustServer, {
+        method: "POST",
+        body: text,
+      });
+
+      if (response instanceof Error) {
+        throw response;
+      }
+
+      return await response.text();
+    } catch (error) {
+      console.error("Error getting lang from text:", error);
+      return "en";
+    }
+  },
+};
+
+async function translate(text, fromLang = "", toLang = "ru") {
+  const service = await storage/* votStorage */.i.get(
+    "translationService",
+    config/* defaultTranslationService */.kF,
+  );
+  switch (service) {
+    case "yandex": {
+      const langPair = fromLang && toLang ? `${fromLang}-${toLang}` : toLang;
+      return await YandexTranslateAPI.translate(text, langPair);
+    }
+    default:
+      return text;
+  }
+}
+
+async function detect(text) {
+  const service = await storage/* votStorage */.i.get("detectService", config/* defaultDetectService */.EY);
+  switch (service) {
+    case "yandex":
+      return await YandexTranslateAPI.detect(text);
+    case "rust-server":
+      return await RustServerAPI.detect(text);
+    default:
+      return "en";
+  }
+}
+
+const translateServices = ["yandex"];
+const detectServices = ["yandex", "rust-server"];
+
+
+
+;// CONCATENATED MODULE: ./src/utils/youtubeUtils.js
+
+
+
+
+
+// Get the language code from the response or the text
+async function getLanguage(player, response, title, description) {
+  if (
+    !window.location.hostname.includes("m.youtube.com") &&
+    player?.getAudioTrack
+  ) {
+    // ! Experimental ! get lang from selected audio track if availabled
+    const audioTracks = player.getAudioTrack();
+    const trackInfo = audioTracks?.getLanguageInfo(); // get selected track info (id === "und" if tracks are not available)
+    if (trackInfo?.id !== "und") {
+      return (0,utils/* langTo6391 */.eL)(trackInfo.id.split(".")[0]);
+    }
+  }
+
+  // TODO: If the audio tracks will work fine, transfer the receipt of captions to the audioTracks variable
+  // Check if there is an automatic caption track in the response
+  const captionTracks =
+    response?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
+  if (captionTracks?.length) {
+    const autoCaption = captionTracks.find((caption) => caption.kind === "asr");
+    if (autoCaption && autoCaption.languageCode) {
+      return (0,utils/* langTo6391 */.eL)(autoCaption.languageCode);
+    }
+  }
+
+  // If there is no caption track, use detect to get the language code from the description
+
+  const deletefilter = [
+    /(?:https?|ftp):\/\/[\S]+/g, //temp fix
+    /https?:\/\/\S+|www\.\S+/gm,
+    /\b\S+\.\S+/gm,
+    /#[^\s#]+/g, // hash tags
+    /Auto-generated by YouTube/g,
+    /Provided to YouTube by/g,
+    /Released on/g,
+    /Bitcoin/g,
+    /USDT/g,
+    /Paypal/g,
+  ];
+
+  const cleanedDescription = description
+    .split("\n\n")
+    .filter((line) => !deletefilter.some((regex) => regex.test(line)))
+    .join("\n\n");
+
+  const cleanText = [title, cleanedDescription]
+    .join(" ")
+    .replace(/[^\p{L}\s]/gu, " ")
+    .trim()
+    .replace(/\s+/g, " ")
+    .slice(0, 1000);
+
+  return await detect(cleanText);
+}
+
+function isMobile() {
+  return /^m\.youtube\.com$/.test(window.location.hostname);
+}
+
+function getPlayer() {
+  if (window.location.pathname.startsWith("/shorts/")) {
+    return isMobile()
+      ? document.querySelector("#movie_player")
+      : document.querySelector("#shorts-player");
+  }
+
+  return document.querySelector("#movie_player");
+}
+
+function getPlayerResponse() {
+  const player = getPlayer();
+  if (player?.getPlayerResponse)
+    return player?.getPlayerResponse?.call() ?? null;
+  return player?.data?.playerResponse ?? null;
+}
+
+function getPlayerData() {
+  const player = getPlayer();
+  if (player?.getVideoData) return player?.getVideoData?.call() ?? null;
+  return player?.data?.playerResponse?.videoDetails ?? null;
+}
+
+function getVideoVolume() {
+  const player = getPlayer();
+  if (player?.getVolume) {
+    return player.getVolume.call() / 100;
+  }
+
+  return 1;
+}
+
+function setVideoVolume(volume) {
+  const player = getPlayer();
+  if (player?.setVolume) {
+    player.setVolume(Math.round(volume * 100));
+    return true;
+  }
+}
+
+function videoSeek(video, time) {
+  // * TIME IN MS
+  debug/* default */.Z.log("videoSeek", time);
+  const preTime =
+    getPlayer()?.getProgressState()?.seekableEnd || video.currentTime;
+  const finalTime = preTime - time; // we always throw it to the end of the stream - time
+  video.currentTime = finalTime;
+}
+
+function getSubtitles() {
+  const response = getPlayerResponse();
+  let captionTracks =
+    response?.captions?.playerCaptionsTracklistRenderer?.captionTracks ?? [];
+  captionTracks = captionTracks.reduce((result, captionTrack) => {
+    if ("languageCode" in captionTrack) {
+      const language = captionTrack?.languageCode
+        ? (0,utils/* langTo6391 */.eL)(captionTrack?.languageCode)
+        : undefined;
+      const url = captionTrack?.url || captionTrack?.baseUrl;
+      language &&
+        url &&
+        result.push({
+          source: "youtube",
+          language,
+          isAutoGenerated: captionTrack?.kind === "asr",
+          url: `${
+            url.startsWith("http") ? url : `${window.location.origin}/${url}`
+          }&fmt=json3`,
+        });
+    }
+    return result;
+  }, []);
+  debug/* default */.Z.log("youtube subtitles:", captionTracks);
+  return captionTracks;
+}
+
+// Get the video data from the player
+async function getVideoData() {
+  const player = getPlayer();
+  const response = getPlayerResponse(); // null in /embed
+  const data = getPlayerData();
+  const { title } = data ?? {};
+  const {
+    shortDescription: description,
+    isLive,
+    isLiveContent,
+    isUpcoming,
+  } = response?.videoDetails ?? {};
+  const isPremiere = (!!isLive || !!isUpcoming) && !isLiveContent;
+  let detectedLanguage = await getLanguage(
+    player,
+    response,
+    title,
+    description,
+  );
+  if (!availableLangs.includes(detectedLanguage)) {
+    detectedLanguage = "en";
+  }
+  const videoData = {
+    isLive: !!isLive,
+    isPremiere,
+    title,
+    description,
+    detectedLanguage,
+  };
+  debug/* default */.Z.log("youtube video data:", videoData);
+  console.log("[VOT] Detected language: ", videoData.detectedLanguage);
+  return videoData;
+}
+
+/* harmony default export */ const youtubeUtils = ({
+  isMobile,
+  getPlayer,
+  getPlayerResponse,
+  getPlayerData,
+  getVideoVolume,
+  getSubtitles,
+  getVideoData,
+  setVideoVolume,
+  videoSeek,
+});
 
 ;// CONCATENATED MODULE: ./src/rvs.js
 
@@ -3298,9 +3300,9 @@ async function coursehunterUtils_getVideoData() {
   };
 }
 
-const coursehunterUtils = {
+/* harmony default export */ const coursehunterUtils = ({
   getVideoData: coursehunterUtils_getVideoData,
-};
+});
 
 ;// CONCATENATED MODULE: ./src/utils/courseraUtils.js
 
@@ -3398,11 +3400,11 @@ async function courseraUtils_getVideoData(responseLang = "en") {
   return videoData;
 }
 
-const courseraUtils = {
+/* harmony default export */ const courseraUtils = ({
   getPlayer: courseraUtils_getPlayer,
   getPlayerData: courseraUtils_getPlayerData,
   getVideoData: courseraUtils_getVideoData,
-};
+});
 
 ;// CONCATENATED MODULE: ./src/utils/udemyUtils.js
 
@@ -3569,14 +3571,278 @@ async function udemyUtils_getVideoData(udemyData, responseLang = "en") {
   return videoData;
 }
 
-const udemyUtils = {
+/* harmony default export */ const udemyUtils = ({
   getPlayer: udemyUtils_getPlayer,
   getPlayerData: udemyUtils_getPlayerData,
   getVideoData: udemyUtils_getVideoData,
   getModuleData,
   getCourseLang,
   getLectureData,
-};
+});
+
+;// CONCATENATED MODULE: ./src/utils/bannedvideoUtils.js
+
+
+async function getVideoInfo(videoId) {
+  return await fetch(`https://api.banned.video/graphql`, {
+    method: "POST",
+    body: JSON.stringify({
+      operationName: "GetVideo",
+      query: `query GetVideo($id: String!) {
+          getVideo(id: $id) {
+            ...DisplayVideoFields
+            videoUrl: directUrl
+            live
+          }
+        }
+
+        fragment DisplayVideoFields on Video {
+          title
+          description: summary
+          duration: videoDuration
+        }`,
+      variables: {
+        id: videoId,
+      },
+    }),
+    headers: {
+      "User-Agent": "bannedVideoFrontEnd",
+      "apollographql-client-name": "banned-web",
+      "apollographql-client-version": "1.3",
+      "content-type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .catch((err) => {
+      console.error(err);
+      return {
+        data: {
+          getVideo: {},
+        },
+      };
+    });
+}
+
+async function bannedvideoUtils_getVideoData(videoId) {
+  const videoData = await getVideoInfo(videoId);
+
+  debug/* default */.Z.log("banned.video video data:", videoData);
+
+  const { videoUrl, duration, live, description, title } =
+    videoData.data.getVideo;
+
+  // TODO: Add detect language from title + description
+
+  return {
+    url: videoUrl,
+    duration,
+    live,
+    title,
+    description,
+  };
+}
+
+/* harmony default export */ const bannedvideoUtils = ({
+  getVideoData: bannedvideoUtils_getVideoData,
+});
+
+;// CONCATENATED MODULE: ./src/utils/crypto.js
+async function getHmacSha1(hmacKey, salt) {
+  const utf8Encoder = new TextEncoder("utf-8");
+  salt = utf8Encoder.encode(salt);
+
+  return window.crypto.subtle
+    .importKey(
+      "raw",
+      utf8Encoder.encode(hmacKey),
+      { name: "HMAC", hash: { name: "SHA-1" } },
+      false,
+      ["sign", "verify"],
+    )
+    .then((key) => window.crypto.subtle.sign("HMAC", key, salt))
+    .then((arrayBuffer) =>
+      btoa(String.fromCharCode(...new Uint8Array(arrayBuffer))),
+    )
+    .catch((err) => {
+      console.error(err);
+      return false;
+    });
+}
+
+;// CONCATENATED MODULE: ./src/utils/weverseUtils.js
+
+
+
+const API_ORIGIN = "https://global.apis.naver.com/weverse/wevweb"; // find as REACT_APP_API_GW_ORIGIN in main.<hash>.js
+const API_APP_ID = "be4d79eb8fc7bd008ee82c8ec4ff6fd4"; // find as REACT_APP_API_APP_ID in main.<hash>.js
+const API_HMAC_KEY = "1b9cb6378d959b45714bec49971ade22e6e24e42"; // find as c.active near `createHmac("sha1"...`  in main.<hash>.js
+
+async function createHash(pathname) {
+  // pathname example: /post/v1.0/post-3-142049908/preview?fieldSet=postForPreview...
+  const timestamp = Date.now();
+
+  let salt = pathname.substring(0, Math.min(255, pathname.length)) + timestamp;
+  // example salt is /video/v1.1/vod/67134/inKey?gcc=RU&appId=be4d79eb8fc7bd008ee82c8ec4ff6fd4&language=en&os=WEB&platform=WEB&wpf=pc1707527163588
+
+  const sign = await getHmacSha1(API_HMAC_KEY, salt);
+
+  return {
+    wmsgpad: timestamp,
+    wmd: sign,
+  };
+}
+
+// f = function (e, t, n) {
+//   let r = "?";
+//   -1 !== e.indexOf("?") && (r = "&");
+//   const i = (function (e, t) {
+//     let n = e.substring(0, Math.min(255, e.length));
+//     n += t;
+//     let r = u.createHmac("sha1", c.active).update(n).digest("base64");
+//     return (r = encodeURIComponent(r)), { wmsgpad: t, wmd: r };
+//   })(
+//     (e = ""
+//       .concat(e)
+//       .concat(r)
+//       .concat((0, l.stringify)({ ...t, wpf: (0, s.li)() ? "mweb" : "pc" }))),
+//     n,
+//   );
+//   return e + "&wmsgpad=" + i.wmsgpad + "&wmd=" + i.wmd;
+// };
+
+function getURLData() {
+  return {
+    appId: API_APP_ID,
+    language: "en",
+    os: "WEB",
+    platform: "WEB",
+    wpf: "pc",
+  };
+}
+
+async function getVideoPreview(postId) {
+  const pathname =
+    `/post/v1.0/post-${postId}/preview?` +
+    new URLSearchParams({
+      fieldSet: "postForPreview",
+      ...getURLData(),
+    }); // ! DON'T EDIT ME
+
+  const hash = await createHash(pathname);
+
+  return await fetch(API_ORIGIN + pathname + "&" + new URLSearchParams(hash))
+    .then((res) => res.json())
+    .catch((err) => {
+      console.error(err);
+      return {
+        extension: {
+          video: {},
+        },
+      };
+    });
+}
+
+async function getVideoInKey(videoId) {
+  const pathname =
+    `/video/v1.1/vod/${videoId}/inKey?` +
+    new URLSearchParams({
+      gcc: "RU",
+      ...getURLData(),
+    }); // ! DON'T EDIT ME
+  const hash = await createHash(pathname);
+
+  return await fetch(API_ORIGIN + pathname + "&" + new URLSearchParams(hash), {
+    method: "POST",
+  })
+    .then((res) => res.json())
+    .catch((err) => {
+      console.error(err);
+      return {};
+    });
+}
+
+async function weverseUtils_getVideoInfo(infraVideoId, inkey, serviceId) {
+  const timestamp = Date.now();
+  return await fetch(
+    `https://global.apis.naver.com/rmcnmv/rmcnmv/vod/play/v2.0/${infraVideoId}?` +
+      new URLSearchParams({
+        key: inkey,
+        sid: serviceId,
+        // pid: "863c411f-fbf0-4b67-868a-ef54427e5316", // возможно не нужен
+        nonce: timestamp,
+        devt: "html5_pc",
+        prv: "N",
+        aup: "N",
+        stpb: "N",
+        cpl: "en",
+        env: "prod",
+        lc: "en",
+        adi: [
+          {
+            adSystem: null,
+          },
+        ],
+        adu: "/",
+      }),
+  )
+    .then((res) => res.json())
+    .catch((err) => {
+      console.error(err);
+      return {
+        videos: {
+          list: [],
+        },
+      };
+    });
+}
+
+function extractVideoInfo(videoList) {
+  return videoList.find(
+    (video) => video.useP2P === false && video.source.includes(".mp4"),
+  );
+}
+
+async function weverseUtils_getVideoData() {
+  // ! When translating using a regular link (like this https://weverse.io/aespa/live/3-142049908),
+  // ! we will get an error, so we have to do this
+
+  const postId = new URL(window.location).pathname.match(
+    /([^/]+)\/(live|media)\/([^/]+)/,
+  )?.[3];
+
+  const videoPreview = await getVideoPreview(postId);
+  debug/* default */.Z.log("weverse video preview data:", videoPreview);
+
+  const { videoId, serviceId, infraVideoId } = videoPreview.extension.video;
+
+  if (!(videoId && serviceId && infraVideoId)) {
+    return false;
+  }
+
+  const { inKey } = await getVideoInKey(videoId);
+  debug/* default */.Z.log("weverse video inKey data:", videoPreview);
+  if (!inKey) {
+    return false;
+  }
+
+  const videoData = await weverseUtils_getVideoInfo(infraVideoId, inKey, serviceId);
+  debug/* default */.Z.log("weverse video data:", videoData);
+
+  const videoSource = extractVideoInfo(videoData.videos.list);
+  if (!videoSource) {
+    return false;
+  }
+
+  const { source: url, duration } = videoSource;
+  return {
+    url,
+    duration,
+  };
+}
+
+/* harmony default export */ const weverseUtils = ({
+  getVideoData: weverseUtils_getVideoData,
+});
 
 ;// CONCATENATED MODULE: ./src/config/sites.js
 
@@ -3670,10 +3936,16 @@ const sites = () => {
       selector: ".videoplayer_media",
     },
     {
-      // TODO: video selector: ".vp-video-wrapper > .vp-video > .vp-telecine > video"
       host: "vimeo",
       url: "https://vimeo.com/",
-      match: /^(player.)?vimeo.com$/,
+      match: /^vimeo.com$/,
+      selector: ".player",
+    },
+    {
+      additionalData: "embed",
+      host: "vimeo",
+      url: "https://player.vimeo.com/",
+      match: /^player.vimeo.com$/,
       selector: ".player",
     },
     {
@@ -3809,6 +4081,39 @@ const sites = () => {
       match: /^coursehunter.net$/,
       selector: "#oframeplayer > pjsdiv:nth-of-type(1)",
     },
+    {
+      host: "googledrive",
+      url: "https://drive.google.com/file/d/",
+      match: /^youtube.googleapis.com$/,
+      selector: ".html5-video-container",
+    },
+    {
+      host: "bannedvideo",
+      url: "https://banned.video/watch?id=",
+      match: /^(www.)?banned.video$/,
+      selector: ".vjs-v7",
+    },
+    {
+      host: "facebook",
+      url: "https://facebook.com", // <-- there should be no slash because we take the whole pathname
+      match: (url) =>
+        url.host.includes("facebook.com") && url.pathname.includes("/videos/"),
+      selector: 'div[data-pagelet="WatchPermalinkVideo"]',
+    },
+    {
+      additionalData: "reels",
+      host: "facebook",
+      url: "https://facebook.com", // <-- there should be no slash because we take the whole pathname
+      match: (url) =>
+        url.host.includes("facebook.com") && url.pathname.includes("/reel/"),
+      selector: 'div[role="main"]',
+    },
+    {
+      host: "weverse",
+      url: "https://weverse.io/",
+      match: /^weverse.io$/,
+      selector: ".webplayer-internal-source-wrapper",
+    },
     // Нужно куда-то заливать данные о плейлисте
     // {
     //   host: "epicgames",
@@ -3920,6 +4225,9 @@ class VideoObserver {
 }
 
 ;// CONCATENATED MODULE: ./src/index.js
+
+
+
 
 
 
@@ -4482,7 +4790,8 @@ class VideoHandler {
         this.data?.syncVolume ?? false,
       );
       this.votSyncVolumeCheckbox.container.hidden =
-        this.site.host !== "youtube" || this.site.additionalData === "mobile";
+        !["youtube", "googledrive"].includes(this.site.host) ||
+        this.site.additionalData === "mobile";
       this.votSettingsDialog.bodyContainer.appendChild(
         this.votSyncVolumeCheckbox.container,
       );
@@ -5014,7 +5323,10 @@ class VideoHandler {
   releaseExtraEvents() {
     clearInterval(this.resizeInterval);
     this.resizeObserver?.disconnect();
-    if (this.site.host === "youtube" && this.site.additionalData !== "mobile") {
+    if (
+      ["youtube", "googledrive"].includes(this.site.host) &&
+      this.site.additionalData !== "mobile"
+    ) {
       this.syncVolumeObserver?.disconnect();
     }
 
@@ -5063,7 +5375,10 @@ class VideoHandler {
       );
     }, 500);
     // Sync volume slider with original video (youtube only)
-    if (this.site.host === "youtube" && this.site.additionalData !== "mobile") {
+    if (
+      ["youtube", "googledrive"].includes(this.site.host) &&
+      this.site.additionalData !== "mobile"
+    ) {
       this.syncVolumeObserver = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           if (
@@ -5304,7 +5619,7 @@ class VideoHandler {
   // Get video volume in 0.00-1.00 format
   getVideoVolume() {
     let videoVolume = this.video?.volume;
-    if (this.site.host === "youtube") {
+    if (["youtube", "googledrive"].includes(this.site.host)) {
       videoVolume = youtubeUtils.getVideoVolume() || videoVolume;
     }
     return videoVolume;
@@ -5312,7 +5627,7 @@ class VideoHandler {
 
   // Set video volume in 0.00-1.00 format
   setVideoVolume(volume) {
-    if (this.site.host === "youtube") {
+    if (["youtube", "googledrive"].includes(this.site.host)) {
       const videoVolume = youtubeUtils.setVideoVolume(volume);
       if (videoVolume) {
         return;
@@ -5419,6 +5734,25 @@ class VideoHandler {
         url: coursehunterData.url,
       };
       videoData.duration = coursehunterData.duration || videoData.duration;
+    } else if (window.location.hostname.includes("banned.video")) {
+      const bannedvideoData = await bannedvideoUtils.getVideoData(
+        videoData.videoId,
+      );
+      videoData.translationHelp = {
+        url: bannedvideoData.url,
+      };
+
+      videoData.duration = bannedvideoData.duration || videoData.duration;
+      videoData.isStream = bannedvideoData.live;
+    } else if (window.location.hostname.includes("weverse.io")) {
+      const weverseData = await weverseUtils.getVideoData();
+      videoData.detectedLanguage = "ko";
+      if (weverseData) {
+        videoData.translationHelp = {
+          url: weverseData.url,
+        };
+        videoData.duration = weverseData.duration || videoData.duration;
+      }
     } else if (window.location.hostname.includes("udemy.com")) {
       const udemyData = await udemyUtils.getVideoData(
         this.data.udemyData,
@@ -5543,12 +5877,13 @@ class VideoHandler {
     this.transformBtn("none", localizationProvider/* localizationProvider */.V.get("translateVideo"));
     debug/* default */.Z.log(`Volume on start: ${this.volumeOnStart}`);
     if (this.volumeOnStart) {
-      if (this.site.host === "youtube") {
+      if (["youtube", "googledrive"].includes(this.site.host)) {
         youtubeUtils.setVideoVolume(this.volumeOnStart);
       } else {
         this.video.volume = this.volumeOnStart;
       }
     }
+    this.volumeOnStart = "";
     clearInterval(this.streamPing);
     this.hls?.destroy();
     this.hls = (0,utils/* initHls */.QZ)();
@@ -5667,7 +6002,7 @@ class VideoHandler {
             this.hls.on(Hls.Events.MEDIA_ATTACHED, function () {
               debug/* default */.Z.log("audio and hls.js are now bound together !");
             });
-            this.hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+            this.hls.on(Hls.Events.MANIFEST_PARSED, function (data) {
               debug/* default */.Z.log(
                 "manifest loaded, found " +
                   data.levels.length +
@@ -5676,7 +6011,7 @@ class VideoHandler {
             });
             this.hls.loadSource(streamURL);
             this.hls.attachMedia(this.audio);
-            this.hls.on(Hls.Events.ERROR, function (event, data) {
+            this.hls.on(Hls.Events.ERROR, function (data) {
               if (data.fatal) {
                 switch (data.type) {
                   case Hls.ErrorTypes.MEDIA_ERROR:
@@ -5841,51 +6176,6 @@ class VideoHandler {
           case "invidious":
           case "piped":
             break;
-        }
-
-        if (
-          !this.video.src &&
-          !this.video.currentSrc &&
-          !this.video.srcObject
-        ) {
-          this.stopTranslation();
-          return;
-        }
-
-        const siteHostnames = [
-          "twitch",
-          "vimeo",
-          "facebook",
-          "rutube",
-          "twitter",
-          "bilibili",
-          "mail_ru",
-          "rumble",
-          "eporner",
-        ];
-        for (let i = 0; i < siteHostnames.length; i++) {
-          if (this.site.host === siteHostnames[i]) {
-            const mutationObserver = new MutationObserver((mutations) => {
-              mutations.forEach((mutation) => {
-                if (
-                  mutation.type === "attributes" &&
-                  mutation.attributeName === "src" &&
-                  mutation.target === this.video &&
-                  mutation.target.src !== ""
-                ) {
-                  this.stopTranslation();
-                  this.firstPlay = true;
-                }
-              });
-            });
-            mutationObserver.observe(this.container, {
-              attributes: true,
-              childList: false,
-              subtree: true,
-              attributeOldValue: true,
-            });
-            break;
-          }
         }
 
         if (this.video && !this.video.paused) this.lipSync("play");
