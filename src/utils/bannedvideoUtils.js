@@ -32,7 +32,11 @@ async function getVideoInfo(videoId) {
     .then((res) => res.json())
     .catch((err) => {
       console.error(err);
-      return {};
+      return {
+        data: {
+          getVideo: {},
+        },
+      };
     });
 }
 
@@ -55,6 +59,6 @@ async function getVideoData(videoId) {
   };
 }
 
-export const bannedvideoUtils = {
+export default {
   getVideoData,
 };

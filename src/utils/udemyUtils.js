@@ -162,7 +162,7 @@ async function getVideoData(udemyData, responseLang = "en") {
   return videoData;
 }
 
-export const udemyUtils = {
+export default {
   getPlayer,
   getPlayerData,
   getVideoData,

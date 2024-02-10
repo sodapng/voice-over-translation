@@ -93,7 +93,7 @@ async function getVideoData(responseLang = "en") {
   return videoData;
 }
 
-export const courseraUtils = {
+export default {
   getPlayer,
   getPlayerData,
   getVideoData,

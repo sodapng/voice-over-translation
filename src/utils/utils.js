@@ -221,6 +221,8 @@ const getVideoId = (service, video) => {
       return url.searchParams.get("docid");
     case "bannedvideo":
       return url.searchParams.get("id");
+    case "weverse":
+      return url.pathname.match(/([^/]+)\/(live|media)\/([^/]+)/)?.[0];
     default:
       return false;
   }

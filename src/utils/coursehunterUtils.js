@@ -29,6 +29,6 @@ async function getVideoData() {
   };
 }
 
-export const coursehunterUtils = {
+export default {
   getVideoData,
 };

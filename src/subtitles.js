@@ -1,4 +1,4 @@
-import { youtubeUtils } from "./utils/youtubeUtils.js";
+import youtubeUtils from "./utils/youtubeUtils.js";
 import { lang } from "./utils/utils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
 import requestVideoSubtitles from "./rvs.js";

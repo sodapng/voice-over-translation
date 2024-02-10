@@ -172,7 +172,7 @@ async function getVideoData() {
   return videoData;
 }
 
-export const youtubeUtils = {
+export default {
   isMobile,
   getPlayer,
   getPlayerResponse,
