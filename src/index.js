@@ -28,7 +28,6 @@ import {
   secsToStrTime,
 } from "./utils/utils.js";
 import { syncVolume } from "./utils/volume.js";
-import { youtubeUtils } from "./utils/youtubeUtils.js";
 import { yandexProtobuf } from "./yandexProtobuf.js";
 
 import Bowser from "bowser";
@@ -37,10 +36,13 @@ import requestStreamPing from "./rsp.js";
 import requestStreamTranslation from "./rst.js";
 import requestVideoTranslation from "./rvt.js";
 import { SubtitlesWidget, fetchSubtitles, getSubtitles } from "./subtitles.js";
-import { coursehunterUtils } from "./utils/coursehunterUtils.js";
-import { courseraUtils } from "./utils/courseraUtils.js";
-import { udemyUtils } from "./utils/udemyUtils.js";
-import { bannedvideoUtils } from "./utils/bannedvideoUtils.js";
+
+import youtubeUtils from "./utils/youtubeUtils.js";
+import coursehunterUtils from "./utils/coursehunterUtils.js";
+import courseraUtils from "./utils/courseraUtils.js";
+import udemyUtils from "./utils/udemyUtils.js";
+import bannedvideoUtils from "./utils/bannedvideoUtils.js";
+import weverseUtils from "./utils/weverseUtils.js";
 
 import sites from "./config/sites.js";
 import { VideoObserver } from "./utils/VideoObserver.js";
@@ -1544,6 +1546,15 @@ class VideoHandler {
 
       videoData.duration = bannedvideoData.duration || videoData.duration;
       videoData.isStream = bannedvideoData.live;
+    } else if (window.location.hostname.includes("weverse.io")) {
+      const weverseData = await weverseUtils.getVideoData();
+      videoData.detectedLanguage = "ko";
+      if (weverseData) {
+        videoData.translationHelp = {
+          url: weverseData.url,
+        };
+        videoData.duration = weverseData.duration || videoData.duration;
+      }
     } else if (window.location.hostname.includes("udemy.com")) {
       const udemyData = await udemyUtils.getVideoData(
         this.data.udemyData,

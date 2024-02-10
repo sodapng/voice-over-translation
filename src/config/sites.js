@@ -266,6 +266,12 @@ const sites = () => {
         url.host.includes("facebook.com") && url.pathname.includes("/reel/"),
       selector: 'div[role="main"]',
     },
+    {
+      host: "weverse",
+      url: "https://weverse.io/",
+      match: /^weverse.io$/,
+      selector: ".webplayer-internal-source-wrapper",
+    },
     // Нужно куда-то заливать данные о плейлисте
     // {
     //   host: "epicgames",
