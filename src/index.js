@@ -1292,6 +1292,10 @@ class VideoHandler {
         return;
       }
 
+      if (!this.videoData.videoId) {
+        throw new VOTLocalizedError("VOTNoVideoIDFound");
+      }
+
       try {
         this.firstPlay = false;
         await this.translateExecutor(this.videoData.videoId);
