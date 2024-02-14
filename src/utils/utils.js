@@ -223,6 +223,8 @@ const getVideoId = (service, video) => {
       return url.searchParams.get("id");
     case "weverse":
       return url.pathname.match(/([^/]+)\/(live|media)\/([^/]+)/)?.[0];
+    case "newgrounds":
+      return url.pathname.match(/([^/]+)\/(view)\/([^/]+)/)?.[0];
     default:
       return false;
   }

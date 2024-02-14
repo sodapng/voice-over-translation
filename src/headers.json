@@ -101,7 +101,8 @@
     "*://coursehunter.net/*",
     "*://youtube.googleapis.com/embed/*",
     "*://*.banned.video/*",
-    "*://*.weverse.io/*"
+    "*://*.weverse.io/*",
+    "*://*.newgrounds.com/*"
   ],
   "require": [
     "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",

@@ -351,25 +351,22 @@ export class SubtitlesWidget {
 
       if (top && bottom) {
         this.votSubtitlesContainer.style.top = `${y - this.containerRect.y}px`;
+      } else if (!top) {
+        this.votSubtitlesContainer.style.top = `${0}px`;
       } else {
-        if (!top) {
-          this.votSubtitlesContainer.style.top = `${0}px`;
-        } else {
-          this.votSubtitlesContainer.style.top = `${
-            this.containerRect.height - this.subtitlesContainerRect.height
-          }px`;
-        }
+        this.votSubtitlesContainer.style.top = `${
+          this.containerRect.height - this.subtitlesContainerRect.height
+        }px`;
       }
+
       if (left && right) {
         this.votSubtitlesContainer.style.left = `${x - this.containerRect.x}px`;
+      } else if (!left) {
+        this.votSubtitlesContainer.style.left = `${0}px`;
       } else {
-        if (!left) {
-          this.votSubtitlesContainer.style.left = `${0}px`;
-        } else {
-          this.votSubtitlesContainer.style.left = `${
-            this.containerRect.width - this.subtitlesContainerRect.width
-          }px`;
-        }
+        this.votSubtitlesContainer.style.left = `${
+          this.containerRect.width - this.subtitlesContainerRect.width
+        }px`;
       }
     }
   }
@@ -459,22 +456,20 @@ export class SubtitlesWidget {
               : ""
           }>${token.text}</span>`;
         }
-      } else {
-        if (line.text.length > this.maxLength) {
-          let chunks = line.text.match(this.maxLengthRegexp);
-          let chunkDurationMs = line.durationMs / chunks.length;
-          for (let i = 0; i < chunks.length; i++) {
-            if (
-              line.startMs + chunkDurationMs * i < time &&
-              time < line.startMs + chunkDurationMs * (i + 1)
-            ) {
-              content = chunks[i].trim();
-              break;
-            }
+      } else if (line.text.length > this.maxLength) {
+        let chunks = line.text.match(this.maxLengthRegexp);
+        let chunkDurationMs = line.durationMs / chunks.length;
+        for (let i = 0; i < chunks.length; i++) {
+          if (
+            line.startMs + chunkDurationMs * i < time &&
+            time < line.startMs + chunkDurationMs * (i + 1)
+          ) {
+            content = chunks[i].trim();
+            break;
           }
-        } else {
-          content = line.text;
         }
+      } else {
+        content = line.text;
       }
     }
     if (content !== this.lastContent) {
