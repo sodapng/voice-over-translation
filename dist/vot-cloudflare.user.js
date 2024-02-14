@@ -4104,7 +4104,7 @@ const sites = () => {
       host: "newgrounds",
       url: "https://www.newgrounds.com/",
       match: /^www.newgrounds.com$/,
-      selector: "#ng-global-video-player",
+      selector: ".ng-video-player",
     },
     // Нужно куда-то заливать данные о плейлисте
     // {
