@@ -108,6 +108,7 @@
 // @match *://youtube.googleapis.com/embed/*
 // @match *://*.banned.video/*
 // @match *://*.weverse.io/*
+// @match *://*.newgrounds.com/*
 // @connect api.browser.yandex.ru
 // @downloadURL https://raw.githubusercontent.com/ilyhalight/voice-over-translation/dev/dist/vot.user.js
 // @grant GM_xmlhttpRequest
@@ -1160,6 +1161,8 @@ const getVideoId = (service, video) => {
       return url.searchParams.get("id");
     case "weverse":
       return url.pathname.match(/([^/]+)\/(live|media)\/([^/]+)/)?.[0];
+    case "newgrounds":
+      return url.pathname.match(/([^/]+)\/(view)\/([^/]+)/)?.[0];
     default:
       return false;
   }
@@ -3130,25 +3133,22 @@ class SubtitlesWidget {
 
       if (top && bottom) {
         this.votSubtitlesContainer.style.top = `${y - this.containerRect.y}px`;
+      } else if (!top) {
+        this.votSubtitlesContainer.style.top = `${0}px`;
       } else {
-        if (!top) {
-          this.votSubtitlesContainer.style.top = `${0}px`;
-        } else {
-          this.votSubtitlesContainer.style.top = `${
-            this.containerRect.height - this.subtitlesContainerRect.height
-          }px`;
-        }
+        this.votSubtitlesContainer.style.top = `${
+          this.containerRect.height - this.subtitlesContainerRect.height
+        }px`;
       }
+
       if (left && right) {
         this.votSubtitlesContainer.style.left = `${x - this.containerRect.x}px`;
+      } else if (!left) {
+        this.votSubtitlesContainer.style.left = `${0}px`;
       } else {
-        if (!left) {
-          this.votSubtitlesContainer.style.left = `${0}px`;
-        } else {
-          this.votSubtitlesContainer.style.left = `${
-            this.containerRect.width - this.subtitlesContainerRect.width
-          }px`;
-        }
+        this.votSubtitlesContainer.style.left = `${
+          this.containerRect.width - this.subtitlesContainerRect.width
+        }px`;
       }
     }
   }
@@ -3238,22 +3238,20 @@ class SubtitlesWidget {
               : ""
           }>${token.text}</span>`;
         }
-      } else {
-        if (line.text.length > this.maxLength) {
-          let chunks = line.text.match(this.maxLengthRegexp);
-          let chunkDurationMs = line.durationMs / chunks.length;
-          for (let i = 0; i < chunks.length; i++) {
-            if (
-              line.startMs + chunkDurationMs * i < time &&
-              time < line.startMs + chunkDurationMs * (i + 1)
-            ) {
-              content = chunks[i].trim();
-              break;
-            }
+      } else if (line.text.length > this.maxLength) {
+        let chunks = line.text.match(this.maxLengthRegexp);
+        let chunkDurationMs = line.durationMs / chunks.length;
+        for (let i = 0; i < chunks.length; i++) {
+          if (
+            line.startMs + chunkDurationMs * i < time &&
+            time < line.startMs + chunkDurationMs * (i + 1)
+          ) {
+            content = chunks[i].trim();
+            break;
           }
-        } else {
-          content = line.text;
         }
+      } else {
+        content = line.text;
       }
     }
     if (content !== this.lastContent) {
@@ -3692,24 +3690,6 @@ async function createHash(pathname) {
   };
 }
 
-// f = function (e, t, n) {
-//   let r = "?";
-//   -1 !== e.indexOf("?") && (r = "&");
-//   const i = (function (e, t) {
-//     let n = e.substring(0, Math.min(255, e.length));
-//     n += t;
-//     let r = u.createHmac("sha1", c.active).update(n).digest("base64");
-//     return (r = encodeURIComponent(r)), { wmsgpad: t, wmd: r };
-//   })(
-//     (e = ""
-//       .concat(e)
-//       .concat(r)
-//       .concat((0, l.stringify)({ ...t, wpf: (0, s.li)() ? "mweb" : "pc" }))),
-//     n,
-//   );
-//   return e + "&wmsgpad=" + i.wmsgpad + "&wmd=" + i.wmd;
-// };
-
 function getURLData() {
   return {
     appId: API_APP_ID,
@@ -4113,6 +4093,12 @@ const sites = () => {
       url: "https://weverse.io/",
       match: /^weverse.io$/,
       selector: ".webplayer-internal-source-wrapper",
+    },
+    {
+      host: "newgrounds",
+      url: "https://www.newgrounds.com/",
+      match: /^www.newgrounds.com$/,
+      selector: ".ng-video-player",
     },
     // Нужно куда-то заливать данные о плейлисте
     // {
@@ -5011,13 +4997,12 @@ class VideoHandler {
 
           try {
             debug/* default */.Z.log("[click translationBtn] trying execute translation");
-            const VIDEO_ID = (0,utils/* getVideoId */.gJ)(this.site.host, this.video);
 
-            if (!VIDEO_ID) {
+            if (!this.videoData.videoId) {
               throw new VOTLocalizedError("VOTNoVideoIDFound");
             }
 
-            await this.translateExecutor(VIDEO_ID);
+            await this.translateExecutor(this.videoData.videoId);
           } catch (err) {
             console.error("[VOT]", err);
             if (err?.name === "VOTLocalizedError") {
@@ -5491,15 +5476,13 @@ class VideoHandler {
         return;
       }
 
-      const VIDEO_ID = (0,utils/* getVideoId */.gJ)(this.site.host, this.video);
-
-      if (!VIDEO_ID) {
+      if (!this.videoData.videoId) {
         throw new VOTLocalizedError("VOTNoVideoIDFound");
       }
 
       try {
         this.firstPlay = false;
-        await this.translateExecutor(VIDEO_ID);
+        await this.translateExecutor(this.videoData.videoId);
       } catch (err) {
         console.error("[VOT]", err);
         if (err?.name === "VOTLocalizedError") {
@@ -5587,9 +5570,7 @@ class VideoHandler {
   async updateSubtitles() {
     await this.changeSubtitlesLang("disabled");
 
-    const VIDEO_ID = (0,utils/* getVideoId */.gJ)(this.site.host, this.video);
-
-    if (!VIDEO_ID) {
+    if (!this.videoData.videoId) {
       console.error(
         `[VOT] ${localizationProvider/* localizationProvider */.V.getDefault("VOTNoVideoIDFound")}`,
       );
@@ -5599,19 +5580,19 @@ class VideoHandler {
       return;
     }
 
-    if (this.subtitlesListVideoId === VIDEO_ID) {
+    if (this.subtitlesListVideoId === this.videoData.videoId) {
       return;
     }
 
     this.subtitlesList = await subtitles_getSubtitles(
       this.site,
-      VIDEO_ID,
+      this.videoData.videoId,
       this.videoData.detectedLanguage,
     );
     if (!this.subtitlesList) {
       await this.changeSubtitlesLang("disabled");
     } else {
-      this.subtitlesListVideoId = VIDEO_ID;
+      this.subtitlesListVideoId = this.videoData.videoId;
     }
     await this.updateSubtitlesLangSelect();
   }
@@ -5779,9 +5760,8 @@ class VideoHandler {
     }
     return videoData;
   }
-
   videoValidator() {
-    if (this.site.host === "youtube" || this.site.host === "ok.ru") {
+    if (["youtube", "ok.ru"].includes(this.site.host)) {
       debug/* default */.Z.log("VideoValidator videoData: ", this.videoData);
       if (
         this.data.dontTranslateYourLang === 1 &&

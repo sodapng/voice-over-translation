@@ -272,6 +272,12 @@ const sites = () => {
       match: /^weverse.io$/,
       selector: ".webplayer-internal-source-wrapper",
     },
+    {
+      host: "newgrounds",
+      url: "https://www.newgrounds.com/",
+      match: /^www.newgrounds.com$/,
+      selector: ".ng-video-player",
+    },
     // Нужно куда-то заливать данные о плейлисте
     // {
     //   host: "epicgames",

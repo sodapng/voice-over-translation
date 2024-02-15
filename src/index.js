@@ -813,13 +813,12 @@ class VideoHandler {
 
           try {
             debug.log("[click translationBtn] trying execute translation");
-            const VIDEO_ID = getVideoId(this.site.host, this.video);
 
-            if (!VIDEO_ID) {
+            if (!this.videoData.videoId) {
               throw new VOTLocalizedError("VOTNoVideoIDFound");
             }
 
-            await this.translateExecutor(VIDEO_ID);
+            await this.translateExecutor(this.videoData.videoId);
           } catch (err) {
             console.error("[VOT]", err);
             if (err?.name === "VOTLocalizedError") {
@@ -1293,15 +1292,13 @@ class VideoHandler {
         return;
       }
 
-      const VIDEO_ID = getVideoId(this.site.host, this.video);
-
-      if (!VIDEO_ID) {
+      if (!this.videoData.videoId) {
         throw new VOTLocalizedError("VOTNoVideoIDFound");
       }
 
       try {
         this.firstPlay = false;
-        await this.translateExecutor(VIDEO_ID);
+        await this.translateExecutor(this.videoData.videoId);
       } catch (err) {
         console.error("[VOT]", err);
         if (err?.name === "VOTLocalizedError") {
@@ -1389,9 +1386,7 @@ class VideoHandler {
   async updateSubtitles() {
     await this.changeSubtitlesLang("disabled");
 
-    const VIDEO_ID = getVideoId(this.site.host, this.video);
-
-    if (!VIDEO_ID) {
+    if (!this.videoData.videoId) {
       console.error(
         `[VOT] ${localizationProvider.getDefault("VOTNoVideoIDFound")}`,
       );
@@ -1401,19 +1396,19 @@ class VideoHandler {
       return;
     }
 
-    if (this.subtitlesListVideoId === VIDEO_ID) {
+    if (this.subtitlesListVideoId === this.videoData.videoId) {
       return;
     }
 
     this.subtitlesList = await getSubtitles(
       this.site,
-      VIDEO_ID,
+      this.videoData.videoId,
       this.videoData.detectedLanguage,
     );
     if (!this.subtitlesList) {
       await this.changeSubtitlesLang("disabled");
     } else {
-      this.subtitlesListVideoId = VIDEO_ID;
+      this.subtitlesListVideoId = this.videoData.videoId;
     }
     await this.updateSubtitlesLangSelect();
   }
@@ -1581,9 +1576,8 @@ class VideoHandler {
     }
     return videoData;
   }
-
   videoValidator() {
-    if (this.site.host === "youtube" || this.site.host === "ok.ru") {
+    if (["youtube", "ok.ru"].includes(this.site.host)) {
       debug.log("VideoValidator videoData: ", this.videoData);
       if (
         this.data.dontTranslateYourLang === 1 &&
