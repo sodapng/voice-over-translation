@@ -13,7 +13,7 @@
 // @description:it Una piccola estensione che aggiunge la traduzione vocale del video dal browser Yandex ad altri browser
 // @description:ru Небольшое расширение, которое добавляет закадровый перевод видео из Яндекс Браузера в другие браузеры
 // @description:zh 一个小扩展，它增加了视频从Yandex浏览器到其他浏览器的画外音翻译
-// @version 1.5.1-beta5
+// @version 1.5.1-beta6
 // @author sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @supportURL https://github.com/ilyhalight/voice-over-translation/issues
 // @match *://*.youtube.com/*
@@ -4404,6 +4404,10 @@ class VideoHandler {
   firstPlay = true;
   audio = new Audio();
   hls = (0,utils/* initHls */.QZ)(); // debug enabled only in dev mode
+
+  videoTranslations = [];
+  videoTranslationTTL = 7200;
+
   downloadTranslationUrl = null;
   downloadSubtitlesUrl = null;
 
@@ -4985,13 +4989,13 @@ class VideoHandler {
         (async () => {
           if (this.audio.src) {
             debug/* default */.Z.log("[click translationBtn] audio.src is not empty");
-            this.stopTraslate();
+            this.stopTranslate();
             return;
           }
 
           if (this.hls.url) {
             debug/* default */.Z.log("[click translationBtn] hls is not empty");
-            this.stopTraslate();
+            this.stopTranslate();
             return;
           }
 
@@ -5842,12 +5846,11 @@ class VideoHandler {
   }
 
   // Default actions on stop translate
-  stopTraslate() {
+  stopTranslate() {
     videoLipSyncEvents.forEach((e) =>
       this.video.removeEventListener(e, this.handleVideoEventBound),
     );
     this.audio.pause();
-    //! video.removeEventListener(".translate", stopTraslate, false); // why???
     this.audio.src = "";
     this.audio.removeAttribute("src");
     this.votVideoVolumeSlider.container.hidden = true;
@@ -5857,11 +5860,7 @@ class VideoHandler {
     this.transformBtn("none", localizationProvider/* localizationProvider */.V.get("translateVideo"));
     debug/* default */.Z.log(`Volume on start: ${this.volumeOnStart}`);
     if (this.volumeOnStart) {
-      if (["youtube", "googledrive"].includes(this.site.host)) {
-        youtubeUtils.setVideoVolume(this.volumeOnStart);
-      } else {
-        this.video.volume = this.volumeOnStart;
-      }
+      this.setVideoVolume(this.volumeOnStart);
     }
     this.volumeOnStart = "";
     clearInterval(this.streamPing);
@@ -5878,6 +5877,85 @@ class VideoHandler {
       this.videoData.responseLanguage,
       this.videoData.translationHelp,
     );
+  }
+
+  async updateTranslationErrorMsg(errorMessage) {
+    if (errorMessage?.name === "VOTLocalizedError") {
+      this.transformBtn("error", errorMessage.localizedMessage);
+    } else if (
+      this.data.translateAPIErrors === 1 &&
+      !errorMessage.includes(localizationProvider/* localizationProvider */.V.get("translationTake")) &&
+      localizationProvider/* localizationProvider */.V.lang !== "ru"
+    ) {
+      this.transformBtn(
+        "error",
+        localizationProvider/* localizationProvider */.V.get("VOTTranslatingError"),
+      );
+      this.transformBtn(
+        "error",
+        await translate(errorMessage, "ru", localizationProvider/* localizationProvider */.V.lang),
+      );
+    } else {
+      this.transformBtn("error", errorMessage);
+    }
+  }
+
+  afterUpdateTranslation(audioUrl) {
+    this.votVideoVolumeSlider.container.hidden =
+      this.data.showVideoSlider !== 1 ||
+      this.votButton.container.dataset.status !== "success";
+    this.votVideoTranslationVolumeSlider.container.hidden =
+      this.votButton.container.dataset.status !== "success";
+
+    if (this.data.autoSetVolumeYandexStyle === 1) {
+      this.votVideoVolumeSlider.input.value = this.data.autoVolume * 100;
+      this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
+        `${this.data.autoVolume * 100}%`;
+      ui.updateSlider(this.votVideoVolumeSlider.input);
+    }
+
+    this.votDownloadButton.hidden = false;
+    this.downloadTranslationUrl = audioUrl;
+  }
+
+  // update translation audio src
+  updateTranslation(audioUrl) {
+    // ! Don't use this function for streams
+    this.audio.src = audioUrl;
+
+    // cf version only
+    if (
+      false
+    ) {}
+
+    this.volumeOnStart = this.getVideoVolume();
+    if (typeof this.data.defaultVolume === "number") {
+      this.audio.volume = this.data.defaultVolume / 100;
+    }
+    if (
+      typeof this.data.autoSetVolumeYandexStyle === "number" &&
+      this.data.autoSetVolumeYandexStyle
+    ) {
+      this.setVideoVolume(this.data.autoVolume);
+    }
+
+    switch (this.site.host) {
+      case "twitter":
+        document
+          .querySelector('div[data-testid="app-bar-back"][role="button"]')
+          .addEventListener("click", this.stopTranslationBound);
+        break;
+      case "invidious":
+      case "piped":
+        break;
+    }
+
+    if (this.video && !this.video.paused) this.lipSync("play");
+    videoLipSyncEvents.forEach((e) =>
+      this.video.addEventListener(e, this.handleVideoEventBound),
+    );
+    this.transformBtn("success", localizationProvider/* localizationProvider */.V.get("disableTranslate"));
+    this.afterUpdateTranslation(audioUrl);
   }
 
   // Define a function to translate a video and handle the callback
@@ -5899,11 +5977,6 @@ class VideoHandler {
 
     if (isStream) {
       debug/* default */.Z.log("Executed stream translation");
-      // if (BUILD_MODE === "cloudflare") {
-      //   // Temporarily stream translation is only available in the main version
-      //   throw new VOTLocalizedError("VOTCloudflareDoesntSupportStreams");
-      // }
-
       translateStream(
         videoURL,
         requestLang,
@@ -5912,25 +5985,7 @@ class VideoHandler {
           debug/* default */.Z.log("[exec callback] translateStream callback");
           if ((0,utils/* getVideoId */.gJ)(this.site.host, this.video) !== VIDEO_ID) return;
           if (!success || !resOrError.translatedInfo) {
-            if (resOrError?.name === "VOTLocalizedError") {
-              this.transformBtn("error", resOrError.localizedMessage);
-            } else {
-              if (
-                this.data.translateAPIErrors === 1 &&
-                localizationProvider/* localizationProvider */.V.lang !== "ru"
-              ) {
-                this.transformBtn(
-                  "error",
-                  `${localizationProvider/* localizationProvider */.V.get("VOTTranslatingError")}...`,
-                );
-                this.transformBtn(
-                  "error",
-                  await translate(resOrError, "ru", localizationProvider/* localizationProvider */.V.lang),
-                );
-              } else {
-                this.transformBtn("error", resOrError);
-              }
-            }
+            await this.updateTranslationErrorMsg(resOrError);
 
             if (reqInterval === 10) {
               // if wait translating
@@ -6051,21 +6106,7 @@ class VideoHandler {
             this.video.addEventListener(e, this.handleVideoEventBound),
           );
 
-          this.votVideoVolumeSlider.container.hidden =
-            this.data.showVideoSlider !== 1 ||
-            this.votButton.container.dataset.status !== "success";
-          this.votVideoTranslationVolumeSlider.container.hidden =
-            this.votButton.container.dataset.status !== "success";
-
-          if (this.data.autoSetVolumeYandexStyle === 1) {
-            this.votVideoVolumeSlider.input.value = this.data.autoVolume * 100;
-            this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
-              `${this.data.autoVolume * 100}%`;
-            ui.updateSlider(this.votVideoVolumeSlider.input);
-          }
-
-          this.votDownloadButton.hidden = false;
-          this.downloadTranslationUrl = streamURL;
+          this.afterUpdateTranslation(streamURL);
         },
       );
 
@@ -6074,6 +6115,20 @@ class VideoHandler {
 
     if (["udemy", "coursera"].includes(this.site.host) && !translationHelp) {
       throw new VOTLocalizedError("VOTTranslationHelpNull");
+    }
+
+    const cachedTranslation = this.videoTranslations.find(
+      (t) =>
+        t.videoId === VIDEO_ID &&
+        t.expires > Date.now() / 1000 &&
+        t.from === requestLang &&
+        t.to === responseLang,
+    );
+
+    if (cachedTranslation) {
+      this.updateTranslation(cachedTranslation.url);
+      debug/* default */.Z.log("[translateFunc] A cached translate was received");
+      return;
     }
 
     translateVideo(
@@ -6086,28 +6141,8 @@ class VideoHandler {
         debug/* default */.Z.log("[exec callback] translateVideo callback");
         if ((0,utils/* getVideoId */.gJ)(this.site.host, this.video) !== VIDEO_ID) return;
         if (!success) {
-          if (urlOrError?.name === "VOTLocalizedError") {
-            this.transformBtn("error", urlOrError.localizedMessage);
-          } else {
-            if (
-              this.data.translateAPIErrors === 1 &&
-              !urlOrError.includes(
-                localizationProvider/* localizationProvider */.V.get("translationTake"),
-              ) &&
-              localizationProvider/* localizationProvider */.V.lang !== "ru"
-            ) {
-              this.transformBtn(
-                "error",
-                localizationProvider/* localizationProvider */.V.get("VOTTranslatingError"),
-              );
-              this.transformBtn(
-                "error",
-                await translate(urlOrError, "ru", localizationProvider/* localizationProvider */.V.lang),
-              );
-            } else {
-              this.transformBtn("error", urlOrError);
-            }
-          }
+          await this.updateTranslationErrorMsg(urlOrError);
+
           // if the error line contains information that the translation is being performed, then we wait
           if (
             urlOrError.includes(localizationProvider/* localizationProvider */.V.get("translationTake"))
@@ -6129,66 +6164,22 @@ class VideoHandler {
           return;
         }
 
-        this.audio.src = urlOrError;
+        this.updateTranslation(urlOrError);
 
-        // cf version only
-        if (
-          false
-        ) {}
-
-        this.volumeOnStart = this.getVideoVolume();
-        if (typeof this.data.defaultVolume === "number") {
-          this.audio.volume = this.data.defaultVolume / 100;
-        }
-        if (
-          typeof this.data.autoSetVolumeYandexStyle === "number" &&
-          this.data.autoSetVolumeYandexStyle
-        ) {
-          this.setVideoVolume(this.data.autoVolume);
-        }
-
-        switch (this.site.host) {
-          case "twitter":
-            document
-              .querySelector('div[data-testid="app-bar-back"][role="button"]')
-              .addEventListener("click", this.stopTranslationBound);
-            break;
-          case "invidious":
-          case "piped":
-            break;
-        }
-
-        if (this.video && !this.video.paused) this.lipSync("play");
-        videoLipSyncEvents.forEach((e) =>
-          this.video.addEventListener(e, this.handleVideoEventBound),
-        );
-        this.transformBtn(
-          "success",
-          localizationProvider/* localizationProvider */.V.get("disableTranslate"),
-        );
-
-        this.votVideoVolumeSlider.container.hidden =
-          this.data.showVideoSlider !== 1 ||
-          this.votButton.container.dataset.status !== "success";
-        this.votVideoTranslationVolumeSlider.container.hidden =
-          this.votButton.container.dataset.status !== "success";
-
-        if (this.data.autoSetVolumeYandexStyle === 1) {
-          this.votVideoVolumeSlider.input.value = this.data.autoVolume * 100;
-          this.votVideoVolumeSlider.label.querySelector("strong").innerHTML =
-            `${this.data.autoVolume * 100}%`;
-          ui.updateSlider(this.votVideoVolumeSlider.input);
-        }
-
-        this.votDownloadButton.hidden = false;
-        this.downloadTranslationUrl = urlOrError;
+        this.videoTranslations.push({
+          videoId: VIDEO_ID,
+          from: requestLang,
+          to: responseLang,
+          url: urlOrError,
+          expires: Date.now() / 1000 + this.videoTranslationTTL,
+        });
       },
     );
   }
 
   // Define a function to stop translation and clean up
   stopTranslation() {
-    this.stopTraslate();
+    this.stopTranslate();
     this.syncVideoVolumeSlider();
   }
 
