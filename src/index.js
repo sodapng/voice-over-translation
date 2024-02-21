@@ -1519,7 +1519,7 @@ class VideoHandler {
       window.location.hostname.includes("my.mail.ru")
     ) {
       videoData.detectedLanguage = "ru";
-    } else if (window.location.hostname.includes("bilibili.com")) {
+    } else if (["bilibili", "youku"].includes(this.site.host)) {
       videoData.detectedLanguage = "zh";
     } else if (window.location.hostname.includes("coursera.org")) {
       const courseraData = await courseraUtils.getVideoData(

@@ -225,6 +225,10 @@ const getVideoId = (service, video) => {
       return url.pathname.match(/([^/]+)\/(live|media)\/([^/]+)/)?.[0];
     case "newgrounds":
       return url.pathname.match(/([^/]+)\/(view)\/([^/]+)/)?.[0];
+    case "egghead":
+      return url.pathname;
+    case "youku":
+      return url.pathname.match(/v_show\/id_[\w=]+/)?.[0];
     default:
       return false;
   }

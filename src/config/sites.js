@@ -278,6 +278,20 @@ const sites = () => {
       match: /^www.newgrounds.com$/,
       selector: ".ng-video-player",
     },
+    {
+      // TODO: Добавить поддержку tips и платных курсов
+      host: "egghead",
+      url: "https://egghead.io",
+      match: /^egghead.io$/,
+      selector: ".cueplayer-react-video-holder",
+    },
+    {
+      host: "youku",
+      // Что-то перекрывает кнопку и не дает её нажать
+      url: "https://v.youku.com/",
+      match: /^v.youku.com$/,
+      selector: "#ykPlayer",
+    },
     // Нужно куда-то заливать данные о плейлисте
     // {
     //   host: "epicgames",
