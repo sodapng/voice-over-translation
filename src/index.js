@@ -1521,6 +1521,9 @@ class VideoHandler {
       videoData.detectedLanguage = "ru";
     } else if (["bilibili", "youku"].includes(this.site.host)) {
       videoData.detectedLanguage = "zh";
+    } else if (["vk"].includes(this.site.host)) {
+      const trackLang = document.getElementsByTagName("track")?.[0]?.srclang;
+      videoData.detectedLanguage = trackLang || "auto";
     } else if (window.location.hostname.includes("coursera.org")) {
       const courseraData = await courseraUtils.getVideoData(
         this.translateToLang,
@@ -1564,7 +1567,6 @@ class VideoHandler {
       videoData.translationHelp = udemyData.translationHelp;
     } else if (
       [
-        "vk",
         "piped",
         "invidious",
         "bitchute",
@@ -1581,7 +1583,7 @@ class VideoHandler {
     return videoData;
   }
   videoValidator() {
-    if (["youtube", "ok.ru"].includes(this.site.host)) {
+    if (["youtube", "ok.ru", "vk"].includes(this.site.host)) {
       debug.log("VideoValidator videoData: ", this.videoData);
       if (
         this.data.dontTranslateYourLang === 1 &&
