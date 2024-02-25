@@ -2170,3 +2170,16 @@ async function main() {
 main().catch((e) => {
   console.error("[VOT]", e);
 });
+
+// if (import.meta.webpackHot) {
+//   import.meta.webpackHot.monkeyReload();
+//   import.meta.webpackHot.dispose(() => {
+//     for (const selector of [
+//       ".vot-menu",
+//       ".vot-segmented-button",
+//       ".vot-subtitles-widget",
+//     ]) {
+//       document.querySelector(selector)?.remove();
+//     }
+//   });
+// }
