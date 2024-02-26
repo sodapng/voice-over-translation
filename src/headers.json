@@ -108,13 +108,5 @@
     "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",
     "https://cdn.jsdelivr.net/npm/hls.js/dist/hls.light.min.js"
   ],
-  "grant": [
-    "GM_xmlhttpRequest",
-    "GM_info",
-    "GM_setValue",
-    "GM_getValue",
-    "GM_deleteValue",
-    "GM_listValues"
-  ],
   "connect": ["api.browser.yandex.ru"]
 }

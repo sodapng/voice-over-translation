@@ -19,12 +19,6 @@
 // @grant          GM_setValue
 // @grant          GM_getValue
 // @grant          GM_info
-// @grant          GM_xmlhttpRequest
-// @grant          GM_info
-// @grant          GM_setValue
-// @grant          GM_getValue
-// @grant          GM_deleteValue
-// @grant          GM_listValues
 // @require        https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js
 // @require        https://cdn.jsdelivr.net/npm/hls.js/dist/hls.light.min.js
 // @match          *://*.youtube.com/*
