@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import webpack from "webpack";
 
 import { monkey } from "webpack-monkey";
+import { styleLoaderInsertStyleElement } from "webpack-monkey/lib/client/css.js";
 import ESLintPlugin from "eslint-webpack-plugin";
 import TerserPlugin from "terser-webpack-plugin";
 
@@ -125,6 +126,15 @@ export default (env) => {
         BUILD_MODE: JSON.stringify(build_mode),
         DEBUG_MODE: dev,
         IS_BETA_VERSION: isBeta,
+        ...(() => {
+          if (!dev) {
+            return {
+              __MK_GLOBAL__: {
+                styleLoaderInsertStyleElement,
+              },
+            };
+          }
+        })(),
       }),
     ],
     module: {
