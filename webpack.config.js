@@ -4,9 +4,10 @@ import { fileURLToPath } from "url";
 
 import webpack from "webpack";
 
-import { UserscriptPlugin } from "webpack-userscript";
+import { monkey } from "webpack-monkey";
+import { styleLoaderInsertStyleElement } from "webpack-monkey/lib/client/css.js";
 import ESLintPlugin from "eslint-webpack-plugin";
-// const ESLintPlugin = require('eslint-webpack-plugin');
+import TerserPlugin from "terser-webpack-plugin";
 
 const repo =
   "https://raw.githubusercontent.com/ilyhalight/voice-over-translation";
@@ -43,7 +44,7 @@ export default (env) => {
       name += "-min";
     }
 
-    return name + ".js";
+    return name + ".user.js";
   }
 
   function get_name_by_build_mode(name) {
@@ -52,13 +53,10 @@ export default (env) => {
         ? name.replace("[VOT]", "[VOT Cloudflare]")
         : name;
 
-    if (dev) {
-      finalName = "[DEBUG] " + finalName;
-    }
     return finalName;
   }
 
-  return {
+  return monkey({
     mode: dev ? "development" : "production",
     resolve: {
       extensions: [".js"],
@@ -71,85 +69,72 @@ export default (env) => {
     entry: path.resolve(__dirname, "src", "index.js"),
     output: {
       path: path.resolve(__dirname, "dist"),
-      filename: get_filename(),
-      publicPath: "/",
+      ...(() => {
+        if (!dev) {
+          return { filename: get_filename() };
+        }
+      })(),
     },
-    devServer: {
-      server: "http",
-      port: 11945,
-      allowedHosts: "all",
-      hot: true,
-      liveReload: false,
-      magicHtml: false,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "*",
+    monkey: {
+      debug: dev,
+      meta: {
+        resolve: "headers.json",
+        transform({ meta }) {
+          const extFileName = get_filename().slice(0, -8);
+          const finalURL = `${repo}/${
+            isBeta ? "dev" : "master"
+          }/dist/${extFileName}.user.js`;
+
+          meta.namespace = extFileName;
+          meta.updateURL = meta.downloadURL = finalURL;
+
+          if (build_mode === "cloudflare") {
+            meta.name = meta.name.replace("[VOT]", "[VOT Cloudflare]");
+            meta["inject-into"] = "page";
+          }
+
+          const files = fs.readdirSync(
+            path.resolve(__dirname, "src", "locales"),
+          );
+
+          meta.name = {
+            default: meta.name,
+          };
+
+          meta.description = {
+            default: meta.description,
+          };
+
+          for (const file of files) {
+            const localeHeaders = getHeaders(file);
+            const lang = file.substring(0, 2);
+
+            meta.name[lang] = get_name_by_build_mode(localeHeaders.name);
+            meta.description[lang] = localeHeaders.description;
+          }
+
+          return meta;
+        },
       },
-      // client: {
-      //   webSocketURL: "ws://localhost:11944/ws",
-      //   progress: true,
-      //   reconnect: false
-      // },
-      client: false,
     },
     plugins: [
       new ESLintPlugin(),
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 1,
       }),
-      new UserscriptPlugin({
-        headers: async () => {
-          const headers = getHeaders();
-
-          let version = headers.version;
-
-          const extFileName = get_filename().slice(0, -3);
-          const finalURL = `${repo}/${
-            isBeta ? "dev" : "master"
-          }/dist/${extFileName}.user.js`;
-          headers["namespace"] = extFileName;
-          headers["updateURL"] = finalURL;
-          headers["downloadURL"] = finalURL;
-
-          if (build_mode === "cloudflare") {
-            headers["name"] = "[VOT Cloudflare] - Voice Over Translation";
-            headers["inject-into"] = "page";
-          }
-
-          if (dev) {
-            headers["version"] = `${version}-build.[buildNo]`;
-            headers["name"] = "[DEBUG] " + headers["name"];
-          }
-
-          return headers;
-        },
-        proxyScript: {
-          filename: "[basename].proxy.user.js",
-          baseURL: "http://localhost:11945/",
-        },
-        i18n: {
-          ...(() => {
-            const files = fs.readdirSync(
-              path.resolve(__dirname, "src", "locales"),
-            );
-            const localedHeaders = {};
-            for (const file of files) {
-              const localeHeaders = getHeaders(file);
-              localedHeaders[file.substring(0, 2)] = {
-                name: get_name_by_build_mode(localeHeaders.name),
-                description: localeHeaders.description,
-              };
-            }
-
-            return localedHeaders;
-          })(),
-        },
-        strict: true,
-      }),
       new webpack.DefinePlugin({
         BUILD_MODE: JSON.stringify(build_mode),
         DEBUG_MODE: dev,
         IS_BETA_VERSION: isBeta,
+        ...(() => {
+          if (!dev) {
+            return {
+              __MK_GLOBAL__: {
+                styleLoaderInsertStyleElement,
+              },
+            };
+          }
+        })(),
       }),
     ],
     module: {
@@ -164,6 +149,7 @@ export default (env) => {
       emitOnErrors: true,
       moduleIds: "named",
       minimize: build_type === "minify" ? true : false,
+      minimizer: [new TerserPlugin()],
     },
-  };
+  });
 };

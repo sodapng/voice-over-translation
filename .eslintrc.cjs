@@ -40,6 +40,7 @@ module.exports = {
     BUILD_MODE: "readonly",
     DEBUG_MODE: "readonly",
     IS_BETA_VERSION: "readonly",
+    __MK_GLOBAL__: "readonly",
     // YOUTUBE PAGE API
     ytplayer: "readonly",
   },
