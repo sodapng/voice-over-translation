@@ -22,6 +22,7 @@
 Эти домены могут быть установлены в настройках расширения (здесь указаны только те домены, которые можно изменить без пересборки):
 
 #### Proxy-сервер
+- [vot.toil.cc](https://vot.toil.cc/health) (Балансировщик между прокси серверами)
 - [vot.deno.dev](https://github.com/FOSWLY/vot-worker)
 - [vot-worker.onrender.com](https://github.com/FOSWLY/vot-worker)
 - [vot-new.toil-dump.workers.dev](https://github.com/FOSWLY/vot-worker) (⚠️ не работает в РФ)

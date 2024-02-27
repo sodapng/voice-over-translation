@@ -21,6 +21,7 @@ The voice-over translation of the video is now available not only in YandexBrows
 These domains can be set in the extension settings (only those domains that can be changed without rebuilding are listed here):
 
 #### Proxy-server
+- [vot.toil.cc](https://vot.toil.cc/health) (Load balancer between proxy servers)
 - [vot.deno.dev](https://github.com/FOSWLY/vot-worker)
 - [vot-worker.onrender.com](https://github.com/FOSWLY/vot-worker)
 - [vot-new.toil-dump.workers.dev](https://github.com/FOSWLY/vot-worker) (⚠️ doesn't work in Russia)
