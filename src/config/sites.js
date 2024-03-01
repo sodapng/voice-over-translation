@@ -128,7 +128,7 @@ const sites = () => {
       host: "bitchute",
       url: "https://www.bitchute.com/video/",
       match: /^(www.)?bitchute.com$/,
-      selector: ".plyr__video-wrapper",
+      selector: "#player",
     },
     {
       host: "rutube",
