@@ -867,10 +867,8 @@ class VideoHandler {
       this.votSettingsButton.addEventListener("click", () => {
         this.votSettingsDialog.container.hidden =
           !this.votSettingsDialog.container.hidden;
-        if (document.fullscreen === undefined || document.fullscreen) {
-          document.webkitExitFullscreen && document.webkitExitFullscreen();
-          document.mozCancelFullscreen && document.mozCancelFullscreen();
-          document.exitFullscreen && document.exitFullscreen();
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
         }
       });
 
@@ -1519,11 +1517,8 @@ class VideoHandler {
       window.location.hostname.includes("my.mail.ru")
     ) {
       videoData.detectedLanguage = "ru";
-    } else if (["bilibili", "youku"].includes(this.site.host)) {
+    } else if (window.location.hostname.includes("bilibili.com")) {
       videoData.detectedLanguage = "zh";
-    } else if (["vk"].includes(this.site.host)) {
-      const trackLang = document.getElementsByTagName("track")?.[0]?.srclang;
-      videoData.detectedLanguage = trackLang || "auto";
     } else if (window.location.hostname.includes("coursera.org")) {
       const courseraData = await courseraUtils.getVideoData(
         this.translateToLang,
@@ -1567,6 +1562,7 @@ class VideoHandler {
       videoData.translationHelp = udemyData.translationHelp;
     } else if (
       [
+        "vk",
         "piped",
         "invidious",
         "bitchute",
@@ -1583,7 +1579,7 @@ class VideoHandler {
     return videoData;
   }
   videoValidator() {
-    if (["youtube", "ok.ru", "vk"].includes(this.site.host)) {
+    if (["youtube", "ok.ru"].includes(this.site.host)) {
       debug.log("VideoValidator videoData: ", this.videoData);
       if (
         this.data.dontTranslateYourLang === 1 &&
