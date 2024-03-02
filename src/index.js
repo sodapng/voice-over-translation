@@ -864,7 +864,8 @@ class VideoHandler {
         this.votSettingsDialog.container.hidden =
           !this.votSettingsDialog.container.hidden;
         if (document.fullscreenElement || document.webkitFullscreenElement) {
-          document.exitFullscreen();
+          document.webkitExitFullscreen && document.webkitExitFullscreen();
+          document.exitFullscreen && document.exitFullscreen();
         }
       });
 
@@ -1692,21 +1693,20 @@ class VideoHandler {
   }
 
   async updateTranslationErrorMsg(errorMessage) {
+    const translationTake = localizationProvider.get("translationTake");
+    const VOTTranslatingError = localizationProvider.get("VOTTranslatingError");
+    const lang = localizationProvider.lang;
+
     if (errorMessage?.name === "VOTLocalizedError") {
       this.transformBtn("error", errorMessage.localizedMessage);
     } else if (
       this.data.translateAPIErrors === 1 &&
-      !errorMessage.includes(localizationProvider.get("translationTake")) &&
-      localizationProvider.lang !== "ru"
+      !errorMessage.includes(translationTake) &&
+      lang !== "ru"
     ) {
-      this.transformBtn(
-        "error",
-        localizationProvider.get("VOTTranslatingError"),
-      );
-      this.transformBtn(
-        "error",
-        await translate(errorMessage, "ru", localizationProvider.lang),
-      );
+      const translatedMessage = await translate(errorMessage, "ru", lang);
+      this.transformBtn("error", VOTTranslatingError);
+      this.transformBtn("error", translatedMessage);
     } else {
       this.transformBtn("error", errorMessage);
     }
