@@ -1,4 +1,5 @@
 import { localizationProvider } from "../localization/localizationProvider.js";
+import youtubeUtils from "./youtubeUtils.js";
 
 const userlang = navigator.language || navigator.userLanguage;
 export const lang = userlang?.substr(0, 2)?.toLowerCase() ?? "en";
@@ -32,16 +33,22 @@ export const lang = userlang?.substr(0, 2)?.toLowerCase() ?? "en";
 // const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
 const getVideoId = (service, video) => {
-  const url = new URL(window.location.href);
+  let url = new URL(window.location.href);
 
   switch (service) {
     case "piped":
     case "invidious":
-    case "youtube":
+    case "youtube": {
+      if (url.searchParams.has("enablejsapi")) {
+        const videoUrl = youtubeUtils.getPlayer().getVideoUrl();
+        url = new URL(videoUrl);
+      }
+
       return (
         url.pathname.match(/(?:watch|embed|shorts)\/([^/]+)/)?.[1] ||
         url.searchParams.get("v")
       );
+    }
     case "vk":
       if (url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)) {
         return url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)[0].slice(1);
