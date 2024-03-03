@@ -261,51 +261,45 @@ class VideoHandler {
   async init() {
     if (this.initialized) return;
 
-    this.data = {
-      autoTranslate: await votStorage.get("autoTranslate", 0, true),
-      dontTranslateLanguage: await votStorage.get(
-        "dontTranslateLanguage",
-        lang,
-      ),
-      dontTranslateYourLang: await votStorage.get(
-        "dontTranslateYourLang",
-        1,
-        true,
-      ),
-      autoSetVolumeYandexStyle: await votStorage.get(
+    const audioProxyDefault =
+      lang === "uk" && BUILD_MODE === "cloudflare" ? 1 : 0;
+
+    const dataPromises = {
+      autoTranslate: votStorage.get("autoTranslate", 0, true),
+      dontTranslateLanguage: votStorage.get("dontTranslateLanguage", lang),
+      dontTranslateYourLang: votStorage.get("dontTranslateYourLang", 1, true),
+      autoSetVolumeYandexStyle: votStorage.get(
         "autoSetVolumeYandexStyle",
         1,
         true,
       ),
-      autoVolume: await votStorage.get("autoVolume", defaultAutoVolume, true),
-      showVideoSlider: await votStorage.get("showVideoSlider", 1, true),
-      syncVolume: await votStorage.get("syncVolume", 0, true),
-      subtitlesMaxLength: await votStorage.get("subtitlesMaxLength", 300, true),
-      highlightWords: await votStorage.get("highlightWords", 0, true),
-      responseLanguage: await votStorage.get("responseLanguage", lang),
-      defaultVolume: await votStorage.get("defaultVolume", 100, true),
-      udemyData: await votStorage.get("udemyData", {
-        accessToken: "",
-        expires: 0,
-      }),
-      audioProxy: await votStorage.get(
-        "audioProxy",
-        lang === "uk" && BUILD_MODE === "cloudflare" ? 1 : 0,
-        true,
-      ),
-      showPiPButton: await votStorage.get("showPiPButton", 0, true),
-      translateAPIErrors: await votStorage.get("translateAPIErrors", 1, true),
-      translationService: await votStorage.get(
+      autoVolume: votStorage.get("autoVolume", defaultAutoVolume, true),
+      showVideoSlider: votStorage.get("showVideoSlider", 1, true),
+      syncVolume: votStorage.get("syncVolume", 0, true),
+      subtitlesMaxLength: votStorage.get("subtitlesMaxLength", 300, true),
+      highlightWords: votStorage.get("highlightWords", 0, true),
+      responseLanguage: votStorage.get("responseLanguage", lang),
+      defaultVolume: votStorage.get("defaultVolume", 100, true),
+      udemyData: votStorage.get("udemyData", { accessToken: "", expires: 0 }),
+      audioProxy: votStorage.get("audioProxy", audioProxyDefault, true),
+      showPiPButton: votStorage.get("showPiPButton", 0, true),
+      translateAPIErrors: votStorage.get("translateAPIErrors", 1, true),
+      translationService: votStorage.get(
         "translationService",
         defaultTranslationService,
       ),
-      detectService: await votStorage.get(
-        "detectService",
-        defaultDetectService,
-      ),
-      m3u8ProxyHost: await votStorage.get("m3u8ProxyHost", m3u8ProxyHost),
-      proxyWorkerHost: await votStorage.get("proxyWorkerHost", proxyWorkerHost),
+      detectService: votStorage.get("detectService", defaultDetectService),
+      m3u8ProxyHost: votStorage.get("m3u8ProxyHost", m3u8ProxyHost),
+      proxyWorkerHost: votStorage.get("proxyWorkerHost", proxyWorkerHost),
     };
+
+    const dataEntries = await Promise.all(
+      Object.entries(dataPromises).map(async ([key, promise]) => [
+        key,
+        await promise,
+      ]),
+    );
+    this.data = Object.fromEntries(dataEntries);
 
     this.videoData = await this.getVideoData();
 
@@ -322,10 +316,12 @@ class VideoHandler {
     this.initUI();
     this.initUIEvents();
 
-    const hide =
+    const videoHasNoSource =
       !this.video.src && !this.video.currentSrc && !this.video.srcObject;
-    this.votButton.container.hidden = hide;
-    hide && (this.votMenu.container.hidden = hide);
+    this.votButton.container.hidden = videoHasNoSource;
+    if (videoHasNoSource) {
+      this.votMenu.container.hidden = true;
+    }
 
     await this.updateSubtitles();
     await this.changeSubtitlesLang("disabled");
@@ -867,9 +863,8 @@ class VideoHandler {
       this.votSettingsButton.addEventListener("click", () => {
         this.votSettingsDialog.container.hidden =
           !this.votSettingsDialog.container.hidden;
-        if (document.fullscreen === undefined || document.fullscreen) {
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
           document.webkitExitFullscreen && document.webkitExitFullscreen();
-          document.mozCancelFullscreen && document.mozCancelFullscreen();
           document.exitFullscreen && document.exitFullscreen();
         }
       });
@@ -1519,8 +1514,11 @@ class VideoHandler {
       window.location.hostname.includes("my.mail.ru")
     ) {
       videoData.detectedLanguage = "ru";
-    } else if (window.location.hostname.includes("bilibili.com")) {
+    } else if (["bilibili", "youku"].includes(this.site.host)) {
       videoData.detectedLanguage = "zh";
+    } else if (["vk"].includes(this.site.host)) {
+      const trackLang = document.getElementsByTagName("track")?.[0]?.srclang;
+      videoData.detectedLanguage = trackLang || "auto";
     } else if (window.location.hostname.includes("coursera.org")) {
       const courseraData = await courseraUtils.getVideoData(
         this.translateToLang,
@@ -1564,7 +1562,6 @@ class VideoHandler {
       videoData.translationHelp = udemyData.translationHelp;
     } else if (
       [
-        "vk",
         "piped",
         "invidious",
         "bitchute",
@@ -1581,7 +1578,7 @@ class VideoHandler {
     return videoData;
   }
   videoValidator() {
-    if (["youtube", "ok.ru"].includes(this.site.host)) {
+    if (["youtube", "ok.ru", "vk"].includes(this.site.host)) {
       debug.log("VideoValidator videoData: ", this.videoData);
       if (
         this.data.dontTranslateYourLang === 1 &&
@@ -1696,21 +1693,20 @@ class VideoHandler {
   }
 
   async updateTranslationErrorMsg(errorMessage) {
+    const translationTake = localizationProvider.get("translationTake");
+    const VOTTranslatingError = localizationProvider.get("VOTTranslatingError");
+    const lang = localizationProvider.lang;
+
     if (errorMessage?.name === "VOTLocalizedError") {
       this.transformBtn("error", errorMessage.localizedMessage);
     } else if (
       this.data.translateAPIErrors === 1 &&
-      !errorMessage.includes(localizationProvider.get("translationTake")) &&
-      localizationProvider.lang !== "ru"
+      !errorMessage.includes(translationTake) &&
+      lang !== "ru"
     ) {
-      this.transformBtn(
-        "error",
-        localizationProvider.get("VOTTranslatingError"),
-      );
-      this.transformBtn(
-        "error",
-        await translate(errorMessage, "ru", localizationProvider.lang),
-      );
+      const translatedMessage = await translate(errorMessage, "ru", lang);
+      this.transformBtn("error", VOTTranslatingError);
+      this.transformBtn("error", translatedMessage);
     } else {
       this.transformBtn("error", errorMessage);
     }

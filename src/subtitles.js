@@ -8,16 +8,17 @@ function formatYandexSubtitlesTokens(line) {
   const lineEndMs = line.startMs + line.durationMs;
   return line.tokens.reduce((result, token, index) => {
     const nextToken = line.tokens[index + 1];
-    const lastToken = result[result.length - 1];
+    let lastToken;
+    if (result.length > 0) {
+      lastToken = result[result.length - 1];
+    }
     const alignRangeEnd = lastToken?.alignRange?.end ?? 0;
     const newAlignRangeEnd = alignRangeEnd + token.text.length;
-    result.push({
-      ...token,
-      alignRange: {
-        start: alignRangeEnd,
-        end: newAlignRangeEnd,
-      },
-    });
+    token.alignRange = {
+      start: alignRangeEnd,
+      end: newAlignRangeEnd,
+    };
+    result.push(token);
     if (nextToken) {
       const endMs = token.startMs + token.durationMs;
       const durationMs = nextToken.startMs
@@ -437,12 +438,12 @@ export class SubtitlesWidget {
             }
             chunkEndIndex = i;
           }
-          for (let i = 0; i < chunks.length; i++) {
+          for (const chunk of chunks) {
             if (
-              chunks[i].startMs < time &&
-              time < chunks[i].startMs + chunks[i].durationMs
+              chunk.startMs < time &&
+              time < chunk.startMs + chunk.durationMs
             ) {
-              tokens = chunks[i].tokens;
+              tokens = chunk.tokens;
               break;
             }
           }

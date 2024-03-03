@@ -102,7 +102,9 @@
     "*://youtube.googleapis.com/embed/*",
     "*://*.banned.video/*",
     "*://*.weverse.io/*",
-    "*://*.newgrounds.com/*"
+    "*://*.newgrounds.com/*",
+    "*://*.egghead.io/*",
+    "*://*.youku.com/*"
   ],
   "require": [
     "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",
