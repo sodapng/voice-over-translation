@@ -1,4 +1,11 @@
 # 1.5.1-beta7
+- Исправлена работа YouTube Embed через JS API (#544)
+- Исправлена работа Bitchute от @SashaXser в #531 (#542)
+- Добавлена поддержка Egghead от @SashaXser в #531
+- Добавлена поддержка Youku от @SashaXser в #531
+- Улучшена логика инициализации БД от @SashaXser в #531
+- Добавлено определение языка в VK по субтитрам и обновление зависимостей от @SashaXser в #531
+- Убрана устаревшая логика fullscreen от @SashaXser в #531
 - Webpack-Userscript изменен на Webpack-Monkey
 
 # 1.5.1-beta6

@@ -58,6 +58,8 @@
 - **[Google Drive](https://drive.google.com/)**
 - **[Banned Video](https://banned.video/)**
 - **[Weverse](https://weverse.io/)**
+- **[Egghead](https://egghead.io)**
+- **[Youku](https://youku.com)**
 - **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[[⚠️] Invidious](https://yewtu.be)**
 - **[[⚠️] Piped](https://piped.video)**
