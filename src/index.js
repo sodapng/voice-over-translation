@@ -1862,7 +1862,7 @@ class VideoHandler {
             this.hls.on(Hls.Events.MANIFEST_PARSED, function (data) {
               debug.log(
                 "manifest loaded, found " +
-                  data.levels.length +
+                  data?.levels?.length +
                   " quality level",
               );
             });
@@ -1900,7 +1900,9 @@ class VideoHandler {
             throw new VOTLocalizedError("audioFormatNotSupported");
           }
 
-          youtubeUtils.videoSeek(this.video, 10); // 10 is the most successful number for streaming. With it, the audio is not so far behind the original
+          if (this.site.host === "youtube") {
+            youtubeUtils.videoSeek(this.video, 10); // 10 is the most successful number for streaming. With it, the audio is not so far behind the original
+          }
 
           this.volumeOnStart = this.getVideoVolume();
           if (typeof this.data.defaultVolume === "number") {
