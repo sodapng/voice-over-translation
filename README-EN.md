@@ -27,7 +27,8 @@ These domains can be set in the extension settings (only those domains that can 
 - [vot-new.toil-dump.workers.dev](https://github.com/FOSWLY/vot-worker) (⚠️ doesn't work in Russia)
 
 #### M3U8 Proxy-server
-- [m3u8proxy.toil-dump.workers.dev](https://github.com/FOSWLY/m3u8CloudflareWorkerProxy) (⚠️ doesn't work in Russia)
+- [m3u8-proxy.toil.cc](https://github.com/FOSWLY/m3u8-proxy-worker)
+- [m3u8-proxy.toiloff.workers.dev](https://github.com/FOSWLY/m3u8-proxy-worker) (⚠️ doesn't work in Russia. It's not recommended for use due to low limits.)
 
 ## List of supported sites:
 You can see all the restrictions related to site support in [wiki](https://github.com/ilyhalight/voice-over-translation/wiki/%5BEN%5D-Supported-sites).
@@ -188,6 +189,6 @@ Example of changing styles:
 
 ⚠️ - They are not priority extensions. These extensions, due to the "cloudflare" version of the user script, do not have cross-site synchronization of settings, and are also (practically) not tested before the release of a new version of the user script.
 
-![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example_en.jpg "btn")
+![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example_en.png "btn")
 
 *: Banned on the territory of the Russian Federation

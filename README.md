@@ -28,7 +28,8 @@
 - [vot-new.toil-dump.workers.dev](https://github.com/FOSWLY/vot-worker) (⚠️ не работает в РФ)
 
 #### M3U8 Proxy-сервер
-- [m3u8proxy.toil-dump.workers.dev](https://github.com/FOSWLY/m3u8CloudflareWorkerProxy) (⚠️ не работает в РФ)
+- [m3u8-proxy.toil.cc](https://github.com/FOSWLY/m3u8-proxy-worker)
+- [m3u8-proxy.toiloff.workers.dev](https://github.com/FOSWLY/m3u8-proxy-worker) (⚠️ не работает в РФ. Не рекомендуется к использованию из-за низких лимитов.)
 
 ## Список поддерживаемых сайтов:
 Все ограничения, связанные с поддержкой сайтов вы можете увидеть в [вики](https://github.com/ilyhalight/voice-over-translation/wiki/%5BRU%5D-Supported-sites).
@@ -189,6 +190,6 @@ npm i
 
 ⚠️ - Не являются приоритетными расширениями. Эти расширения из-за "cloudflare" версии юзерскрипта не имеют межсайтовой синхронизации настроек, а так же (практически) не тестируются перед выходом новой версии юзерскрипта.
 
-![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.jpg "btn")
+![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.png "btn")
 
 *: Запрещена на территории РФ
