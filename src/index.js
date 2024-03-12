@@ -1320,7 +1320,7 @@ class VideoHandler {
     this.logout(1);
     this.timer = setTimeout(() => {
       this.logout(0);
-    }, 2000);
+    }, 1000);
   }
 
   changeOpacityOnEvent(event) {
