@@ -1,7 +1,7 @@
 {
   "name": "[VOT] - Voice Over Translation",
   "description": "A small extension that adds a Yandex Browser video translation to other browsers",
-  "version": "1.5.0.5",
+  "version": "1.5.1",
   "author": "sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD",
   "namespace": "vot",
   "icon": "https://translate.yandex.ru/icons/favicon.ico",
@@ -95,21 +95,20 @@
     "*://tube.la-dina.net/*",
     "*://peertube.tmp.rcp.tf/*",
     "*://geo.dailymotion.com/*",
+    "*://*.ok.ru/*",
     "*://trovo.live/*",
     "*://disk.yandex.ru/i/*",
-    "*://coursehunter.net/*"
+    "*://coursehunter.net/*",
+    "*://youtube.googleapis.com/embed/*",
+    "*://*.banned.video/*",
+    "*://*.weverse.io/*",
+    "*://*.newgrounds.com/*",
+    "*://*.egghead.io/*",
+    "*://*.youku.com/*"
   ],
   "require": [
     "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",
-    "https://cdn.jsdelivr.net/npm/hls.js@1"
-  ],
-  "grant": [
-    "GM_xmlhttpRequest",
-    "GM_info",
-    "GM_setValue",
-    "GM_getValue",
-    "GM_deleteValue",
-    "GM_listValues"
+    "https://cdn.jsdelivr.net/npm/hls.js/dist/hls.light.min.js"
   ],
   "connect": ["api.browser.yandex.ru"]
 }

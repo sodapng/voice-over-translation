@@ -28,9 +28,7 @@ export const votStorage = new (class {
       return await GM_getValue(name, def);
     }
 
-    return new Promise((resolve) => {
-      resolve(this.syncGet(name, def, toNumber));
-    });
+    return Promise.resolve(this.syncGet(name, def, toNumber));
   }
 
   syncSet(name, value) {
@@ -50,9 +48,7 @@ export const votStorage = new (class {
       return await GM_setValue(name, value);
     }
 
-    return new Promise((resolve) => {
-      resolve(this.syncSet(name, value));
-    });
+    return Promise.resolve(this.syncSet(name, value));
   }
 
   syncDelete(name) {
@@ -68,9 +64,7 @@ export const votStorage = new (class {
       return await GM_deleteValue(name);
     }
 
-    return new Promise((resolve) => {
-      resolve(this.syncDelete(name));
-    });
+    return Promise.resolve(this.syncDelete(name));
   }
 
   syncList() {
@@ -103,8 +97,6 @@ export const votStorage = new (class {
       return await GM_listValues();
     }
 
-    return new Promise((resolve) => {
-      resolve(this.syncList());
-    });
+    return Promise.resolve(this.syncList());
   }
 })();

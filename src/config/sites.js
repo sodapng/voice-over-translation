@@ -94,11 +94,23 @@ const sites = () => {
       selector: ".videoplayer_media",
     },
     {
-      // TODO: video selector: ".vp-video-wrapper > .vp-video > .vp-telecine > video"
       host: "vimeo",
       url: "https://vimeo.com/",
-      match: /^(player.)?vimeo.com$/,
+      match: /^vimeo.com$/,
       selector: ".player",
+    },
+    {
+      additionalData: "embed",
+      host: "vimeo",
+      url: "https://player.vimeo.com/",
+      match: /^player.vimeo.com$/,
+      selector: ".player",
+    },
+    {
+      host: "ok.ru",
+      url: "https://ok.ru/",
+      match: /^ok.ru$/,
+      selector: ".html5-vpl_vid",
     },
     {
       host: "nine_gag",
@@ -116,7 +128,7 @@ const sites = () => {
       host: "bitchute",
       url: "https://www.bitchute.com/video/",
       match: /^(www.)?bitchute.com$/,
-      selector: ".plyr__video-wrapper",
+      selector: "#player",
     },
     {
       host: "rutube",
@@ -227,6 +239,66 @@ const sites = () => {
       match: /^coursehunter.net$/,
       selector: "#oframeplayer > pjsdiv:nth-of-type(1)",
     },
+    {
+      host: "googledrive",
+      url: "https://drive.google.com/file/d/",
+      match: /^youtube.googleapis.com$/,
+      selector: ".html5-video-container",
+    },
+    {
+      host: "bannedvideo",
+      url: "https://banned.video/watch?id=",
+      match: /^(www.)?banned.video$/,
+      selector: ".vjs-v7",
+    },
+    {
+      host: "facebook",
+      url: "https://facebook.com", // <-- there should be no slash because we take the whole pathname
+      match: (url) =>
+        url.host.includes("facebook.com") && url.pathname.includes("/videos/"),
+      selector: 'div[data-pagelet="WatchPermalinkVideo"]',
+    },
+    {
+      additionalData: "reels",
+      host: "facebook",
+      url: "https://facebook.com", // <-- there should be no slash because we take the whole pathname
+      match: (url) =>
+        url.host.includes("facebook.com") && url.pathname.includes("/reel/"),
+      selector: 'div[role="main"]',
+    },
+    {
+      host: "weverse",
+      url: "https://weverse.io/",
+      match: /^weverse.io$/,
+      selector: ".webplayer-internal-source-wrapper",
+    },
+    {
+      host: "newgrounds",
+      url: "https://www.newgrounds.com/",
+      match: /^www.newgrounds.com$/,
+      selector: ".ng-video-player",
+    },
+    {
+      // TODO: Добавить поддержку tips и платных курсов
+      host: "egghead",
+      url: "https://egghead.io",
+      match: /^egghead.io$/,
+      selector: ".cueplayer-react-video-holder",
+    },
+    {
+      host: "youku",
+      // Что-то перекрывает кнопку и не дает её нажать
+      url: "https://v.youku.com/",
+      match: /^v.youku.com$/,
+      selector: "#ykPlayer",
+    },
+    // Нужно куда-то заливать данные о плейлисте
+    // {
+    //   host: "epicgames",
+    //   url: "https://dev.epicgames.com/community/learning/tutorials/",
+    //   match: /^dev.epicgames.com$/,
+    //   selector: "#vjs_video_3",
+    // },
   ];
 };
 

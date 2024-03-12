@@ -21,19 +21,22 @@ The voice-over translation of the video is now available not only in YandexBrows
 These domains can be set in the extension settings (only those domains that can be changed without rebuilding are listed here):
 
 #### Proxy-server
+- [vot.toil.cc](https://vot.toil.cc/health) (Load balancer between proxy servers)
 - [vot.deno.dev](https://github.com/FOSWLY/vot-worker)
 - [vot-worker.onrender.com](https://github.com/FOSWLY/vot-worker)
 - [vot-new.toil-dump.workers.dev](https://github.com/FOSWLY/vot-worker) (⚠️ doesn't work in Russia)
 
 #### M3U8 Proxy-server
-- [m3u8proxy.toil-dump.workers.dev](https://github.com/FOSWLY/m3u8CloudflareWorkerProxy) (⚠️ doesn't work in Russia)
+- [m3u8-proxy.toil.cc](https://github.com/FOSWLY/m3u8-proxy-worker)
+- [m3u8-proxy.toiloff.workers.dev](https://github.com/FOSWLY/m3u8-proxy-worker) (⚠️ doesn't work in Russia. It's not recommended for use due to low limits.)
 
 ## List of supported sites:
 You can see all the restrictions related to site support in [wiki](https://github.com/ilyhalight/voice-over-translation/wiki/%5BEN%5D-Supported-sites).
 - **[YouTube](https://www.youtube.com)**
 - **[Twitch](https://www.twitch.tv)**
 - **[VK](https://vk.com)**
-- **[Twitter](https://twitter.com/)**
+- **[OK](https://ok.ru/)**
+- **[[⚠️] Twitter](https://twitter.com/)**
 - **[9GAG](https://9gag.com/gag/)**
 - **[Rutube](https://rutube.ru/)**
 - **[Bilibili](https://bilibili.com/)**
@@ -44,14 +47,19 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[Bitchute](https://www.bitchute.com/)**
 - **[Coursera](https://www.coursera.org/)**
 - **[[⚠️] Udemy](https://www.udemy.com/)**
-- **[[❌] Facebook*](https://facebook.com/)**
+- **[[⚠️] Facebook*](https://facebook.com/)**
 - **[TikTok](https://tiktok.com/)**
 - **[Rumble](https://rumble.com/)**
 - **[EPorner](https://www.eporner.com/)**
 - **[Peertube](https://tube.shanti.cafe/)**
 - **[Dailymotion](https://www.dailymotion.com/)**
 - **[Trovo](https://trovo.live/)**
-- **[Yandex Disk](https://disk.yandex.ru/)**
+- **[[⚠️] Yandex Disk](https://disk.yandex.ru/)**
+- **[Google Drive](https://drive.google.com/)**
+- **[Banned Video](https://banned.video/)**
+- **[Weverse](https://weverse.io/)**
+- **[Egghead](https://egghead.io)**
+- **[Youku](https://youku.com)**
 - **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[[⚠️] Invidious](https://yewtu.be)**
 - **[[⚠️] Piped](https://piped.video)**
@@ -181,6 +189,6 @@ Example of changing styles:
 
 ⚠️ - They are not priority extensions. These extensions, due to the "cloudflare" version of the user script, do not have cross-site synchronization of settings, and are also (practically) not tested before the release of a new version of the user script.
 
-![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example_en.jpg "btn")
+![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example_en.png "btn")
 
 *: Banned on the territory of the Russian Federation

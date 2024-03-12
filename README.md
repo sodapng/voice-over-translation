@@ -22,19 +22,22 @@
 Эти домены могут быть установлены в настройках расширения (здесь указаны только те домены, которые можно изменить без пересборки):
 
 #### Proxy-сервер
+- [vot.toil.cc](https://vot.toil.cc/health) (Балансировщик между прокси серверами)
 - [vot.deno.dev](https://github.com/FOSWLY/vot-worker)
 - [vot-worker.onrender.com](https://github.com/FOSWLY/vot-worker)
 - [vot-new.toil-dump.workers.dev](https://github.com/FOSWLY/vot-worker) (⚠️ не работает в РФ)
 
 #### M3U8 Proxy-сервер
-- [m3u8proxy.toil-dump.workers.dev](https://github.com/FOSWLY/m3u8CloudflareWorkerProxy) (⚠️ не работает в РФ)
+- [m3u8-proxy.toil.cc](https://github.com/FOSWLY/m3u8-proxy-worker)
+- [m3u8-proxy.toiloff.workers.dev](https://github.com/FOSWLY/m3u8-proxy-worker) (⚠️ не работает в РФ. Не рекомендуется к использованию из-за низких лимитов.)
 
 ## Список поддерживаемых сайтов:
 Все ограничения, связанные с поддержкой сайтов вы можете увидеть в [вики](https://github.com/ilyhalight/voice-over-translation/wiki/%5BRU%5D-Supported-sites).
 - **[YouTube](https://www.youtube.com)**
 - **[Twitch](https://www.twitch.tv)**
 - **[VK](https://vk.com)**
-- **[Twitter](https://twitter.com/)**
+- **[OK](https://ok.ru/)**
+- **[[⚠️] Twitter](https://twitter.com/)**
 - **[9GAG](https://9gag.com/gag/)**
 - **[Rutube](https://rutube.ru/)**
 - **[Bilibili](https://bilibili.com/)**
@@ -45,14 +48,19 @@
 - **[Bitchute](https://www.bitchute.com/)**
 - **[Coursera](https://www.coursera.org/)**
 - **[[⚠️] Udemy](https://www.udemy.com/)**
-- **[[❌] Facebook*](https://facebook.com/)**
+- **[[⚠️] Facebook*](https://facebook.com/)**
 - **[TikTok](https://tiktok.com/)**
 - **[Rumble](https://rumble.com/)**
 - **[EPorner](https://www.eporner.com/)**
 - **[Peertube](https://tube.shanti.cafe/)**
 - **[Dailymotion](https://www.dailymotion.com/)**
 - **[Trovo](https://trovo.live/)**
-- **[Yandex Disk](https://disk.yandex.ru/)**
+- **[[⚠️] Yandex Disk](https://disk.yandex.ru/)**
+- **[Google Drive](https://drive.google.com/)**
+- **[Banned Video](https://banned.video/)**
+- **[Weverse](https://weverse.io/)**
+- **[Egghead](https://egghead.io)**
+- **[Youku](https://youku.com)**
 - **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[[⚠️] Invidious](https://yewtu.be)**
 - **[[⚠️] Piped](https://piped.video)**
@@ -182,6 +190,6 @@ npm i
 
 ⚠️ - Не являются приоритетными расширениями. Эти расширения из-за "cloudflare" версии юзерскрипта не имеют межсайтовой синхронизации настроек, а так же (практически) не тестируются перед выходом новой версии юзерскрипта.
 
-![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.jpg "btn")
+![example btn](https://github.com/ilyhalight/voice-over-translation/blob/master/img/example.png "btn")
 
 *: Запрещена на территории РФ

@@ -1,61 +1,54 @@
 import { localizationProvider } from "../localization/localizationProvider.js";
+import youtubeUtils from "./youtubeUtils.js";
 
 const userlang = navigator.language || navigator.userLanguage;
 export const lang = userlang?.substr(0, 2)?.toLowerCase() ?? "en";
 
-if (!String.prototype.format) {
-  // https://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format
-  // syntax example: "is {0} function".format("format")
-  String.prototype.format = function () {
-    // store arguments in an array
-    var args = arguments;
-    // use replace to iterate over the string
-    // select the match and check if the related argument is present
-    // if yes, replace the match with the argument
-    return this.replace(/{(\d+)}/g, function (match, index) {
-      // check if the argument is present
-      return typeof args[index] != "undefined" ? args[index] : match;
-    });
-  };
-}
+// not used
+// function waitForElm(selector) {
+//   // https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
+//   return new Promise((resolve) => {
+//     const element = document.querySelector(selector);
+//     if (element) {
+//       return resolve(element);
+//     }
 
-function waitForElm(selector) {
-  // https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
-  return new Promise((resolve) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      return resolve(element);
-    }
+//     const observer = new MutationObserver(() => {
+//       const element = document.querySelector(selector);
+//       if (element) {
+//         resolve(element);
+//         observer.disconnect();
+//       }
+//     });
 
-    const observer = new MutationObserver(() => {
-      const element = document.querySelector(selector);
-      if (element) {
-        resolve(element);
-        observer.disconnect();
-      }
-    });
+//     observer.observe(document.body, {
+//       childList: true,
+//       subtree: true,
+//       once: true,
+//     });
+//   });
+// }
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      once: true,
-    });
-  });
-}
-
-const sleep = (m) => new Promise((r) => setTimeout(r, m));
+// not used
+// const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
 const getVideoId = (service, video) => {
-  const url = new URL(window.location.href);
+  let url = new URL(window.location.href);
 
   switch (service) {
     case "piped":
     case "invidious":
-    case "youtube":
+    case "youtube": {
+      if (url.searchParams.has("enablejsapi")) {
+        const videoUrl = youtubeUtils.getPlayer().getVideoUrl();
+        url = new URL(videoUrl);
+      }
+
       return (
         url.pathname.match(/(?:watch|embed|shorts)\/([^/]+)/)?.[1] ||
         url.searchParams.get("v")
       );
+    }
     case "vk":
       if (url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)) {
         return url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)[0].slice(1);
@@ -121,11 +114,14 @@ const getVideoId = (service, video) => {
       }
       return id;
     }
-    case "vimeo":
-      return (
+    case "vimeo": {
+      const appId = url.searchParams.get("app_id");
+      const videoId =
         url.pathname.match(/[^/]+\/[^/]+$/)?.[0] ||
-        url.pathname.match(/[^/]+$/)?.[0]
-      );
+        url.pathname.match(/[^/]+$/)?.[0];
+
+      return appId ? `${videoId}?app_id=${appId}` : videoId;
+    }
     case "xvideos":
       return url.pathname.match(/[^/]+\/[^/]+$/)?.[0];
     case "pornhub":
@@ -140,17 +136,7 @@ const getVideoId = (service, video) => {
     case "rumble":
       return url.pathname;
     case "facebook":
-      // ...watch?v=XXX
-      // CHANNEL_ID/videos/VIDEO_ID/
-      // returning "Видео недоступно для перевода"
-
-      // fb.watch/YYY
-      // returning "Возникла ошибка, попробуйте позже"
-      if (url.searchParams.get("v")) {
-        return url.searchParams.get("v");
-      }
-
-      return false;
+      return url.pathname;
     case "rutube":
       return url.pathname.match(/(?:video|embed)\/([^/]+)/)?.[1];
     case "coub":
@@ -201,29 +187,12 @@ const getVideoId = (service, video) => {
     case "dailymotion": {
       // we work in the context of the player
       // geo.dailymotion.com
-
-      const plainPlayerConfig = Array.from(document.scripts).filter((s) =>
-        s.innerText.trim().includes("window.__PLAYER_CONFIG__ = {"),
-      );
-      if (!plainPlayerConfig.length) {
-        return false;
-      }
-
+      const plainPlayerConfig = Array.from(
+        document.querySelectorAll("*"),
+      ).filter((s) => s.innerHTML.trim().includes(".m3u8"));
       try {
-        let clearPlainConfig = plainPlayerConfig[0].innerText
-          .trim()
-          .replace("window.__PLAYER_CONFIG__ = ", "");
-        if (clearPlainConfig.endsWith("};")) {
-          clearPlainConfig = clearPlainConfig.substring(
-            0,
-            clearPlainConfig.length - 1,
-          );
-        }
-        const playerConfig = JSON.parse(clearPlainConfig);
-        const videoUrl =
-          playerConfig.context.embedder ?? playerConfig.context.http_referer;
-        console.log(videoUrl, playerConfig);
-        return videoUrl.match(/\/video\/([^/]+)/)?.[1];
+        let videoUrl = plainPlayerConfig[1].lastChild.src;
+        return videoUrl.match(/\/video\/(\w+)\.m3u8/)?.[1];
       } catch (e) {
         console.error("[VOT]", e);
         return false;
@@ -247,11 +216,26 @@ const getVideoId = (service, video) => {
       return `${path}?vid=${vid}`;
     }
     case "yandexdisk":
-      return url.pathname.match(/\/[i|s|d]\/([^/]+)/)?.[1];
+      return url.pathname.match(/\/i\/([^/]+)/)?.[1];
     case "coursehunter": {
       const courseId = url.pathname.match(/\/course\/([^/]+)/)?.[1];
       return courseId ? courseId + url.search : false;
     }
+    case "ok.ru": {
+      return url.pathname.match(/\/video\/(\d+)/)?.[0];
+    }
+    case "googledrive":
+      return url.searchParams.get("docid");
+    case "bannedvideo":
+      return url.searchParams.get("id");
+    case "weverse":
+      return url.pathname.match(/([^/]+)\/(live|media)\/([^/]+)/)?.[0];
+    case "newgrounds":
+      return url.pathname.match(/([^/]+)\/(view)\/([^/]+)/)?.[0];
+    case "egghead":
+      return url.pathname;
+    case "youku":
+      return url.pathname.match(/v_show\/id_[\w=]+/)?.[0];
     default:
       return false;
   }
@@ -265,16 +249,15 @@ function secsToStrTime(secs) {
   } else if (minutes >= 10 && minutes % 10) {
     return localizationProvider
       .get("translationTakeApproximatelyMinutes")
-      .format(minutes);
+      .replace("{0}", minutes);
   } else if (minutes == 1 || (minutes == 0 && seconds > 0)) {
     return localizationProvider.get("translationTakeAboutMinute");
   } else {
     return localizationProvider
       .get("translationTakeApproximatelyMinute")
-      .format(minutes);
+      .replace("{0}", minutes);
   }
 }
-
 function langTo6391(lang) {
   // convert lang to ISO 639-1
   return lang.toLowerCase().split(";")[0].trim().split("-")[0].split("_")[0];
@@ -296,12 +279,4 @@ function initHls() {
     : undefined;
 }
 
-export {
-  waitForElm,
-  sleep,
-  getVideoId,
-  secsToStrTime,
-  langTo6391,
-  isPiPAvailable,
-  initHls,
-};
+export { getVideoId, secsToStrTime, langTo6391, isPiPAvailable, initHls };
