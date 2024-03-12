@@ -118,12 +118,12 @@
 // @match          *://*.youku.com/*
 // @connect        api.browser.yandex.ru
 // @namespace      vot-cloudflare
-// @version        1.5.1-beta7
+// @version        1.5.1
 // @icon           https://translate.yandex.ru/icons/favicon.ico
 // @author         sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @homepageURL    https://github.com/ilyhalight/voice-over-translation/issues
-// @updateURL      https://raw.githubusercontent.com/ilyhalight/voice-over-translation/dev/dist/vot-cloudflare.user.js
-// @downloadURL    https://raw.githubusercontent.com/ilyhalight/voice-over-translation/dev/dist/vot-cloudflare.user.js
+// @updateURL      https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js
+// @downloadURL    https://raw.githubusercontent.com/ilyhalight/voice-over-translation/master/dist/vot-cloudflare.user.js
 // @supportURL     https://github.com/ilyhalight/voice-over-translation/issues
 // ==/UserScript==
 
@@ -562,7 +562,7 @@ module.exports = function () {
 /* unused harmony export workerHost */
 // CONFIGURATION
 const workerHost = "api.browser.yandex.ru";
-const m3u8ProxyHost = "m3u8proxy.toil-dump.workers.dev";
+const m3u8ProxyHost = "m3u8-proxy.toil.cc"; // used for striming
 const proxyWorkerHost = "vot.toil.cc"; // used for cloudflare version (vot-new.toil-dump.workers.dev || vot-worker.onrender.com)
 const yandexHmacKey = "xtGCyGdTY2Jy6OMEKdTuXev3Twhkamgm";
 const yandexUserAgent =
@@ -1056,7 +1056,7 @@ var storage = __webpack_require__("./src/utils/storage.js");
 
 const localesVersion = 2;
 const localesUrl = `https://raw.githubusercontent.com/ilyhalight/voice-over-translation/${
-   true ? "dev" : 0
+   false ? 0 : "master"
 }/src/localization/locales`;
 
 const availableLocales = [
@@ -2141,7 +2141,6 @@ const getVideoId = (service, video) => {
         url.searchParams.get("v")
       );
     }
-
     case "vk":
       if (url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)) {
         return url.pathname.match(/^\/video-?[0-9]{8,9}_[0-9]{9}$/)[0].slice(1);
@@ -5501,7 +5500,7 @@ class VideoHandler {
     this.logout(1);
     this.timer = setTimeout(() => {
       this.logout(0);
-    }, 2000);
+    }, 1000);
   }
 
   changeOpacityOnEvent(event) {
@@ -6043,7 +6042,7 @@ class VideoHandler {
             this.hls.on(Hls.Events.MANIFEST_PARSED, function (data) {
               debug/* default */.A.log(
                 "manifest loaded, found " +
-                  data.levels.length +
+                  data?.levels?.length +
                   " quality level",
               );
             });
@@ -6081,7 +6080,9 @@ class VideoHandler {
             throw new VOTLocalizedError("audioFormatNotSupported");
           }
 
-          youtubeUtils.videoSeek(this.video, 10); // 10 is the most successful number for streaming. With it, the audio is not so far behind the original
+          if (this.site.host === "youtube") {
+            youtubeUtils.videoSeek(this.video, 10); // 10 is the most successful number for streaming. With it, the audio is not so far behind the original
+          }
 
           this.volumeOnStart = this.getVideoVolume();
           if (typeof this.data.defaultVolume === "number") {
