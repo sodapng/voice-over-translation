@@ -1,6 +1,6 @@
 // CONFIGURATION
 const workerHost = "api.browser.yandex.ru";
-const m3u8ProxyHost = "m3u8proxy.toil-dump.workers.dev";
+const m3u8ProxyHost = "m3u8-proxy.toil.cc"; // used for striming
 const proxyWorkerHost = "vot.toil.cc"; // used for cloudflare version (vot-new.toil-dump.workers.dev || vot-worker.onrender.com)
 const yandexHmacKey = "xtGCyGdTY2Jy6OMEKdTuXev3Twhkamgm";
 const yandexUserAgent =
