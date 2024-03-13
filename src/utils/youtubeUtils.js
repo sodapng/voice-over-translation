@@ -144,13 +144,8 @@ async function getVideoData() {
   const response = getPlayerResponse(); // null in /embed
   const data = getPlayerData();
   const { title } = data ?? {};
-  const {
-    shortDescription: description,
-    isLive,
-    isUpcoming,
-  } = response?.videoDetails ?? {};
-  const isPremiere =
-    (isLive || isUpcoming) && !response?.videoDetails?.isLiveContent;
+  const { shortDescription: description, isLive } =
+    response?.videoDetails ?? {};
   let detectedLanguage = title
     ? await getLanguage(player, response, title, description)
     : "en";
@@ -159,7 +154,6 @@ async function getVideoData() {
     : "en";
   const videoData = {
     isLive: !!isLive,
-    isPremiere,
     title,
     description,
     detectedLanguage,
