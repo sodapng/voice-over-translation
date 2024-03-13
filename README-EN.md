@@ -60,6 +60,7 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[Weverse](https://weverse.io/)**
 - **[Egghead](https://egghead.io)**
 - **[Youku](https://youku.com)**
+- **[Newgrounds](https://newgrounds.com)**
 - **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[[⚠️] Invidious](https://yewtu.be)**
 - **[[⚠️] Piped](https://piped.video)**
