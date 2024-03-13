@@ -147,19 +147,16 @@ async function getVideoData() {
   const {
     shortDescription: description,
     isLive,
-    isLiveContent,
     isUpcoming,
   } = response?.videoDetails ?? {};
-  const isPremiere = (!!isLive || !!isUpcoming) && !isLiveContent;
-  let detectedLanguage = await getLanguage(
-    player,
-    response,
-    title,
-    description,
-  );
-  if (!availableLangs.includes(detectedLanguage)) {
-    detectedLanguage = "en";
-  }
+  const isPremiere =
+    (isLive || isUpcoming) && !response?.videoDetails?.isLiveContent;
+  let detectedLanguage = title
+    ? await getLanguage(player, response, title, description)
+    : "en";
+  detectedLanguage = availableLangs.includes(detectedLanguage)
+    ? detectedLanguage
+    : "en";
   const videoData = {
     isLive: !!isLive,
     isPremiere,
