@@ -118,7 +118,7 @@
 // @match          *://*.youku.com/*
 // @connect        api.browser.yandex.ru
 // @namespace      vot-cloudflare-min
-// @version        1.5.1
+// @version        1.5.1.1
 // @icon           https://translate.yandex.ru/icons/favicon.ico
 // @author         sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @homepageURL    https://github.com/ilyhalight/voice-over-translation/issues
