@@ -2049,25 +2049,16 @@ async function getVideoData() {
   const response = getPlayerResponse(); // null in /embed
   const data = getPlayerData();
   const { title } = data ?? {};
-  const {
-    shortDescription: description,
-    isLive,
-    isLiveContent,
-    isUpcoming,
-  } = response?.videoDetails ?? {};
-  const isPremiere = (!!isLive || !!isUpcoming) && !isLiveContent;
-  let detectedLanguage = await getLanguage(
-    player,
-    response,
-    title,
-    description,
-  );
-  if (!availableLangs.includes(detectedLanguage)) {
-    detectedLanguage = "en";
-  }
+  const { shortDescription: description, isLive } =
+    response?.videoDetails ?? {};
+  let detectedLanguage = title
+    ? await getLanguage(player, response, title, description)
+    : "en";
+  detectedLanguage = availableLangs.includes(detectedLanguage)
+    ? detectedLanguage
+    : "en";
   const videoData = {
     isLive: !!isLive,
-    isPremiere,
     title,
     description,
     detectedLanguage,
