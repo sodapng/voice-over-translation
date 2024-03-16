@@ -40,24 +40,15 @@ const sites = () => {
       selector: ".column.has-text-centered",
     },
     {
-      additionalData: "mobile",
       host: "twitch",
       url: "https://twitch.tv/",
-      match: /^m.twitch.tv$/,
-      selector: "main > div > section > div > div > div",
-    },
-    {
-      host: "twitch",
-      url: "https://twitch.tv/",
-      match: (url) =>
-        url.host.includes("clips.twitch.tv") ||
-        (url.host.includes("player.twitch.tv") &&
-          url.searchParams.get("channel") === null) ||
-        (url.host.includes("twitch.tv") &&
-          (url.pathname.startsWith("/videos") ||
-            url.pathname.startsWith("/embed") ||
-            url.pathname.includes("/clip"))),
-      selector: ".video-ref",
+      match: [
+        /^m.twitch.tv$/,
+        /^www.twitch.tv$/,
+        /^clips.twitch.tv$/,
+        /^player.twitch.tv$/,
+      ],
+      selector: ".video-ref, main > div > section > div > div > div",
     },
     {
       host: "xvideos",

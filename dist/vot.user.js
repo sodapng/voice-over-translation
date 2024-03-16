@@ -119,7 +119,7 @@
 // @match          *://*.youku.com/*
 // @connect        api.browser.yandex.ru
 // @namespace      vot
-// @version        1.5.1.1
+// @version        1.5.1.2
 // @icon           https://translate.yandex.ru/icons/favicon.ico
 // @author         sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @homepageURL    https://github.com/ilyhalight/voice-over-translation/issues
@@ -1933,9 +1933,11 @@ async function getLanguage(player, response, title, description) {
   ];
 
   const cleanedDescription = description
-    .split("\n\n")
-    .filter((line) => !deletefilter.some((regex) => regex.test(line)))
-    .join("\n\n");
+    ? description
+        .split("\n\n")
+        .filter((line) => !deletefilter.some((regex) => regex.test(line)))
+        .join("\n\n")
+    : "";
 
   const cleanText = [title, cleanedDescription]
     .join(" ")
@@ -3814,24 +3816,15 @@ const sites = () => {
       selector: ".column.has-text-centered",
     },
     {
-      additionalData: "mobile",
       host: "twitch",
       url: "https://twitch.tv/",
-      match: /^m.twitch.tv$/,
-      selector: "main > div > section > div > div > div",
-    },
-    {
-      host: "twitch",
-      url: "https://twitch.tv/",
-      match: (url) =>
-        url.host.includes("clips.twitch.tv") ||
-        (url.host.includes("player.twitch.tv") &&
-          url.searchParams.get("channel") === null) ||
-        (url.host.includes("twitch.tv") &&
-          (url.pathname.startsWith("/videos") ||
-            url.pathname.startsWith("/embed") ||
-            url.pathname.includes("/clip"))),
-      selector: ".video-ref",
+      match: [
+        /^m.twitch.tv$/,
+        /^www.twitch.tv$/,
+        /^clips.twitch.tv$/,
+        /^player.twitch.tv$/,
+      ],
+      selector: ".video-ref, main > div > section > div > div > div",
     },
     {
       host: "xvideos",
