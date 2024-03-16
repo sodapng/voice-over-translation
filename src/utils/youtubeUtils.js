@@ -44,9 +44,11 @@ async function getLanguage(player, response, title, description) {
   ];
 
   const cleanedDescription = description
-    .split("\n\n")
-    .filter((line) => !deletefilter.some((regex) => regex.test(line)))
-    .join("\n\n");
+    ? description
+        .split("\n\n")
+        .filter((line) => !deletefilter.some((regex) => regex.test(line)))
+        .join("\n\n")
+    : "";
 
   const cleanText = [title, cleanedDescription]
     .join(" ")
