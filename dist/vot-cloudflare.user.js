@@ -5442,21 +5442,14 @@ class VideoHandler {
       this.container.draggable = false;
     }
 
-    addExtraEventListener(this.video, "emptied", () => {
-      debug/* default */.A.log("lipsync mode is emptied");
-      this.stopTranslation();
-    });
-
     addExtraEventListener(this.video, "progress", async () => {
       if (
-        !(this.firstPlay && this.data.autoTranslate === 1) ||
+        !this.videoData.videoId ||
+        !this.firstPlay ||
+        this.data.autoTranslate !== 1 ||
         getVideoId(this.site.host, this.video) !== this.videoData.videoId
       ) {
         return;
-      }
-
-      if (!this.videoData.videoId) {
-        throw new VOTLocalizedError("VOTNoVideoIDFound");
       }
 
       try {
@@ -5813,6 +5806,10 @@ class VideoHandler {
     if (mode == "playing") {
       debug/* default */.A.log("lipsync mode is playing");
       this.audio.play();
+    }
+    if (mode == "emptied") {
+      debug/* default */.A.log("lipsync mode is emptied");
+      this.stopTranslation();
     }
   }
 
@@ -6187,7 +6184,8 @@ class VideoHandler {
     }
 
     const hide =
-      !this.video.src && !this.video.currentSrc && !this.video.srcObject;
+      (!this.video.src && !this.video.currentSrc && !this.video.srcObject) ||
+      !this.videoData.videoId;
     this.votButton.container.hidden = hide;
     hide && (this.votMenu.container.hidden = hide);
 
