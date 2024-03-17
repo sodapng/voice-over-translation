@@ -104,7 +104,8 @@
     "*://*.weverse.io/*",
     "*://*.newgrounds.com/*",
     "*://*.egghead.io/*",
-    "*://*.youku.com/*"
+    "*://*.youku.com/*",
+    "*://*/*.mp4*"
   ],
   "require": [
     "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",

@@ -2145,7 +2145,7 @@ async function main() {
         continue;
       }
 
-      if (site.host === "peertube") {
+      if (["peertube", "directlink"].includes(site.host)) {
         // we set the url of the current site, since peertube doesn't have a main server
         site.url = window.location.origin;
       }

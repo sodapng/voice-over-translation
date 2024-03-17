@@ -236,6 +236,8 @@ const getVideoId = (service, video) => {
       return url.pathname;
     case "youku":
       return url.pathname.match(/v_show\/id_[\w=]+/)?.[0];
+    case "directlink":
+      return url.pathname + url.search;
     default:
       return false;
   }

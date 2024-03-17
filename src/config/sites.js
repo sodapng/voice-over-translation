@@ -283,6 +283,12 @@ const sites = () => {
       match: /^v.youku.com$/,
       selector: "#ykPlayer",
     },
+    {
+      host: "directlink",
+      url: "any", // This is a stub. The present value is set using window.location.origin. Check "src/index.js:videoObserver.onVideoAdded.addListener" to get more info
+      match: (url) => /([^.]+).mp4/.test(url.pathname),
+      selector: null,
+    },
     // Нужно куда-то заливать данные о плейлисте
     // {
     //   host: "epicgames",
