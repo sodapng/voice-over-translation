@@ -116,9 +116,10 @@
 // @match          *://*.newgrounds.com/*
 // @match          *://*.egghead.io/*
 // @match          *://*.youku.com/*
+// @match          *://*/*.mp4*
 // @connect        api.browser.yandex.ru
 // @namespace      vot-cloudflare
-// @version        1.5.1.2
+// @version        1.5.1.3
 // @icon           https://translate.yandex.ru/icons/favicon.ico
 // @author         sodapng, mynovelhost, Toil, SashaXser, MrSoczekXD
 // @homepageURL    https://github.com/ilyhalight/voice-over-translation/issues
@@ -2321,6 +2322,8 @@ const getVideoId = (service, video) => {
       return url.pathname;
     case "youku":
       return url.pathname.match(/v_show\/id_[\w=]+/)?.[0];
+    case "directlink":
+      return url.pathname + url.search;
     default:
       return false;
   }
@@ -4074,6 +4077,12 @@ const sites = () => {
       url: "https://v.youku.com/",
       match: /^v.youku.com$/,
       selector: "#ykPlayer",
+    },
+    {
+      host: "directlink",
+      url: "any", // This is a stub. The present value is set using window.location.origin. Check "src/index.js:videoObserver.onVideoAdded.addListener" to get more info
+      match: (url) => /([^.]+).mp4/.test(url.pathname),
+      selector: null,
     },
     // Нужно куда-то заливать данные о плейлисте
     // {
@@ -6298,7 +6307,7 @@ async function src_main() {
         continue;
       }
 
-      if (site.host === "peertube") {
+      if (["peertube", "directlink"].includes(site.host)) {
         // we set the url of the current site, since peertube doesn't have a main server
         site.url = window.location.origin;
       }

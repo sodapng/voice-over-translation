@@ -64,6 +64,7 @@ You can see all the restrictions related to site support in [wiki](https://githu
 - **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[[⚠️] Invidious](https://yewtu.be)**
 - **[[⚠️] Piped](https://piped.video)**
+- **Any direct web links to `.mp4`**
 
 ⚠️ - Requires additional actions, more in **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki/%5BEN%5D-Supported-sites)**
 

@@ -65,6 +65,7 @@
 - **[ProxiTok](https://proxitok.pabloferreiro.es/)**
 - **[[⚠️] Invidious](https://yewtu.be)**
 - **[[⚠️] Piped](https://piped.video)**
+- **Любые прямые веб-ссылки на `.mp4`**
 
 ⚠️ - Требует дополнительных действий, подробнее в **[Wiki](https://github.com/ilyhalight/voice-over-translation/wiki/%5BRU%5D-Supported-sites)**
 
