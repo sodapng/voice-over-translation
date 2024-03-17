@@ -107,6 +107,9 @@
     "*://*.youku.com/*",
     "*://*/*.mp4*"
   ],
+  "exclude": [
+    "file://*/*.mp4*"
+  ],
   "require": [
     "https://cdn.jsdelivr.net/npm/protobufjs/dist/light/protobuf.min.js",
     "https://cdn.jsdelivr.net/npm/hls.js/dist/hls.light.min.js"

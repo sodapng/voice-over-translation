@@ -1278,6 +1278,11 @@ class VideoHandler {
       this.container.draggable = false;
     }
 
+    addExtraEventListener(this.video, "emptied", () => {
+      debug.log("lipsync mode is emptied");
+      this.stopTranslation();
+    });
+
     addExtraEventListener(this.video, "progress", async () => {
       if (
         !this.videoData.videoId ||
@@ -1642,10 +1647,6 @@ class VideoHandler {
     if (mode == "playing") {
       debug.log("lipsync mode is playing");
       this.audio.play();
-    }
-    if (mode == "emptied") {
-      debug.log("lipsync mode is emptied");
-      this.stopTranslation();
     }
   }
 
