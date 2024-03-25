@@ -23,6 +23,7 @@
 
 #### Proxy-сервер
 - [vot.toil.cc](https://vot.toil.cc/health) (Балансировщик между прокси серверами)
+- [vot-worker.toil.cc](https://github.com/FOSWLY/vot-worker)
 - [vot.deno.dev](https://github.com/FOSWLY/vot-worker)
 - [vot-worker.onrender.com](https://github.com/FOSWLY/vot-worker)
 - [vot-new.toil-dump.workers.dev](https://github.com/FOSWLY/vot-worker) (⚠️ не работает в РФ)
